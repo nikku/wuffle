@@ -1,0 +1,138 @@
+.Taskboard {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.Taskboard-header {
+  display: flex;
+  padding: 5px;
+  align-items: center;
+}
+
+.Taskboard-header-title {
+  font-size: 1.25em;
+  color: #888;
+}
+
+.Taskboard-header-tools,
+.Taskboard-header-title {
+  padding: 0 5px;
+}
+
+.Taskboard-header-spacer {
+  flex: 1;
+}
+
+.Taskboard-board {
+  display: flex;
+  flex: 1;
+  width: 100%;
+
+  overflow-x: auto;
+}
+
+.Taskboard-column {
+  display: flex;
+  flex-direction: column;
+  min-width: 250px;
+  flex: 1;
+  flex-shrink: 0;
+
+  border-radius: 2px;
+  border: solid 1px #EEE;
+  margin: 3px;
+  background: rgb(235, 236, 240);
+}
+
+.Taskboard-column-items {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px;
+}
+
+.Taskboard-column-header {
+  text-align: center;
+
+  line-height: 2.4em;
+  font-size: 1.25em;
+  color: inherit;
+}
+
+.Taskboard-column-collapse {
+  color: #999;
+  float: left;
+  padding: 0 5px;
+  line-height: 2.4em;
+}
+
+.Taskboard-column-collapsed {
+  line-height: 2em;
+  min-width: auto;
+  flex: 0;
+}
+
+.Taskboard-column-collapsed .Taskboard-column-collapse {
+  float: right;
+  padding: 12px 0;
+}
+
+.Taskboard-column-collapsed .Taskboard-column-header {
+  transform: rotate(-180deg);
+  writing-mode: vertical-rl;
+  text-align: right;
+  flex: 1;
+}
+
+.Taskboard-column-collapsed .Taskboard-column-issue-count {
+  padding: 5px 0;
+}
+
+.Taskboard-column-issue-count {
+  color: #72c7ff;
+  display: inline-block;
+  padding: 0 5px;
+}
+
+.Taskboard-item {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.Taskboard-item-card {
+  background: white;
+  border-radius: 3px;
+
+  padding: 6px 8px;
+}
+
+.Taskboard-item-header {
+  margin-bottom: 7px;
+  display: flex;
+}
+
+.spacer {
+  flex: 1;
+}
+
+.Taskboard-item-issue-number {
+  font-weight: bold;
+  margin-right: 7px;
+}
+
+.Taskboard-item-repository {
+  color: #888;
+}
+
+.Taskboard-item-title {
+  font-size: 1.1em;
+  margin: -2px;
+}
+
+.Taskboard-item-title textarea {
+  width: 100%;
+  line-height: 1.2em;
+  resize: none;
+  border: none;
+  padding: 2px;
+}
