@@ -17,7 +17,7 @@
 
 .Taskboard-header-tools,
 .Taskboard-header-title {
-  padding: 0 5px;
+  margin-right: 8px;
 }
 
 .Taskboard-header-spacer {
@@ -126,7 +126,7 @@
 
 .Taskboard-item-title {
   font-size: 1.1em;
-  margin: -2px;
+  margin: -2px -2px 5px -2px;
 }
 
 .Taskboard-item-title textarea {
@@ -135,4 +135,21 @@
   resize: none;
   border: none;
   padding: 2px;
+  height: 55px;
+  overflow: hidden;
+}
+
+
+
+
+/* basic styles */
+
+.ant-input-group.ant-input-group-compact.with-addon {
+  display: inline-table;
+  width: auto;
+}
+
+.ant-input-group.ant-input-group-compact.with-addon .ant-input-group-addon {
+  display: table-cell;
+  vertical-align: middle;
 }
