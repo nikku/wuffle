@@ -9,14 +9,15 @@ import {
   Tag,
   Drawer,
   Form,
-  Select,
   Spin
 } from 'antd';
 
-import WithPrefix from './WithPrefix';
-import PrefixIcon from './PrefixIcon';
+import {
+  Select,
+  PrefixIcon
+} from '../primitives';
 
-import './Form.css';
+import styles from './Form.less';
 
 
 class IssueUpdateForm extends React.Component {
@@ -47,7 +48,7 @@ class IssueUpdateForm extends React.Component {
     } = form;
 
     return (
-      <Form layout="vertical" className="condensed-form" onSubmit={onSubmit}>
+      <Form layout="vertical" className={ styles.CondensedForm } onSubmit={onSubmit}>
         <Form.Item>
           {getFieldDecorator('title', {
             rules: [{ required: true, message: 'Please enter a title' }]
@@ -66,81 +67,77 @@ class IssueUpdateForm extends React.Component {
           {getFieldDecorator('assignee', {
             rules: []
           })(
-            <WithPrefix prefix={<PrefixIcon type="usergroup-add" />}>
-              <Select
-                mode="multiple"
-                labelInValue
-                placeholder="Select assignees"
-                notFoundContent={fetching ? <Spin size="small" /> : null}
-                filterOption={false}
-                onSearch={fetchUser}
-                onChange={handleChange}
-                style={{ width: '100%' }}
-              >
-                {data.map(d => <Select.Option key={d.value}>{d.text}</Select.Option>)}
-              </Select>
-            </WithPrefix>
+            <Select
+              mode="multiple"
+              labelInValue
+              placeholder="Select assignees"
+              notFoundContent={fetching ? <Spin size="small" /> : null}
+              filterOption={false}
+              onSearch={fetchUser}
+              onChange={handleChange}
+              prefix={<PrefixIcon type="usergroup-add" />}
+              style={{ width: '100%' }}
+            >
+              {data.map(d => <Select.Option key={d.value}>{d.text}</Select.Option>)}
+            </Select>
           )}
         </Form.Item>
         <Form.Item>
           {getFieldDecorator('tags', {
             rules: []
           })(
-            <WithPrefix prefix={<PrefixIcon type="tags" />}>
-              <Select
-                mode="tags"
-                labelInValue
-                placeholder="Select tags"
-                notFoundContent={fetching ? <Spin size="small" /> : null}
-                filterOption={false}
-                onSearch={fetchUser}
-                onChange={handleChange}
-                style={{ width: '100%' }}
-              >
-                {data.map(d => <Select.Option key={d.value}>{d.text}</Select.Option>)}
-              </Select>
-            </WithPrefix>
+            <Select
+              mode="tags"
+              labelInValue
+              placeholder="Select tags"
+              notFoundContent={fetching ? <Spin size="small" /> : null}
+              filterOption={false}
+              onSearch={fetchUser}
+              onChange={handleChange}
+              prefix={<PrefixIcon type="tags" />}
+              style={{ width: '100%' }}
+            >
+              {data.map(d => <Select.Option key={d.value}>{d.text}</Select.Option>)}
+            </Select>
           )}
         </Form.Item>
         <Form.Item>
           {getFieldDecorator('milestone', {
             rules: []
           })(
-            <WithPrefix prefix={<PrefixIcon type="schedule" />}>
-              <Select
-                showSearch
-                labelInValue
-                placeholder="Select milestone"
-                notFoundContent={fetching ? <Spin size="small" /> : null}
-                filterOption={false}
-                onSearch={fetchUser}
-                onChange={handleChange}
-                style={{ width: '100%' }}
-              >
-                {data.map(d => <Select.Option key={d.value}>{d.text}</Select.Option>)}
-              </Select>
-            </WithPrefix>
+            <Select
+              showSearch
+              labelInValue
+              placeholder="Select milestone"
+              notFoundContent={fetching ? <Spin size="small" /> : null}
+              filterOption={false}
+              onSearch={fetchUser}
+              onChange={handleChange}
+              prefix={<PrefixIcon type="schedule" />}
+              style={{ width: '100%' }}
+            >
+              {data.map(d => <Select.Option key={d.value}>{d.text}</Select.Option>)}
+            </Select>
           )}
         </Form.Item>
         <Form.Item>
           {getFieldDecorator('column', {
             rules: []
           })(
-            <WithPrefix prefix={<PrefixIcon type="layout" />}>
-              <Select
-                showSearch
-                labelInValue
-                placeholder="Select column"
-                notFoundContent={fetching ? <Spin size="small" /> : null}
-                filterOption={false}
-                optionLabelProp="children"
-                onSearch={fetchUser}
-                onChange={handleChange}
-                style={{ width: '100%' }}
-              >
-                {data.map(d => <Select.Option key={d.value}>{d.text}</Select.Option>)}
-              </Select>
-            </WithPrefix>
+            <Select
+              showSearch
+              labelInValue
+              placeholder="Select column"
+              notFoundContent={fetching ? <Spin size="small" /> : null}
+              filterOption={false}
+              optionLabelProp="children"
+              onSearch={fetchUser}
+              onChange={handleChange}
+              prefix={<PrefixIcon type="layout" />}
+              style={{ width: '100%' }}
+            >
+              {data.map(d => <Select.Option key={d.value}>{d.text}</Select.Option>)}
+            </Select>
           )}
         </Form.Item>
         <Form.Item style={{ marginTop: 20 }}>

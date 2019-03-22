@@ -213,7 +213,7 @@ class Taskboard extends React.Component {
         />
 
         <IssueUpdateDrawer
-          visible={ this.state.showIssue }
+          visible={ !isNaN(this.state.showIssue) }
           onUpdate={ this.updateIssue }
           onClose={ this.closeIssueUpdateDrawer }
         />
