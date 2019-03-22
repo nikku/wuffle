@@ -118,6 +118,10 @@ class Taskboard extends React.Component {
     });
   }
 
+  createIssue = (values) => {
+    console.log(values);
+  }
+
   showIssueUpdateDrawer = (issueId) => {
     this.setState({
       showIssue: issueId
@@ -210,7 +214,7 @@ class Taskboard extends React.Component {
         />
 
         <IssueUpdateDrawer
-          visible={ !isNaN(this.state.showIssue) }
+          visible={ this.state.showIssue }
           onUpdate={ this.updateIssue }
           onClose={ this.closeIssueUpdateDrawer }
         />
@@ -435,7 +439,7 @@ function IssueUpdateDrawer(props) {
       placement="right"
       closable={false}
       onClose={onClose}
-      visible={visible}
+      visible={typeof visible === 'number'}
       width={ 500 }
     >
       <IssueUpdateForm onSubmit={ onUpdate } onCancel={ onClose } />
