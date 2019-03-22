@@ -1,9 +1,9 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
+
 import Home from './Home';
 import Taskboard from './Taskboard';
 
-import "antd/dist/antd.css";
 import './App.less';
 
 const App = () => (
