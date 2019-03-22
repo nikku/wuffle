@@ -17,6 +17,25 @@ import styles from './Form.less';
 
 class IssueUpdateForm extends React.Component {
 
+  handleSubmit = (e) => {
+    e.preventDefault();
+
+    const {
+      onSubmit,
+      form
+    } = this.props;
+
+    form.validateFieldsAndScroll((err, values) => {
+      if (err) {
+        return console.error(err);
+      }
+
+      console.log('Received values of form: ', values);
+
+      onSubmit(values);
+    });
+  }
+
   render() {
 
     const data = [
@@ -44,15 +63,13 @@ class IssueUpdateForm extends React.Component {
       <Form layout="vertical" className={ styles.CondensedForm } onSubmit={onSubmit}>
         <Form.Item>
           {getFieldDecorator('title', {
-            rules: [{ required: true, message: 'Please enter a title' }]
+            rules: [{ required: true, message: 'Please provide a title' }]
           })(
             <Input placeholder="Enter title" size="large" autoFocus />
           )}
         </Form.Item>
         <Form.Item>
-          {getFieldDecorator('description', {
-            rules: [{ required: true, message: 'Please enter a description' }]
-          })(
+          {getFieldDecorator('description')(
             <Input.TextArea autosize={{ minRows: 5, maxRows: 12 }} placeholder="Enter description" />
           )}
         </Form.Item>
@@ -115,7 +132,7 @@ class IssueUpdateForm extends React.Component {
         </Form.Item>
         <Form.Item>
           {getFieldDecorator('column', {
-            rules: []
+            rules: [{ required: true, message: 'Please specify a column' }]
           })(
             <Select
               showSearch
