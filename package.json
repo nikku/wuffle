@@ -12,10 +12,14 @@
     "antd": "^3.15.1",
     "classnames": "^2.2.6",
     "express": "4.16.4",
-    "razzle": "2.4.1",
     "react": "16.8.4",
     "react-beautiful-dnd": "^10.1.0",
     "react-dom": "16.8.4",
     "react-router-dom": "5.0.0"
+  },
+  "devDependencies": {
+    "less": "^3.9.0",
+    "less-loader": "^3.0.0",
+    "razzle": "^2.4.1"
   }
 }

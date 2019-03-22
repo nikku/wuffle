@@ -21,7 +21,7 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 import classNames from 'classnames';
 
-import './Taskboard.css';
+import './Taskboard.less';
 
 const columns = [
   { name: 'Inbox', count: 19 },

@@ -4,7 +4,7 @@ import Home from './Home';
 import Taskboard from './Taskboard';
 
 import "antd/dist/antd.css";
-import './App.css';
+import './App.less';
 
 const App = () => (
   <Switch>
