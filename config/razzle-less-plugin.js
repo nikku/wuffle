@@ -38,7 +38,8 @@ const defaultOptions = {
     dev: {
       sourceMap: true,
       importLoaders: 1,
-      modules: false
+      modules: false,
+      localIdentName: '[path][name]__[local]'
     },
     prod: {
       sourceMap: false,

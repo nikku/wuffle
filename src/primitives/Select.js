@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Select as _Select } from 'antd';
+import { Select as BaseSelect } from 'antd';
 
 import styles from './Select.less';
 
@@ -15,7 +15,7 @@ const Select = React.forwardRef(function(props, ref) {
   } = props;
 
   if (!prefix) {
-    return <_Select {...otherProps}>{ children }</_Select>
+    return <BaseSelect {...otherProps}>{ children }</BaseSelect>
   }
 
   return (
@@ -23,13 +23,13 @@ const Select = React.forwardRef(function(props, ref) {
       <div className="ant-input-prefix">
         { prefix }
       </div>
-      <_Select {...otherProps} ref={ ref }>
+      <BaseSelect {...otherProps} ref={ ref }>
         { children }
-      </_Select>
+      </BaseSelect>
     </div>
   );
 });
 
 export default Select;
 
-Select.Option = _Select.Option;
+Select.Option = BaseSelect.Option;

@@ -1,13 +1,8 @@
 import React from 'react';
 
 import {
-  Dropdown,
-  Menu,
   Button,
-  Icon,
   Input,
-  Tag,
-  Drawer,
   Form,
   Spin
 } from 'antd';
@@ -23,8 +18,6 @@ import styles from './Form.less';
 class IssueUpdateForm extends React.Component {
 
   render() {
-
-    const value = "FOO";
 
     const data = [
       { text: 'A', value: 'a' }, { text: 'B', value: 'b' }, { text: 'C', value: 'c' }
