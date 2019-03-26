@@ -83,7 +83,13 @@ module.exports = (
 
   const lessLoader = {
     loader: require.resolve('less-loader'),
-    options: options.less[constantEnv]
+    options: {
+      modifyVars: {
+        'primary-color': '#37ACC8',
+        'border-radius-base': '6px'
+      },
+      ...options.less[constantEnv]
+    }
   };
 
   config.resolve.extensions = [
