@@ -5,7 +5,7 @@
   "scripts": {
     "lint": "eslint src",
     "start": "npm run dev",
-    "dev": "PORT=3001 razzle start",
+    "dev": "cross-env PORT=3001 razzle start",
     "build": "razzle build",
     "test": "razzle test --env=jsdom",
     "start:prod": "NODE_ENV=production node build/server.js"
@@ -13,6 +13,7 @@
   "dependencies": {
     "antd": "^3.15.1",
     "classnames": "^2.2.6",
+    "cross-env": "^5.2.0",
     "express": "4.16.4",
     "react": "16.8.4",
     "react-beautiful-dnd": "^10.1.0",
