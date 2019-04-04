@@ -10,6 +10,10 @@ import {
 } from 'antd';
 
 import {
+  Loader
+} from './primitives';
+
+import {
   IssueCreateForm,
   IssueUpdateForm
 } from './forms';
@@ -19,23 +23,6 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import classNames from 'classnames';
 
 import './Taskboard.less';
-
-const columns = [
-  { name: 'Inbox', count: 19 },
-  { name: 'Backlog', count: 300 },
-  { name: 'Ready', count: 4 },
-  { name: 'In Progress', count: 2 },
-  { name: 'Review', count: 3 },
-  { name: 'Done', count: 10 }
-];
-
-const labelFoo = {
-  name: 'FOO', color: 'red'
-};
-
-const labelBar = {
-  name: 'BAR', color: 'green'
-};
 
 
 // a little function to help us with reordering the result
@@ -74,37 +61,37 @@ const getListStyle = isDraggingOver => ({});
 class Taskboard extends React.Component {
 
   state = {
-    collapsed: {
-      'Inbox': true
-    },
-    items: {
-      'Inbox': [
-        { id: 1, name: 'Do this', repository: 'bpmn-io/bpmn-js', labels: [] },
-        { id: 2, name: 'ASDSAD SADSA DSAD SAD SAD ASD SAD SAD ASDASDASDASDSAD', repository: 'bpmn-io/bpmn-js', labels: [] },
-        { id: 3, name: 'Do this 3', repository: 'bpmn-io/bpmn-js', labels: [ labelFoo ] },
-        { id: 4, name: 'Do this 5', repository: 'bpmn-io/bpmn-js', labels: [ labelFoo ] },
-        { id: 5, name: 'Do this 7', repository: 'bpmn-io/bpmn-js', labels: [ labelBar, labelFoo ] }
-      ],
-      'Backlog': [
-        { id: 6, name: 'COOO this 5', repository: 'bpmn-io/bpmn-js', labels: [ labelFoo ] },
-        { id: 7, name: 'Do this 7', repository: 'bpmn-io/bpmn-js', labels: [ labelBar, labelFoo ] },
-        { id: 8, name: 'COOO this 5', repository: 'bpmn-io/bpmn-js', labels: [ labelFoo ] },
-        { id: 9, name: 'Do this 7', repository: 'bpmn-io/bpmn-js', labels: [ labelBar, labelFoo ] },
-        { id: 10, name: 'COOO this 5', repository: 'bpmn-io/bpmn-js', labels: [ labelFoo ] },
-        { id: 11, name: 'ASDSAD SADSA DSAD SAD SAD ASD SAD SAD ASDASDASDASDSAD', repository: 'bpmn-io/bpmn-js', labels: [ labelBar, labelFoo ] },
-        { id: 12, name: 'COOO this 5', repository: 'bpmn-io/bpmn-js', labels: [ labelFoo ] },
-        { id: 13, name: 'Do this 7', repository: 'bpmn-io/bpmn-js', labels: [ labelBar, labelFoo ] },
-        { id: 14, name: 'Do this', repository: 'bpmn-io/bpmn-js', labels: [] },
-        { id: 15, name: 'COOO this 2', repository: 'bpmn-io/bpmn-js', labels: [] },
-        { id: 16, name: 'COOO this 3', repository: 'bpmn-io/bpmn-js', labels: [ labelFoo ] },
-      ],
-      'Ready': [
-        { id: 17, name: 'Do this 7', repository: 'bpmn-io/bpmn-js', labels: [ labelBar ] }
-      ]
-    }
+    loading: true,
+    columns: [],
+    items: {},
+    collapsed: {}
   };
 
   getList = id => this.state.items[id] || [];
+
+  async componentDidMount() {
+
+    const loadingPromise = Promise.all([
+      fetch('http://localhost:3000/wuffle/columns').then(r => r.text()).then(t => JSON.parse(t)),
+      fetch('http://localhost:3000/wuffle/board').then(r => r.text()).then(t => JSON.parse(t))
+    ]);
+
+    const [
+      columns,
+      board
+    ] = await loadingPromise;
+
+    console.log({
+      columns,
+      board
+    });
+
+    this.setState({
+      loading: false,
+      columns,
+      items: board
+    });
+  }
 
   openCreateNew = () => {
     this.setState({
@@ -182,7 +169,9 @@ class Taskboard extends React.Component {
     return collapsed[column.name];
   }
 
-  toggleCollapsed = (column) => () => {
+  toggleCollapsed = (column) => (event) => {
+
+    event.preventDefault();
 
     const { collapsed } = this.state;
 
@@ -200,12 +189,19 @@ class Taskboard extends React.Component {
   render() {
 
     const {
-      items
+      items,
+      columns,
+      loading
     } = this.state;
+
 
     return (
 
       <React.Fragment>
+
+        <Loader shown={ loading }>
+          <img src="/favicon.png" alt="Loading" />
+        </Loader>
 
         <IssueCreateDrawer
           visible={ this.state.createNew }
@@ -253,7 +249,7 @@ class Taskboard extends React.Component {
                       classNames('Taskboard-column', { 'Taskboard-column-collapsed': collapsed })
                     } key={ column.name }>
                       <div className="Taskboard-column-header">
-                        <a className="Taskboard-column-collapse" onClick={ this.toggleCollapsed(column) }>
+                        <a className="Taskboard-column-collapse" href="#" onClick={ this.toggleCollapsed(column) }>
                           {
                             collapsed
                               ? <Icon type="left-square" />
@@ -299,7 +295,7 @@ class Taskboard extends React.Component {
 
                                             <div className="Taskboard-item-header">
                                               <a
-                                                href={ `https://github.com/${item.repository}/issues/${item.id}` }
+                                                href={ `https://github.com/${item.repository}/issues/${item.number}` }
                                                 className="Taskboard-item-issue-number"
                                                 onClick={ (e) => {
 
@@ -311,7 +307,7 @@ class Taskboard extends React.Component {
 
                                                   e.preventDefault();
                                                 } }
-                                              >{ item.id }</a>
+                                              >{ item.number }</a>
                                               <span className="Taskboard-item-repository">{ item.repository }</span>
                                               <span className="spacer"></span>
                                               <a className="Taskboard-item-assignee"><Icon type="user" /></a>
