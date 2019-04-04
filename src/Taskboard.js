@@ -391,7 +391,10 @@ class Taskboard extends React.Component {
                                 (items[column.name] || []).map((item, index) => {
                                   // console.log(item);
 
-                                  const repository = item.repository_url.match(/[^\/]+\/[^\/]+$/)[0];
+                                  // TODO(nikku): normalize upfront
+                                  const repository = item.type !== 'pull-request'
+                                    ? item.repository.full_name
+                                    : item.base.repo.full_name;
 
                                   const milestone = item.milestone ? item.milestone.title : null;
 
