@@ -4,6 +4,10 @@
   flex-direction: column;
 }
 
+.Taskboard.banner {
+  height: 92.5vh;
+}
+
 .Taskboard-header {
   display: flex;
   padding: 5px;
@@ -89,7 +93,7 @@
 }
 
 .Taskboard-column-issue-count {
-  color: #72c7ff;
+  color: #37ACC8;
   display: inline-block;
   padding: 0 5px;
 }
@@ -97,11 +101,12 @@
 .Taskboard-item {
   width: 100%;
   margin-bottom: 10px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 .Taskboard-item-card {
   background: white;
-  border-radius: 3px;
+  border-radius: 2px;
 
   padding: 6px 8px;
 }
@@ -121,16 +126,12 @@
 }
 
 .Taskboard-item-repository {
-  color: #888;
+  color: #8b8b8b;
 }
 
 .Taskboard-item-title {
   font-size: 1.1em;
   margin: -2px -2px 5px -2px;
-}
-
-.Taskboard-item-title textarea {
-  font-weight: bold;
 }
 
 .Taskboard-item-title textarea {
@@ -141,6 +142,7 @@
   padding: 2px;
   height: 55px;
   overflow: hidden;
+  color: #525252;
 }
 
 .Taskboard-item-footer {
@@ -154,10 +156,21 @@
   margin-bottom: 4px;
 }
 
+.Taskboard-item-label.inverted {
+  color: #333;
+}
+
 .Taskboard-item-links {
   margin-left: auto
 }
 
+.Taskboard-item-links a {
+  color: #cdcdcd;
+}
+
+.Taskboard-item-links a:hover {
+  color: #979797;
+}
 
 
 /* basic styles */
@@ -170,4 +183,24 @@
 .ant-input-group.ant-input-group-compact.with-addon .ant-input-group-addon {
   display: table-cell;
   vertical-align: middle;
+}
+
+.Banner {
+  background-color: #e77211;
+  border-bottom: 2px solid #cf660f;
+  color: #fff;
+  font-size: 20px;
+  text-align: center;
+  line-height: 7.5vh;
+  height: 7.5vh;
+}
+
+.Banner-highlight {
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.Banner-button {
+  font-size: 20px;
+  margin-left: 10px;
 }

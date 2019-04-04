@@ -63,6 +63,7 @@ const getListStyle = isDraggingOver => ({});
 class Taskboard extends React.Component {
 
   state = {
+    banner: true,
     loading: true,
     columns: [],
     items: {},
@@ -285,9 +286,16 @@ class Taskboard extends React.Component {
     });
   }
 
+  hideBanner = () => {
+    this.setState({
+      banner: false
+    });
+  }
+
   render() {
 
     const {
+      banner,
       items,
       columns,
       loading
@@ -314,8 +322,19 @@ class Taskboard extends React.Component {
           onClose={ this.closeIssueUpdateDrawer }
         />
 
+        {
+          banner && (
+            <div className="Banner">
+              Wuffle is <span className="Banner-highlight">opening its doors</span> in a month.
+              <Button className="Banner-button" onClick={this.hideBanner}>
+                Got it!
+              </Button>
+            </div>
+          )
+        }
+
         <DragDropContext onDragEnd={this.onDragEnd}>
-          <div className="Taskboard">
+          <div className={ classNames('Taskboard', { 'banner': banner }) }>
             <div className="Taskboard-header">
               <div className="Taskboard-header-title">
                 <Button.Group>
@@ -370,9 +389,11 @@ class Taskboard extends React.Component {
                             >
                               {
                                 (items[column.name] || []).map((item, index) => {
-                                  console.log(item);
+                                  // console.log(item);
 
                                   const repository = item.repository_url.match(/[^\/]+\/[^\/]+$/)[0];
+
+                                  const milestone = item.milestone ? item.milestone.title : null;
 
                                   return (
                                     <Draggable
@@ -426,6 +447,9 @@ class Taskboard extends React.Component {
 
                                             <div className="Taskboard-item-footer">
                                               {
+                                                milestone && <Tag className="Taskboard-item-label" key="milestone">{ milestone }</Tag>
+                                              }
+                                              {
                                                 (item.labels || []).map((label) => {
 
                                                   const {
@@ -433,16 +457,16 @@ class Taskboard extends React.Component {
                                                     color
                                                   } = label;
 
-                                                  console.log(name, color)
-
                                                   return (
-                                                    <Tag className="Taskboard-item-label" key={ name } color={ `#${ color }` }>{ name }</Tag>
+                                                    <Tag className={classNames('Taskboard-item-label', { 'inverted': isLight(`#${ color }`) })} key={ name } color={ `#${ color }` }>{ name }</Tag>
                                                   );
                                                 })
                                               }
                                               <div className="Taskboard-item-links">
                                                 <Tooltip placement="bottom" title="View in GitHub">
-                                                  <a href={ item.html_url } target="blank"><Icon type="github" /></a>
+                                                  <a href={ item.html_url } target="blank">
+                                                    <Icon type="github" />
+                                                  </a>
                                                 </Tooltip>
                                               </div>
                                             </div>
@@ -566,4 +590,20 @@ function hasModifier(event) {
 
 function fetchJSON(url, options) {
   return fetch(url, options).then(r => r.text()).then(t => JSON.parse(t));
+}
+
+function isLight(color) {
+  color = +("0x" + color.slice(1).replace(color.length < 5 && /./g, '$&$&'));
+
+  const r = color >> 16,
+        g = color >> 8 & 255,
+        b = color & 255;
+
+  const hsp = Math.sqrt(
+    0.299 * (r * r) +
+    0.587 * (g * g) +
+    0.114 * (b * b)
+  );
+
+  return hsp > 127.5;
 }

@@ -86,7 +86,7 @@ module.exports = (
     options: {
       modifyVars: {
         'primary-color': '#37ACC8',
-        'border-radius-base': '6px'
+        'border-radius-base': '2px'
       },
       ...options.less[constantEnv]
     }
