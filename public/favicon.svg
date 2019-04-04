@@ -1,1 +1,63 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80"><path d="M12 0h56c6.65 0 12 5.35 12 12v56c0 6.65-5.35 12-12 12H12C5.35 80 0 74.65 0 68V12C0 5.35 5.35 0 12 0z" fill="#37abc8"/><path d="M12.73 7.91h21.04a4.4 4.4 0 0 1 4.4 4.42v6.3a4.4 4.4 0 0 1-4.4 4.42H12.73a4.4 4.4 0 0 1-4.41-4.41v-6.31a4.4 4.4 0 0 1 4.4-4.42zM12.73 27.78h21.04a4.4 4.4 0 0 1 4.4 4.42v6.3a4.4 4.4 0 0 1-4.4 4.42H12.73a4.4 4.4 0 0 1-4.41-4.41V32.2a4.4 4.4 0 0 1 4.4-4.42zM41.98 52.1h21.04a4.4 4.4 0 0 1 4.41 4.4v6.32a4.4 4.4 0 0 1-4.41 4.41H41.98a4.4 4.4 0 0 1-4.41-4.41v-6.31a4.4 4.4 0 0 1 4.41-4.41z" fill="#fff"/></svg>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   viewBox="0 0 80 80"
+   version="1.1"
+   id="svg819"
+   sodipodi:docname="favicon.svg"
+   inkscape:version="0.92.4 5da689c313, 2019-01-14"
+   inkscape:export-filename="/home/nikku/camunda/projects/bpmn-io/.other/wuffle/public/favicon.png"
+   inkscape:export-xdpi="153.60001"
+   inkscape:export-ydpi="153.60001">
+  <metadata
+     id="metadata825">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs823" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="2552"
+     inkscape:window-height="1379"
+     id="namedview821"
+     showgrid="false"
+     inkscape:zoom="14.2625"
+     inkscape:cx="40"
+     inkscape:cy="40"
+     inkscape:window-x="0"
+     inkscape:window-y="57"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg819" />
+  <path
+     d="M12 0h56c6.65 0 12 5.35 12 12v56c0 6.65-5.35 12-12 12H12C5.35 80 0 74.65 0 68V12C0 5.35 5.35 0 12 0z"
+     fill="#37abc8"
+     id="path815"
+     style="fill:#37abc8;fill-opacity:1" />
+  <path
+     d="m 15.290911,10.470911 h 21.04 c 2.437885,-2.5e-5 4.411081,1.98214 4.4,4.42 v 6.3 c 0.01108,2.43786 -1.962115,4.420025 -4.4,4.42 h -21.04 c -2.43787,0.0055 -4.415547,-1.97213 -4.41,-4.41 v -6.31 c -0.01108,-2.43786 1.962115,-4.420025 4.4,-4.42 z m 0,19.87 h 21.04 c 2.437885,-2.5e-5 4.411081,1.98214 4.4,4.42 v 6.3 c 0.01108,2.43786 -1.962115,4.420025 -4.4,4.42 h -21.04 c -2.43787,0.0055 -4.415547,-1.97213 -4.41,-4.41 v -6.31 c -0.01108,-2.43786 1.962115,-4.420025 4.4,-4.42 z M 41.98,52.1 h 21.04 c 2.433957,-0.0055 4.410006,1.966036 4.41,4.4 v 6.32 c 0.0055,2.43787 -1.97213,4.415547 -4.41,4.41 H 41.98 c -2.43787,0.0055 -4.415547,-1.97213 -4.41,-4.41 v -6.31 c -0.0055,-2.43787 1.97213,-4.415547 4.41,-4.41 z"
+     id="path817"
+     inkscape:connector-curvature="0"
+     style="fill:#ffffff"
+     sodipodi:nodetypes="cccccccccccccccccccccccccccsc" />
+</svg>
