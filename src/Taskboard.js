@@ -1,12 +1,14 @@
 import React from 'react';
 
 import {
+  Avatar,
   Button,
   Icon,
   Input,
   Tag,
   Drawer,
-  Select
+  Select,
+  Tooltip
 } from 'antd';
 
 import {
@@ -252,12 +254,12 @@ class Taskboard extends React.Component {
                         <a className="Taskboard-column-collapse" href="#" onClick={ this.toggleCollapsed(column) }>
                           {
                             collapsed
-                              ? <Icon type="left-square" />
-                              : <Icon type="left-square" />
+                              ? <Icon type="arrows-alt" rotate="45" />
+                              : <Icon type="shrink" rotate="45" />
                           }
                         </a>
 
-                        {column.name} <span className="Taskboard-column-issue-count">{column.count}</span>
+                        {column.name} <span className="Taskboard-column-issue-count">{(items[column.name] || []).length}</span>
                       </div>
 
                       {
@@ -271,6 +273,10 @@ class Taskboard extends React.Component {
                             >
                               {
                                 (items[column.name] || []).map((item, index) => {
+                                  console.log(item);
+
+                                  const repository = item.repository_url.match(/[^\/]+\/[^\/]+$/)[0];
+
                                   return (
                                     <Draggable
                                       key={item.id}
@@ -308,16 +314,20 @@ class Taskboard extends React.Component {
                                                   e.preventDefault();
                                                 } }
                                               >{ item.number }</a>
-                                              <span className="Taskboard-item-repository">{ item.repository }</span>
+                                              <span className="Taskboard-item-repository">{ repository }</span>
                                               <span className="spacer"></span>
-                                              <a className="Taskboard-item-assignee"><Icon type="user" /></a>
+                                              <Tooltip placement="top" title={ `${ item.user.login } Assigned` }>
+                                                <a className="Taskboard-item-assignee">
+                                                  <Avatar src={ item.user.avatar_url } size={ 20 } shape="square" />
+                                                </a>
+                                              </Tooltip>
                                             </div>
 
                                             <div className="Taskboard-item-title">
-                                              <Input.TextArea autosize defaultValue={item.name} onChange={ console.log }/>
+                                              <Input.TextArea autosize defaultValue={item.title} onChange={ console.log }/>
                                             </div>
 
-                                            <div className="Taskboard-item-labels">
+                                            <div className="Taskboard-item-footer">
                                               {
                                                 (item.labels || []).map((label) => {
 
@@ -326,11 +336,18 @@ class Taskboard extends React.Component {
                                                     color
                                                   } = label;
 
+                                                  console.log(name, color)
+
                                                   return (
-                                                    <Tag className="Taskboard-item-label" key={ name } color={ color }>{ name }</Tag>
+                                                    <Tag className="Taskboard-item-label" key={ name } color={ `#${ color }` }>{ name }</Tag>
                                                   );
                                                 })
                                               }
+                                              <div class="Taskboard-item-links">
+                                                <Tooltip placement="bottom" title="View in GitHub">
+                                                  <a href={ item.html_url } target="blank"><Icon type="github" /></a>
+                                                </Tooltip>
+                                              </div>
                                             </div>
                                           </div>
                                         </div>
