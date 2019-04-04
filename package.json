@@ -4,7 +4,8 @@
   "license": "MIT",
   "scripts": {
     "lint": "eslint src",
-    "start": "PORT=3001 razzle start",
+    "start": "npm run dev",
+    "dev": "razzle start",
     "build": "razzle build",
     "test": "razzle test --env=jsdom",
     "start:prod": "NODE_ENV=production node build/server.js"
