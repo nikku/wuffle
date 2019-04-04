@@ -66,7 +66,9 @@ class Taskboard extends React.Component {
     loading: true,
     columns: [],
     items: {},
-    collapsed: {}
+    issues: {},
+    collapsed: {},
+    cursor: null
   };
 
   getList = id => this.state.items[id] || [];
@@ -74,8 +76,8 @@ class Taskboard extends React.Component {
   async componentDidMount() {
 
     const loadingPromise = Promise.all([
-      fetch('http://localhost:3000/wuffle/columns').then(r => r.text()).then(t => JSON.parse(t)),
-      fetch('http://localhost:3000/wuffle/board').then(r => r.text()).then(t => JSON.parse(t))
+      fetchJSON('http://localhost:3000/wuffle/columns'),
+      fetchJSON('http://localhost:3000/wuffle/board')
     ]);
 
     const [
@@ -83,17 +85,100 @@ class Taskboard extends React.Component {
       board
     ] = await loadingPromise;
 
-    console.log({
-      columns,
-      board
-    });
+    const {
+      items,
+      cursor
+    } = board;
 
     this.setState({
       loading: false,
       columns,
-      items: board
+      items,
+      issues: Object.values(items).reduce((issues, columnIssues) => {
+
+        columnIssues.forEach(function(issue) {
+          issues[issue.id] = issue;
+        });
+
+        return issues;
+      }, {}),
+      cursor
     });
+
+    setInterval(this.pollIssues, 3000);
   }
+
+  pollIssues = async () => {
+
+    let {
+      cursor,
+      issues,
+      items
+    } = this.state;
+
+    const updates = await fetchJSON(`http://localhost:3000/wuffle/updates?cursor=${cursor}`);
+
+    if (!updates.length) {
+      return;
+    }
+
+    const head = updates[updates.length - 1];
+
+    if (head) {
+      cursor = head.id;
+    }
+
+    updates.forEach((update) => {
+      const { type, issue } = update;
+
+      const {
+        id,
+        column
+      } = issue;
+
+      const existingIssue = issues[id];
+
+      // remove from existing column
+      if (existingIssue && (existingIssue.column !== column || type === 'remove')) {
+        items = {
+          ...items,
+          [existingIssue.column]: items[existingIssue.column].filter(issue => issue.id !== id)
+        };
+      }
+
+      // add to new column
+      if (type !== 'remove' && (!existingIssue || existingIssue.column !== column)) {
+        items = {
+          ...items,
+          [column]: [
+            ...(items[issue.column] || []),
+            issue
+          ]
+        };
+      }
+
+      if (type === 'remove') {
+        const {
+          [id]: removedIssue,
+          ...remainingIssues
+        } = issues;
+
+        issues = remainingIssues;
+      } else {
+        issues = {
+          ...issues,
+          [id]: issue
+        };
+      }
+    });
+
+    this.setState({
+      cursor,
+      issues,
+      items
+    });
+
+  };
 
   openCreateNew = () => {
     this.setState({
@@ -464,4 +549,9 @@ function IssueUpdateDrawer(props) {
 
 function hasModifier(event) {
   return event.metaKey || event.altKey || event.ctrlKey || event.shiftKey;
+}
+
+
+function fetchJSON(url, options) {
+  return fetch(url, options).then(r => r.text()).then(t => JSON.parse(t));
 }
