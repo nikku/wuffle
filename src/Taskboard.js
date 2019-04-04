@@ -329,19 +329,18 @@ class Taskboard extends React.Component {
           onClose={ this.closeIssueUpdateDrawer }
         />
 
-        {
-          banner && (
-            <div className="Banner">
-              Wuffle is <span className="Banner-highlight">opening its doors</span> in a month.
-              <Button className="Banner-button" size="large" shape="round" onClick={this.hideBanner}>
-                Got it!
-              </Button>
-            </div>
-          )
-        }
-
         <DragDropContext onDragEnd={this.onDragEnd}>
           <div className={ classNames('Taskboard', { 'banner': banner }) }>
+            {
+              banner && (
+                <div className="Banner">
+                  Wuffle is <span className="Banner-highlight">opening its doors</span> in a month.
+                  <Button className="Banner-button" shape="round" onClick={this.hideBanner}>
+                    Got it!
+                  </Button>
+                </div>
+              )
+            }
             <div className="Taskboard-header">
               <div className="Taskboard-header-title">
                 <Button.Group>
@@ -407,7 +406,7 @@ class Taskboard extends React.Component {
 
                                   // TODO(nikku): normalize upfront
                                   const repository = item.type !== 'pull-request'
-                                    ? item.repository.full_name
+                                    ? item.repository_url.replace('https://api.github.com/repos/', '')
                                     : item.base.repo.full_name;
 
                                   const milestone = item.milestone ? item.milestone.title : null;
