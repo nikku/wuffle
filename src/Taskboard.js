@@ -133,25 +133,37 @@ class Taskboard extends React.Component {
 
       const {
         id,
-        column
+        column: newColumn
       } = issue;
 
       const existingIssue = issues[id];
 
+      // update in existing column
+
+      const oldColumn = existingIssue && existingIssue.column;
+
       // remove from existing column
-      if (existingIssue && (existingIssue.column !== column || type === 'remove')) {
+      if (oldColumn && (oldColumn !== newColumn || type === 'remove')) {
         items = {
           ...items,
-          [existingIssue.column]: items[existingIssue.column].filter(issue => issue.id !== id)
+          [oldColumn]: items[oldColumn].filter(existingIssue => existingIssue.id !== id)
+        };
+      }
+
+      // update in existing column
+      if (oldColumn && (oldColumn === newColumn && type !== 'remove')) {
+        items = {
+          ...items,
+          [oldColumn]: items[oldColumn].map(existingIssue => existingIssue.id === id ? issue : existingIssue)
         };
       }
 
       // add to new column
-      if (type !== 'remove' && (!existingIssue || existingIssue.column !== column)) {
+      if (oldColumn !== newColumn && type !== 'remove') {
         items = {
           ...items,
-          [column]: [
-            ...(items[issue.column] || []),
+          [newColumn]: [
+            ...(items[newColumn] || []),
             issue
           ]
         };
@@ -409,7 +421,7 @@ class Taskboard extends React.Component {
                                             </div>
 
                                             <div className="Taskboard-item-title">
-                                              <Input.TextArea autosize defaultValue={item.title} onChange={ console.log }/>
+                                              <Input.TextArea autosize value={item.title} onChange={ console.log }/>
                                             </div>
 
                                             <div className="Taskboard-item-footer">
@@ -428,7 +440,7 @@ class Taskboard extends React.Component {
                                                   );
                                                 })
                                               }
-                                              <div class="Taskboard-item-links">
+                                              <div className="Taskboard-item-links">
                                                 <Tooltip placement="bottom" title="View in GitHub">
                                                   <a href={ item.html_url } target="blank"><Icon type="github" /></a>
                                                 </Tooltip>
