@@ -24,7 +24,10 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 import classNames from 'classnames';
 
-import './Taskboard.less';
+import css from './Taskboard.less';
+
+import loaderImg from './loader.png';
+import errorImg from './error.png';
 
 
 // a little function to help us with reordering the result
@@ -81,32 +84,39 @@ class Taskboard extends React.Component {
       fetchJSON('http://localhost:3000/wuffle/board')
     ]);
 
-    const [
-      columns,
-      board
-    ] = await loadingPromise;
+    try {
+      const [
+        columns,
+        board
+      ] = await loadingPromise;
 
-    const {
-      items,
-      cursor
-    } = board;
+      const {
+        items,
+        cursor
+      } = board;
 
-    this.setState({
-      loading: false,
-      columns,
-      items,
-      issues: Object.values(items).reduce((issues, columnIssues) => {
+      this.setState({
+        loading: false,
+        columns,
+        items,
+        issues: Object.values(items).reduce((issues, columnIssues) => {
 
-        columnIssues.forEach(function(issue) {
-          issues[issue.id] = issue;
-        });
+          columnIssues.forEach(function(issue) {
+            issues[issue.id] = issue;
+          });
 
-        return issues;
-      }, {}),
-      cursor
-    });
+          return issues;
+        }, {}),
+        cursor
+      });
 
-    setInterval(this.pollIssues, 3000);
+      setInterval(this.pollIssues, 3000);
+    } catch (err) {
+      this.setState({
+        loading: false,
+        error: 'Ooops, failed to load board.'
+      });
+    }
   }
 
   pollIssues = async () => {
@@ -298,17 +308,14 @@ class Taskboard extends React.Component {
       banner,
       items,
       columns,
-      loading
+      loading,
+      error
     } = this.state;
 
 
     return (
 
       <React.Fragment>
-
-        <Loader shown={ loading }>
-          <img src="/favicon.png" alt="Loading" />
-        </Loader>
 
         <IssueCreateDrawer
           visible={ this.state.createNew }
@@ -326,7 +333,7 @@ class Taskboard extends React.Component {
           banner && (
             <div className="Banner">
               Wuffle is <span className="Banner-highlight">opening its doors</span> in a month.
-              <Button className="Banner-button" onClick={this.hideBanner}>
+              <Button className="Banner-button" size="large" shape="round" onClick={this.hideBanner}>
                 Got it!
               </Button>
             </div>
@@ -356,6 +363,13 @@ class Taskboard extends React.Component {
               </div>
             </div>
             <div className="Taskboard-board">
+
+              { error && <Error message={ error } />}
+
+              <Loader shown={ loading }>
+                <img src={ loaderImg } width="64" alt="Loading" />
+              </Loader>
+
               {
                 columns.map((column) => {
 
@@ -438,7 +452,7 @@ class Taskboard extends React.Component {
                                               <span className="Taskboard-item-repository">{ repository }</span>
                                               <span className="spacer"></span>
                                               <Tooltip placement="top" title={ `${ item.user.login } Assigned` }>
-                                                <a className="Taskboard-item-assignee">
+                                                <a className="Taskboard-item-assignee" href="#">
                                                   <Avatar src={ item.user.avatar_url } size={ 20 } shape="square" />
                                                 </a>
                                               </Tooltip>
@@ -564,7 +578,7 @@ function IssueUpdateDrawer(props) {
       alignItems: 'center',
       justifyContent: 'space-between'
     }}>
-      <span>Issue <a><strong>1231</strong></a></span>
+      <span>Issue <a href="#"><strong>1231</strong></a></span>
 
       <span style={{ color: '#888' }}>bpmn-io/bpmn-js</span>
     </div>
@@ -599,7 +613,7 @@ function isLight(color) {
   color = +("0x" + color.slice(1).replace(color.length < 5 && /./g, '$&$&'));
 
   const r = color >> 16,
-        g = color >> 8 & 255,
+        g = (color >> 8) & 255,
         b = color & 255;
 
   const hsp = Math.sqrt(
@@ -609,4 +623,14 @@ function isLight(color) {
   );
 
   return hsp > 127.5;
+}
+
+function Error(props) {
+
+  return (
+    <div className={ css.TaskboardError }>
+      <img src={ errorImg } width="64" alt="Error" />
+      <h2>{ props.message }</h2>
+    </div>
+  );
 }
