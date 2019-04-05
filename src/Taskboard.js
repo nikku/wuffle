@@ -185,12 +185,11 @@ class Taskboard extends React.Component {
 
       // add to new column
       if (oldColumn !== newColumn && type !== 'remove') {
+        const updatedColumn = insertIssue(issue, items[newColumn]);
+
         items = {
           ...items,
-          [newColumn]: [
-            ...(items[newColumn] || []),
-            issue
-          ]
+          [newColumn]: updatedColumn
         };
       }
 
@@ -258,10 +257,6 @@ class Taskboard extends React.Component {
     }
 
     if (source.droppableId === destination.droppableId) {
-      if (source.index === destination.index) {
-        return;
-      }
-
       const items = reorder(
         this.getList(source.droppableId),
         source.index,
@@ -707,3 +702,25 @@ function findNeighbors(id, column) {
 
   return result;
 }
+
+function insertIssue(issue, column = []) {
+  const { after } = issue;
+
+  if (after === null) {
+    return [ issue, ...column ];
+  }
+
+  if (after) {
+    const indexAfter = column.findIndex(issue => issue.id === after);
+
+    if (indexAfter > -1) {
+      return [
+        ...column.slice(0, indexAfter),
+        issue,
+        ...column.slice(indexAfter)
+      ];
+    }
+  }
+
+  return [ ...column, issue ];
+};
