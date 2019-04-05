@@ -241,6 +241,10 @@ class Taskboard extends React.Component {
     }
 
     if (source.droppableId === destination.droppableId) {
+      if (source.index === destination.index) {
+        return;
+      }
+
       const items = reorder(
         this.getList(source.droppableId),
         source.index,
