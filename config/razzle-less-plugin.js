@@ -1,5 +1,3 @@
-'use strict';
-
 const autoprefixer = require('autoprefixer');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const PostCssFlexBugFixes = require('postcss-flexbugs-fixes');
@@ -86,7 +84,7 @@ module.exports = (
     options: {
       modifyVars: {
         'primary-color': '#37ACC8',
-        'border-radius-base': '2px'
+        'border-radius-base': '3px'
       },
       ...options.less[constantEnv]
     }
