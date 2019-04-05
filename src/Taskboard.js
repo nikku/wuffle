@@ -266,9 +266,9 @@ class Taskboard extends React.Component {
 
       const neighbors = findNeighbors(result.draggableId, items);
 
-      this.moveIssue(result.draggableId, neighbors);
+      this.moveIssue(result.draggableId, destination.droppableId, neighbors);
     } else {
-      const result = move(
+      const newItems = move(
         this.getList(source.droppableId),
         this.getList(destination.droppableId),
         source,
@@ -278,20 +278,25 @@ class Taskboard extends React.Component {
       this.setState({
         items: {
           ...oldItems,
-          ...result
+          ...newItems
         }
       });
+
+      const neighbors = findNeighbors(result.draggableId, newItems[destination.droppableId]);
+
+      this.moveIssue(result.draggableId, destination.droppableId, neighbors);
     }
   };
 
-  async moveIssue(id, {
+  async moveIssue(id, column, {
     before = null,
     after = null
   }) {
     const body = {
       id,
       before,
-      after
+      after,
+      column
     };
 
     try {
@@ -582,8 +587,8 @@ function findNeighbors(id, column) {
 
   const index = column.findIndex(item => item.id === id);
 
-  result.before = index > 0 ? column[index - 1].id : null;
-  result.after = index < column.length - 1 ? column[index + 1].id : null;
+  result.after = index > 0 ? column[index - 1].id : null;
+  result.before = index < column.length - 1 ? column[index + 1].id : null;
 
   return result;
 }
