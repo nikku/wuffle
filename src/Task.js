@@ -44,7 +44,7 @@ export function Task({ item, provided, snapshot }) {
             getIssueTypeIcon(item)
           }
           <a
-            href={ `https://github.com/${item.repository}/issues/${item.number}` }
+            href={ `https://github.com/${repository}/issues/${item.number}` }
             className="Taskboard-item-issue-number"
             onClick={ (e) => {
 
