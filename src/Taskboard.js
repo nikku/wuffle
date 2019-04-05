@@ -21,6 +21,10 @@ import {
   Task
 } from './Task';
 
+import {
+  Filter
+} from './Filter';
+
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 import classNames from 'classnames';
@@ -29,7 +33,6 @@ import css from './Taskboard.less';
 
 import loaderImg from './loader.png';
 import errorImg from './error.png';
-
 
 // a little function to help us with reordering the result
 const reorder = (list, startIndex, endIndex) => {
@@ -69,7 +72,15 @@ class Taskboard extends React.Component {
     items: {},
     issues: {},
     collapsed: {},
-    cursor: null
+    cursor: null,
+    filteredIssues: [],
+    issuesFilter: {
+      filterString: '',
+      assignees: [],
+      labels: [],
+      milestones: [],
+      pullrequestsIssues: 'both'
+    }
   };
 
   getList = id => this.state.items[id] || [];
@@ -353,14 +364,113 @@ class Taskboard extends React.Component {
     return null;
   }
 
+  onFilterChange = (newIssuesFilter = {}) => {
+    const { issuesFilter } = this.state;
+
+    const state = {
+      ...this.state,
+      issuesFilter: {
+        ...issuesFilter,
+        ...newIssuesFilter
+      }
+    };
+
+    const filteredIssues = this.filterIssues(state);
+
+    this.setState({
+      ...state,
+      filteredIssues
+    });
+  }
+
+  filterIssues = (state) => {
+    const {
+      issues,
+      issuesFilter
+    } = state;
+
+    const {
+      assignees,
+      filterString,
+      labels,
+      milestones,
+      pullrequestsIssues
+    } = issuesFilter;
+
+    return Object.values(issues).reduce((filteredIssues, issue) => {
+      let filtered = false;
+
+      // filter string
+      filtered = [
+        issue.title,
+        issue.user.login
+      ].reduce((filtered, property) => {
+        return filtered && !property.includes(filterString.toLowerCase());
+      }, true);
+
+      // assignees
+      if (assignees.length) {
+        if (!issue.assignees.length) {
+          filtered = true;
+        }
+
+        const assigneeLogins = issue.assignees.map(({ login }) => login);
+
+        filtered = assignees.reduce((filtered, assignee) => {
+          return filtered && !assigneeLogins.includes(assignee);
+        }, true);
+      }
+
+      // labels
+      if (labels.length) {
+        if (!issue.labels.length) {
+          filtered = true;
+        }
+
+        const labelNames = issue.labels.map(({ name }) => name);
+
+        filtered = labels.reduce((filtered, label) => {
+          return filtered && !labelNames.includes(label);
+        }, true);
+      }
+
+      // milestones
+      if (milestones.length && (!issue.milestone || !milestones.includes(issue.milestone.title))) {
+          filtered = true;
+      }
+
+      // pullrequests
+      if (pullrequestsIssues === 'issues' && issue.type === 'pull-request') {
+        filtered = true;
+      }
+
+      // issues
+      if (pullrequestsIssues === 'pullrequests' && issue.type === 'issue') {
+        filtered = true;
+      }
+
+      if (filtered) {
+        return [
+          ...filteredIssues,
+          issue.id
+        ];
+      }
+
+      return filteredIssues;
+    }, []);
+  }
+
   render() {
 
     const {
       banner,
+      issues,
+      issuesFilter,
       items,
       columns,
       loading,
-      error
+      error,
+      filteredIssues
     } = this.state;
 
 
@@ -407,8 +517,8 @@ class Taskboard extends React.Component {
               <div className="Taskboard-header-spacer"></div>
               <div className="Taskboard-header-filter">
                 <Input.Group compact>
-                  <Input placeholder="Filter Board" style={{ width: 200 }} />
-                  <Button icon="filter" type="primary"></Button>
+                  <Input allowClear onChange={(e) => this.onFilterChange({ filterString: e.target.value })} placeholder="Filter Board" style={{ width: 200 }} />
+                  <Filter onFilterChange={ this.onFilterChange } issues={ issues } issuesFilter={ issuesFilter } />
                 </Input.Group>
               </div>
             </div>
@@ -453,6 +563,11 @@ class Taskboard extends React.Component {
                             >
                               {
                                 (items[column.name] || []).map((item, index) => {
+
+                                  if (filteredIssues.includes(item.id)) {
+                                    return null;
+                                  }
+
                                   return (
                                     <Draggable
                                       key={item.id}

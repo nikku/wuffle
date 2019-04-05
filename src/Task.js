@@ -61,7 +61,11 @@ export function Task({ item, provided, snapshot }) {
           <span className="spacer"></span>
           <Tooltip placement="top" title={ `${ item.user.login } Assigned` }>
             <a className="Taskboard-item-assignee" href="#">
-              <Avatar src={ item.user.avatar_url } size={ 20 } shape="square" />
+              {
+                item.assignee
+                  ? <Avatar src={ item.assignee.avatar_url } size={ 20 } shape="square" />
+                  : <Icon type="user" />
+              }
             </a>
           </Tooltip>
         </div>
