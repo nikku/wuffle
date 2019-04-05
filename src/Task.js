@@ -15,9 +15,11 @@ export function Task({ item, provided, snapshot }) {
   // TODO(nikku): normalize upfront
   const isPullRequest = item.type === 'pull-request';
 
-  const repository = isPullRequest
-    ? item.base.repo.full_name
-    : item.repository_url.replace('https://api.github.com/repos/', '');
+  // TODO(nikku): normalize upfront
+
+  const repository = item.repository_url ?
+    item.repository_url.replace('https://api.github.com/repos/', '') :
+    item.base.repo.full_name;
 
   const milestone = item.milestone ? item.milestone.title : null;
 
