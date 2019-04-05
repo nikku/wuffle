@@ -59,15 +59,17 @@ export function Task({ item, provided, snapshot }) {
           >{ item.number }</a>
           <span className="Taskboard-item-repository">{ repository }</span>
           <span className="spacer"></span>
-          <Tooltip placement="top" title={ `${ item.user.login } Assigned` }>
-            <a className="Taskboard-item-assignee" href="#">
-              {
-                item.assignee
-                  ? <Avatar src={ item.assignee.avatar_url } size={ 20 } shape="square" />
-                  : <Icon type="user" />
-              }
-            </a>
-          </Tooltip>
+          {
+            item.assignee
+              ? (
+                <Tooltip placement="top" title={ `${ item.assignee.login } Assigned` }>
+                  <a className="Taskboard-item-assignee" href="#">
+                    <Avatar src={ item.assignee.avatar_url } size={ 20 } shape="square" />
+                  </a>
+                </Tooltip>
+              )
+              : <Icon type="user" />
+          }
         </div>
 
         <div className="Taskboard-item-title">
