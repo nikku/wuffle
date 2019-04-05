@@ -302,6 +302,16 @@ class Taskboard extends React.Component {
     });
   }
 
+  getIssueTypeIcon = (item) => {
+    const isPullRequest = item.type === 'pull-request';
+
+    if (isPullRequest) {
+      return <Icon className="Taskboard-item-issue-type Taskboard-item-issue-type-pull-request" type="branches" rotate="180" />;
+    }
+
+    return null;
+  }
+
   render() {
 
     const {
@@ -402,12 +412,14 @@ class Taskboard extends React.Component {
                             >
                               {
                                 (items[column.name] || []).map((item, index) => {
-                                  // console.log(item);
+                                  console.log(item);
 
                                   // TODO(nikku): normalize upfront
-                                  const repository = item.type !== 'pull-request'
-                                    ? item.repository_url.replace('https://api.github.com/repos/', '')
-                                    : item.base.repo.full_name;
+                                  const isPullRequest = item.type === 'pull-request';
+
+                                  const repository = isPullRequest
+                                    ? item.base.repo.full_name
+                                    : item.repository_url.replace('https://api.github.com/repos/', '');
 
                                   const milestone = item.milestone ? item.milestone.title : null;
 
@@ -434,6 +446,9 @@ class Taskboard extends React.Component {
                                           >
 
                                             <div className="Taskboard-item-header">
+                                              {
+                                                this.getIssueTypeIcon(item)
+                                              }
                                               <a
                                                 href={ `https://github.com/${item.repository}/issues/${item.number}` }
                                                 className="Taskboard-item-issue-number"
