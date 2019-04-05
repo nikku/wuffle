@@ -257,6 +257,10 @@ class Taskboard extends React.Component {
           [source.droppableId]: items
         }
       });
+
+      const neighbors = findNeighbors(result.draggableId, items);
+
+      this.moveIssue(result.draggableId, neighbors);
     } else {
       const result = move(
         this.getList(source.droppableId),
@@ -273,6 +277,31 @@ class Taskboard extends React.Component {
       });
     }
   };
+
+  async moveIssue(id, {
+    before = null,
+    after = null
+  }) {
+    const body = {
+      id,
+      before,
+      after
+    };
+
+    try {
+      await fetch('http://localhost:3000/wuffle/issues/move', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        mode: 'no-cors',
+        body: JSON.stringify(body)
+      });
+    } catch (error) {
+      console.error('Failed to move issue %d: %o', id, error);
+    }
+  }
 
   isColumnCollapsed(column) {
     const { collapsed } = this.state;
@@ -540,4 +569,15 @@ function Error(props) {
       <h2>{ props.message }</h2>
     </div>
   );
+}
+
+function findNeighbors(id, column) {
+  const result = {};
+
+  const index = column.findIndex(item => item.id === id);
+
+  result.before = index > 0 ? column[index - 1].id : null;
+  result.after = index < column.length - 1 ? column[index + 1].id : null;
+
+  return result;
 }
