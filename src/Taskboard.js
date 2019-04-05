@@ -93,7 +93,6 @@ class Taskboard extends React.Component {
       } = board;
 
       this.setState({
-        loading: false,
         columns,
         items,
         issues: Object.values(items).reduce((issues, columnIssues) => {
@@ -106,6 +105,13 @@ class Taskboard extends React.Component {
         }, {}),
         cursor
       });
+
+      // loading would otherwise happen too quick *GG*
+      setTimeout(() => {
+        this.setState({
+          loading: false
+        });
+      }, 300);
 
       setInterval(this.pollIssues, 3000);
     } catch (err) {
