@@ -12,8 +12,18 @@ import Octicon, {GitPullRequest} from '@githubprimer/octicons-react'
 
 import classNames from 'classnames';
 
+import css from './Card.less';
 
-export function Task({ item, provided, snapshot }) {
+
+export default function Task(props) {
+
+  const {
+    item,
+    provided,
+    snapshot
+  } = props;
+
+
   // TODO(nikku): normalize upfront
 
   const repository = item.repository_url ?
@@ -23,7 +33,7 @@ export function Task({ item, provided, snapshot }) {
   const milestone = item.milestone ? item.milestone.title : null;
 
   return (
-    <div className="Taskboard-item"
+    <div className={ css.Card }
       ref={provided.innerRef}
       {...provided.draggableProps}
       {...provided.dragHandleProps}
@@ -32,19 +42,19 @@ export function Task({ item, provided, snapshot }) {
       }
     >
       <div
-        className="Taskboard-item-card"
+        className="card"
         style={getItemStyle(
           snapshot.isDragging
         )}
       >
 
-        <div className="Taskboard-item-header">
+        <div className="header">
           {
             getIssueTypeIcon(item)
           }
           <a
             href={ `https://github.com/${repository}/issues/${item.number}` }
-            className="Taskboard-item-issue-number"
+            className="issue-number"
             onClick={ (e) => {
 
               if (hasModifier(e)) {
@@ -56,13 +66,13 @@ export function Task({ item, provided, snapshot }) {
               e.preventDefault();
             } }
           >{ item.number }</a>
-          <span className="Taskboard-item-repository">{ repository }</span>
+          <span className="repository">{ repository }</span>
           <span className="spacer"></span>
           {
             item.assignee
               ? (
                 <Tooltip placement="top" title={ `${ item.assignee.login } Assigned` }>
-                  <a className="Taskboard-item-assignee" href="#">
+                  <a className="assignee" href="#">
                     <Avatar src={ item.assignee.avatar_url } size={ 20 } shape="square" />
                   </a>
                 </Tooltip>
@@ -71,13 +81,13 @@ export function Task({ item, provided, snapshot }) {
           }
         </div>
 
-        <div className="Taskboard-item-title">
+        <div className="title">
           <Input.TextArea autosize value={item.title} onChange={ console.log }/>
         </div>
 
-        <div className="Taskboard-item-footer">
+        <div className="footer">
           {
-            milestone && <Tag className="Taskboard-item-label" key="milestone">{ milestone }</Tag>
+            milestone && <Tag className="label" key="milestone">{ milestone }</Tag>
           }
           {
             (item.labels || []).map((label) => {
@@ -88,11 +98,11 @@ export function Task({ item, provided, snapshot }) {
               } = label;
 
               return (
-                <Tag className={classNames('Taskboard-item-label', { 'inverted': isLight(`#${ color }`) })} key={ name } color={ `#${ color }` }>{ name }</Tag>
+                <Tag className={classNames('label', { 'inverted': isLight(`#${ color }`) })} key={ name } color={ `#${ color }` }>{ name }</Tag>
               );
             })
           }
-          <div className="Taskboard-item-links">
+          <div className="links">
             <Tooltip placement="bottom" title="View in GitHub">
               <a href={ item.html_url } target="blank">
                 <Icon type="github" />
@@ -109,7 +119,7 @@ function getIssueTypeIcon(item) {
   const isPullRequest = item.type === 'pull-request';
 
   if (isPullRequest) {
-    return <Icon className="Taskboard-item-issue-type Taskboard-item-issue-type-pull-request" component={
+    return <Icon className="issue-type issue-type-pull-request" component={
       () => { return <Octicon icon={ GitPullRequest } /> }
     } />;
   }

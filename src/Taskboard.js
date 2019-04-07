@@ -17,9 +17,7 @@ import {
   IssueUpdateForm
 } from './forms';
 
-import {
-  Task
-} from './Task';
+import Card from './Card';
 
 import {
   Filter
@@ -349,16 +347,6 @@ class Taskboard extends React.Component {
     });
   }
 
-  getIssueTypeIcon = (item) => {
-    const isPullRequest = item.type === 'pull-request';
-
-    if (isPullRequest) {
-      return <Icon className="Taskboard-item-issue-type Taskboard-item-issue-type-pull-request" type="branches" rotate="180" />;
-    }
-
-    return null;
-  }
-
   onFilterChange = (newIssuesFilter = {}) => {
     const { issuesFilter } = this.state;
 
@@ -569,7 +557,7 @@ class Taskboard extends React.Component {
                                       draggableId={item.id}
                                       index={index}
                                     >
-                                      {(provided, snapshot) => <Task { ...{ item, provided, snapshot } } />}
+                                      {(provided, snapshot) => <Card { ...{ item, provided, snapshot } } />}
                                     </Draggable>
                                   );
                                 })
