@@ -8,13 +8,12 @@ import {
   Tooltip
 } from 'antd';
 
+import Octicon, {GitPullRequest} from '@githubprimer/octicons-react'
+
 import classNames from 'classnames';
 
 
 export function Task({ item, provided, snapshot }) {
-  // TODO(nikku): normalize upfront
-  const isPullRequest = item.type === 'pull-request';
-
   // TODO(nikku): normalize upfront
 
   const repository = item.repository_url ?
@@ -110,11 +109,14 @@ function getIssueTypeIcon(item) {
   const isPullRequest = item.type === 'pull-request';
 
   if (isPullRequest) {
-    return <Icon className="Taskboard-item-issue-type Taskboard-item-issue-type-pull-request" type="branches" rotate="180" />;
+    return <Icon className="Taskboard-item-issue-type Taskboard-item-issue-type-pull-request" component={
+      () => { return <Octicon icon={ GitPullRequest } /> }
+    } />;
   }
 
   return null;
 }
+
 
 function getItemStyle(isDragging) {
   return {

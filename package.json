@@ -11,6 +11,7 @@
     "start:prod": "cross-env PORT=3001 NODE_ENV=production node build/server.js"
   },
   "dependencies": {
+    "@githubprimer/octicons-react": "^8.5.0",
     "antd": "^3.15.1",
     "classnames": "^2.2.6",
     "cross-env": "^5.2.0",
