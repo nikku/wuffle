@@ -230,9 +230,9 @@ class Taskboard extends React.Component {
     console.log(values);
   }
 
-  showIssueUpdateDrawer = (issueId) => {
+  showIssueUpdateDrawer = (issue) => {
     this.setState({
-      showIssue: issueId
+      showIssue: issue.id
     });
   }
 
@@ -557,7 +557,12 @@ class Taskboard extends React.Component {
                                       draggableId={item.id}
                                       index={index}
                                     >
-                                      {(provided, snapshot) => <Card { ...{ item, provided, snapshot } } />}
+                                      { (provided, snapshot) => (
+                                        <Card
+                                          { ...{ item, provided, snapshot } }
+                                          onEdit={ this.showIssueUpdateDrawer }
+                                        />
+                                      ) }
                                     </Draggable>
                                   );
                                 })

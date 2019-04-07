@@ -20,7 +20,10 @@ export default function Task(props) {
   const {
     item,
     provided,
-    snapshot
+    snapshot,
+    onEdit,
+    onNameUpdate,
+    onAssigneeUpdate
   } = props;
 
 
@@ -54,18 +57,23 @@ export default function Task(props) {
           }
           <a
             href={ `https://github.com/${repository}/issues/${item.number}` }
+            target="_blank"
+            rel="noopener noreferrer"
             className="issue-number"
             onClick={ (e) => {
 
-              if (hasModifier(e)) {
-                return;
+              if (typeof onEdit === 'function') {
+
+                if (!hasModifier(e)) {
+                  onEdit(item);
+
+                  e.preventDefault();
+                }
               }
-
-              this.showIssueUpdateDrawer(item.id);
-
-              e.preventDefault();
             } }
-          >{ item.number }</a>
+          >
+            { item.number }
+          </a>
           <span className="repository">{ repository }</span>
           <span className="spacer"></span>
           {
@@ -82,7 +90,13 @@ export default function Task(props) {
         </div>
 
         <div className="title">
-          <Input.TextArea autosize value={item.title} onChange={ console.log }/>
+          <Input.TextArea autosize value={item.title} onChange={ (event) => {
+            const newValue = event.target.value;
+
+            if (typeof onNameUpdate === 'function') {
+              onNameUpdate(item, newValue);
+            }
+          } }/>
         </div>
 
         <div className="footer">
@@ -104,7 +118,11 @@ export default function Task(props) {
           }
           <div className="links">
             <Tooltip placement="bottom" title="View in GitHub">
-              <a href={ item.html_url } target="blank">
+              <a
+                href={ item.html_url }
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <Icon type="github" />
               </a>
             </Tooltip>
