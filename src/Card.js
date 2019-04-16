@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 
 import {
   Avatar,
@@ -8,7 +8,15 @@ import {
   Tooltip
 } from 'antd';
 
-import Octicon, {GitPullRequest} from '@githubprimer/octicons-react'
+import Octicon, {
+  GitPullRequest,
+  IssueOpened,
+  IssueClosed,
+  CircleSlash,
+  Bookmark,
+  PrimitiveDot,
+  Info
+} from '@githubprimer/octicons-react'
 
 import classNames from 'classnames';
 
@@ -19,6 +27,7 @@ export default function Task(props) {
 
   const {
     item,
+    connected,
     provided,
     snapshot,
     onEdit,
@@ -117,7 +126,7 @@ export default function Task(props) {
             })
           }
           <div className="links">
-            <Tooltip placement="bottom" title="View in GitHub">
+            <Tooltip placement="bottom" title="View on GitHub">
               <a
                 href={ item.html_url }
                 target="_blank"
@@ -128,7 +137,19 @@ export default function Task(props) {
             </Tooltip>
           </div>
         </div>
+        {
+          connected && <CardLinks
+            item={ item }
+            connected={ connected }
+          />
+        }
       </div>
+      {
+        connected && <CardImpls
+          item={ item }
+          connected={ connected }
+        />
+      }
     </div>
   );
 }
@@ -170,4 +191,136 @@ function isLight(color) {
   );
 
   return hsp > 127.5;
+}
+
+
+function CardLinks(props) {
+
+  const {
+    item,
+    connected
+  } = props;
+
+  return (
+    <Fragment>
+      {
+        connected.filter(c => c.type !== 'pull-request').map(c => {
+          return (
+            <CardLink
+              key={ `${c.type}-${c.number}` }
+              item={ item }
+              connected={ c }
+              onFilter={ f => console.log('FILTER %s', f) }
+            />
+          );
+        })
+      }
+    </Fragment>
+  )
+}
+
+
+function CardImpls(props) {
+
+  const {
+    item,
+    connected
+  } = props;
+
+  return (
+    <Fragment>
+      {
+        connected.filter(c => c.type === 'pull-request').map(c => {
+          return (
+            <CardImpl
+              key={ `${c.type}-${c.number}` }
+              item={ item }
+              connected={ c }
+              onFilter={ f => console.log('FILTER %s', f) }
+            />
+          );
+        })
+      }
+    </Fragment>
+  )
+}
+
+function linkIcon(type) {
+  if (type === 'required-by') {
+    return IssueOpened;
+  }
+
+  if (type === 'depends-on') {
+    return CircleSlash;
+  }
+
+  if (type === 'part-of') {
+    return Bookmark;
+  }
+
+  if (type === 'parent-of') {
+    return PrimitiveDot;
+  }
+
+  if (type === 'related-to') {
+    return Info;
+  }
+
+  return Info;
+}
+
+function CardLink(props) {
+
+  const {
+    item,
+    connected,
+    onFilter
+  } = props;
+
+  const {
+    type,
+    number
+  } = connected;
+
+  function onClick(e) {
+    e.preventDefault();
+
+    onFilter(type, item.number, number);
+  }
+
+  return (
+    <div className="card-link">
+      <Icon
+        className={ classNames('link-type', `link-${type}`) }
+        component={
+          () => { return <Octicon icon={ linkIcon(type) } verticalAlign="middle" /> }
+        }
+      />{ type } <a onClick={ onClick } href="#">#{number}</a>
+    </div>
+  );
+}
+
+
+function CardImpl(props) {
+
+  const {
+    item,
+    connected,
+    onFilter
+  } = props;
+
+
+  function onClick(e) {
+    e.preventDefault();
+
+    onFilter(connected.type, item.number, connected.number);
+  }
+
+  return (
+    <div className="card-impl">
+      <Icon className="issue-type issue-type-pull-request" component={
+        () => { return <Octicon icon={ GitPullRequest } /> }
+      } /> { connected.type } <a onClick={ onClick } href="#">#{connected.number}</a>
+    </div>
+  );
 }
