@@ -19,10 +19,6 @@ import {
 
 import Card from './Card';
 
-import {
-  Filter
-} from './Filter';
-
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 import classNames from 'classnames';
@@ -69,15 +65,7 @@ class Taskboard extends React.Component {
     items: {},
     issues: {},
     collapsed: {},
-    cursor: null,
-    filteredIssues: [],
-    issuesFilter: {
-      filterString: '',
-      assignees: [],
-      labels: [],
-      milestones: [],
-      pullrequestsIssues: 'both'
-    }
+    cursor: null
   };
 
   getList = id => this.state.items[id] || [];
@@ -340,22 +328,17 @@ class Taskboard extends React.Component {
     });
   }
 
-  onFilterChange = (newIssuesFilter = {}) => {
-    const { issuesFilter } = this.state;
+  onFilterChange = (filter) => {
 
-    const state = {
-      ...this.state,
-      issuesFilter: {
-        ...issuesFilter,
-        ...newIssuesFilter
-      }
-    };
+    // TODO(nikku): update location
+    // FILTER ISSUES (on back-end)
 
-    const filteredIssues = this.filterIssues(state);
+    const parts = filter.split(/\s+/g);
+
+    console.log('onFilterChange', parts);
 
     this.setState({
-      ...state,
-      filteredIssues
+      filter
     });
   }
 
@@ -439,13 +422,11 @@ class Taskboard extends React.Component {
   render() {
 
     const {
-      issues,
-      issuesFilter,
+      filter,
       items,
       columns,
       loading,
-      error,
-      filteredIssues
+      error
     } = this.state;
 
 
@@ -481,10 +462,7 @@ class Taskboard extends React.Component {
               </div>
               <div className="Taskboard-header-spacer"></div>
               <div className="Taskboard-header-filter">
-                <Input.Group compact>
-                  <Input allowClear onChange={(e) => this.onFilterChange({ filterString: e.target.value })} placeholder="Filter Board" style={{ width: 200 }} />
-                  <Filter onFilterChange={ this.onFilterChange } issues={ issues } issuesFilter={ issuesFilter } />
-                </Input.Group>
+                <BoardFilter onChange={ this.onFilterChange } value={ filter } />
               </div>
             </div>
             <div className="Taskboard-board">
@@ -528,10 +506,6 @@ class Taskboard extends React.Component {
                             >
                               {
                                 (items[column.name] || []).map((item, index) => {
-
-                                  if (filteredIssues.includes(item.id)) {
-                                    return null;
-                                  }
 
                                   return (
                                     <Draggable
@@ -580,6 +554,67 @@ class Taskboard extends React.Component {
 
 export default Taskboard;
 
+
+class BoardFilter extends React.Component {
+
+  state = {
+    focussed: false
+  };
+
+  inputRef = React.createRef();
+
+  handleFocus = () => {
+    this.setState({
+      focussed: true
+    });
+  }
+
+  handleBlur = () => {
+    this.setState({
+      focussed: false
+    });
+  };
+
+  handleChange = (event) => {
+
+    const {
+      onChange
+    } = this.props;
+
+    console.log(this.inputRef.current.input.selectionStart);
+
+    onChange(event.target.value);
+  };
+
+  render() {
+
+    const {
+      focussed
+    } = this.state;
+
+    const {
+      value
+    } = this.props;
+
+    return (
+      <Input
+        className={ classNames(css.BoardFilter, { focussed }) }
+        placeholder="Filter Board"
+        prefix={<Icon type="search" style={{ color: 'rgba(0,0,0,.25)' }} />}
+        value={ value }
+        onChange={ this.handleChange }
+        onFocus={ this.handleFocus }
+        onBlur={ this.handleBlur }
+        autoComplete="off"
+        autoCorrect="off"
+        autoCapitalize="off"
+        spellCheck="false"
+        ref={ this.inputRef }
+      />
+    );
+  }
+
+}
 
 
 function IssueCreateDrawer(props) {
