@@ -5,7 +5,9 @@ import {
   Icon,
   Input,
   Drawer,
-  Select
+  Select,
+  Avatar,
+  Divider
 } from 'antd';
 
 import {
@@ -65,7 +67,8 @@ class Taskboard extends React.Component {
     items: {},
     issues: {},
     collapsed: {},
-    cursor: null
+    cursor: null,
+    user: null
   };
 
   getList = id => this.state.items[id] || [];
@@ -73,12 +76,14 @@ class Taskboard extends React.Component {
   async componentDidMount() {
 
     const loadingPromise = Promise.all([
+      fetchJSON('http://localhost:3000/wuffle/login_check'),
       fetchJSON('http://localhost:3000/wuffle/columns'),
       fetchJSON('http://localhost:3000/wuffle/board')
     ]);
 
     try {
       const [
+        user,
         columns,
         board
       ] = await loadingPromise;
@@ -89,6 +94,7 @@ class Taskboard extends React.Component {
       } = board;
 
       this.setState({
+        user,
         columns,
         items,
         issues: Object.values(items).reduce((issues, columnIssues) => {
@@ -109,7 +115,11 @@ class Taskboard extends React.Component {
         });
       }, 300);
 
-      setInterval(this.pollIssues, 3000);
+      // every three seconds
+      setInterval(this.pollIssues, 1000 * 3);
+
+      // every 10 minutes
+      setInterval(this.loginCheck, 1000 * 60 * 10);
     } catch (err) {
       this.setState({
         loading: false,
@@ -117,6 +127,20 @@ class Taskboard extends React.Component {
       });
     }
   }
+
+  loginCheck = async () => {
+
+    const [
+      user
+    ] = await Promise.all([
+      fetchJSON('http://localhost:3000/wuffle/login_check')
+    ]);
+
+    this.setState({
+      user
+    });
+
+  };
 
   pollIssues = async () => {
 
@@ -126,7 +150,11 @@ class Taskboard extends React.Component {
       items
     } = this.state;
 
-    const updates = await fetchJSON(`http://localhost:3000/wuffle/updates?cursor=${cursor}`);
+    const [
+      updates
+    ] = await Promise.all([
+      fetchJSON(`http://localhost:3000/wuffle/updates?cursor=${cursor}`)
+    ]);
 
     if (!updates.length) {
       return;
@@ -426,6 +454,7 @@ class Taskboard extends React.Component {
       items,
       columns,
       loading,
+      user,
       error
     } = this.state;
 
@@ -463,6 +492,16 @@ class Taskboard extends React.Component {
               <div className="Taskboard-header-spacer"></div>
               <div className="Taskboard-header-filter">
                 <BoardFilter onChange={ this.onFilterChange } value={ filter } />
+              </div>
+              <Divider type="vertical" />
+              <div className="Taskboard-header-login">
+                {
+                  user
+                    ? <ProfileHandle user={ user } />
+                    : <a href="http://localhost:3000/wuffle/login">
+                        <Avatar icon="login" title="Login with GitHub" />
+                      </a>
+                }
               </div>
             </div>
             <div className="Taskboard-board">
@@ -617,6 +656,67 @@ class BoardFilter extends React.Component {
 }
 
 
+class ProfileHandle extends React.Component {
+
+  state = {
+    hovered: false,
+    focussed: false
+  };
+
+  handleOver = () => {
+    this.setState({
+      hovered: true
+    });
+  };
+
+  handleOut = () => {
+    this.setState({
+      hovered: false
+    });
+  };
+
+  handleFocus = () => {
+    this.setState({
+      focussed: true
+    });
+  };
+
+  handleBlur = () => {
+    this.setState({
+      focussed: false
+    });
+  };
+
+  render() {
+
+    const {
+      hovered,
+      focussed
+    } = this.state;
+
+    const {
+      user
+    } = this.props;
+
+    return (
+      <a
+        href="http://localhost:3000/wuffle/logout"
+        onMouseEnter={ this.handleOver }
+        onMouseLeave={ this.handleOut }
+        onFocus={ this.handleFocus }
+        onBlur={ this.handleBlur }
+      >
+        {
+          (hovered || focussed)
+            ? <Avatar icon="logout" title={ `Logout ${user.login}` } />
+            : <Avatar src={ user.avatar_url } title={ `Logout ${user.login}` } />
+        }
+      </a>
+    );
+  }
+}
+
+
 function IssueCreateDrawer(props) {
 
   const {
@@ -699,7 +799,10 @@ function IssueUpdateDrawer(props) {
 }
 
 function fetchJSON(url, options) {
-  return fetch(url, options).then(r => r.text()).then(t => JSON.parse(t));
+  return fetch(url, {
+    ...options,
+    credentials: 'include'
+  }).then(r => r.text()).then(t => JSON.parse(t));
 }
 
 function Error(props) {
