@@ -10,6 +10,8 @@ import {
   Divider
 } from 'antd';
 
+import { create as createLocalStore } from './local-store';
+
 import {
   Loader
 } from './primitives';
@@ -29,6 +31,10 @@ import css from './Taskboard.less';
 
 import loaderImg from './loader.png';
 import errorImg from './error.png';
+
+const COLUMNS_COLLAPSED_KEY = 'Taskboard_columns_collapsed_state';
+
+const localStore = createLocalStore();
 
 // a little function to help us with reordering the result
 const reorder = (list, startIndex, endIndex) => {
@@ -66,12 +72,21 @@ class Taskboard extends React.Component {
     columns: [],
     items: {},
     issues: {},
-    collapsed: {},
+    collapsed: localStore.get(COLUMNS_COLLAPSED_KEY, {}),
     cursor: null,
     user: null
   };
 
   getList = id => this.state.items[id] || [];
+
+  componentDidUpdate(prevProps, prevState) {
+
+    const collapsed = this.state.collapsed;
+
+    if (prevState.collapsed !== collapsed) {
+      localStore.set(COLUMNS_COLLAPSED_KEY, collapsed);
+    }
+  }
 
   async componentDidMount() {
 
