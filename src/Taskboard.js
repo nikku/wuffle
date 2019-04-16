@@ -64,7 +64,6 @@ const getListStyle = isDraggingOver => ({});
 class Taskboard extends React.Component {
 
   state = {
-    banner: true,
     loading: true,
     columns: [],
     items: {},
@@ -341,12 +340,6 @@ class Taskboard extends React.Component {
     });
   }
 
-  hideBanner = () => {
-    this.setState({
-      banner: false
-    });
-  }
-
   onFilterChange = (newIssuesFilter = {}) => {
     const { issuesFilter } = this.state;
 
@@ -446,7 +439,6 @@ class Taskboard extends React.Component {
   render() {
 
     const {
-      banner,
       issues,
       issuesFilter,
       items,
@@ -474,17 +466,7 @@ class Taskboard extends React.Component {
         />
 
         <DragDropContext onDragEnd={this.onDragEnd}>
-          <div className={ classNames('Taskboard', { 'banner': banner }) }>
-            {
-              banner && (
-                <div className="Banner">
-                  Wuffle is <span className="Banner-highlight">opening its doors</span> in a month.
-                  <Button className="Banner-button" shape="round" onClick={this.hideBanner}>
-                    Got it!
-                  </Button>
-                </div>
-              )
-            }
+          <div className="Taskboard">
             <div className="Taskboard-header">
               <div className="Taskboard-header-title">
                 <Button.Group>
