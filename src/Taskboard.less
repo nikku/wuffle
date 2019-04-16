@@ -152,14 +152,29 @@
 
 
 :local(.TaskboardError) {
-  position: absolute;
-  left: 50%;
-  top: 40%;
-  transform: translateX(-50%);
-  text-align: center;
 
-  h2 {
-    margin-top: 20px;
-    color: #555;
+  z-index: 201;
+
+  .content {
+    position: absolute;
+    left: 50%;
+    top: 40%;
+    transform: translateX(-50%);
+    text-align: center;
+
+    h2 {
+      margin-top: 20px;
+      color: #555;
+    }
+  }
+
+  .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+
+    background: rgba(255, 255, 255, .6);
   }
 }

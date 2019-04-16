@@ -689,8 +689,11 @@ function Error(props) {
 
   return (
     <div className={ css.TaskboardError }>
-      <img src={ errorImg } width="64" alt="Error" />
-      <h2>{ props.message }</h2>
+      <div className="overlay"></div>
+      <div className="content">
+        <img src={ errorImg } width="64" alt="Error" />
+        <h2>{ props.message }</h2>
+      </div>
     </div>
   );
 }
