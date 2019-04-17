@@ -38,9 +38,7 @@ export default function Task(props) {
 
   // TODO(nikku): normalize upfront
 
-  const repository = item.repository_url ?
-    item.repository_url.replace('https://api.github.com/repos/', '') :
-    item.base.repo.full_name;
+  const repository = item.repository.full_name;
 
   const milestone = item.milestone ? item.milestone.title : null;
 
