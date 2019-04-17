@@ -441,12 +441,10 @@ class Taskboard extends React.Component {
     });
 
     const loadingPromise = Promise.all([
-      fetchJSON('http://localhost:3000/wuffle/columns'),
       fetchJSON(`http://localhost:3000/wuffle/board${buildQueryString(filter)}`)
     ]);
 
     const [
-      columns,
       board
     ] = await loadingPromise;
 
@@ -456,7 +454,6 @@ class Taskboard extends React.Component {
     } = board;
 
     this.setState({
-      columns,
       items,
       issues: Object.values(items).reduce((issues, columnIssues) => {
 
