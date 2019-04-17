@@ -469,27 +469,9 @@ class Taskboard extends React.Component {
 
   }
 
-  onFilterChange = (filterText, isNavigation) => {
+  onFilterChange = (filterText) => {
 
-    // TODO(nikku): update location
-
-    // FILTER ISSUES (on back-end)
-
-    const parts = filterText.split(/\s+/g);
-
-    const filter = parts.map(p => {
-
-      const [ key, arg ] = p.split(/:/, 2);
-
-      return {
-        key,
-        arg
-      };
-    });
-
-    if (!isNavigation) {
-      history.push(`/board${buildQueryString(filterText)}`);
-    }
+    history.push(`/board${buildQueryString(filterText)}`);
 
     this.setState({
       filter: filterText
