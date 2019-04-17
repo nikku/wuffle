@@ -7,12 +7,12 @@ A task board for [GitHub](https://github.com) issues.
 
 ## Features
 
-* Multi-repository / organization
+* Multi-repository / organization support
+* Private repository support (you only see the issues you are authenticated for)
+* Only contributors can update issues
 * Configure colums and GitHub label to column mappings
-* Allow moving issues by contributors only
 * Automatically moves across columns, as you develop
-* Filter issues
-* Exposes only issues visible to the logged-in user
+* Filter issues by name, label, ...
 * Manual move across / reorder issues
 
 
