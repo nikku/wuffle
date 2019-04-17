@@ -664,7 +664,7 @@ class Taskboard extends React.Component {
                                         <Card
                                           { ...{ item, provided, snapshot } }
                                           onEdit={ this.showIssueUpdateDrawer }
-                                          connected={
+                                          connected={ [] ||
                                             [
                                               { type: 'pull-request', number: 23 },
                                               { type: 'depends-on', number: 41 },
