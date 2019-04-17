@@ -88,9 +88,9 @@ function parseSearchFilter() {
   return decodeURIComponent(search.split(/=/)[1]);
 }
 
-function buildQueryString(filter) {
+function buildQueryString(filter, separator='?') {
   if (filter) {
-    return `?s=${encodeURIComponent(filter)}`;
+    return `${separator}s=${encodeURIComponent(filter)}`;
   } else {
     return '';
   }
@@ -115,10 +115,17 @@ class Taskboard extends React.Component {
 
   componentDidUpdate(prevProps, prevState) {
 
-    const collapsed = this.state.collapsed;
+    const {
+      collapsed,
+      filter
+    } = this.state;
 
     if (prevState.collapsed !== collapsed) {
       localStore.set(COLUMNS_COLLAPSED_KEY, collapsed);
+    }
+
+    if (prevState.filter !== filter) {
+      this.filterBoard(filter);
     }
   }
 
@@ -210,13 +217,14 @@ class Taskboard extends React.Component {
     let {
       cursor,
       issues,
-      items
+      items,
+      filter
     } = this.state;
 
     const [
       updates
     ] = await Promise.all([
-      fetchJSON(`http://localhost:3000/wuffle/updates?cursor=${cursor}`)
+      fetchJSON(`http://localhost:3000/wuffle/updates?cursor=${cursor}${buildQueryString(filter, '&')}`)
     ]);
 
     if (!updates.length) {
@@ -426,6 +434,44 @@ class Taskboard extends React.Component {
     });
   }
 
+  async filterBoard(filter) {
+
+    this.setState({
+      loading: true
+    });
+
+    const loadingPromise = Promise.all([
+      fetchJSON('http://localhost:3000/wuffle/columns'),
+      fetchJSON(`http://localhost:3000/wuffle/board${buildQueryString(filter)}`)
+    ]);
+
+    const [
+      columns,
+      board
+    ] = await loadingPromise;
+
+    const {
+      items,
+      cursor
+    } = board;
+
+    this.setState({
+      columns,
+      items,
+      issues: Object.values(items).reduce((issues, columnIssues) => {
+
+        columnIssues.forEach(function(issue) {
+          issues[issue.id] = issue;
+        });
+
+        return issues;
+      }, {}),
+      cursor,
+      loading: false
+    });
+
+  }
+
   onFilterChange = (filterText, isNavigation) => {
 
     // TODO(nikku): update location
@@ -443,8 +489,6 @@ class Taskboard extends React.Component {
         arg
       };
     });
-
-    console.log('onFilterChange', filter);
 
     if (!isNavigation) {
       history.push(`/board${buildQueryString(filterText)}`);
@@ -728,7 +772,8 @@ class BoardFilter extends React.Component {
 
     const value = event.target.value;
 
-    console.log(this.inputRef.current.input.selectionStart);
+    // TODO(nikku): give hints on what to search for
+    // this.inputRef.current.input.selectionStart);
 
     this.setState({
       value
