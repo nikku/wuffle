@@ -1,8 +1,8 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
-import Home from './Home';
-import Taskboard from './Taskboard';
+import Home from './home/Home';
+import Taskboard from './board/Taskboard';
 
 import './App.less';
 
