@@ -5,6 +5,17 @@ A task board for [GitHub](https://github.com) issues.
 ![Wuffle Screenshot](./docs/screenshot.png)
 
 
+## Features
+
+* Multi-repository / organization
+* Maps columns to GitHub issues
+* Allow moving issues by contributors only
+* Automatically moves across columns, as you develop
+* Filter issues
+* Exposes only issues visible to the logged-in user
+* Manual move across / reorder issues
+
+
 ## Try it
 
 ```
