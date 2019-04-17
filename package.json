@@ -26,6 +26,6 @@
     "babel-plugin-import": "^1.11.0",
     "less": "^3.9.0",
     "less-loader": "^3.0.0",
-    "razzle": "^3.0.0-alpha.2"
+    "razzle": "^3.0.0"
   }
 }
