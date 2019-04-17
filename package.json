@@ -16,6 +16,7 @@
     "classnames": "^2.2.6",
     "cross-env": "^5.2.0",
     "express": "4.16.4",
+    "min-dash": "^3.4.0",
     "react": "16.8.4",
     "react-beautiful-dnd": "^10.1.0",
     "react-dom": "16.8.4",

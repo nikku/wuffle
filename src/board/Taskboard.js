@@ -10,7 +10,13 @@ import {
   Divider
 } from 'antd';
 
-import { create as createLocalStore } from './local-store';
+import {
+  createLocalStore,
+  createHistory,
+  periodic,
+  delay,
+  debounce
+} from './util';
 
 import {
   Loader
@@ -35,6 +41,8 @@ import errorImg from './error.png';
 const COLUMNS_COLLAPSED_KEY = 'Taskboard_columns_collapsed_state';
 
 const localStore = createLocalStore();
+
+const history = createHistory();
 
 // a little function to help us with reordering the result
 const reorder = (list, startIndex, endIndex) => {
@@ -64,8 +72,33 @@ const move = (source, destination, droppableSource, droppableDestination) => {
 
 const getListStyle = isDraggingOver => ({});
 
+function parseSearchFilter() {
+  if (typeof window === 'undefined') {
+    return null;
+  }
+
+  const queryString = window.location.search;
+
+  const search = queryString.split(/[?&]/).find(param => /^s=/.test(param));
+
+  if (!search) {
+    return null;
+  }
+
+  return decodeURIComponent(search.split(/=/)[1]);
+}
+
+function buildQueryString(filter) {
+  if (filter) {
+    return `?s=${encodeURIComponent(filter)}`;
+  } else {
+    return '';
+  }
+}
 
 class Taskboard extends React.Component {
+
+  teardownHooks = [];
 
   state = {
     loading: true,
@@ -74,7 +107,8 @@ class Taskboard extends React.Component {
     issues: {},
     collapsed: localStore.get(COLUMNS_COLLAPSED_KEY, {}),
     cursor: null,
-    user: null
+    user: null,
+    filter: parseSearchFilter()
   };
 
   getList = id => this.state.items[id] || [];
@@ -88,12 +122,20 @@ class Taskboard extends React.Component {
     }
   }
 
+  componentWillUnmount() {
+    this.teardownHooks.forEach(fn => fn());
+  }
+
   async componentDidMount() {
+
+    const {
+      filter
+    } = this.state;
 
     const loadingPromise = Promise.all([
       fetchJSON('http://localhost:3000/wuffle/login_check'),
       fetchJSON('http://localhost:3000/wuffle/columns'),
-      fetchJSON('http://localhost:3000/wuffle/board')
+      fetchJSON(`http://localhost:3000/wuffle/board${buildQueryString(filter)}`)
     ]);
 
     try {
@@ -124,17 +166,23 @@ class Taskboard extends React.Component {
       });
 
       // loading would otherwise happen too quick *GG*
-      setTimeout(() => {
+      delay(() => {
         this.setState({
           loading: false
         });
       }, 300);
 
-      // every three seconds
-      setInterval(this.pollIssues, 1000 * 3);
+      this.teardownHooks = [
+        // poll for issue updates every three seconds
+        periodic(this.pollIssues, 1000 * 3),
 
-      // every 10 minutes
-      setInterval(this.loginCheck, 1000 * 60 * 10);
+        // check login every 10 minutes
+        periodic(this.loginCheck, 1000 * 60 * 10),
+
+        // hook into history changes
+        history.onPop(this.onPopState)
+      ];
+
     } catch (err) {
       this.setState({
         loading: false,
@@ -372,17 +420,38 @@ class Taskboard extends React.Component {
     });
   }
 
-  onFilterChange = (filter) => {
+  onPopState = (event) => {
+    this.setState({
+      filter: parseSearchFilter()
+    });
+  }
+
+  onFilterChange = (filterText, isNavigation) => {
 
     // TODO(nikku): update location
+
     // FILTER ISSUES (on back-end)
 
-    const parts = filter.split(/\s+/g);
+    const parts = filterText.split(/\s+/g);
 
-    console.log('onFilterChange', parts);
+    const filter = parts.map(p => {
+
+      const [ key, arg ] = p.split(/:/, 2);
+
+      return {
+        key,
+        arg
+      };
+    });
+
+    console.log('onFilterChange', filter);
+
+    if (!isNavigation) {
+      history.push(`/board${buildQueryString(filterText)}`);
+    }
 
     this.setState({
-      filter
+      filter: filterText
     });
   }
 
@@ -522,7 +591,7 @@ class Taskboard extends React.Component {
             </div>
             <div className="Taskboard-board">
 
-              { error && <Error message={ error } />}
+              { error && <TaskboardError message={ error } />}
 
               <Loader shown={ loading }>
                 <img src={ loaderImg } width="64" alt="Loading" />
@@ -613,10 +682,26 @@ export default Taskboard;
 class BoardFilter extends React.Component {
 
   state = {
-    focussed: false
+    focussed: false,
+    value: null
   };
 
   inputRef = React.createRef();
+
+  componentDidMount() {
+    this.state.value = this.props.value;
+  }
+
+  componentDidUpdate(oldProps) {
+    const propsValue = this.props.value;
+    const stateValue = this.state.value;
+
+    if (oldProps.value !== propsValue && stateValue !== propsValue) {
+      this.setState({
+        value: propsValue
+      });
+    }
+  }
 
   handleFocus = () => {
     this.setState({
@@ -630,26 +715,34 @@ class BoardFilter extends React.Component {
     });
   };
 
-  handleChange = (event) => {
+  triggerChanged = debounce((value) => {
 
     const {
       onChange
     } = this.props;
 
+    onChange(value);
+  }, 500);
+
+  handleChange = (event) => {
+
+    const value = event.target.value;
+
     console.log(this.inputRef.current.input.selectionStart);
 
-    onChange(event.target.value);
+    this.setState({
+      value
+    });
+
+    this.triggerChanged(value);
   };
 
   render() {
 
     const {
-      focussed
-    } = this.state;
-
-    const {
+      focussed,
       value
-    } = this.props;
+    } = this.state;
 
     return (
       <Input
@@ -821,7 +914,7 @@ function fetchJSON(url, options) {
   }).then(r => r.text()).then(t => JSON.parse(t));
 }
 
-function Error(props) {
+function TaskboardError(props) {
 
   return (
     <div className={ css.TaskboardError }>
