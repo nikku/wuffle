@@ -22,4 +22,4 @@ Goto [`localhost:3001/board`](http://localhost:3001/board) to inspect the board.
 
 ## License
 
-MIT
+[MIT](LICENSE)
