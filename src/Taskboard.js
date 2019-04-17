@@ -281,7 +281,7 @@ class Taskboard extends React.Component {
 
     // dropped outside the list
     if (!destination) {
-        return;
+      return;
     }
 
     if (source.droppableId === destination.droppableId) {
@@ -340,6 +340,7 @@ class Taskboard extends React.Component {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
         },
+        credentials: 'include',
         mode: 'no-cors',
         body: JSON.stringify(body)
       });
