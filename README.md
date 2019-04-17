@@ -8,7 +8,7 @@ A task board for [GitHub](https://github.com) issues.
 ## Features
 
 * Multi-repository / organization
-* Maps columns to GitHub issues
+* Configure colums and GitHub label to column mappings
 * Allow moving issues by contributors only
 * Automatically moves across columns, as you develop
 * Filter issues
