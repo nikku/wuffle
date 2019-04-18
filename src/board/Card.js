@@ -81,7 +81,7 @@ export default function Task(props) {
           >
             { item.number }
           </a>
-          <span className="repository">{ repository }</span>
+          <span className="repository" title={ repository }>{ repository }</span>
           <span className="spacer"></span>
           {
             item.assignee
