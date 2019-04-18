@@ -20,9 +20,9 @@ A task board for [GitHub](https://github.com) issues.
 
 [Wuffle](https://github.com/nikku/wuffle) has some unique features that set it apart from the GitHub task board competition:
 
-* __Tightly integrates with the [GitHub flow](https://guides.github.com/introduction/flow/).__ Your issues move automatically across the board. The board is always up to date with things going on in development.
+* __[GitHub issues](https://guides.github.com/features/issues/) are the source of truth.__ We read and store columns, relationships and everything else directly on GitHub. The only exception is issue order (not supported by GitHub, so far).
 
-* __[GitHub](https://github.com) is the source of truth.__ We read and store columns, relationships and everything else directly in [GitHub issues](https://guides.github.com/features/issues/). The only exception is issue order (which GitHub does not support, so far).
+* __Tightly integrates with the [GitHub flow](https://guides.github.com/introduction/flow/).__ Your issues move automatically across the board. The board is always up to date with things going on in development.
 
 * __Publicly accessible.__ The board is publicly accessible. It does, however, only display those issues to a visitor that she sees on GitHub, too. You'd like to see cards of your private repositories? Log-in with your GitHub identity and see them pop up on the board.
 
