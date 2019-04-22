@@ -23,7 +23,7 @@ import classNames from 'classnames';
 import css from './Card.less';
 
 
-export default function Task(props) {
+export default function Card(props) {
 
   const {
     item,
@@ -51,12 +51,7 @@ export default function Task(props) {
         provided.draggableProps.style
       }
     >
-      <div
-        className="card"
-        style={getItemStyle(
-          snapshot.isDragging
-        )}
-      >
+      <div className="card">
 
         <div className="header">
           {
@@ -164,12 +159,6 @@ function getIssueTypeIcon(item) {
   return null;
 }
 
-
-function getItemStyle(isDragging) {
-  return {
-    userSelect: 'none'
-  }
-}
 
 function hasModifier(event) {
   return event.metaKey || event.altKey || event.ctrlKey || event.shiftKey;

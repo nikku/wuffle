@@ -70,8 +70,6 @@ const move = (source, destination, droppableSource, droppableDestination) => {
     return result;
 };
 
-const getListStyle = isDraggingOver => ({});
-
 function parseSearchFilter() {
   if (typeof window === 'undefined') {
     return null;
@@ -468,83 +466,6 @@ class Taskboard extends React.Component {
     });
   }
 
-  filterIssues = (state) => {
-    const {
-      issues,
-      issuesFilter
-    } = state;
-
-    const {
-      assignees,
-      filterString,
-      labels,
-      milestones,
-      pullrequestsIssues
-    } = issuesFilter;
-
-    return Object.values(issues).reduce((filteredIssues, issue) => {
-      let filtered = false;
-
-      // filter string
-      filtered = [
-        issue.title,
-        issue.user.login
-      ].reduce((filtered, property) => {
-        return filtered && !property.includes(filterString.toLowerCase());
-      }, true);
-
-      // assignees
-      if (assignees.length) {
-        if (!issue.assignees.length) {
-          filtered = true;
-        }
-
-        const assigneeLogins = issue.assignees.map(({ login }) => login);
-
-        filtered = assignees.reduce((filtered, assignee) => {
-          return filtered && !assigneeLogins.includes(assignee);
-        }, true);
-      }
-
-      // labels
-      if (labels.length) {
-        if (!issue.labels.length) {
-          filtered = true;
-        }
-
-        const labelNames = issue.labels.map(({ name }) => name);
-
-        filtered = labels.reduce((filtered, label) => {
-          return filtered && !labelNames.includes(label);
-        }, true);
-      }
-
-      // milestones
-      if (milestones.length && (!issue.milestone || !milestones.includes(issue.milestone.title))) {
-          filtered = true;
-      }
-
-      // pullrequests
-      if (pullrequestsIssues === 'issues' && issue.type === 'pull-request') {
-        filtered = true;
-      }
-
-      // issues
-      if (pullrequestsIssues === 'pullrequests' && issue.type === 'issue') {
-        filtered = true;
-      }
-
-      if (filtered) {
-        return [
-          ...filteredIssues,
-          issue.id
-        ];
-      }
-
-      return filteredIssues;
-    }, []);
-  }
-
   render() {
 
     const {
@@ -646,7 +567,6 @@ class Taskboard extends React.Component {
                             <div
                               className="Taskboard-column-items"
                               ref={provided.innerRef}
-                              style={getListStyle(snapshot.isDraggingOver)}
                             >
                               {
                                 (items[column.name] || []).map((item, index) => {
