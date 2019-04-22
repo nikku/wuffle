@@ -44,55 +44,6 @@ const localStore = createLocalStore();
 
 const history = createHistory();
 
-// a little function to help us with reordering the result
-const reorder = (list, startIndex, endIndex) => {
-    const result = Array.from(list);
-    const [removed] = result.splice(startIndex, 1);
-    result.splice(endIndex, 0, removed);
-
-    return result;
-};
-
-/**
- * Moves an item from one list to another list.
- */
-const move = (source, destination, droppableSource, droppableDestination) => {
-    const sourceClone = Array.from(source);
-    const destClone = Array.from(destination);
-    const [removed] = sourceClone.splice(droppableSource.index, 1);
-
-    destClone.splice(droppableDestination.index, 0, removed);
-
-    const result = {};
-    result[droppableSource.droppableId] = sourceClone;
-    result[droppableDestination.droppableId] = destClone;
-
-    return result;
-};
-
-function parseSearchFilter() {
-  if (typeof window === 'undefined') {
-    return null;
-  }
-
-  const queryString = window.location.search;
-
-  const search = queryString.split(/[?&]/).find(param => /^s=/.test(param));
-
-  if (!search) {
-    return null;
-  }
-
-  return decodeURIComponent(search.split(/=/)[1]);
-}
-
-function buildQueryString(filter, separator='?') {
-  if (filter) {
-    return `${separator}s=${encodeURIComponent(filter)}`;
-  } else {
-    return '';
-  }
-}
 
 class Taskboard extends React.Component {
 
@@ -108,8 +59,6 @@ class Taskboard extends React.Component {
     user: null,
     filter: parseSearchFilter()
   };
-
-  getList = id => this.state.items[id] || [];
 
   componentDidUpdate(prevProps, prevState) {
 
@@ -225,88 +174,33 @@ class Taskboard extends React.Component {
     );
   };
 
-  pollIssues = async () => {
+  pollIssues = () => {
 
-    let {
-      cursor,
-      issues,
-      items,
-      filter
+    const {
+      filter,
+      cursor
     } = this.state;
 
-    const updates = await fetchJSON(appURL(`/updates?cursor=${cursor}${buildQueryString(filter, '&')}`));
+    const url = appURL(`/updates?cursor=${cursor}${buildQueryString(filter, '&')}`);
 
-    if (!updates.length) {
-      return;
-    }
+    return (
+      fetchJSON(url).then(updates => {
 
-    const head = updates[updates.length - 1];
+        if (updates.length === 0) {
+          return;
+        }
 
-    if (head) {
-      cursor = head.id;
-    }
+        this.setState(state => {
 
-    updates.forEach((update) => {
-      const { type, issue } = update;
+          const {
+            issues,
+            items
+          } = state;
 
-      const {
-        id,
-        column: newColumn
-      } = issue;
-
-      const existingIssue = issues[id];
-
-      // update in existing column
-
-      const oldColumn = existingIssue && existingIssue.column;
-
-      // remove from existing column
-      if (oldColumn && (oldColumn !== newColumn || type === 'remove')) {
-        items = {
-          ...items,
-          [oldColumn]: items[oldColumn].filter(existingIssue => existingIssue.id !== id)
-        };
-      }
-
-      // update in existing column
-      if (oldColumn && (oldColumn === newColumn && type !== 'remove')) {
-        items = {
-          ...items,
-          [oldColumn]: items[oldColumn].map(existingIssue => existingIssue.id === id ? issue : existingIssue)
-        };
-      }
-
-      // add to new column
-      if (oldColumn !== newColumn && type !== 'remove') {
-        const updatedColumn = insertIssue(issue, items[newColumn]);
-
-        items = {
-          ...items,
-          [newColumn]: updatedColumn
-        };
-      }
-
-      if (type === 'remove') {
-        const {
-          [id]: removedIssue,
-          ...remainingIssues
-        } = issues;
-
-        issues = remainingIssues;
-      } else {
-        issues = {
-          ...issues,
-          [id]: issue
-        };
-      }
-    });
-
-    this.setState({
-      cursor,
-      issues,
-      items
-    });
-
+          return applyUpdates(updates, { issues, items });
+        });
+      })
+    );
   };
 
   openCreateNew = () => {
@@ -338,80 +232,87 @@ class Taskboard extends React.Component {
   }
 
   onDragEnd = result => {
-    const { source, destination } = result;
-
     const {
-      items: oldItems
-    } = this.state;
+      source,
+      destination,
+      draggableId
+    } = result;
 
     // dropped outside the list
     if (!destination) {
       return;
     }
 
-    if (source.droppableId === destination.droppableId) {
-      const items = reorder(
-        this.getList(source.droppableId),
-        source.index,
-        destination.index
-      );
+    const cardId = draggableId;
 
-      this.setState({
-        items: {
-          ...oldItems,
-          [source.droppableId]: items
-        }
-      });
+    const cardSource = {
+      column: source.droppableId,
+      index: source.index
+    };
 
-      const neighbors = findNeighbors(result.draggableId, items);
-
-      this.moveIssue(result.draggableId, destination.droppableId, neighbors);
-    } else {
-      const newItems = move(
-        this.getList(source.droppableId),
-        this.getList(destination.droppableId),
-        source,
-        destination
-      );
-
-      this.setState({
-        items: {
-          ...oldItems,
-          ...newItems
-        }
-      });
-
-      const neighbors = findNeighbors(result.draggableId, newItems[destination.droppableId]);
-
-      this.moveIssue(result.draggableId, destination.droppableId, neighbors);
+    const cardDestination = {
+      column: destination.droppableId,
+      index: destination.index
     }
-  };
 
-  async moveIssue(id, column, {
-    before = null,
-    after = null
-  }) {
-    const body = {
+    return (
+      this.moveCard(cardId, cardSource, cardDestination)
+        .then(newPosition => {
+
+          const {
+            before,
+            after
+          } = newPosition;
+
+          return this.moveIssue(cardId, cardDestination.column, before, after);
+        }).catch(err => {
+          console.warn('reverting card movement', err);
+
+          return this.moveCard(cardId, cardDestination, cardSource).catch(
+            err => console.warn('failed to revert card movement', err)
+          );
+        })
+    );
+  }
+
+  moveCard(cardId, source, destination) {
+
+    const {
+      items
+    } = this.state;
+
+    const updatedItems = moveItem(items, source, destination);
+
+    const {
+      before,
+      after
+    } = getNeightbors(updatedItems[destination.column], destination.index);
+
+    this.setState({
+      items: {
+        ...items,
+        ...updatedItems
+      }
+    });
+
+    return Promise.resolve({
+      before,
+      after
+    });
+  }
+
+  moveIssue(id, column, before, after) {
+    const body = JSON.stringify({
       id,
       before,
       after,
       column
-    };
+    });
 
-    try {
-      await fetch('http://localhost:3000/wuffle/issues/move', {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        credentials: 'include',
-        mode: 'no-cors',
-        body: JSON.stringify(body)
-      });
-    } catch (error) {
-      console.error('Failed to move issue %d: %o', id, error);
-    }
+    return fetchJSON(appURL('/issues/move'), {
+      method: 'POST',
+      body
+    });
   }
 
   isColumnCollapsed(column) {
@@ -852,6 +753,12 @@ function fetchJSON(url, options) {
   return fetch(url, {
     ...options,
     credentials: 'include'
+  }).then(r => {
+    if (r.status >= 400) {
+      throw new Error('HTTP error ' + r.status);
+    }
+
+    return r;
   }).then(r => r.text()).then(t => JSON.parse(t));
 }
 
@@ -868,15 +775,15 @@ function TaskboardError(props) {
   );
 }
 
-function findNeighbors(id, column) {
-  const result = {};
+function getNeightbors(column, itemIndex) {
 
-  const index = column.findIndex(item => item.id === id);
+  const after = itemIndex > 0 ? column[itemIndex - 1].id : null;
+  const before = itemIndex < column.length - 1 ? column[itemIndex + 1].id : null;
 
-  result.after = index > 0 ? column[index - 1].id : null;
-  result.before = index < column.length - 1 ? column[index + 1].id : null;
-
-  return result;
+  return {
+    before,
+    after
+  };
 }
 
 function insertIssue(issue, column = []) {
@@ -904,4 +811,117 @@ function insertIssue(issue, column = []) {
 
 function appURL(location) {
   return `http://localhost:3000/wuffle${location}`;
+}
+
+
+function applyUpdates(updates, state) {
+
+  let {
+    items,
+    issues
+  } = state;
+
+  const cursor = updates[updates.length - 1].id;
+
+  updates.forEach(update => {
+    const {
+      type,
+      issue
+    } = update;
+
+    const {
+      id,
+      column: newColumn
+    } = issue;
+
+    const existingIssue = issues[id];
+
+    // update in existing column
+
+    const oldColumn = existingIssue && existingIssue.column;
+
+    // remove from existing column
+    if (oldColumn && (oldColumn !== newColumn || type === 'remove')) {
+      items = {
+        ...items,
+        [oldColumn]: items[oldColumn].filter(existingIssue => existingIssue.id !== id)
+      };
+    }
+
+    // update in existing column
+    if (oldColumn && (oldColumn === newColumn && type !== 'remove')) {
+      items = {
+        ...items,
+        [oldColumn]: items[oldColumn].map(existingIssue => existingIssue.id === id ? issue : existingIssue)
+      };
+    }
+
+    // add to new column
+    if (oldColumn !== newColumn && type !== 'remove') {
+      const updatedColumn = insertIssue(issue, items[newColumn]);
+
+      items = {
+        ...items,
+        [newColumn]: updatedColumn
+      };
+    }
+
+    if (type === 'remove') {
+      const {
+        [id]: removedIssue,
+        ...remainingIssues
+      } = issues;
+
+      issues = remainingIssues;
+    } else {
+      issues = {
+        ...issues,
+        [id]: issue
+      };
+    }
+  });
+
+  return {
+    cursor,
+    issues,
+    items
+  };
+}
+
+function moveItem(lists, source, destination) {
+  const fromList = Array.from(lists[source.column] || []);
+  const toList = source.column === destination.column ? fromList : Array.from(lists[destination.column] || []);
+
+  const [removed] = fromList.splice(source.index, 1);
+
+  toList.splice(destination.index, 0, removed);
+
+  return {
+    [ source.column ]: fromList,
+    [ destination.column ]: toList
+  };
+}
+
+function parseSearchFilter() {
+  if (typeof window === 'undefined') {
+    return null;
+  }
+
+  const queryString = window.location.search;
+
+  const search = queryString.split(/[?&]/).find(param => /^s=/.test(param));
+
+  if (!search) {
+    return null;
+  }
+
+  return decodeURIComponent(search.split(/=/)[1]);
+}
+
+function buildQueryString(filter, separator='?') {
+  if (filter) {
+    return `${separator}s=${encodeURIComponent(filter)}`;
+  } else {
+    return '';
+  }
 }
