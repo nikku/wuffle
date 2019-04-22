@@ -133,44 +133,61 @@ class Taskboard extends React.Component {
     this.teardownHooks.forEach(fn => fn());
   }
 
-  async componentDidMount() {
+  fetchCards(filter) {
+
+    return (
+      fetchJSON(appURL(`/cards${buildQueryString(filter)}`)).then(board => {
+
+          const {
+            items,
+            cursor
+          } = board;
+
+          this.setState({
+            items,
+            issues: Object.values(items).reduce((issues, columnIssues) => {
+
+              columnIssues.forEach(function(issue) {
+                issues[issue.id] = issue;
+              });
+
+              return issues;
+            }, {}),
+            cursor
+          })
+        })
+    );
+  }
+
+  fetchBoard() {
+
+    return (
+      fetchJSON(appURL('/board')).then(board => {
+
+        const {
+          columns,
+          name
+        } = board;
+
+        this.setState({
+          columns,
+          name
+        });
+      })
+    );
+  }
+
+  componentDidMount() {
 
     const {
       filter
     } = this.state;
 
-    const loadingPromise = Promise.all([
-      fetchJSON('http://localhost:3000/wuffle/login_check'),
-      fetchJSON('http://localhost:3000/wuffle/columns'),
-      fetchJSON(`http://localhost:3000/wuffle/board${buildQueryString(filter)}`)
-    ]);
-
-    try {
-      const [
-        user,
-        columns,
-        board
-      ] = await loadingPromise;
-
-      const {
-        items,
-        cursor
-      } = board;
-
-      this.setState({
-        user,
-        columns,
-        items,
-        issues: Object.values(items).reduce((issues, columnIssues) => {
-
-          columnIssues.forEach(function(issue) {
-            issues[issue.id] = issue;
-          });
-
-          return issues;
-        }, {}),
-        cursor
-      });
+    return Promise.all([
+      this.fetchBoard(),
+      this.loginCheck(),
+      this.fetchCards(filter)
+    ]).then((res) => {
 
       // loading would otherwise happen too quick *GG*
       delay(() => {
@@ -190,26 +207,24 @@ class Taskboard extends React.Component {
         history.onPop(this.onPopState)
       ];
 
-    } catch (err) {
+    }).catch((err) => {
+
       this.setState({
         loading: false,
         error: 'Ooops, failed to load board.'
       });
-    }
+
+    });
   }
 
-  loginCheck = async () => {
-
-    const [
-      user
-    ] = await Promise.all([
-      fetchJSON('http://localhost:3000/wuffle/login_check')
-    ]);
-
-    this.setState({
-      user
-    });
-
+  loginCheck = () => {
+    return (
+      fetchJSON(appURL('/login_check')).then(user => {
+        this.setState({
+          user
+        });
+      })
+    );
   };
 
   pollIssues = async () => {
@@ -221,11 +236,7 @@ class Taskboard extends React.Component {
       filter
     } = this.state;
 
-    const [
-      updates
-    ] = await Promise.all([
-      fetchJSON(`http://localhost:3000/wuffle/updates?cursor=${cursor}${buildQueryString(filter, '&')}`)
-    ]);
+    const updates = await fetchJSON(appURL(`/updates?cursor=${cursor}${buildQueryString(filter, '&')}`));
 
     if (!updates.length) {
       return;
@@ -434,39 +445,18 @@ class Taskboard extends React.Component {
     });
   }
 
-  async filterBoard(filter) {
+  filterBoard(filter) {
 
     this.setState({
       loading: true
     });
 
-    const loadingPromise = Promise.all([
-      fetchJSON(`http://localhost:3000/wuffle/board${buildQueryString(filter)}`)
-    ]);
+    return this.fetchCards(filter).then(() => {
 
-    const [
-      board
-    ] = await loadingPromise;
-
-    const {
-      items,
-      cursor
-    } = board;
-
-    this.setState({
-      items,
-      issues: Object.values(items).reduce((issues, columnIssues) => {
-
-        columnIssues.forEach(function(issue) {
-          issues[issue.id] = issue;
-        });
-
-        return issues;
-      }, {}),
-      cursor,
-      loading: false
+      this.setState({
+        loading: false
+      });
     });
-
   }
 
   onFilterChange = (filterText) => {
@@ -558,6 +548,7 @@ class Taskboard extends React.Component {
   render() {
 
     const {
+      name,
       filter,
       items,
       columns,
@@ -565,7 +556,6 @@ class Taskboard extends React.Component {
       user,
       error
     } = this.state;
-
 
     return (
 
@@ -589,13 +579,20 @@ class Taskboard extends React.Component {
               <div className="Taskboard-header-title">
                 <Button.Group>
                   <Button>
-                    bpmn-io/tasks
+                    { name }
                   </Button>
                   <Button icon="setting" title="Configure Board" />
                 </Button.Group>
               </div>
               <div className="Taskboard-header-tools">
-                <Button type="primary" icon="plus" title="Create new Issue" onClick={ this.openCreateNew } />
+                { user &&
+                  <Button
+                    type="primary"
+                    icon="plus"
+                    title="Create new Issue"
+                    onClick={ this.openCreateNew }
+                  />
+                }
               </div>
               <div className="Taskboard-header-spacer"></div>
               <div className="Taskboard-header-filter">
@@ -606,7 +603,7 @@ class Taskboard extends React.Component {
                 {
                   user
                     ? <ProfileHandle user={ user } />
-                    : <a href="http://localhost:3000/wuffle/login">
+                    : <a href={ appURL('/login') }>
                         <Avatar icon="login" title="Login with GitHub" />
                       </a>
                 }
@@ -833,7 +830,7 @@ class ProfileHandle extends React.Component {
 
     return (
       <a
-        href="http://localhost:3000/wuffle/logout"
+        href={ appURL('/logout') }
         onMouseEnter={ this.handleOver }
         onMouseLeave={ this.handleOut }
         onFocus={ this.handleFocus }
@@ -983,3 +980,8 @@ function insertIssue(issue, column = []) {
 
   return [ ...column, issue ];
 };
+
+
+function appURL(location) {
+  return `http://localhost:3000/wuffle${location}`;
+}
