@@ -278,7 +278,8 @@ class Taskboard extends React.Component {
   moveCard(cardId, source, destination) {
 
     const {
-      items
+      items,
+      issues
     } = this.state;
 
     const updatedItems = moveItem(items, source, destination);
@@ -287,6 +288,10 @@ class Taskboard extends React.Component {
       before,
       after
     } = getNeightbors(updatedItems[destination.column], destination.index);
+
+    // TODO(nikku): properly update issue column
+    const issue = issues[cardId];
+    issue.column = destination.column;
 
     this.setState({
       items: {
