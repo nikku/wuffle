@@ -7,7 +7,8 @@ import {
   Drawer,
   Select,
   Avatar,
-  Divider
+  Divider,
+  notification
 } from 'antd';
 
 import {
@@ -232,6 +233,11 @@ class Taskboard extends React.Component {
   }
 
   onDragEnd = result => {
+
+    const {
+      user
+    } = this.state;
+
     const {
       source,
       destination,
@@ -267,6 +273,19 @@ class Taskboard extends React.Component {
           return this.moveIssue(cardId, cardDestination.column, before, after);
         }).catch(err => {
           console.warn('reverting card movement', err);
+
+          notification.error({
+            message: 'Failed to move card',
+            description: (
+              user
+                ? 'It seems like you do not have write access to the underlying GitHub repository.'
+                : (
+                  <div>
+                    Please <a href={ appURL('/login') }>login via GitHub</a> to interact with cards.
+                  </div>
+                )
+            )
+          });
 
           return this.moveCard(cardId, cardDestination, cardSource).catch(
             err => console.warn('failed to revert card movement', err)
