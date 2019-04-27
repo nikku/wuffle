@@ -614,7 +614,7 @@ class BoardFilter extends React.Component {
 
     return (
       <Input
-        className={ classNames(css.BoardFilter, { focussed }) }
+        className={ classNames(css.BoardFilter, { expanded: focussed || value }) }
         placeholder="Filter Board"
         prefix={ <Icon type="search" style={ { color: 'rgba(0,0,0,.25)' } } /> }
         value={ value }
