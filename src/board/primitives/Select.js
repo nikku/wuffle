@@ -15,7 +15,7 @@ const Select = React.forwardRef(function(props, ref) {
   } = props;
 
   if (!prefix) {
-    return <BaseSelect {...otherProps}>{ children }</BaseSelect>
+    return <BaseSelect { ...otherProps }>{ children }</BaseSelect>;
   }
 
   return (
@@ -23,7 +23,7 @@ const Select = React.forwardRef(function(props, ref) {
       <div className="ant-input-prefix">
         { prefix }
       </div>
-      <BaseSelect {...otherProps} ref={ ref }>
+      <BaseSelect { ...otherProps } ref={ ref }>
         { children }
       </BaseSelect>
     </div>

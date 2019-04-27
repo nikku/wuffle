@@ -11,12 +11,11 @@ import {
 import Octicon, {
   GitPullRequest,
   IssueOpened,
-  IssueClosed,
   CircleSlash,
   Bookmark,
   PrimitiveDot,
   Info
-} from '@githubprimer/octicons-react'
+} from '@githubprimer/octicons-react';
 
 import classNames from 'classnames';
 
@@ -29,10 +28,8 @@ export default function Card(props) {
     item,
     connected,
     provided,
-    snapshot,
     onEdit,
-    onNameUpdate,
-    onAssigneeUpdate
+    onNameUpdate
   } = props;
 
 
@@ -44,9 +41,9 @@ export default function Card(props) {
 
   return (
     <div className={ css.Card }
-      ref={provided.innerRef}
-      {...provided.draggableProps}
-      {...provided.dragHandleProps}
+      ref={ provided.innerRef }
+      { ...provided.draggableProps }
+      { ...provided.dragHandleProps }
       style={
         provided.draggableProps.style
       }
@@ -92,13 +89,13 @@ export default function Card(props) {
         </div>
 
         <div className="title">
-          <Input.TextArea autosize value={item.title} onChange={ (event) => {
+          <Input.TextArea autosize value={ item.title } onChange={ (event) => {
             const newValue = event.target.value;
 
             if (typeof onNameUpdate === 'function') {
               onNameUpdate(item, newValue);
             }
-          } }/>
+          } } />
         </div>
 
         <div className="footer">
@@ -114,7 +111,7 @@ export default function Card(props) {
               } = label;
 
               return (
-                <Tag className={classNames('label', { 'inverted': isLight(`#${ color }`) })} key={ name } color={ `#${ color }` }>{ name }</Tag>
+                <Tag className={ classNames('label', { 'inverted': isLight(`#${ color }`) }) } key={ name } color={ `#${ color }` }>{ name }</Tag>
               );
             })
           }
@@ -152,7 +149,7 @@ function getIssueTypeIcon(item) {
 
   if (isPullRequest) {
     return <Icon className="issue-type issue-type-pull-request" component={
-      () => { return <Octicon icon={ GitPullRequest } /> }
+      () => { return <Octicon icon={ GitPullRequest } />; }
     } />;
   }
 
@@ -165,7 +162,7 @@ function hasModifier(event) {
 }
 
 function isLight(color) {
-  color = +("0x" + color.slice(1).replace(color.length < 5 && /./g, '$&$&'));
+  color = +('0x' + color.slice(1).replace(color.length < 5 && /./g, '$&$&'));
 
   const r = color >> 16,
         g = (color >> 8) & 255,
@@ -203,7 +200,7 @@ function CardLinks(props) {
         })
       }
     </Fragment>
-  )
+  );
 }
 
 
@@ -229,7 +226,7 @@ function CardImpls(props) {
         })
       }
     </Fragment>
-  )
+  );
 }
 
 function linkIcon(type) {
@@ -280,7 +277,7 @@ function CardLink(props) {
       <Icon
         className={ classNames('link-type', `link-${type}`) }
         component={
-          () => { return <Octicon icon={ linkIcon(type) } verticalAlign="middle" /> }
+          () => { return <Octicon icon={ linkIcon(type) } verticalAlign="middle" />; }
         }
       />{ type } <a onClick={ onClick } href="#">#{number}</a>
     </div>
@@ -306,7 +303,7 @@ function CardImpl(props) {
   return (
     <div className="card-impl">
       <Icon className="issue-type issue-type-pull-request" component={
-        () => { return <Octicon icon={ GitPullRequest } /> }
+        () => { return <Octicon icon={ GitPullRequest } />; }
       } /> { connected.type } <a onClick={ onClick } href="#">#{connected.number}</a>
     </div>
   );

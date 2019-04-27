@@ -86,24 +86,24 @@ class Taskboard extends React.Component {
     return (
       fetchJSON(appURL(`/cards${buildQueryString(filter)}`)).then(board => {
 
-          const {
-            items,
-            cursor
-          } = board;
+        const {
+          items,
+          cursor
+        } = board;
 
-          this.setState({
-            items,
-            issues: Object.values(items).reduce((issues, columnIssues) => {
+        this.setState({
+          items,
+          issues: Object.values(items).reduce((issues, columnIssues) => {
 
-              columnIssues.forEach(function(issue) {
-                issues[issue.id] = issue;
-              });
+            columnIssues.forEach(function(issue) {
+              issues[issue.id] = issue;
+            });
 
-              return issues;
-            }, {}),
-            cursor
-          })
-        })
+            return issues;
+          }, {}),
+          cursor
+        });
+      })
     );
   }
 
@@ -261,7 +261,7 @@ class Taskboard extends React.Component {
     const cardDestination = {
       column: destination.droppableId,
       index: destination.index
-    }
+    };
 
     return (
       this.moveCard(cardId, cardSource, cardDestination)
@@ -421,7 +421,7 @@ class Taskboard extends React.Component {
           onClose={ this.closeIssueUpdateDrawer }
         />
 
-        <DragDropContext onDragEnd={this.onDragEnd}>
+        <DragDropContext onDragEnd={ this.onDragEnd }>
           <div className="Taskboard">
             <div className="Taskboard-header">
               <div className="Taskboard-header-title">
@@ -452,8 +452,8 @@ class Taskboard extends React.Component {
                   user
                     ? <ProfileHandle user={ user } />
                     : <a href={ appURL('/login') }>
-                        <Avatar icon="login" title="Login with GitHub" />
-                      </a>
+                      <Avatar icon="login" title="Login with GitHub" />
+                    </a>
                 }
               </div>
             </div>
@@ -489,26 +489,26 @@ class Taskboard extends React.Component {
 
                       {
                         !collapsed && <Droppable droppableId={ column.name }>
-                        {
-                          (provided, snapshot) => (
-                            <div
-                              className="Taskboard-column-items"
-                              ref={provided.innerRef}
-                            >
-                              {
-                                (items[column.name] || []).map((item, index) => {
+                          {
+                            (provided, snapshot) => (
+                              <div
+                                className="Taskboard-column-items"
+                                ref={ provided.innerRef }
+                              >
+                                {
+                                  (items[column.name] || []).map((item, index) => {
 
-                                  return (
-                                    <Draggable
-                                      key={item.id}
-                                      draggableId={item.id}
-                                      index={index}
-                                    >
-                                      { (provided, snapshot) => (
-                                        <Card
-                                          { ...{ item, provided, snapshot } }
-                                          onEdit={ this.showIssueUpdateDrawer }
-                                          connected={ [] ||
+                                    return (
+                                      <Draggable
+                                        key={ item.id }
+                                        draggableId={ item.id }
+                                        index={ index }
+                                      >
+                                        { (provided, snapshot) => (
+                                          <Card
+                                            { ...{ item, provided, snapshot } }
+                                            onEdit={ this.showIssueUpdateDrawer }
+                                            connected={ [] ||
                                             [
                                               { type: 'pull-request', number: 23 },
                                               { type: 'depends-on', number: 41 },
@@ -517,20 +517,20 @@ class Taskboard extends React.Component {
                                               { type: 'related-to', number: 123 },
                                               { type: 'part-of', number: 111 }
                                             ]
-                                          }
-                                        />
-                                      ) }
-                                    </Draggable>
-                                  );
-                                })
-                              }
+                                            }
+                                          />
+                                        ) }
+                                      </Draggable>
+                                    );
+                                  })
+                                }
 
-                              { provided.placeholder }
-                            </div>
-                          )
-                        }
-                      </Droppable>
-                    }
+                                { provided.placeholder }
+                              </div>
+                            )
+                          }
+                        </Droppable>
+                      }
                     </div>
                   );
                 })
@@ -616,7 +616,7 @@ class BoardFilter extends React.Component {
       <Input
         className={ classNames(css.BoardFilter, { focussed }) }
         placeholder="Filter Board"
-        prefix={<Icon type="search" style={{ color: 'rgba(0,0,0,.25)' }} />}
+        prefix={ <Icon type="search" style={ { color: 'rgba(0,0,0,.25)' } } /> }
         value={ value }
         onChange={ this.handleChange }
         onFocus={ this.handleFocus }
@@ -703,20 +703,20 @@ function IssueCreateDrawer(props) {
   } = props;
 
   const drawerTitle = (
-    <div style={{
+    <div style={ {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'space-between'
-    }}>
+    } }>
       Create New Issue
 
       <Select
         showSearch
-        style={{ width: 200 }}
+        style={ { width: 200 } }
         placeholder="Select a person"
         optionFilterProp="children"
         defaultValue="bpmn-io/tasks"
-        filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+        filterOption={ (input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0 }
       >
         <Select.Option value="bpmn-io/tasks">bpmn-io/tasks</Select.Option>
         <Select.Option value="bpmn-io/bpmn-js">bpmn-io/bpmn-js</Select.Option>
@@ -729,9 +729,9 @@ function IssueCreateDrawer(props) {
     <Drawer
       title={ drawerTitle }
       placement="right"
-      closable={false}
-      onClose={onClose}
-      visible={visible}
+      closable={ false }
+      onClose={ onClose }
+      visible={ visible }
       width={ 500 }
     >
       <IssueCreateForm onSubmit={ onCreate } onCancel={ onClose } />
@@ -750,14 +750,14 @@ function IssueUpdateDrawer(props) {
   } = props;
 
   const drawerTitle = (
-    <div style={{
+    <div style={ {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'space-between'
-    }}>
+    } }>
       <span>Issue <a href="#"><strong>1231</strong></a></span>
 
-      <span style={{ color: '#888' }}>bpmn-io/bpmn-js</span>
+      <span style={ { color: '#888' } }>bpmn-io/bpmn-js</span>
     </div>
   );
 
@@ -765,9 +765,9 @@ function IssueUpdateDrawer(props) {
     <Drawer
       title={ drawerTitle }
       placement="right"
-      closable={false}
-      onClose={onClose}
-      visible={typeof visible === 'number'}
+      closable={ false }
+      onClose={ onClose }
+      visible={ typeof visible === 'number' }
       width={ 500 }
     >
       <IssueUpdateForm onSubmit={ onUpdate } onCancel={ onClose } />
@@ -841,7 +841,7 @@ function insertIssue(issue, column = []) {
   }
 
   return [ ...column, issue ];
-};
+}
 
 
 function appURL(location) {

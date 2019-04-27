@@ -47,7 +47,7 @@ class IssueCreateForm extends React.Component {
     const handleChange = () => {};
 
     const fetchUser = () => {
-      return Promise.resolve([  ]);
+      return Promise.resolve([ ]);
     };
 
     const {
@@ -59,7 +59,7 @@ class IssueCreateForm extends React.Component {
     } = form;
 
     return (
-      <Form layout="vertical" className={ styles.CondensedForm } onSubmit={this.handleSubmit}>
+      <Form layout="vertical" className={ styles.CondensedForm } onSubmit={ this.handleSubmit }>
         <Form.Item>
           {getFieldDecorator('title', {
             rules: [{ required: true, message: 'Please provide a title' }]
@@ -69,7 +69,7 @@ class IssueCreateForm extends React.Component {
         </Form.Item>
         <Form.Item>
           {getFieldDecorator('description')(
-            <Input.TextArea autosize={{ minRows: 5, maxRows: 12 }} placeholder="Enter description" />
+            <Input.TextArea autosize={ { minRows: 5, maxRows: 12 } } placeholder="Enter description" />
           )}
         </Form.Item>
         <Form.Item>
@@ -80,14 +80,14 @@ class IssueCreateForm extends React.Component {
               mode="multiple"
               labelInValue
               placeholder="Select assignees"
-              notFoundContent={fetching ? <Spin size="small" /> : null}
-              filterOption={false}
-              onSearch={fetchUser}
-              onChange={handleChange}
-              prefix={<PrefixIcon type="usergroup-add" />}
-              style={{ width: '100%' }}
+              notFoundContent={ fetching ? <Spin size="small" /> : null }
+              filterOption={ false }
+              onSearch={ fetchUser }
+              onChange={ handleChange }
+              prefix={ <PrefixIcon type="usergroup-add" /> }
+              style={ { width: '100%' } }
             >
-              {data.map(d => <Select.Option key={d.value}>{d.text}</Select.Option>)}
+              {data.map(d => <Select.Option key={ d.value }>{d.text}</Select.Option>)}
             </Select>
           )}
         </Form.Item>
@@ -99,14 +99,14 @@ class IssueCreateForm extends React.Component {
               mode="tags"
               labelInValue
               placeholder="Select tags"
-              notFoundContent={fetching ? <Spin size="small" /> : null}
-              filterOption={false}
-              onSearch={fetchUser}
-              onChange={handleChange}
-              prefix={<PrefixIcon type="tags" />}
-              style={{ width: '100%' }}
+              notFoundContent={ fetching ? <Spin size="small" /> : null }
+              filterOption={ false }
+              onSearch={ fetchUser }
+              onChange={ handleChange }
+              prefix={ <PrefixIcon type="tags" /> }
+              style={ { width: '100%' } }
             >
-              {data.map(d => <Select.Option key={d.value}>{d.text}</Select.Option>)}
+              {data.map(d => <Select.Option key={ d.value }>{d.text}</Select.Option>)}
             </Select>
           )}
         </Form.Item>
@@ -118,14 +118,14 @@ class IssueCreateForm extends React.Component {
               showSearch
               labelInValue
               placeholder="Select milestone"
-              notFoundContent={fetching ? <Spin size="small" /> : null}
-              filterOption={false}
-              onSearch={fetchUser}
-              onChange={handleChange}
-              prefix={<PrefixIcon type="schedule" />}
-              style={{ width: '100%' }}
+              notFoundContent={ fetching ? <Spin size="small" /> : null }
+              filterOption={ false }
+              onSearch={ fetchUser }
+              onChange={ handleChange }
+              prefix={ <PrefixIcon type="schedule" /> }
+              style={ { width: '100%' } }
             >
-              {data.map(d => <Select.Option key={d.value}>{d.text}</Select.Option>)}
+              {data.map(d => <Select.Option key={ d.value }>{d.text}</Select.Option>)}
             </Select>
           )}
         </Form.Item>
@@ -137,19 +137,19 @@ class IssueCreateForm extends React.Component {
               showSearch
               labelInValue
               placeholder="Select column"
-              notFoundContent={fetching ? <Spin size="small" /> : null}
-              filterOption={false}
+              notFoundContent={ fetching ? <Spin size="small" /> : null }
+              filterOption={ false }
               optionLabelProp="children"
-              onSearch={fetchUser}
-              onChange={handleChange}
-              prefix={<PrefixIcon type="layout" />}
-              style={{ width: '100%' }}
+              onSearch={ fetchUser }
+              onChange={ handleChange }
+              prefix={ <PrefixIcon type="layout" /> }
+              style={ { width: '100%' } }
             >
-              {data.map(d => <Select.Option key={d.value}>{d.text}</Select.Option>)}
+              {data.map(d => <Select.Option key={ d.value }>{d.text}</Select.Option>)}
             </Select>
           )}
         </Form.Item>
-        <Form.Item style={{ marginTop: 20 }}>
+        <Form.Item style={ { marginTop: 20 } }>
           <Button type="primary" htmlType="submit">
             Create
           </Button>

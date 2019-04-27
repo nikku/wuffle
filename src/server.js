@@ -18,7 +18,7 @@ server
     resetServerContext();
 
     const markup = renderToString(
-      <StaticRouter context={context} location={req.url}>
+      <StaticRouter context={ context } location={ req.url }>
         <App />
       </StaticRouter>
     );
@@ -36,15 +36,15 @@ server
         <link rel="icon" type="image/png" href="/favicon.png">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         ${
-          assets.client.css
-            ? `<link rel="stylesheet" href="${assets.client.css}">`
-            : ''
-        }
+  assets.client.css
+    ? `<link rel="stylesheet" href="${assets.client.css}">`
+    : ''
+}
         ${
-          process.env.NODE_ENV === 'production'
-            ? `<script src="${assets.client.js}" defer></script>`
-            : `<script src="${assets.client.js}" defer crossorigin></script>`
-        }
+  process.env.NODE_ENV === 'production'
+    ? `<script src="${assets.client.js}" defer></script>`
+    : `<script src="${assets.client.js}" defer crossorigin></script>`
+}
     </head>
     <body>
         <div id="root">${markup}</div>

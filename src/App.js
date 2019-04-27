@@ -8,8 +8,8 @@ import './App.less';
 
 const App = () => (
   <Switch>
-    <Route exact path="/" component={Home} />
-    <Route exact path="/board" component={Taskboard} />
+    <Route exact path="/" component={ Home } />
+    <Route exact path="/board" component={ Taskboard } />
   </Switch>
 );
 
