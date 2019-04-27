@@ -24,6 +24,9 @@
   },
   "devDependencies": {
     "babel-plugin-import": "^1.11.0",
+    "eslint": "^5.16.0",
+    "eslint-plugin-bpmn-io": "^0.7.0",
+    "eslint-plugin-import": "^2.17.2",
     "less": "^3.9.0",
     "less-loader": "^3.0.0",
     "razzle": "^3.0.0"
