@@ -148,8 +148,8 @@ class Taskboard extends React.Component {
         // poll for issue updates every three seconds
         periodic(this.pollIssues, 1000 * 3),
 
-        // check login every 10 minutes
-        periodic(this.loginCheck, 1000 * 60 * 10),
+        // check login every 1 minutes
+        periodic(this.loginCheck, 1000 * 60 * 1),
 
         // hook into history changes
         history.onPop(this.onPopState)
@@ -167,11 +167,13 @@ class Taskboard extends React.Component {
 
   loginCheck = () => {
     return (
-      fetchJSON(appURL('/login_check')).then(user => {
-        this.setState({
+      fetchJSON(appURL('/login_check'))
+        .then(user => this.setState({
           user
-        });
-      })
+        }))
+        .catch(err => this.setState({
+          user: null
+        }))
     );
   };
 
@@ -777,12 +779,21 @@ function fetchJSON(url, options) {
   return fetch(url, {
     ...options,
     credentials: 'include'
-  }).then(r => {
-    if (r.status >= 400) {
-      throw new Error('HTTP error ' + r.status);
+  }).then(response => {
+    const {
+      status
+    } = response;
+
+    if (status >= 400) {
+      const error = new Error('HTTP ' + status);
+
+      error.status = status;
+      error.response = response;
+
+      throw error;
     }
 
-    return r;
+    return response;
   }).then(r => r.text()).then(t => JSON.parse(t));
 }
 
