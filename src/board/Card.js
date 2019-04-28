@@ -28,7 +28,7 @@ export default function Card(props) {
     item,
     connected,
     provided,
-    onEdit,
+    onOpen,
     onNameUpdate
   } = props;
 
@@ -61,10 +61,10 @@ export default function Card(props) {
             className="issue-number"
             onClick={ (e) => {
 
-              if (typeof onEdit === 'function') {
+              if (typeof onOpen === 'function') {
 
                 if (!hasModifier(e)) {
-                  onEdit(item);
+                  onOpen(item);
 
                   e.preventDefault();
                 }
