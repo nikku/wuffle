@@ -409,6 +409,7 @@ class Taskboard extends React.Component {
 
       <React.Fragment>
 
+        { /*
         <IssueCreateDrawer
           visible={ this.state.createNew }
           onCreate={ this.createIssue }
@@ -420,6 +421,7 @@ class Taskboard extends React.Component {
           onUpdate={ this.updateIssue }
           onClose={ this.closeIssueUpdateDrawer }
         />
+        */}
 
         <DragDropContext onDragEnd={ this.onDragEnd }>
           <div className="Taskboard">
@@ -432,6 +434,7 @@ class Taskboard extends React.Component {
                   <Button icon="setting" title="Configure Board" />
                 </Button.Group>
               </div>
+              { /*
               <div className="Taskboard-header-tools">
                 { user &&
                   <Button
@@ -442,6 +445,7 @@ class Taskboard extends React.Component {
                   />
                 }
               </div>
+              */ }
               <div className="Taskboard-header-spacer"></div>
               <div className="Taskboard-header-filter">
                 <BoardFilter onChange={ this.onFilterChange } value={ filter } />
@@ -507,17 +511,6 @@ class Taskboard extends React.Component {
                                         { (provided, snapshot) => (
                                           <Card
                                             { ...{ item, provided, snapshot } }
-                                            onEdit={ this.showIssueUpdateDrawer }
-                                            connected={ [] ||
-                                            [
-                                              { type: 'pull-request', number: 23 },
-                                              { type: 'depends-on', number: 41 },
-                                              { type: 'depends-on', number: 21 },
-                                              { type: 'required-by', number: 23 },
-                                              { type: 'related-to', number: 123 },
-                                              { type: 'part-of', number: 111 }
-                                            ]
-                                            }
                                           />
                                         ) }
                                       </Draggable>
