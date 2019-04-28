@@ -51,7 +51,7 @@ class Taskboard extends React.Component {
   teardownHooks = [];
 
   state = {
-    loading: true,
+    loading: false,
     columns: [],
     items: {},
     issues: {},
@@ -60,6 +60,24 @@ class Taskboard extends React.Component {
     user: null,
     filter: parseSearchFilter()
   };
+
+  loadStart() {
+
+    const { loading } = this.state;
+
+    return {
+      loading: (loading || 0) + 1
+    };
+  }
+
+  loadComplete() {
+
+    const { loading } = this.state;
+
+    return {
+      loading: Math.max(0, loading - 1)
+    };
+  }
 
   componentDidUpdate(prevProps, prevState) {
 
@@ -85,6 +103,15 @@ class Taskboard extends React.Component {
 
     return (
       fetchJSON(appURL(`/cards${buildQueryString(filter)}`)).then(board => {
+
+        const {
+          filter: currentFilter
+        } = this.state;
+
+        // do not apply updates for outdated filters
+        if (currentFilter !== filter) {
+          return;
+        }
 
         const {
           items,
@@ -131,6 +158,8 @@ class Taskboard extends React.Component {
       filter
     } = this.state;
 
+    this.setState(this.loadStart());
+
     return Promise.all([
       this.fetchBoard(),
       this.loginCheck(),
@@ -139,9 +168,7 @@ class Taskboard extends React.Component {
 
       // loading would otherwise happen too quick *GG*
       delay(() => {
-        this.setState({
-          loading: false
-        });
+        this.setState(this.loadComplete());
       }, 300);
 
       this.teardownHooks = [
@@ -372,15 +399,10 @@ class Taskboard extends React.Component {
 
   filterBoard(filter) {
 
-    this.setState({
-      loading: true
-    });
+    this.setState(this.loadStart());
 
-    return this.fetchCards(filter).then(() => {
-
-      this.setState({
-        loading: false
-      });
+    return this.fetchCards(filter).finally(() => {
+      this.setState(this.loadComplete());
     });
   }
 
