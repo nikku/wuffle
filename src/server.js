@@ -8,6 +8,8 @@ import { renderToString } from 'react-dom/server';
 
 const assets = require(process.env.RAZZLE_ASSETS_MANIFEST);
 
+const apiUrl = process.env.WUFFLE_API_URL || 'http://localhost:3000/wuffle';
+
 const server = express();
 server
   .disable('x-powered-by')
@@ -40,6 +42,9 @@ server
     ? `<link rel="stylesheet" href="${assets.client.css}">`
     : ''
 }
+  <script>
+    WUFFLE_API_URL = "${apiUrl}";
+  </script>
         ${
   process.env.NODE_ENV === 'production'
     ? `<script src="${assets.client.js}" defer></script>`

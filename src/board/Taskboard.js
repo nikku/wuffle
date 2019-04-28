@@ -845,7 +845,11 @@ function insertIssue(issue, column = []) {
 
 
 function appURL(location) {
-  return `http://localhost:3000/wuffle${location}`;
+
+  // eslint-disable-next-line
+  const appBase = process.env.WUFFLE_API_URL || WUFFLE_API_URL;
+
+  return `${appBase}${location}`;
 }
 
 
