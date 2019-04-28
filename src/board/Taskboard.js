@@ -208,8 +208,13 @@ class Taskboard extends React.Component {
 
     const {
       filter,
-      cursor
+      cursor,
+      loading
     } = this.state;
+
+    if (loading) {
+      return;
+    }
 
     const url = appURL(`/updates?cursor=${cursor}${buildQueryString(filter, '&')}`);
 
