@@ -12,13 +12,13 @@
   },
   "dependencies": {
     "@githubprimer/octicons-react": "^8.5.0",
-    "antd": "^3.15.1",
+    "antd": "^3.16.6",
     "classnames": "^2.2.6",
     "cross-env": "^5.2.0",
     "express": "4.16.4",
     "min-dash": "^3.4.0",
     "react": "16.8.4",
-    "react-beautiful-dnd": "^10.1.0",
+    "react-beautiful-dnd": "^10.1.1",
     "react-dom": "16.8.4",
     "react-router-dom": "5.0.0"
   },
