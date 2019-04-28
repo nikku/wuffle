@@ -50,10 +50,10 @@ const defaultOptions = {
 };
 
 module.exports = (
-  defaultConfig,
-  { target, dev },
-  webpack,
-  userOptions = {}
+    defaultConfig,
+    { target, dev },
+    webpack,
+    userOptions = {}
 ) => {
   const isServer = target !== 'web';
   const constantEnv = dev ? 'dev' : 'prod';
