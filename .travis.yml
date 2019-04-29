@@ -5,4 +5,4 @@ node_js:
   - node
 
 script:
-  - npm run all
+  - CI=false npm run all
