@@ -102,19 +102,19 @@ module.exports = (
       exclude: [paths.appBuild],
       use: isServer
         ? [
-            {
-              loader: require.resolve('css-loader/locals'),
-              options: options.css[constantEnv],
-            },
-            postCssLoader,
-            lessLoader
-          ]
+          {
+            loader: require.resolve('css-loader/locals'),
+            options: options.css[constantEnv],
+          },
+          postCssLoader,
+          lessLoader
+        ]
         : [
-            dev ? styleLoader : MiniCssExtractPlugin.loader,
-            cssLoader,
-            postCssLoader,
-            lessLoader
-          ]
+          dev ? styleLoader : MiniCssExtractPlugin.loader,
+          cssLoader,
+          postCssLoader,
+          lessLoader
+        ]
     }
   ];
 

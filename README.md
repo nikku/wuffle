@@ -1,7 +1,7 @@
 > :construction: This project is currently in _alpha_ state. Put your :rescue_worker_helmet: on and acknowledge that certain features [may still be missing](https://github.com/nikku/wuffle/issues).
 
 
-# Wuffle Board
+# Wuffle
 
 A task board for [GitHub](https://github.com) issues.
 
@@ -29,7 +29,7 @@ Some key aspects separate [Wuffle](https://github.com/nikku/wuffle) from the Git
 
 * __Publicly accessible.__ The board is publicly accessible. It does, however, only display those issues to a visitor that she sees on GitHub, too. You'd like to see cards of your private repositories? Log-in with your GitHub identity and see them pop up on the board.
 
-* __Hackable.__ Wuffle is open source, MIT licensed. Contribute to it to make it even better. Self-host it and stay the owner of your data. 
+* __Hackable.__ Wuffle is open source, MIT licensed. Contribute to it to make it even better. Self-host it and stay the owner of your data.
 
 
 ## Try it
@@ -42,9 +42,10 @@ npm start
 Goto [`localhost:3001/board`](http://localhost:3001/board) to inspect the board.
 
 
-## Related
+## Components
 
-* [wuffle-sync](https://github.com/nikku/wuffle-sync) - the wuffle synchronization bot
+* [board](./packages/board) - the task board front-end
+* [sync](./packages/sync) - the back-end, and board API
 
 
 ## License

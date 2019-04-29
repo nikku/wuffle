@@ -1,34 +1,26 @@
 {
-  "name": "wuffle-board",
+  "name": "wuffle",
+  "description": "A task board for GitHub issues",
   "version": "0.1.0",
   "license": "MIT",
   "scripts": {
-    "lint": "eslint src",
-    "start": "npm run dev",
-    "dev": "cross-env PORT=3001 razzle start",
-    "build": "razzle build",
-    "test": "razzle test --env=jsdom",
-    "start:prod": "cross-env PORT=3001 NODE_ENV=production node build/server.js"
-  },
-  "dependencies": {
-    "@githubprimer/octicons-react": "^8.5.0",
-    "antd": "^3.16.6",
-    "classnames": "^2.2.6",
-    "cross-env": "^5.2.0",
-    "express": "4.16.4",
-    "min-dash": "^3.4.0",
-    "react": "16.8.4",
-    "react-beautiful-dnd": "^10.1.1",
-    "react-dom": "16.8.4",
-    "react-router-dom": "5.0.0"
+    "all": "run-s lint test build",
+    "lint": "eslint .",
+    "dev:board": "cd packages/board && npm run dev",
+    "dev": "run-p dev:* -l",
+    "build:board": "cd packages/board && npm run build",
+    "build": "run-s build:*",
+    "test:board": "cd packages/board && npm test",
+    "test": "run-s test:*",
+    "start:board": "cd packages/board && npm run start",
+    "start": "run-p start:* -l",
+    "postinstall": "lerna bootstrap"
   },
   "devDependencies": {
-    "babel-plugin-import": "^1.11.0",
     "eslint": "^5.16.0",
     "eslint-plugin-bpmn-io": "^0.7.0",
     "eslint-plugin-import": "^2.17.2",
-    "less": "^3.9.0",
-    "less-loader": "^3.0.0",
-    "razzle": "^3.0.0"
+    "lerna": "^3.13.4",
+    "npm-run-all": "^4.1.5"
   }
 }
