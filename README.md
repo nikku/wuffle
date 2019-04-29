@@ -3,6 +3,8 @@
 
 # Wuffle
 
+[![Build Status](https://travis-ci.com/nikku/wuffle.svg?branch=master)](https://travis-ci.com/nikku/wuffle)
+
 A task board for [GitHub](https://github.com) issues.
 
 ![Wuffle Screenshot](./docs/screenshot.png)
