@@ -4,8 +4,6 @@ import {
   Button,
   Icon,
   Input,
-  Drawer,
-  Select,
   Avatar,
   Divider,
   notification
@@ -22,11 +20,6 @@ import {
 import {
   Loader
 } from './primitives';
-
-import {
-  IssueCreateForm,
-  IssueUpdateForm
-} from './forms';
 
 import Card from './Card';
 
@@ -714,86 +707,19 @@ class ProfileHandle extends React.Component {
 }
 
 
-function IssueCreateDrawer(props) {
-
-  const {
-    onClose,
-    onCreate,
-    visible
-  } = props;
-
-  const drawerTitle = (
-    <div style={ {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'space-between'
-    } }>
-      Create New Issue
-
-      <Select
-        showSearch
-        style={ { width: 200 } }
-        placeholder="Select a person"
-        optionFilterProp="children"
-        defaultValue="bpmn-io/tasks"
-        filterOption={ (input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0 }
-      >
-        <Select.Option value="bpmn-io/tasks">bpmn-io/tasks</Select.Option>
-        <Select.Option value="bpmn-io/bpmn-js">bpmn-io/bpmn-js</Select.Option>
-        <Select.Option value="camunda/camunda-modeler">camunda/camunda-modeler</Select.Option>
-      </Select>
-    </div>
-  );
+function TaskboardError(props) {
 
   return (
-    <Drawer
-      title={ drawerTitle }
-      placement="right"
-      closable={ false }
-      onClose={ onClose }
-      visible={ visible }
-      width={ 500 }
-    >
-      <IssueCreateForm onSubmit={ onCreate } onCancel={ onClose } />
-    </Drawer>
+    <div className={ css.TaskboardError }>
+      <div className="overlay"></div>
+      <div className="content">
+        <img src={ errorImg } width="64" alt="Error" />
+        <h2>{ props.message }</h2>
+      </div>
+    </div>
   );
 }
 
-
-
-function IssueUpdateDrawer(props) {
-
-  const {
-    onClose,
-    onUpdate,
-    visible
-  } = props;
-
-  const drawerTitle = (
-    <div style={ {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'space-between'
-    } }>
-      <span>Issue <a href="#"><strong>1231</strong></a></span>
-
-      <span style={ { color: '#888' } }>bpmn-io/bpmn-js</span>
-    </div>
-  );
-
-  return (
-    <Drawer
-      title={ drawerTitle }
-      placement="right"
-      closable={ false }
-      onClose={ onClose }
-      visible={ typeof visible === 'number' }
-      width={ 500 }
-    >
-      <IssueUpdateForm onSubmit={ onUpdate } onCancel={ onClose } />
-    </Drawer>
-  );
-}
 
 function fetchJSON(url, options) {
   return fetch(url, {
@@ -815,19 +741,6 @@ function fetchJSON(url, options) {
 
     return response;
   }).then(r => r.text()).then(t => JSON.parse(t));
-}
-
-function TaskboardError(props) {
-
-  return (
-    <div className={ css.TaskboardError }>
-      <div className="overlay"></div>
-      <div className="content">
-        <img src={ errorImg } width="64" alt="Error" />
-        <h2>{ props.message }</h2>
-      </div>
-    </div>
-  );
 }
 
 function getNeightbors(column, itemIndex) {
