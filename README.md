@@ -34,16 +34,20 @@ Some key aspects separate [Wuffle](https://github.com/nikku/wuffle) from the Git
 * __Hackable.__ Wuffle is open source, MIT licensed. Contribute to it to make it even better. Self-host it and stay the owner of your data.
 
 
-## Try it
+## Run it
 
 ```
 npm install
 npm run dev
 ```
 
-Go to [`localhost:3001/board`](http://localhost:3000) for first time setup.
+#### First Time Setup
 
-Once your done, jump to [`localhost:3001/board`](http://localhost:3001/board) to inspect your task board.
+Go to [`localhost:3000/board`](http://localhost:3000) to register your GitHub app.
+
+#### Inspect the Board
+
+Jump to [`localhost:3001/board`](http://localhost:3001/board) to inspect your task board.
 
 
 ## Components
