@@ -36,10 +36,12 @@ Some key aspects separate [Wuffle](https://github.com/nikku/wuffle) from the Git
 
 ```
 npm install
-npm start
+npm run dev
 ```
 
-Goto [`localhost:3001/board`](http://localhost:3001/board) to inspect the board.
+Go to [`localhost:3001/board`](http://localhost:3000) for first time setup.
+
+Once your done, jump to [`localhost:3001/board`](http://localhost:3001/board) to inspect your task board.
 
 
 ## Components
