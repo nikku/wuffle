@@ -16,9 +16,9 @@ A task board for [GitHub](https://github.com) issues.
 * Private repository support (you only see the issues you'd see on GitHub, too)
 * Only contributors can update issues
 * Configure columns and GitHub label to column mappings
-* Automatically moves across columns, as you develop
+* Automatically moves your issues across columns, as you develop
 * Filter issues by name, label, and more
-* Manual move across / reorder issues
+* Reorder / manually update issues if needed
 
 
 ## Project Scope
