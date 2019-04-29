@@ -22,126 +22,129 @@ import classNames from 'classnames';
 import css from './Card.less';
 
 
-export default function Card(props) {
+export default class Card extends React.PureComponent {
 
-  const {
-    item,
-    connected,
-    provided,
-    onOpen,
-    onNameUpdate
-  } = props;
+  render() {
+    const {
+      item,
+      connected,
+      provided,
+      onOpen,
+      onNameUpdate
+    } = this.props;
 
 
-  // TODO(nikku): normalize upfront
+    // TODO(nikku): normalize upfront
 
-  const repository = item.repository.full_name;
+    const repository = item.repository.full_name;
 
-  const milestone = item.milestone ? item.milestone.title : null;
+    const milestone = item.milestone ? item.milestone.title : null;
 
-  return (
-    <div className={ css.Card }
-      ref={ provided.innerRef }
-      { ...provided.draggableProps }
-      { ...provided.dragHandleProps }
-      style={
-        provided.draggableProps.style
-      }
-    >
-      <div className="card">
+    return (
+      <div className={ css.Card }
+        ref={ provided.innerRef }
+        { ...provided.draggableProps }
+        { ...provided.dragHandleProps }
+        style={
+          provided.draggableProps.style
+        }
+      >
+        <div className="card">
 
-        <div className="header">
-          {
-            getIssueTypeIcon(item)
-          }
-          <a
-            href={ `https://github.com/${repository}/issues/${item.number}` }
-            target="_blank"
-            rel="noopener noreferrer"
-            className="issue-number"
-            onClick={ (e) => {
-
-              if (typeof onOpen === 'function') {
-
-                if (!hasModifier(e)) {
-                  onOpen(item);
-
-                  e.preventDefault();
-                }
-              }
-            } }
-          >
-            { item.number }
-          </a>
-          <span className="repository" title={ repository }>{ repository }</span>
-          <span className="spacer"></span>
-          {
-            item.assignee
-              ? (
-                <Tooltip placement="top" title={ `${ item.assignee.login } Assigned` }>
-                  <a className="assignee" href="#">
-                    <Avatar src={ item.assignee.avatar_url } size={ 20 } shape="square" />
-                  </a>
-                </Tooltip>
-              )
-              : <Icon type="user" />
-          }
-        </div>
-
-        <div className="title">
-          <Input.TextArea autosize value={ item.title } onChange={ (event) => {
-            const newValue = event.target.value;
-
-            if (typeof onNameUpdate === 'function') {
-              onNameUpdate(item, newValue);
+          <div className="header">
+            {
+              getIssueTypeIcon(item)
             }
-          } } />
-        </div>
+            <a
+              href={ `https://github.com/${repository}/issues/${item.number}` }
+              target="_blank"
+              rel="noopener noreferrer"
+              className="issue-number"
+              onClick={ (e) => {
 
-        <div className="footer">
-          {
-            milestone && <Tag className="label" key="milestone">{ milestone }</Tag>
-          }
-          {
-            (item.labels || []).map((label) => {
+                if (typeof onOpen === 'function') {
 
-              const {
-                name,
-                color
-              } = label;
+                  if (!hasModifier(e)) {
+                    onOpen(item);
 
-              return (
-                <Tag className={ classNames('label', { 'inverted': isLight(`#${ color }`) }) } key={ name } color={ `#${ color }` }>{ name }</Tag>
-              );
-            })
-          }
-          <div className="links">
-            <Tooltip placement="bottom" title="View on GitHub">
-              <a
-                href={ item.html_url }
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Icon type="github" />
-              </a>
-            </Tooltip>
+                    e.preventDefault();
+                  }
+                }
+              } }
+            >
+              { item.number }
+            </a>
+            <span className="repository" title={ repository }>{ repository }</span>
+            <span className="spacer"></span>
+            {
+              item.assignee
+                ? (
+                  <Tooltip placement="top" title={ `${ item.assignee.login } Assigned` }>
+                    <a className="assignee" href="#">
+                      <Avatar src={ item.assignee.avatar_url } size={ 20 } shape="square" />
+                    </a>
+                  </Tooltip>
+                )
+                : <Icon type="user" />
+            }
           </div>
+
+          <div className="title">
+            <Input.TextArea autosize value={ item.title } onChange={ (event) => {
+              const newValue = event.target.value;
+
+              if (typeof onNameUpdate === 'function') {
+                onNameUpdate(item, newValue);
+              }
+            } } />
+          </div>
+
+          <div className="footer">
+            {
+              milestone && <Tag className="label" key="milestone">{ milestone }</Tag>
+            }
+            {
+              (item.labels || []).map((label) => {
+
+                const {
+                  name,
+                  color
+                } = label;
+
+                return (
+                  <Tag className={ classNames('label', { 'inverted': isLight(`#${ color }`) }) } key={ name } color={ `#${ color }` }>{ name }</Tag>
+                );
+              })
+            }
+            <div className="links">
+              <Tooltip placement="bottom" title="View on GitHub">
+                <a
+                  href={ item.html_url }
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Icon type="github" />
+                </a>
+              </Tooltip>
+            </div>
+          </div>
+          {
+            connected && <CardLinks
+              item={ item }
+              connected={ connected }
+            />
+          }
         </div>
         {
-          connected && <CardLinks
+          connected && <CardImpls
             item={ item }
             connected={ connected }
           />
         }
       </div>
-      {
-        connected && <CardImpls
-          item={ item }
-          connected={ connected }
-        />
-      }
-    </div>
-  );
+    );
+  }
+
 }
 
 function getIssueTypeIcon(item) {
