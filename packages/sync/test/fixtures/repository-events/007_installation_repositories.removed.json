@@ -1,0 +1,86 @@
+{
+  "name": "installation_repositories.removed",
+  "type": "event",
+  "payload": {
+    "action": "removed",
+    "installation": {
+      "id": 783202,
+      "account": {
+        "login": "nikku",
+        "id": 58601,
+        "node_id": "MDQ6VXNlcjU4NjAx",
+        "avatar_url": "https://avatars2.githubusercontent.com/u/58601?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/nikku",
+        "html_url": "https://github.com/nikku",
+        "followers_url": "https://api.github.com/users/nikku/followers",
+        "following_url": "https://api.github.com/users/nikku/following{/other_user}",
+        "gists_url": "https://api.github.com/users/nikku/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/nikku/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/nikku/subscriptions",
+        "organizations_url": "https://api.github.com/users/nikku/orgs",
+        "repos_url": "https://api.github.com/users/nikku/repos",
+        "events_url": "https://api.github.com/users/nikku/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/nikku/received_events",
+        "type": "User",
+        "site_admin": false
+      },
+      "repository_selection": "selected",
+      "access_tokens_url": "https://api.github.com/installations/783202/access_tokens",
+      "repositories_url": "https://api.github.com/installation/repositories",
+      "html_url": "https://github.com/settings/installations/783202",
+      "app_id": 27736,
+      "target_id": 58601,
+      "target_type": "User",
+      "permissions": {
+        "issues": "write",
+        "pull_requests": "write",
+        "contents": "read",
+        "metadata": "read"
+      },
+      "events": [
+        "create",
+        "issues",
+        "issue_comment",
+        "label",
+        "milestone",
+        "pull_request",
+        "repository"
+      ],
+      "created_at": "2019-03-26T20:42:44.000+01:00",
+      "updated_at": "2019-03-31T15:30:04.000+02:00",
+      "single_file_name": null
+    },
+    "repository_selection": "selected",
+    "repositories_added": [],
+    "repositories_removed": [
+      {
+        "id": 159565926,
+        "node_id": "MDEwOlJlcG9zaXRvcnkxNTk1NjU5MjY=",
+        "name": "testtest-checks",
+        "full_name": "nikku/testtest-checks",
+        "private": false
+      }
+    ],
+    "sender": {
+      "login": "nikku",
+      "id": 58601,
+      "node_id": "MDQ6VXNlcjU4NjAx",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/58601?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/nikku",
+      "html_url": "https://github.com/nikku",
+      "followers_url": "https://api.github.com/users/nikku/followers",
+      "following_url": "https://api.github.com/users/nikku/following{/other_user}",
+      "gists_url": "https://api.github.com/users/nikku/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/nikku/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/nikku/subscriptions",
+      "organizations_url": "https://api.github.com/users/nikku/orgs",
+      "repos_url": "https://api.github.com/users/nikku/repos",
+      "events_url": "https://api.github.com/users/nikku/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/nikku/received_events",
+      "type": "User",
+      "site_admin": false
+    }
+  }
+}

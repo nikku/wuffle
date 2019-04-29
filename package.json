@@ -6,12 +6,15 @@
   "scripts": {
     "all": "run-s lint test build",
     "lint": "eslint .",
+    "dev:sync": "cd packages/sync && npm run dev",
     "dev:board": "cd packages/board && npm run dev",
     "dev": "run-p dev:* -l",
     "build:board": "cd packages/board && npm run build",
     "build": "run-s build:*",
+    "test:sync": "cd packages/sync && npm test",
     "test:board": "cd packages/board && npm test",
     "test": "run-s test:*",
+    "start:sync": "cd packages/sync && npm run start",
     "start:board": "cd packages/board && npm run start",
     "start": "run-p start:* -l",
     "postinstall": "lerna bootstrap"
