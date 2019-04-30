@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.com/nikku/wuffle.svg?branch=master)](https://travis-ci.com/nikku/wuffle) ![Project Status - alpha](https://img.shields.io/badge/status-alpha-orange.svg)
 
-A task board for [GitHub](https://github.com) issues.
+A multi-repository task board for [GitHub issues](https://guides.github.com/features/issues/).
 
 ![Wuffle Screenshot](./docs/screenshot.png)
 
