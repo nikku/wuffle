@@ -1,4 +1,6 @@
-> :construction: This project is currently in an _alpha_ state. Put your :rescue_worker_helmet: on and acknowledge that certain features [may still be missing](https://github.com/nikku/wuffle/issues).
+> This project is currently in an _alpha_ :construction: state. 
+> 
+> Put your :rescue_worker_helmet: on and acknowledge that certain features [may still be missing](https://github.com/nikku/wuffle/issues).
 
 
 # Wuffle
