@@ -1,11 +1,6 @@
-> This project is currently in an _alpha_ :construction: state. 
-> 
-> Put your :rescue_worker_helmet: on and acknowledge that certain features [may still be missing](https://github.com/nikku/wuffle/issues).
-
-
 # Wuffle
 
-[![Build Status](https://travis-ci.com/nikku/wuffle.svg?branch=master)](https://travis-ci.com/nikku/wuffle)
+[![Build Status](https://travis-ci.com/nikku/wuffle.svg?branch=master)](https://travis-ci.com/nikku/wuffle) ![Project Status - alpha](https://img.shields.io/badge/status-alpha-orange.svg)
 
 A task board for [GitHub](https://github.com) issues.
 
