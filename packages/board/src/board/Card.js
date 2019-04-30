@@ -28,27 +28,18 @@ export default class Card extends React.PureComponent {
     const {
       item,
       connected,
-      provided,
       onOpen,
-      onNameUpdate
+      onNameUpdate,
+      className,
+      ...remainingProps
     } = this.props;
-
-
-    // TODO(nikku): normalize upfront
 
     const repository = item.repository.full_name;
 
     const milestone = item.milestone ? item.milestone.title : null;
 
     return (
-      <div className={ css.Card }
-        ref={ provided.innerRef }
-        { ...provided.draggableProps }
-        { ...provided.dragHandleProps }
-        style={
-          provided.draggableProps.style
-        }
-      >
+      <div className={ classNames(css.Card, className) } { ...remainingProps }>
         <div className="card">
 
           <div className="header">

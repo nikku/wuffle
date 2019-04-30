@@ -23,7 +23,7 @@ import {
 
 import Card from './Card';
 
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import Dragula from 'react-dragula';
 
 import classNames from 'classnames';
 
@@ -147,6 +147,67 @@ class Taskboard extends React.Component {
 
   componentDidMount() {
 
+    this.drake = Dragula({
+      isContainer: (el) => {
+        return el.matches('[data-droppable-id]');
+      }
+    });
+
+    function getDraggableMetaData(el) {
+
+      const dataset = el.dataset;
+
+      return {
+        id: parseInt(dataset.draggableId, 10),
+        index: parseInt(dataset.draggableIndex, 10)
+      };
+    }
+
+
+    function getDroppableMetaData(el) {
+
+      const dataset = el.dataset;
+
+      return {
+        id: dataset.droppableId
+      };
+    }
+
+    this.drake.on('drop', (el, target, source, sibling) => {
+
+      const draggedCard = getDraggableMetaData(el);
+
+      const droppedBeforeCard = sibling && getDraggableMetaData(sibling);
+
+      const targetColumn = getDroppableMetaData(target);
+
+      const sourceColumn = getDroppableMetaData(source);
+
+      const sourceIndex = draggedCard.index;
+
+      const dropBeforeIndex = (droppedBeforeCard && droppedBeforeCard.index) || 0;
+
+      const targetIndex = targetColumn.id === sourceColumn.id && dropBeforeIndex > sourceIndex
+        ? dropBeforeIndex - 1
+        : dropBeforeIndex;
+
+      const cardId = draggedCard.id;
+
+      const cardSource = {
+        column: sourceColumn.id,
+        index: sourceIndex
+      };
+
+      const cardDestination = {
+        column: targetColumn.id,
+        index: targetIndex
+      };
+
+      this.drake.cancel(true);
+
+      this.handleCardDrop(cardId, cardSource, cardDestination);
+    });
+
     const {
       filter
     } = this.state;
@@ -259,34 +320,11 @@ class Taskboard extends React.Component {
     });
   }
 
-  onDragEnd = result => {
+  handleCardDrop = (cardId, cardSource, cardDestination) => {
 
     const {
       user
     } = this.state;
-
-    const {
-      source,
-      destination,
-      draggableId
-    } = result;
-
-    // dropped outside the list
-    if (!destination) {
-      return;
-    }
-
-    const cardId = draggableId;
-
-    const cardSource = {
-      column: source.droppableId,
-      index: source.index
-    };
-
-    const cardDestination = {
-      column: destination.droppableId,
-      index: destination.index
-    };
 
     return (
       this.moveCard(cardId, cardSource, cardDestination)
@@ -443,114 +481,99 @@ class Taskboard extends React.Component {
         />
         */}
 
-        <DragDropContext onDragEnd={ this.onDragEnd }>
-          <div className="Taskboard">
-            <div className="Taskboard-header">
-              <div className="Taskboard-header-title">
-                <Button.Group>
-                  <Button>
-                    { name }
-                  </Button>
-                  <Button icon="setting" title="Configure Board" />
-                </Button.Group>
-              </div>
-              { /*
-              <div className="Taskboard-header-tools">
-                { user &&
-                  <Button
-                    type="primary"
-                    icon="plus"
-                    title="Create new Issue"
-                    onClick={ this.openCreateNew }
-                  />
-                }
-              </div>
-              */ }
-              <div className="Taskboard-header-spacer"></div>
-              <div className="Taskboard-header-filter">
-                <BoardFilter onChange={ this.onFilterChange } value={ filter } />
-              </div>
-              <Divider type="vertical" />
-              <div className="Taskboard-header-login">
-                {
-                  user
-                    ? <ProfileHandle user={ user } />
-                    : <a href={ appURL('/login') }>
-                      <Avatar icon="login" title="Login with GitHub" />
-                    </a>
-                }
-              </div>
+        <div className="Taskboard">
+          <div className="Taskboard-header">
+            <div className="Taskboard-header-title">
+              <Button.Group>
+                <Button>
+                  { name }
+                </Button>
+                <Button icon="setting" title="Configure Board" />
+              </Button.Group>
             </div>
-            <div className="Taskboard-board">
-
-              { error && <TaskboardError message={ error } />}
-
-              <Loader shown={ loading }>
-                <img src={ loaderImg } width="64" alt="Loading" />
-              </Loader>
-
+            { /*
+            <div className="Taskboard-header-tools">
+              { user &&
+                <Button
+                  type="primary"
+                  icon="plus"
+                  title="Create new Issue"
+                  onClick={ this.openCreateNew }
+                />
+              }
+            </div>
+            */ }
+            <div className="Taskboard-header-spacer"></div>
+            <div className="Taskboard-header-filter">
+              <BoardFilter onChange={ this.onFilterChange } value={ filter } />
+            </div>
+            <Divider type="vertical" />
+            <div className="Taskboard-header-login">
               {
-                columns.map((column) => {
-
-                  const collapsed = this.isColumnCollapsed(column);
-
-                  return (
-
-                    <div className={
-                      classNames('Taskboard-column', { 'Taskboard-column-collapsed': collapsed })
-                    } key={ column.name }>
-                      <div className="Taskboard-column-header">
-                        <a className="Taskboard-column-collapse" href="#" onClick={ this.toggleCollapsed(column) }>
-                          {
-                            collapsed
-                              ? <Icon type="arrows-alt" rotate="45" />
-                              : <Icon type="shrink" rotate="45" />
-                          }
-                        </a>
-
-                        {column.name} <span className="Taskboard-column-issue-count">{(items[column.name] || []).length}</span>
-                      </div>
-
-                      {
-                        !collapsed && <Droppable droppableId={ column.name }>
-                          {
-                            (provided, snapshot) => (
-                              <div
-                                className="Taskboard-column-items"
-                                ref={ provided.innerRef }
-                              >
-                                {
-                                  (items[column.name] || []).map((item, index) => {
-
-                                    return (
-                                      <Draggable
-                                        key={ item.id }
-                                        draggableId={ item.id }
-                                        index={ index }
-                                      >
-                                        { (provided, snapshot) => (
-                                          <Card
-                                            { ...{ item, provided, snapshot } }
-                                          />
-                                        ) }
-                                      </Draggable>
-                                    );
-                                  })
-                                }
-
-                                { provided.placeholder }
-                              </div>
-                            )
-                          }
-                        </Droppable>
-                      }
-                    </div>
-                  );
-                })
+                user
+                  ? <ProfileHandle user={ user } />
+                  : <a href={ appURL('/login') }>
+                    <Avatar icon="login" title="Login with GitHub" />
+                  </a>
               }
             </div>
           </div>
-        </DragDropContext>
+          <div className="Taskboard-board">
+
+            { error && <TaskboardError message={ error } />}
+
+            <Loader shown={ loading }>
+              <img src={ loaderImg } width="64" alt="Loading" />
+            </Loader>
+
+            {
+              columns.map((column) => {
+
+                const collapsed = this.isColumnCollapsed(column);
+
+                return (
+
+                  <div className={
+                    classNames('Taskboard-column', { 'Taskboard-column-collapsed': collapsed })
+                  } key={ column.name }>
+                    <div className="Taskboard-column-header">
+                      <a className="Taskboard-column-collapse" href="#" onClick={ this.toggleCollapsed(column) }>
+                        {
+                          collapsed
+                            ? <Icon type="arrows-alt" rotate="45" />
+                            : <Icon type="shrink" rotate="45" />
+                        }
+                      </a>
+
+                      {column.name} <span className="Taskboard-column-issue-count">{(items[column.name] || []).length}</span>
+                    </div>
+
+                    {
+                      !collapsed && <div
+                        className="Taskboard-column-items"
+                        data-droppable-id={ column.name }
+                      >
+                        {
+                          (items[column.name] || []).map((item, index) => {
+
+                            return (
+                              <Card
+                                key={ item.id }
+                                item={ item }
+                                data-draggable-id={ item.id }
+                                data-draggable-index={ index }
+                              />
+                            );
+                          })
+                        }
+                      </div>
+                    }
+                  </div>
+                );
+              })
+            }
+          </div>
+        </div>
       </React.Fragment>
     );
   }

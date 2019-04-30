@@ -27,8 +27,8 @@
     "express": "4.16.4",
     "min-dash": "^3.4.0",
     "react": "16.8.4",
-    "react-beautiful-dnd": "^10.1.1",
     "react-dom": "16.8.4",
+    "react-dragula": "^1.1.17",
     "react-router-dom": "5.0.0"
   },
   "devDependencies": {

@@ -95,6 +95,14 @@ module.exports = (
     '.less'
   ];
 
+  if (isServer) {
+    // stub react-dragula, it is only used client-side
+
+    config.resolve.alias = {
+      'react-dragula': require.resolve('./noop')
+    };
+  }
+
   config.module.rules = [
     ...config.module.rules,
     {
