@@ -1,7 +1,7 @@
 {
   "name": "wuffle-sync",
   "version": "0.0.0",
-  "description": "The wuffle sync bot",
+  "description": "The wuffle sync bot and board back-end",
   "author": {
     "name": "Nico Rehwaldt",
     "url": "https://github.com/nikku"
