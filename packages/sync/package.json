@@ -1,6 +1,7 @@
 {
   "name": "wuffle-sync",
   "version": "0.0.0",
+  "private": true,
   "description": "The wuffle sync bot and board back-end",
   "author": {
     "name": "Nico Rehwaldt",
