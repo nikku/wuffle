@@ -2,6 +2,7 @@
   "name": "wuffle-board",
   "version": "0.1.0",
   "private": true,
+  "description": "The wuffle board front-end",
   "author": {
     "name": "Nico Rehwaldt",
     "url": "https://github.com/nikku"
