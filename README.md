@@ -49,7 +49,7 @@ npm run dev
 
 #### First Time Setup
 
-Go to [`localhost:3000/board`](http://localhost:3000) to register your GitHub app.
+Go to [`localhost:3000`](http://localhost:3000) to register your GitHub app.
 
 #### Inspect the Board
 
