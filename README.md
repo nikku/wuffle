@@ -1,4 +1,4 @@
-> :construction: This project is currently in _alpha_ state. Put your :rescue_worker_helmet: on and acknowledge that certain features [may still be missing](https://github.com/nikku/wuffle/issues).
+> :construction: This project is currently in an _alpha_ state. Put your :rescue_worker_helmet: on and acknowledge that certain features [may still be missing](https://github.com/nikku/wuffle/issues).
 
 
 # Wuffle
@@ -17,8 +17,8 @@ A task board for [GitHub](https://github.com) issues.
 * Only contributors can update issues
 * Configure columns and GitHub label to column mappings
 * Automatically moves your issues across columns, as you develop
-* Filter issues by name, label, and more
-* Reorder / manually update issues if needed
+* Filter issues by name, issue label, and more
+* Reorder / manually update isissuessues if needed
 
 
 ## Resources
@@ -27,7 +27,7 @@ A task board for [GitHub](https://github.com) issues.
 * [Changelog](./CHANGELOG.md)
 
 
-## Project Scope
+## Philosophy
 
 Some key aspects separate [Wuffle](https://github.com/nikku/wuffle) from the GitHub task board competition:
 
@@ -35,7 +35,7 @@ Some key aspects separate [Wuffle](https://github.com/nikku/wuffle) from the Git
 
 * __Tight integration with the [GitHub flow](https://guides.github.com/introduction/flow/).__ Your issues move automatically across the board. The board is always up to date with things going on in development.
 
-* __Publicly accessible.__ The board is publicly accessible. It does, however, only display those issues to a visitor that she sees on GitHub, too. You'd like to see cards of your private repositories? Log-in with your GitHub identity and see them pop up on the board.
+* __Publicly accessible.__ You can share your project status without restrictions. Applied board filters are shareable deep links. We do, however, only display those issues to a visitor that she sees on GitHub, too. You'd like to see cards of your private repositories? Log-in with your GitHub identity and see them pop up in the mapped column.
 
 * __Hackable.__ Wuffle is open source, MIT licensed. Contribute to it to make it even better. Self-host it and stay the owner of your data.
 
