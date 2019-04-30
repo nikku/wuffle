@@ -12,8 +12,8 @@
     "directory": "packages/sync"
   },
   "scripts": {
-    "start": "cross-env PORT=3001 NODE_ENV=production node -r dotenv/config build/server.js",
-    "dev": "cross-env PORT=3001 razzle start",
+    "start": "cross-env NODE_ENV=production node -r dotenv/config build/server.js",
+    "dev": "cross-env razzle start",
     "build": "razzle build",
     "test": "echo \"no tests\""
   },
