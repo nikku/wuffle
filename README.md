@@ -14,11 +14,10 @@ A task board for [GitHub](https://github.com) issues.
 
 * Multi-repository / organization support
 * Private repository support (you only see the issues you'd see on GitHub, too)
-* Only contributors can update issues
+* Only contributors can move/reorder issues on the board
 * Configure columns and GitHub label to column mappings
 * Automatically moves your issues across columns, as you develop
 * Filter issues by name, issue label, and more
-* Reorder / manually update isissuessues if needed
 
 
 ## Resources
