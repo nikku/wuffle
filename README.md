@@ -21,6 +21,12 @@ A task board for [GitHub](https://github.com) issues.
 * Reorder / manually update issues if needed
 
 
+## Resources
+
+* [Issues](https://github.com/nikku/wuffle/issues)
+* [Changelog](./CHANGELOG.md)
+
+
 ## Project Scope
 
 Some key aspects separate [Wuffle](https://github.com/nikku/wuffle) from the GitHub task board competition:
