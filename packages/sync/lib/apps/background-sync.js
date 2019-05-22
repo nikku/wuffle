@@ -1,3 +1,10 @@
+const {
+  repoAndOwner,
+  Cache
+} = require('../util');
+
+const TTL = 10000;
+
 /**
  * This component performs a periodic background sync of a project.
  *
@@ -21,12 +28,36 @@ module.exports = async (app, config, store) => {
     );
   }
 
+  function fetchRepository(repositoryName) {
+
+    const [ owner, repo ] = repositoryName.split('/');
+
+    return app.orgAuth(owner).then(github => {
+      return github.repos.get({
+        owner,
+        repo
+      });
+    }).then(res => res.data);
+  }
+
   async function doSync(repositories) {
 
+    const repoCache = new Cache(TTL);
+
+    // get issues, keyed by id
+    const knownIssues = store.getIssues().reduce((byId, issue) => {
+      byId[issue.id] = issue;
+
+      return byId;
+    }, {});
+
+    const foundIssues = {};
+
+    // sync open issues
     for (const repositoryName of repositories) {
       const [ owner, repo ] = repositoryName.split('/');
 
-      log.debug({ repositoryName }, 'syncing');
+      log.debug({ repositoryName }, 'syncing repository');
 
       try {
         const github = await app.orgAuth(owner);
@@ -42,14 +73,10 @@ module.exports = async (app, config, store) => {
             }),
             res => res.data
           ),
-          github.repos.get({
-            owner,
-            repo
-          }).then(res => res.data)
+          repoCache.get(repositoryName, fetchRepository)
         ]);
 
-        log.info({ repositoryName }, 'synched');
-
+        // update issues in store
         store.updateIssues(issues.map(issue => {
 
           const type = 'pull_request' in issue
@@ -63,23 +90,84 @@ module.exports = async (app, config, store) => {
           };
 
         }));
+
+        // mark all issues as found
+        issues.forEach(issue => foundIssues[issue.id] = issue);
+
+        log.info({ repositoryName }, 'synched repository');
       } catch (error) {
-        log.warn({ repositoryName }, 'failed to synchronize', error);
+        log.warn({ repositoryName }, 'failed to synchronize repository', error);
       }
 
     }
 
+    // check for all known but not-yet synched issues,
+    // those are either deleted or already closed
+    // and we must manually retrieve them and update them
+
+    const openIssues = Object.keys(knownIssues).filter(k => !foundIssues[k]).map(k => knownIssues[k]);
+
+    console.log('open issues', openIssues.map(i => ({
+      ...repoAndOwner(i),
+      number: i.number,
+      type: i.type
+    })));
+
+
+    for (const openIssue of openIssues) {
+
+      const { number: issue_number } = openIssue;
+
+      const { repo, owner } = repoAndOwner(openIssue);
+
+      const issueParams = { repo, owner, issue_number };
+
+      log.info(issueParams, 'syncing issue');
+
+      try {
+        const github = await app.orgAuth(owner);
+
+        const [
+          issue,
+          repository
+        ] = await Promise.all([
+          github.issues.get({
+            owner,
+            repo,
+            issue_number
+          }).then(res => res.data),
+          repoCache.get(`${owner}/${repo}`, fetchRepository)
+        ]);
+
+        const type = 'pull_request' in issue
+          ? 'pull-request'
+          : 'issue';
+
+        store.updateIssue({
+          type,
+          repository,
+          ...issue
+        });
+
+        log.info(issueParams, 'synched issue');
+      } catch (error) {
+
+        log.warn(issueParams, 'failed to synchronize issue', error);
+
+        false && store.removeIssue(openIssue);
+      }
+    }
   }
 
   async function backgroundSync() {
 
-    log.info('synchronizing project');
+    log.info('syncing project');
 
     try {
       await doSync(repositories);
-      log.info('synchronized project');
+      log.info('synched project');
     } catch (error) {
-      log.warn('project sync failed', error);
+      log.warn('failed to sync project', error);
     }
   }
 
