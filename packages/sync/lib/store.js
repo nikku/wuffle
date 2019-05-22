@@ -2,6 +2,10 @@ const {
   groupBy
 } = require('min-dash');
 
+const {
+  issueIdent
+} = require('./util');
+
 
 class Store {
 
@@ -41,7 +45,7 @@ class Store {
       column
     };
 
-    this.log.info({ issue_id: id, column, order }, 'update');
+    this.log.info({ issue: issueIdent(issue), column, order }, 'update');
 
     this.insertOrUpdateIssue(issue);
 
@@ -86,7 +90,7 @@ class Store {
       id
     } = issue;
 
-    this.log.info({ issue_id: id }, 'remove');
+    this.log.info({ issue: issueIdent(issue) }, 'remove');
 
     this.issues = this.issues.filter(issue => issue.id === id);
 

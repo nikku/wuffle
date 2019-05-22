@@ -14,3 +14,14 @@ function repoAndOwner(issue) {
 }
 
 module.exports.repoAndOwner = repoAndOwner;
+
+
+function issueIdent(issue) {
+  const { owner, repo } = repoAndOwner(issue);
+
+  const { number } = issue;
+
+  return `${owner}/${repo}#${number}`;
+}
+
+module.exports.issueIdent = issueIdent;

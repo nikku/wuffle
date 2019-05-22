@@ -13,7 +13,8 @@ const {
 } = require('./search');
 
 const {
-  repoAndOwner
+  repoAndOwner,
+  issueIdent
 } = require('./meta');
 
 const crypto = require('crypto');
@@ -33,3 +34,5 @@ module.exports.linkTypes = linkTypes;
 module.exports.parseSearch = parseSearch;
 
 module.exports.repoAndOwner = repoAndOwner;
+
+module.exports.issueIdent = issueIdent;
