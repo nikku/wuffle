@@ -60,6 +60,7 @@ class Cache {
 
 module.exports.Cache = Cache;
 
+
 class KeepAliveCache extends Cache {
 
   get(key, defaultValue) {
