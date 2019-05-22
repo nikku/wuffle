@@ -174,17 +174,24 @@ module.exports = async (app, config, store) => {
   // one hour
   const syncInterval = 60 * 60 * 1000;
 
-  function checkSync() {
+  // five seconds
+  const checkInterval = 5000;
+
+
+  async function checkSync() {
 
     const now = Date.now();
 
     const lastSync = store.lastSync;
 
     if (typeof lastSync === 'undefined' || now - lastSync > syncInterval) {
-      store.lastSync = now;
 
-      backgroundSync();
+      await backgroundSync();
+
+      store.lastSync = now;
     }
+
+    setTimeout(checkSync, checkInterval);
   }
 
   // api ///////////////////
@@ -196,7 +203,7 @@ module.exports = async (app, config, store) => {
 
   if (config.backgroundSync === false || process.env.NODE_ENV !== 'test') {
 
-    // every hour
-    setInterval(checkSync, 5000);
+    // start synchronization check
+    checkSync();
   }
 };
