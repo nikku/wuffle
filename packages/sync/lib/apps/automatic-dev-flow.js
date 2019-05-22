@@ -1,8 +1,4 @@
 const {
-  Github
-} = require('../recorder');
-
-const {
   findLinks,
   linkTypes
 } = require('../util');
@@ -100,7 +96,7 @@ module.exports = async (app, config, store) => {
 
     const params = context.repo({ issue_number });
 
-    return Github(context.github).issues.get(params)
+    return context.github.issues.get(params)
       .then(response => response.data)
       .catch(error => {
         // gracefully handle not found
@@ -172,7 +168,7 @@ module.exports = async (app, config, store) => {
 
     log.info(params, 'update');
 
-    return Github(context.github).issues.update(params);
+    return context.github.issues.update(params);
   }
 
   app.onActive([
