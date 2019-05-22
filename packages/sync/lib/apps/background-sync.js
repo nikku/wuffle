@@ -105,14 +105,7 @@ module.exports = async (app, config, store) => {
     // those are either deleted or already closed
     // and we must manually retrieve them and update them
 
-    const openIssues = Object.keys(knownIssues).filter(k => !foundIssues[k]).map(k => knownIssues[k]);
-
-    console.log('open issues', openIssues.map(i => ({
-      ...repoAndOwner(i),
-      number: i.number,
-      type: i.type
-    })));
-
+    const openIssues = Object.keys(knownIssues).filter(k => !(k in foundIssues)).map(k => knownIssues[k]);
 
     for (const openIssue of openIssues) {
 
@@ -204,6 +197,6 @@ module.exports = async (app, config, store) => {
   if (config.backgroundSync === false || process.env.NODE_ENV !== 'test') {
 
     // start synchronization check
-    checkSync();
+    setTimeout(checkSync, checkInterval);
   }
 };
