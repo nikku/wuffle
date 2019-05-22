@@ -9,6 +9,10 @@
  */
 module.exports = async (app, config, store) => {
 
+  const log = app.log.child({
+    name: 'wuffle:org-auth'
+  });
+
   // cached data ///////////////////
 
   let authByLogin = {};
@@ -59,9 +63,17 @@ module.exports = async (app, config, store) => {
       return auth;
     }
 
+    log.info({ login }, 'fetching auth');
+
     auth = authByLogin[login] =
       getInstallationByLogin(login)
-        .then(installation => app.auth(installation.id));
+        .then(
+          installation => app.auth(installation.id),
+          error => {
+            log.error({ login }, 'failed to authenticate', error);
+            throw error;
+          }
+        );
 
     return auth;
   }
