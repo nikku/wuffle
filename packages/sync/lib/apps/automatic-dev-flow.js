@@ -265,6 +265,10 @@ module.exports = async (app, config, store) => {
 
   app.moveReferencedIssues = moveReferencedIssues;
 
+  app.getStateUpdate = getStateUpdate;
+
+  app.getAssigneeUpdate = getAssigneeUpdate;
+
 };
 
 
