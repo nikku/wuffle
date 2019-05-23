@@ -20,6 +20,8 @@ const loadConfig = require('./load-config');
 
 const Store = require('./store');
 
+const Columns = require('./columns');
+
 
 module.exports = async app => {
 
@@ -27,11 +29,13 @@ module.exports = async app => {
 
   const config = loadConfig();
 
+  const columns = new Columns(config.columns);
+
   const storeLog = app.log.child({
     name: 'wuffle:store'
   });
 
-  const store = new Store(config, storeLog);
+  const store = new Store(columns, storeLog);
 
 
   // public API ////////////////////

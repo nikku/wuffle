@@ -9,18 +9,20 @@ const {
 
 class Store {
 
-  constructor(config, log) {
+  constructor(columns, log) {
     this.issues = [];
 
     this.updates = new Updates();
 
     this.issueOrder = {};
 
-    this.columns = config.columns;
-
-    this.getIssueColumn = columnGetter(this.columns);
+    this.columns = columns;
 
     this.log = log;
+  }
+
+  getIssueColumn(issue) {
+    return this.columns.getForIssue(issue);
   }
 
   updateIssue(issue, column) {
@@ -279,39 +281,4 @@ function match(properties, filter) {
 
   }, true);
 
-}
-
-function columnGetter(columns) {
-
-  const defaultColumn = columns.find(c => c.isDefault) || columns[0];
-
-  return function(issue) {
-
-    const column = columns.find(column => {
-
-      // we'll fall back to the default column anyway
-      if (column === defaultColumn) {
-        return false;
-      }
-
-      const {
-        closed: columnClosed,
-        label: columnLabel
-      } = column;
-
-      const issueClosed = !!issue.closed_at;
-
-      if (issueClosed !== !!columnClosed) {
-        return false;
-      }
-
-      if (!columnLabel) {
-        return true;
-      }
-
-      return issue.labels.find(l => l.name === columnLabel);
-    });
-
-    return (column || defaultColumn).name;
-  };
 }
