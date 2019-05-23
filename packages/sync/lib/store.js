@@ -134,12 +134,12 @@ class Store {
     return -9999999999.89912;
   }
 
-  setOrder(issue, order) {
-    this.issueOrder[String(issue)] = order;
+  setOrder(issueId, order) {
+    this.issueOrder[String(issueId)] = order;
   }
 
-  getOrder(issue) {
-    return this.issueOrder[String(issue)];
+  getOrder(issueId) {
+    return this.issueOrder[String(issueId)];
   }
 
   _get(array, filter) {
