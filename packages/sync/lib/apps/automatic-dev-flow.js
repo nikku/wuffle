@@ -205,11 +205,7 @@ module.exports = async (app, config, store) => {
       pull_request
     } = context.payload;
 
-    const {
-      draft
-    } = pull_request;
-
-    const newState = draft ? IN_PROGRESS : NEEDS_REVIEW;
+    const newState = isDraft(pull_request) ? IN_PROGRESS : NEEDS_REVIEW;
 
     await Promise.all([
       moveIssue(context, pull_request, newState),
@@ -277,4 +273,13 @@ module.exports = async (app, config, store) => {
 
 function hasKeys(obj) {
   return Object.keys(obj).length > 0;
+}
+
+function isDraft(pull_request) {
+  const {
+    title,
+    draft
+  } = pull_request;
+
+  return draft || /wip([^a-z]+|$)/i.test(title);
 }
