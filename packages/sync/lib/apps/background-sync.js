@@ -3,8 +3,6 @@ const {
   Cache
 } = require('../util');
 
-const TTL = 10000;
-
 /**
  * This component performs a periodic background sync of a project.
  *
@@ -40,9 +38,24 @@ module.exports = async (app, config, store) => {
     }).then(res => res.data);
   }
 
+
+  function applyUpdate(issue, repository) {
+
+    const type = 'pull_request' in issue
+      ? 'pull-request'
+      : 'issue';
+
+    store.updateIssue({
+      type,
+      repository,
+      ...issue
+    });
+
+  }
+
   async function doSync(repositories) {
 
-    const repoCache = new Cache(TTL);
+    const repoCache = new Cache(-1);
 
     // get issues, keyed by id
     const knownIssues = store.getIssues().reduce((byId, issue) => {
@@ -57,7 +70,7 @@ module.exports = async (app, config, store) => {
     for (const repositoryName of repositories) {
       const [ owner, repo ] = repositoryName.split('/');
 
-      log.debug({ repositoryName }, 'syncing repository');
+      log.debug({ repositoryName }, 'syncing open issues');
 
       try {
         const github = await app.orgAuth(owner);
@@ -76,27 +89,19 @@ module.exports = async (app, config, store) => {
           repoCache.get(repositoryName, fetchRepository)
         ]);
 
-        // update issues in store
-        store.updateIssues(issues.map(issue => {
+        issues.forEach(issue => {
 
-          const type = 'pull_request' in issue
-            ? 'pull-request'
-            : 'issue';
+          // update in store
+          applyUpdate(issue, repository);
 
-          return {
-            type,
-            repository,
-            ...issue
-          };
+          // mark as found
+          foundIssues[issue.id] = issue;
+        });
 
-        }));
 
-        // mark all issues as found
-        issues.forEach(issue => foundIssues[issue.id] = issue);
-
-        log.info({ repositoryName }, 'synched repository');
+        log.info({ repositoryName }, 'synched open issues');
       } catch (error) {
-        log.warn({ repositoryName }, 'failed to synchronize repository', error);
+        log.warn({ repositoryName }, 'failed to synchronize open issues', error);
       }
 
     }
@@ -105,17 +110,19 @@ module.exports = async (app, config, store) => {
     // those are either deleted or already closed
     // and we must manually retrieve them and update them
 
-    const openIssues = Object.keys(knownIssues).filter(k => !(k in foundIssues)).map(k => knownIssues[k]);
+    const closedIssues = Object.keys(knownIssues).filter(k => !(k in foundIssues)).map(k => knownIssues[k]);
 
-    for (const openIssue of openIssues) {
+    for (const closedIssue of closedIssues) {
 
-      const { number: issue_number } = openIssue;
+      const { number: issue_number } = closedIssue;
 
-      const { repo, owner } = repoAndOwner(openIssue);
+      const { repo, owner } = repoAndOwner(closedIssue);
 
       const issueParams = { repo, owner, issue_number };
 
-      log.info(issueParams, 'syncing issue');
+      const issueContext = { issue: issueIdent(issueParams) };
+
+      log.info(issueContext, 'syncing issue');
 
       try {
         const github = await app.orgAuth(owner);
@@ -132,22 +139,16 @@ module.exports = async (app, config, store) => {
           repoCache.get(`${owner}/${repo}`, fetchRepository)
         ]);
 
-        const type = 'pull_request' in issue
-          ? 'pull-request'
-          : 'issue';
+        // update in store
+        applyUpdate(issue, repository);
 
-        store.updateIssue({
-          type,
-          repository,
-          ...issue
-        });
+        log.info(issueContext, 'synched issue');
 
-        log.info(issueParams, 'synched issue');
       } catch (error) {
 
-        log.warn(issueParams, 'failed to synchronize issue', error);
+        log.warn(issueContext, 'failed to synchronize issue', error);
 
-        false && store.removeIssue(openIssue);
+        false && store.removeIssue(closedIssue);
       }
     }
   }
@@ -199,4 +200,10 @@ module.exports = async (app, config, store) => {
     // start synchronization check
     setTimeout(checkSync, checkInterval);
   }
+
 };
+
+
+function issueIdent({ repo, owner, issue_number }) {
+  return `${owner}/${repo}#${issue_number}`;
+}
