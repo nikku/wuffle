@@ -55,7 +55,7 @@ Jump to [`localhost:3001/board`](http://localhost:3001/board) to inspect your ta
 ## Components
 
 * [board](./packages/board) - the task board front-end
-* [sync](./packages/sync) - the back-end and board API
+* [app](./packages/app) - the back-end and board API
 
 
 ## License
