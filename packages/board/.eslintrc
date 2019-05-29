@@ -11,7 +11,8 @@
     "react/react-in-jsx-scope": "error"
   },
   "plugins": [
-    "import"
+    "import",
+    "svelte3"
   ],
   "env": {
     "browser": true

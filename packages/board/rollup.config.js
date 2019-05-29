@@ -53,8 +53,8 @@ function classProcessor() {
     return {
       code
     };
-  }
-};
+  };
+}
 
 
 function emitProcessor() {
