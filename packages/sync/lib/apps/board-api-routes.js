@@ -11,7 +11,7 @@ const {
 
 
 /**
- * This component provides the board routes.
+ * This component provides the board API routes.
  *
  * @param {Application} app
  * @param {Object} config

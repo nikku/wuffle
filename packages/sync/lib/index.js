@@ -13,7 +13,7 @@ const apps = [
   require('./apps/background-sync'),
   require('./apps/automatic-dev-flow'),
   require('./apps/auth-routes'),
-  require('./apps/board-routes')
+  require('./apps/board-api-routes')
 ];
 
 const loadConfig = require('./load-config');
