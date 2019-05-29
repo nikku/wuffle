@@ -30,24 +30,3 @@ module.exports.cors = function cors(req, res, next) {
 
   next();
 };
-
-module.exports.safeAsync = function(fn) {
-
-  return function(req, res) {
-
-    const result = fn(req, res);
-
-    if ('catch' in result) {
-
-      return result.catch(error => {
-        console.error('Server error in route %s', req.path, error);
-
-        if (!res.headersSent) {
-          res.status(500);
-        }
-      });
-    }
-
-    return result;
-  };
-};

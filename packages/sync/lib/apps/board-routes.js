@@ -2,8 +2,7 @@ const bodyParser = require('body-parser').text();
 
 const {
   cors,
-  withSession,
-  safeAsync
+  withSession
 } = require('../middleware');
 
 const {
@@ -94,7 +93,7 @@ module.exports = async (app, config, store) => {
 
   // public endpoints ////////
 
-  app.router.get('/wuffle/cards', ...middlewares, safeAsync((req, res) => {
+  app.router.get('/wuffle/board/cards', ...middlewares, (req, res) => {
 
     const items = store.getBoard();
     const cursor = store.getUpdateHead().id;
@@ -106,10 +105,10 @@ module.exports = async (app, config, store) => {
         cursor
       });
     });
-  }));
+  });
 
 
-  app.router.get('/wuffle/board', ...middlewares, safeAsync((req, res) => {
+  app.router.get('/wuffle/board', ...middlewares, (req, res) => {
 
     const {
       columns,
@@ -125,19 +124,19 @@ module.exports = async (app, config, store) => {
       name: repositories[0] || 'empty'
     });
 
-  }));
+  });
 
 
-  app.router.get('/wuffle/updates', ...middlewares, safeAsync((req, res) => {
+  app.router.get('/wuffle/board/updates', ...middlewares, (req, res) => {
     const cursor = req.query.cursor;
 
     const updates = cursor ? store.getUpdates(cursor) : [];
 
     return filterUpdates(req, updates).then(filteredUpdates => res.json(filteredUpdates));
-  }));
+  });
 
 
-  app.router.post('/wuffle/issues/move', ...middlewares, bodyParser, safeAsync(async (req, res) => {
+  app.router.post('/wuffle/board/issues/move', ...middlewares, bodyParser, async (req, res) => {
 
     const login = app.getGitHubLogin(req);
 
@@ -189,6 +188,6 @@ module.exports = async (app, config, store) => {
     ]);
 
     res.json({});
-  }));
+  });
 
 };
