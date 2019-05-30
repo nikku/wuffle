@@ -489,7 +489,7 @@
         {#if user}
           <a href="/wuffle/logout">
             <Avatar title={ `Logout ${user.login}` } rounded>
-              <img src={ user.avatar_url } style="max-width: 100%" alt="Logged in user avatar" />
+              <img src="{ user.avatar_url }&s=40" style="max-width: 100%" alt="Logged in user avatar" />
             </Avatar>
           </a>
         {:else}
@@ -530,7 +530,8 @@
         {#if !collapsed[column.name] }
           <div class="taskboard-column-items" data-droppable-id={ column.name }>
             {#each (items[column.name] || []) as item, index (item.id) }
-              <Card {...item}
+              <Card
+                item={item}
                 data-draggable-id={ item.id }
                 data-draggable-index={ index }
               />

@@ -5,35 +5,29 @@
 
   import Tag from './components/Tag.svelte';
 
-  export let id;
-  export let number;
-  export let title;
-
-  export let repository;
-  export let milestone = null;
-  export let assignee = null;
-  export let labels = [];
-  export let pull_request = null;
+  export let item;
 
   export let className = '';
 
-  let otherProps, cardUrl;
+  $: id = item.id;
+  $: number = item.number;
+  $: title = item.title;
+  $: repository = item.repository;
+  $: milestone = item.milestone;
+  $: labels = item.labels;
+  $: pull_request = item.pull_request;
+
+  $: assignee = item.assignees[0];
+
+  $: cardUrl = `https://github.com/${ repository.full_name }/issues/${ number }`;
+
+  let otherProps;
 
   $: {
-
     let {
-      id,
-      number,
-      title,
-      repository,
-      milestone,
-      pull_request,
-      assignee,
-      labels,
+      item,
       ...rest
     } = $$props;
-
-    cardUrl = `https://github.com/${ repository.full_name }/issues/${ number }`;
 
     delete rest['class'];
 
@@ -100,7 +94,7 @@
       <span class="spacer"></span>
       {#if assignee}
         <span class="assignee" title="@{ assignee.login } assigned">
-          <img src={ assignee.avatar_url } alt="{ assignee.login } avatar" />
+          <img src="{ assignee.avatar_url }&s=40" alt="{ assignee.login } avatar" />
         </span>
       {/if}
     </div>
