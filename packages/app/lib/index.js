@@ -28,7 +28,9 @@ module.exports = async app => {
 
   // intialize ///////////////////
 
-  const config = loadConfig();
+  const log = app.log.child('wuffle');
+
+  const config = loadConfig(log);
 
   const columns = new Columns(config.columns);
 
@@ -49,6 +51,8 @@ module.exports = async app => {
   for (const appFn of apps) {
     await appFn(app, config, store);
   }
+
+  log.info('wuffle started');
 
 
   // behavior //////////////////////

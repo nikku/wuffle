@@ -7,15 +7,25 @@ const defaultColumns = [
   { name: 'Done', label: null, closed: true }
 ];
 
-module.exports = function loadConfig() {
+module.exports = function loadConfig(log) {
+
+  if (process.env.BOARD_CONFIG) {
+    try {
+      return JSON.parse(process.env.BOARD_CONFIG);
+    } catch (err) {
+      log.error('failed to load config from env.BOARD_CONFIG', err);
+    }
+  }
 
   try {
     return require('../wuffle.config.js');
   } catch (error) {
-    return {
-      columns: defaultColumns,
-      repositories: []
-    };
+    log.error('failed to load config from wuffle.config.js', err);
   }
+
+  return {
+    columns: defaultColumns,
+    repositories: []
+  };
 
 };
