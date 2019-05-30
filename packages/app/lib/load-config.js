@@ -20,7 +20,7 @@ module.exports = function loadConfig(log) {
   try {
     return require('../wuffle.config.js');
   } catch (error) {
-    log.error('failed to load config from wuffle.config.js', err);
+    log.error('failed to load config from wuffle.config.js', error);
   }
 
   return {
