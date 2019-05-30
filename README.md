@@ -43,13 +43,13 @@ npm install
 npm run dev
 ```
 
-#### First Time Setup
+## Setup
 
-Go to [`localhost:3000`](http://localhost:3000) to register your GitHub app.
+Execute the following steps to initially setup the app
 
-#### Inspect the Board
-
-Jump to [`localhost:3001/board`](http://localhost:3001/board) to inspect your task board.
+* Go to [`localhost:3000/probot`](http://localhost:3000/probot) to register your GitHub app
+* Update the created `packages/app/.env` file with additional details based on the [`.env.example`](packages/app/.env.example)
+* Create a `packages/app/wuffle.config.js` based on the [`wuffle.config.example.js`](packages/app/wuffle.config.example.js)
 
 
 ## Components
