@@ -3,8 +3,7 @@ const { URLSearchParams } = require('url');
 const fetch = require('node-fetch');
 
 const {
-  withSession,
-  cors
+  withSession
 } = require('../middleware');
 
 const {
@@ -26,8 +25,7 @@ const {
 module.exports = async (app, config, store) => {
 
   const middlewares = [
-    withSession,
-    cors
+    withSession
   ];
 
   const log = app.log.child({

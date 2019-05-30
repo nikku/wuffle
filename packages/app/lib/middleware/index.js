@@ -12,21 +12,3 @@ module.exports.withSession = require('express-session')({
     sameSite: false
   }
 });
-
-
-/**
- * A cors allowed middleware
- *
- * @param  {Function} fn handler to be wrapped
- *
- * @return {Function} wrapped fn
- */
-module.exports.cors = function cors(req, res, next) {
-
-  // enable cors
-  res.header('Access-Control-Allow-Origin', 'http://localhost:3001');
-  res.header('Access-Control-Allow-Credentials', 'true');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-
-  next();
-};

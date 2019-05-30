@@ -1,7 +1,6 @@
 const bodyParser = require('body-parser').text();
 
 const {
-  cors,
   withSession
 } = require('../middleware');
 
@@ -20,8 +19,7 @@ const {
 module.exports = async (app, config, store) => {
 
   const middlewares = [
-    withSession,
-    cors
+    withSession
   ];
 
   // endpoints ///////////////////
