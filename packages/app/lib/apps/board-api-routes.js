@@ -98,7 +98,7 @@ module.exports = async (app, config, store) => {
 
     return filterBoardItems(req, items).then(filteredItems => {
 
-      res.json({
+      res.type('json').json({
         items: filteredItems,
         cursor
       });
@@ -131,7 +131,7 @@ module.exports = async (app, config, store) => {
 
     const updates = cursor ? store.getUpdates(cursor) : [];
 
-    return filterUpdates(req, updates).then(filteredUpdates => res.json(filteredUpdates));
+    return filterUpdates(req, updates).then(filteredUpdates => res.type('json').json(filteredUpdates));
   });
 
 
@@ -186,7 +186,7 @@ module.exports = async (app, config, store) => {
       app.moveReferencedIssues(context, issue, column)
     ]);
 
-    res.json({});
+    res.type('json').json({});
   });
 
 };

@@ -3,6 +3,7 @@ const {
 } = require('./recorder');
 
 const apps = [
+  require('./apps/route-compression'),
   (
     process.env.S3_BUCKET
       ? require('./apps/dump-store-s3')

@@ -1,7 +1,5 @@
 const express = require('express');
 
-const compression = require('compression');
-
 const path = require('path');
 
 
@@ -15,10 +13,6 @@ const path = require('path');
 module.exports = async (app, config, store) => {
 
   const staticDirectory = path.join(__dirname, '..', '..', '..', 'board', 'public');
-
-  // landing page
-
-  app.router.use(compression());
 
   app.router.get('/', (req, res, next) => {
     res.redirect('/board');

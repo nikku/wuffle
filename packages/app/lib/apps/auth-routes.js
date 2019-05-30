@@ -140,11 +140,11 @@ module.exports = async (app, config, store) => {
     const token = githubAuth && githubAuth.access_token;
 
     if (githubProfile) {
-      return res.json(githubProfile);
+      return res.type('json').json(githubProfile);
     }
 
     if (!token) {
-      return res.json(null);
+      return res.type('json').json(null);
     }
 
     try {
@@ -157,11 +157,11 @@ module.exports = async (app, config, store) => {
         avatar_url: user.avatar_url
       };
 
-      return res.json(session.githubProfile);
+      return res.type('json').json(session.githubProfile);
     } catch (error) {
       log.warn(logContext, 'failed to retrieve GitHub profile', error);
 
-      return res.json(null);
+      return res.type('json').json(null);
     }
   });
 
