@@ -43,7 +43,7 @@
   let updating = 0;
   let error = false;
 
-  let filter = '';
+  let filter = parseSearchFilter();
   let user = null;
   let cursor = null;
 
@@ -51,13 +51,7 @@
 
   $: localStore.set(COLUMNS_COLLAPSED_KEY, collapsed);
 
-  $: fetchCards(filter);
-
-  $: history.push(`/board${buildQueryString(filter)}`);
-
   onMount(() => {
-
-    filter = parseSearchFilter();
 
     Promise.all([
       loginCheck(),
@@ -86,7 +80,16 @@
   });
 
   function filterChanged(value) {
+
+    if (value === filter) {
+      return;
+    }
+
     filter = value;
+
+    history.push(`/board${buildQueryString(filter)}`);
+
+    fetchCards(filter);
   }
 
   function parseSearchFilter() {
