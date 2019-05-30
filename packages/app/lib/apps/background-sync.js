@@ -195,7 +195,7 @@ module.exports = async (app, config, store) => {
 
   // behavior ///////////////
 
-  if (config.backgroundSync === false || process.env.NODE_ENV !== 'test') {
+  if (config.backgroundSync !== false && process.env.NODE_ENV !== 'test') {
 
     // start synchronization check
     setTimeout(checkSync, checkInterval);
