@@ -3,7 +3,11 @@ const {
 } = require('./recorder');
 
 const apps = [
-  require('./apps/dump-store'),
+  (
+    process.env.S3_BUCKET
+      ? require('./apps/dump-store-s3')
+      : require('./apps/dump-store')
+  ),
   require('./apps/on-active'),
   require('./apps/org-auth'),
   require('./apps/user-auth'),
