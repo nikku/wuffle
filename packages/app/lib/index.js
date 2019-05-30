@@ -28,7 +28,9 @@ module.exports = async app => {
 
   // intialize ///////////////////
 
-  const log = app.log.child('wuffle');
+  const log = app.log.child({
+    name: 'wuffle'
+  });
 
   const config = loadConfig(log);
 
