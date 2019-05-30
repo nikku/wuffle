@@ -46,6 +46,10 @@
 
   import { Icon } from './components';
 
+  import {
+    debounce
+  } from './util';
+
   import SearchIcon from './components/SearchIcon.svelte';
 
   export let className = '';
@@ -59,9 +63,9 @@
 
   const searchId = Id();
 
-  function handleInput(event) {
+  const handleInput = debounce((event) => {
     onChange && onChange(event.target.value);
-  }
+  }, 500);
 </script>
 
 <div class="input-prefixed board-filter { className } { expanded && 'expanded' }">

@@ -71,14 +71,12 @@
          rel="noopener noreferrer"
          class="issue-number"
       >{ number }</a>
-      <span className="repository" title={ repository.full_name }>{ repository.full_name }</span>
-      <span className="spacer"></span>
+      <span class="repository" title={ repository.full_name }>{ repository.full_name }</span>
+      <span class="spacer"></span>
       {#if assignee}
-        <a className="assignee" title="{ assignee.login } assigned" href="#">
+        <a class="assignee" title="{ assignee.login } assigned">
           <img src={ assignee.avatar_url } />
         </a>
-      {:else}
-        U
       {/if}
     </div>
     <div class="title">
@@ -90,7 +88,7 @@
       {/if}
 
       {#each labels as { name, color }}
-        <Tag class="tag label" color={ color } name={ name } />
+        <Tag class="tag label" color="#{ color }" name={ name } />
       {/each}
 
       <div class="links">

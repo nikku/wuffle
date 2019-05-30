@@ -6440,19 +6440,10 @@ a.text-dark:hover, a.text-dark:focus {
     border-color: #dee2e6; } }
 
 html {
-  font-size: .8rem; }
+  font-size: .9rem; }
 
-@media (min-width: 576px) {
-  html {
-    font-size: .9rem; } }
-
-@media (min-width: 768px) {
-  html {
-    font-size: .9rem; } }
-
-@media (min-width: 992px) {
-  html {
-    font-size: 1rem; } }
+.avatar img {
+  vertical-align: unset; }
 
 html, body {
   position: relative;

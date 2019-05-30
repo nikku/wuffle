@@ -4,10 +4,6 @@
   flex-direction: column;
 }
 
-.taskboard-header-login {
-  margin-right: 2px;
-}
-
 .taskboard-board {
   display: flex;
   flex: 1;
@@ -63,7 +59,7 @@
 .taskboard-column-collapsed .taskboard-column-collapse {
   float: right;
   padding: 12px 0;
-  margin-right: -3px;
+  margin-right: 6px;
 }
 
 .taskboard-column-collapsed .taskboard-column-header {

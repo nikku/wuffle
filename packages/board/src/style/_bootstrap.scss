@@ -44,8 +44,11 @@
 
 // theme customizations
 
-html {font-size: .8rem;}
+html {
+  font-size: .9rem;
+}
 
-@include media-breakpoint-up(sm) {html {font-size: .9rem;}}
-@include media-breakpoint-up(md) {html {font-size: .9rem;}}
-@include media-breakpoint-up(lg) {html {font-size: 1rem;}}
+
+.avatar img {
+  vertical-align: unset;
+}

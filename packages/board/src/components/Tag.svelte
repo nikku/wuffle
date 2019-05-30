@@ -32,13 +32,12 @@
 
 <style lang="scss">
   .tag {
-    font-size: 14px;
     list-style: none;
     display: inline-block;
     height: auto;
 
-    margin: 0 8px 0 0;
-    padding: 0 7px;
+    margin: 0 4px 4px 0;
+    padding: 1px 7px;
 
     font-size: 12px;
     line-height: 20px;

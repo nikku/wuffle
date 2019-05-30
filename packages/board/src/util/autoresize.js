@@ -9,7 +9,7 @@ export default function autoresize(node, params) {
     target.style.height = target.scrollHeight + offset + 'px';
   }
 
-  document.addEventListener('input', onInput);
+  node.addEventListener('input', onInput);
 
   return {
     destroy: function() {
