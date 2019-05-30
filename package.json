@@ -16,7 +16,7 @@
     "test": "NODE_ENV=test run-s test:*",
     "start:app": "cd packages/app && npm run start",
     "start": "run-p start:* -l",
-    "postinstall": "lerna bootstrap"
+    "postinstall": "NODE_ENV=development lerna bootstrap"
   },
   "devDependencies": {
     "eslint": "^5.16.0",
