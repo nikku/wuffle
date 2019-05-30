@@ -47,15 +47,40 @@
 
   @import "./Card";
 
-  .tag.label,
-  .tag.milestone {
+  :global(.tag).label,
+  :global(.tag).tag.milestone {
     margin-right: 4px;
     margin-bottom: 4px;
   }
 
-  .tag.milestone {
-    color: $gray-800;
+  :global(.tag).milestone {
+    color: $gray-800 !important;
     border: solid 1px $gray-600;
+  }
+
+  .assignee {
+    border-radius: 3px;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-size: 14px;
+    line-height: 1.5;
+    position: relative;
+    display: inline-block;
+    overflow: hidden;
+    text-align: center;
+    vertical-align: middle;
+
+    border-radius: 3px;
+
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+
+    img {
+      width: 100%;
+      height: 100%;
+    }
   }
 </style>
 
@@ -74,9 +99,9 @@
       <span class="repository" title={ repository.full_name }>{ repository.full_name }</span>
       <span class="spacer"></span>
       {#if assignee}
-        <a class="assignee" title="{ assignee.login } assigned">
-          <img src={ assignee.avatar_url } />
-        </a>
+        <span class="assignee" title="@{ assignee.login } assigned">
+          <img src={ assignee.avatar_url } alt="{ assignee.login } avatar" />
+        </span>
       {/if}
     </div>
     <div class="title">
@@ -84,7 +109,7 @@
     </div>
     <div class="footer">
       {#if milestone}
-        <Tag class="tag milestone" name={ milestone.name } />
+        <Tag class="tag milestone" name={ milestone.title } />
       {/if}
 
       {#each labels as { name, color }}
