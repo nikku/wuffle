@@ -112,7 +112,8 @@ module.exports = async (app, config, store) => {
 
     const {
       columns,
-      repositories
+      repositories,
+      name
     } = config;
 
     return res.json({
@@ -121,7 +122,7 @@ module.exports = async (app, config, store) => {
 
         return { name };
       }),
-      name: repositories[0] || 'empty'
+      name: name || repositories[0] || 'empty'
     });
 
   });
