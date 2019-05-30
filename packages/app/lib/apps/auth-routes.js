@@ -41,7 +41,7 @@ module.exports = async (app, config, store) => {
 
     const state = randomString();
 
-    const redirectTo = safeGetReferer(req, getClientBaseUrl(), '/board');
+    const redirectTo = safeGetReferer(req, '/board');
 
     req.session.login = {
       redirectTo,
@@ -63,7 +63,7 @@ module.exports = async (app, config, store) => {
    */
   app.router.get('/wuffle/logout', ...middlewares, (req, res) => {
 
-    const redirectTo = clientUrl('/board');
+    const redirectTo = safeGetReferer(req, '/board');
 
     return req.session.destroy(function(err) {
       return res.redirect(redirectTo);
@@ -207,11 +207,18 @@ function isChildUrl(url, base) {
   return url.startsWith(base);
 }
 
-function safeGetReferer(req, base, fallbackUrl) {
+function safeGetReferer(req, fallbackUrl) {
   const referer = req.get('referer');
 
-  if (referer && isChildUrl(referer, base)) {
-    return referer;
+  const base = getBaseUrl();
+
+  if (referer) {
+    if (
+      isChildUrl(referer, base) ||
+      isChildUrl(referer, getClientBaseUrl())
+    ) {
+      return referer;
+    }
   }
 
   return relativeUrl(base, fallbackUrl);
