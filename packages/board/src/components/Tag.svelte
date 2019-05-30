@@ -19,8 +19,6 @@
   export let color = '';
   export let className = '';
 
-  console.log(className);
-
   $: inverted = color && isLight(color);
 </script>
 
