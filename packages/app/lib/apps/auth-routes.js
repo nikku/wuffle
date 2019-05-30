@@ -187,16 +187,8 @@ function getBaseUrl() {
   return process.env.BASE_URL || 'http://localhost:3000';
 }
 
-function getClientBaseUrl() {
-  return process.env.CLIENT_BASE_URL || process.env.BASE_URL || 'http://localhost:3001';
-}
-
 function relativeUrl(baseUrl, location) {
   return `${baseUrl}${location}`;
-}
-
-function clientUrl(location) {
-  return relativeUrl(getClientBaseUrl(), location);
 }
 
 function appUrl(location) {
@@ -214,8 +206,7 @@ function safeGetReferer(req, fallbackUrl) {
 
   if (referer) {
     if (
-      isChildUrl(referer, base) ||
-      isChildUrl(referer, getClientBaseUrl())
+      isChildUrl(referer, base)
     ) {
       return referer;
     }
