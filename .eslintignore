@@ -1,2 +1,2 @@
 node_modules
-packages/board/build
+packages/board/public/*.js
