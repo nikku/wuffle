@@ -486,7 +486,7 @@
         {#if user}
           <a href="/wuffle/logout">
             <Avatar title={ `Logout ${user.login}` } rounded>
-              <img src={ user.avatar_url } style="max-width: 100%" />
+              <img src={ user.avatar_url } style="max-width: 100%" alt="Logged in user avatar" />
             </Avatar>
           </a>
         {:else}
