@@ -12,13 +12,21 @@ const path = require('path');
  */
 module.exports = async (app, config, store) => {
 
+  const staticDirectory = path.join(__dirname, '..', '..', '..', 'board', 'public');
+
   // landing page
 
   app.router.get('/', (req, res, next) => {
     res.redirect('/board');
   });
 
+  // board page
+
+  app.router.get('/board', (req, res, next) => {
+    res.sendFile(path.join(staticDirectory, 'index.html'));
+  });
+
   // static resources
 
-  app.router.use('/board', express.static(path.join(__dirname, '..', '..', '..', 'board', 'public')));
+  app.router.use('/board', express.static(staticDirectory));
 };
