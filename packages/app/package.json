@@ -26,6 +26,7 @@
   },
   "dependencies": {
     "body-parser": "^1.18.3",
+    "exit-hook2": "^1.0.8",
     "min-dash": "^3.4.0",
     "probot": "^9.2.8"
   },

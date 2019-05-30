@@ -1,5 +1,7 @@
 const fs = require('fs');
 
+const exitHook = require('exit-hook2');
+
 /**
  * This component restores a store dump on startup and periodically
  * persists the store to disc.
@@ -10,17 +12,50 @@ const fs = require('fs');
  */
 module.exports = async (app, config, store) => {
 
-  const log = app.log.child({
-    name: 'wuffle:dump-store'
-  });
-
-
   if (process.env.NODE_ENV !== 'development') {
     return;
   }
 
+  const log = app.log.child({
+    name: 'wuffle:dump-store'
+  });
+
   const storeLocation = 'tmp/storedump.json';
 
+  const params = { storeLocation };
+
+
+  // io helpers
+
+  function upload(dump) {
+
+    return new Promise((resolve, reject) => {
+      fs.writeFile(storeLocation, dump, 'utf8', function(err) {
+        if (err) {
+          reject(err);
+        } else {
+          resolve();
+        }
+      });
+    });
+  }
+
+  function download() {
+
+    return new Promise((resolve, reject) => {
+      fs.readFile(storeLocation, 'utf8', function(err, contents) {
+
+        if (err) {
+          reject(err);
+        } else {
+          resolve(contents);
+        }
+      });
+    });
+  }
+
+
+  // impl
 
   function dumpStore() {
 
@@ -36,45 +71,53 @@ module.exports = async (app, config, store) => {
       issueOrder
     });
 
-    log.info({ storeLocation }, 'success');
-
-    fs.writeFile(storeLocation, dump, 'utf8', function(err) {
-      if (err) {
-        return log.warn({ storeLocation }, 'error', err);
-      }
+    return upload(dump).then(() => {
+      log.info(params, 'dumped');
+    }).catch(err => {
+      log.error(params, 'dump failed', err);
     });
   }
 
   function restoreStore() {
 
-    fs.readFile(storeLocation, 'utf8', function(err, contents) {
+    return download().then(dump => {
 
-      if (err) {
-        return log.warn({ storeLocation }, 'restore failed', err);
-      }
+      const {
+        issues,
+        lastSync,
+        issueOrder
+      } = JSON.parse(dump);
 
-      try {
-        const {
-          issues,
-          lastSync,
-          issueOrder
-        } = JSON.parse(contents);
+      store.issues = issues || [];
+      store.lastSync = lastSync;
+      store.issueOrder = issueOrder || {};
 
-        store.issues = issues || [];
-        store.lastSync = lastSync;
-        store.issueOrder = issueOrder || {};
-
-        log.info({ storeLocation }, 'restored');
-      } catch (err) {
-        log.warn({ storeLocation }, 'restore failed', err);
-      }
+      log.info(params, 'restored');
+    }).catch(err => {
+      log.warn(params, 'restore failed', err);
     });
   }
 
-  // one minute
-  const dumpInterval = 1000 * 60 * 1;
+
+  // dump every three minutes
+  const dumpInterval = 1000 * 60 * 3;
 
   setInterval(dumpStore, dumpInterval);
 
-  restoreStore();
+  // dump on exit
+  exitHook(function(canCancel, signal, code) {
+
+    if (canCancel) {
+      exitHook.removeListener(this);
+
+      dumpStore().finally(() => {
+        process.exit(code);
+      });
+
+      return false;
+    }
+  });
+
+  // restore, initally
+  return restoreStore();
 };
