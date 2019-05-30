@@ -14,16 +14,14 @@
 
     &.shown {
       opacity: 1;
+
+      animation: pulsate 1s infinite;
+      animation-timing-function: ease-in-out;
     }
 
     &:not(.shown) {
       opacity: 0;
       pointer-events: none;
-    }
-
-    > * {
-      animation: pulsate 1s infinite;
-      animation-timing-function: ease-in-out;
     }
   }
 
@@ -47,8 +45,18 @@
 </style>
 
 <script>
+  import { onMount } from 'svelte';
+
   export let className = '';
-  export let shown = '';
+  export let shown = false;
+
+  let realShown = false;
+
+  onMount(() => {
+    realShown = shown;
+  });
+
+  $: realShown = shown;
 </script>
 
 <div class="loader { className }" class:shown={ shown }>
