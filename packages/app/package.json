@@ -27,12 +27,12 @@
   "dependencies": {
     "body-parser": "^1.18.3",
     "exit-hook2": "^1.0.8",
+    "express-session": "^1.16.1",
     "min-dash": "^3.4.0",
     "probot": "^9.2.8"
   },
   "devDependencies": {
     "chai": "^4.2.0",
-    "express-session": "^1.16.1",
     "mocha": "^6.1.4",
     "nock": "^10.0.0",
     "nodemon": "^1.18.11",
