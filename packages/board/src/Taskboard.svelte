@@ -292,7 +292,7 @@
 
     const sourceIndex = draggedCard.index;
 
-    const dropBeforeIndex = (droppedBeforeCard && droppedBeforeCard.index) || 0;
+    const dropBeforeIndex = droppedBeforeCard ? droppedBeforeCard.index : -1;
 
     const targetIndex = targetColumn.id === sourceColumn.id && dropBeforeIndex > sourceIndex
       ? dropBeforeIndex - 1
@@ -342,6 +342,10 @@
   }
 
   function getNeightbors(column, itemIndex) {
+
+    if (itemIndex === -1) {
+      itemIndex = column.length - 1;
+    }
 
     const after = itemIndex > 0 ? column[itemIndex - 1].id : null;
     const before = itemIndex < column.length - 1 ? column[itemIndex + 1].id : null;
@@ -402,9 +406,12 @@
     const fromList = Array.from(lists[source.column] || []);
     const toList = source.column === destination.column ? fromList : Array.from(lists[destination.column] || []);
 
-    const [removed] = fromList.splice(source.index, 1);
+    const fromIndex = source.index;
+    const toIndex = destination.index;
 
-    toList.splice(destination.index, 0, removed);
+    const [removed] = fromList.splice(fromIndex === -1 ? fromList.length - 1 : fromIndex, 1);
+
+    toList.splice(toIndex === -1 ? toList.length : toIndex, 0, removed);
 
     return {
       [ source.column ]: fromList,
