@@ -1,8 +1,5 @@
-const {
-  record
-} = require('./recorder');
-
 const apps = [
+  require('./apps/log-events'),
   require('./apps/route-compression'),
   (
     process.env.S3_BUCKET
@@ -60,30 +57,5 @@ module.exports = async app => {
   }
 
   log.info('wuffle started');
-
-
-  // behavior //////////////////////
-
-  if (process.env.NODE_ENV === 'development') {
-
-    app.on('*', async context => {
-      const {
-        event,
-        payload
-      } = context;
-
-      const {
-        action
-      } = payload;
-
-      const eventName = action ? `${event}.${action}` : event;
-
-      record(eventName, {
-        type: 'event',
-        payload
-      });
-    });
-
-  }
 
 };
