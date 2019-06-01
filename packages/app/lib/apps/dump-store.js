@@ -109,8 +109,8 @@ module.exports = async (app, config, store) => {
   }
 
 
-  // dump every three minutes
-  const dumpInterval = 1000 * 60 * 3;
+  // dump every 30 seconds
+  const dumpInterval = 1000 * 30;
 
   setInterval(dumpStore, dumpInterval);
 
