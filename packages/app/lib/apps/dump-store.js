@@ -69,7 +69,7 @@ module.exports = async (app, config, store) => {
       issues,
       lastSync,
       issueOrder
-    });
+    }, null, '  ');
 
     return upload(dump).then(() => {
       log.info(params, 'dumped');
