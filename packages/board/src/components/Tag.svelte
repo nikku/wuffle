@@ -38,6 +38,8 @@
     padding: 1px 7px;
 
     font-size: 12px;
+    font-weight: 500;
+
     line-height: 20px;
     white-space: nowrap;
     cursor: default;
