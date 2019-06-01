@@ -49,7 +49,7 @@ class Store {
 
     this.log.info({ issue: issueIdent(issue), column, order }, 'update');
 
-    this.insertOrUpdateIssue(issue);
+    issue = this.insertOrUpdateIssue(issue);
 
     this.updates.add(issue.id, { type: 'update', issue });
   }
@@ -75,6 +75,16 @@ class Store {
     const currentIdx = issues.findIndex(issue => issue.id === id);
 
     if (currentIdx !== -1) {
+      const existingIssue = issues[currentIdx];
+
+      // merge issue with existing data as we may receive a update
+      // (i.e. issue data for a pull request) only
+      issue = {
+        ...existingIssue,
+        ...issue
+      };
+
+      // remove existing issue
       issues.splice(currentIdx, 1);
     }
 
@@ -85,6 +95,8 @@ class Store {
     } else {
       issues.push(issue);
     }
+
+    return issue;
   }
 
   removeIssue(issue) {
