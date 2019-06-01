@@ -81,6 +81,23 @@ module.exports = async (app, config, store) => {
 
         return assignees.some(assignee => assignee.login === name);
       };
+    },
+
+    reviewer: function reviewerFilter(name) {
+
+      return function filterAssignee(issue) {
+
+        const {
+          requested_reviewers
+        } = issue;
+
+        // issues do not have reviewers
+        if (!requested_reviewers) {
+          return false;
+        }
+
+        return requested_reviewers.some(reviewer => reviewer.login === name);
+      };
     }
   };
 
