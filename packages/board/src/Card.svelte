@@ -21,7 +21,9 @@
 
   $: requested_reviewers = item.requested_reviewers || [];
 
-  $: cardUrl = `https://github.com/${ repository.full_name }/issues/${ number }`;
+  $: repositoryName = `${repository.owner.login}/${repository.name}`;
+
+  $: cardUrl = `https://github.com/${ repositoryName }/issues/${ number }`;
 
   let otherProps;
 
@@ -104,7 +106,7 @@
          rel="noopener noreferrer"
          class="issue-number"
       >{ number }</a>
-      <span class="repository" title={ repository.full_name }>{ repository.full_name }</span>
+      <span class="repository" title={ repositoryName }>{ repositoryName }</span>
       <span class="spacer"></span>
 
       {#each assignees as assignee}
