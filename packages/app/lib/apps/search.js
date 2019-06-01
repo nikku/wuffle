@@ -98,7 +98,7 @@ module.exports = async (app, config, store) => {
 
     reviewer: function reviewerFilter(name) {
 
-      return function filterAssignee(issue) {
+      return function filterReviewer(issue) {
 
         const {
           requested_reviewers
