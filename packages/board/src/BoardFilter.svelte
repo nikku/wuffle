@@ -79,6 +79,7 @@
     type="search"
     placeholder="Filter board"
     id={searchId}
+    autocomplete="off"
     aria-label="Filter"
     bind:value={ value }
     on:input={ handleInput }
