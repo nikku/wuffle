@@ -1,3 +1,12 @@
+const {
+  filterIssue,
+  filterPull,
+  filterIssueOrPull,
+  getIdentifier
+} = require('../filters');
+
+
+
 /**
  * This component updates the stored issues based on GitHub events.
  *
@@ -18,18 +27,12 @@ module.exports = async (app, config, store) => {
       repository
     } = payload;
 
-    store.updateIssue({
-      type: 'issue',
-      ...issue,
-      repository
-    });
+    store.updateIssue(filterIssue(issue, repository));
   });
 
   app.onActive([
     'issues.labeled',
     'issues.unlabeled',
-    'issues.milestoned',
-    'issues.demilestoned',
     'issues.assigned',
     'issues.unassigned',
     'issues.edited',
@@ -40,26 +43,36 @@ module.exports = async (app, config, store) => {
       repository
     } = payload;
 
-    store.updateIssue({
-      type: 'issue',
-      ...issue,
-      repository
-    });
+    store.updateIssue(filterIssue(issue, repository));
   });
 
+  // available for issues only, we must manually
+  // fetch the related pull request
   app.onActive([
-    'issues.deleted'
+    'issues.milestoned',
+    'issues.demilestoned',
   ], async ({ payload }) => {
+
     const {
       issue,
       repository
     } = payload;
 
-    store.removeIssue({
-      type: 'issue',
-      ...issue,
+    store.updateIssue(filterIssueOrPull(issue, repository));
+  });
+
+  app.onActive([
+    'issues.deleted'
+  ], async ({ payload }) => {
+
+    const {
+      issue,
       repository
-    });
+    } = payload;
+
+    const id = getIdentifier(issue, repository);
+
+    store.removeIssue(id);
   });
 
   // pull requests //////////////////
@@ -73,11 +86,7 @@ module.exports = async (app, config, store) => {
       repository
     } = payload;
 
-    store.updateIssue({
-      type: 'pull-request',
-      ...pull_request,
-      repository
-    });
+    store.updateIssue(filterPull(pull_request, repository));
   });
 
   app.onActive([
@@ -94,11 +103,7 @@ module.exports = async (app, config, store) => {
       repository
     } = payload;
 
-    store.updateIssue({
-      type: 'pull-request',
-      ...pull_request,
-      repository
-    });
+    store.updateIssue(filterPull(pull_request, repository));
   });
 
 };

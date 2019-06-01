@@ -1,4 +1,10 @@
 const {
+  filterIssue,
+  filterPull,
+  filterIssueOrPull
+} = require('../filters');
+
+const {
   repoAndOwner,
   Cache
 } = require('../util');
@@ -38,21 +44,6 @@ module.exports = async (app, config, store) => {
     }).then(res => res.data);
   }
 
-
-  function applyUpdate(issue, repository) {
-
-    const type = 'pull_request' in issue
-      ? 'pull-request'
-      : 'issue';
-
-    store.updateIssue({
-      type,
-      repository,
-      ...issue
-    });
-
-  }
-
   async function doSync(repositories) {
 
     const repoCache = new Cache(-1);
@@ -77,6 +68,7 @@ module.exports = async (app, config, store) => {
 
         const [
           issues,
+          pull_requests,
           repository
         ] = await Promise.all([
           github.paginate(
@@ -86,18 +78,40 @@ module.exports = async (app, config, store) => {
             }),
             res => res.data
           ),
+          github.paginate(
+            github.pulls.list.endpoint.merge({
+              owner,
+              repo
+            }),
+            res => res.data
+          ),
           repoCache.get(repositoryName, fetchRepository)
         ]);
 
-        issues.forEach(issue => {
+        for (const issue of issues) {
 
-          // update in store
-          applyUpdate(issue, repository);
+          // ignore pull request issues with incomplete data
+          if (issue.pull_request) {
+            continue;
+          }
+
+          const update = filterIssue(issue, repository);
+
+          store.updateIssue(update);
 
           // mark as found
-          foundIssues[issue.id] = issue;
-        });
+          foundIssues[update.id] = update;
+        }
 
+        for (const pull_request of pull_requests) {
+
+          const update = filterPull(pull_request, repository);
+
+          store.updateIssue(update);
+
+          // mark as found
+          foundIssues[update.id] = true;
+        }
 
         log.info({ repositoryName }, 'synched open issues');
       } catch (error) {
@@ -114,11 +128,14 @@ module.exports = async (app, config, store) => {
 
     for (const closedIssue of closedIssues) {
 
-      const { number: issue_number } = closedIssue;
+      const key = closedIssue.pull_request ? 'pull_number' : 'issue_number';
+      const endpoint = closedIssue.pull_request ? 'pulls' : 'issues';
+
+      const { number } = closedIssue;
 
       const { repo, owner } = repoAndOwner(closedIssue);
 
-      const issueParams = { repo, owner, issue_number };
+      const issueParams = { repo, owner, [key]: number };
 
       const issueContext = { issue: issueIdent(issueParams) };
 
@@ -131,16 +148,17 @@ module.exports = async (app, config, store) => {
           issue,
           repository
         ] = await Promise.all([
-          github.issues.get({
+          github[endpoint].get({
             owner,
             repo,
-            issue_number
+            [key]: number
           }).then(res => res.data),
           repoCache.get(`${owner}/${repo}`, fetchRepository)
         ]);
 
-        // update in store
-        applyUpdate(issue, repository);
+        const update = filterIssueOrPull(issue, repository);
+
+        store.updateIssue(update);
 
         log.info(issueContext, 'synched issue');
 
