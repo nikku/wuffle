@@ -1,3 +1,5 @@
+@import "variables";
+
 .taskboard {
   height: 100vh;
   display: flex;
@@ -41,7 +43,7 @@
 }
 
 .taskboard-column-collapse {
-  color: #999;
+  color: $gray-600;
   float: left;
   padding: 0 12px;
   line-height: 2.4em;
@@ -74,23 +76,11 @@
 }
 
 .taskboard-column-issue-count {
-  color: #37ACC8;
+  color: $primary;
   display: inline-block;
   padding: 0 5px;
 }
 
-
-/* basic styles */
-
-.ant-input-group.ant-input-group-compact.with-addon {
-  display: inline-table;
-  width: auto;
-}
-
-.ant-input-group.ant-input-group-compact.with-addon .ant-input-group-addon {
-  display: table-cell;
-  vertical-align: middle;
-}
 
 .taskboardError {
 
@@ -105,7 +95,7 @@
 
     h2 {
       margin-top: 20px;
-      color: #555;
+      color: $gray-700;
     }
   }
 
