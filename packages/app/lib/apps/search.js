@@ -131,7 +131,7 @@ module.exports = async (app, config, store) => {
         value
       } = term;
 
-      return (filters[qualifier] || noopFilter)(value);
+      return (value && filters[qualifier] || noopFilter)(value);
     });
 
     return function(issue) {
