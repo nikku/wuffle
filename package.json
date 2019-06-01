@@ -1,7 +1,7 @@
 {
   "name": "wuffle",
   "description": "A task board for GitHub issues",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "license": "MIT",
   "scripts": {
     "all": "run-s lint test build",
