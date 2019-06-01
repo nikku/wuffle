@@ -20,6 +20,10 @@ module.exports = async (app, config, store) => {
     return filterNoop;
   }
 
+  function fuzzyMatches(actual, pattern) {
+    return pattern && actual.toLowerCase().startsWith(pattern.toLowerCase());
+  }
+
   const filters = {
 
     text: function textFilter(text) {
@@ -29,7 +33,7 @@ module.exports = async (app, config, store) => {
       return function filterText(issue) {
         const issueText = `#${issue.number} ${issue.title}\n\n${issue.body}`.toLowerCase();
 
-        return issueText.includes(text);
+        return issueText.includes(text.toLowerCase());
       };
 
     },
@@ -55,7 +59,16 @@ module.exports = async (app, config, store) => {
 
         const { labels } = issue;
 
-        return labels && labels.some(label => label.name === name);
+        return labels && labels.some(label => fuzzyMatches(label.name, name));
+      };
+    },
+
+    repo: function repoFilter(name) {
+      return function filterRepo(issue) {
+
+        const { repository } = issue;
+
+        return fuzzyMatches(repository.name, name);
       };
     },
 
@@ -67,7 +80,7 @@ module.exports = async (app, config, store) => {
           milestone
         } = issue;
 
-        return milestone && milestone.title === name;
+        return milestone && fuzzyMatches(milestone.title, name);
       };
     },
 
@@ -79,7 +92,7 @@ module.exports = async (app, config, store) => {
           assignees
         } = issue;
 
-        return assignees.some(assignee => assignee.login === name);
+        return assignees.some(assignee => fuzzyMatches(assignee.login, name));
       };
     },
 
@@ -96,7 +109,7 @@ module.exports = async (app, config, store) => {
           return false;
         }
 
-        return requested_reviewers.some(reviewer => reviewer.login === name);
+        return requested_reviewers.some(reviewer => fuzzyMatches(reviewer.login, name));
       };
     }
   };
