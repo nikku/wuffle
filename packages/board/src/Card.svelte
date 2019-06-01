@@ -17,7 +17,9 @@
   $: labels = item.labels;
   $: pull_request = item.pull_request;
 
-  $: assignee = item.assignees[0];
+  $: assignees = item.assignees;
+
+  $: requested_reviewers = item.requested_reviewers || [];
 
   $: cardUrl = `https://github.com/${ repository.full_name }/issues/${ number }`;
 
@@ -61,10 +63,8 @@
     line-height: 1.5;
     position: relative;
     display: inline-block;
-    overflow: hidden;
     text-align: center;
     vertical-align: middle;
-
     border-radius: 3px;
 
     width: 20px;
@@ -75,7 +75,21 @@
       width: 100%;
       height: 100%;
     }
+
+    &.reviewer:before {
+      content: '';
+      display: block;
+      background: $warning;
+      width: 12px;
+      height: 12px;
+      border: solid 2px white;
+      border-radius: 50%;
+      position: absolute;
+      top: -3px;
+      right: -3px;
+    }
   }
+
 </style>
 
 <div class="board-card-container { className }" { ...otherProps }>
@@ -92,11 +106,18 @@
       >{ number }</a>
       <span class="repository" title={ repository.full_name }>{ repository.full_name }</span>
       <span class="spacer"></span>
-      {#if assignee}
-        <span class="assignee" title="@{ assignee.login } assigned">
+
+      {#each assignees as assignee}
+        <span class="assignee" title="{ assignee.login } assigned">
           <img src="{ assignee.avatar_url }&s=40" alt="{ assignee.login } avatar" />
         </span>
-      {/if}
+      {/each}
+
+      {#each requested_reviewers as reviewer}
+        <span class="assignee reviewer" title="{ reviewer.login } requested for review">
+          <img src="{ reviewer.avatar_url }&s=40" alt="{ reviewer.login } avatar" />
+        </span>
+      {/each}
     </div>
     <div class="title">
       <textarea use:autoresize>{ title }</textarea>
