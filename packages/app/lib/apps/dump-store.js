@@ -1,4 +1,7 @@
 const fs = require('fs');
+const path = require('path');
+
+const mkdirp = require('mkdirp');
 
 const exitHook = require('exit-hook2');
 
@@ -30,11 +33,18 @@ module.exports = async (app, config, store) => {
   function upload(dump) {
 
     return new Promise((resolve, reject) => {
-      fs.writeFile(storeLocation, dump, 'utf8', function(err) {
+      mkdirp(path.dirname(storeLocation), function(err) {
+
         if (err) {
           reject(err);
         } else {
-          resolve();
+          fs.writeFile(storeLocation, dump, 'utf8', function(err) {
+            if (err) {
+              reject(err);
+            } else {
+              resolve();
+            }
+          });
         }
       });
     });
