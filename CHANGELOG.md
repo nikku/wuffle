@@ -6,7 +6,7 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 ___Note:__ Yet to be released changes appear here._
 
-## v0.3.0
+## 0.3.0
 
 #### General
 
