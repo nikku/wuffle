@@ -180,6 +180,42 @@ class Store {
   getUpdates(cursor) {
     return this.updates.getSince(cursor);
   }
+
+  /**
+   * Serialize store contents to JSON so that it can
+   * later be loaded via #loadJSON.
+   */
+  toJSON() {
+
+    const {
+      issues,
+      lastSync,
+      issueOrder
+    } = this;
+
+    return JSON.stringify({
+      issues,
+      lastSync,
+      issueOrder
+    });
+  }
+
+  /**
+   * Load a JSON object, previously serialized via Store#toJSON.
+   */
+  loadJSON(json) {
+
+    const {
+      issues,
+      lastSync,
+      issueOrder
+    } = JSON.parse(json);
+
+    this.issues = issues || [];
+    this.lastSync = lastSync;
+    this.issueOrder = issueOrder || {};
+  }
+
 }
 
 

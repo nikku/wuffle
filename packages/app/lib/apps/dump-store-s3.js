@@ -75,19 +75,7 @@ module.exports = async (app, config, store) => {
 
   function dumpStore() {
 
-    const {
-      issues,
-      lastSync,
-      issueOrder
-    } = store;
-
-    const dump = JSON.stringify({
-      issues,
-      lastSync,
-      issueOrder
-    });
-
-    return upload(dump).then(() => {
+    return upload(store.toJSON()).then(() => {
       log.info(params, 'dumped');
     }).catch(err => {
       log.error(params, 'dump failed', err);
@@ -98,15 +86,7 @@ module.exports = async (app, config, store) => {
 
     return download().then(dump => {
 
-      const {
-        issues,
-        lastSync,
-        issueOrder
-      } = JSON.parse(dump);
-
-      store.issues = issues || [];
-      store.lastSync = lastSync;
-      store.issueOrder = issueOrder || {};
+      store.loadJSON(dump);
 
       log.info(params, 'restored');
     }).catch(err => {
