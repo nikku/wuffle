@@ -24,6 +24,7 @@
   import { onMount } from 'svelte';
 
   const COLUMNS_COLLAPSED_KEY = 'Taskboard_columns_collapsed_state';
+  const POLL_KEY = 'Taskboard_polling';
 
   const api = new Api();
   const localStore = createLocalStore();
@@ -63,12 +64,14 @@
       loading = false;
     });
 
+    const poll = localStore.get(POLL_KEY, true);
+
     const teardownHooks = [
       // poll for issue updates every three seconds
-      periodic(pollUpdates, 1000 * 3),
+      poll && periodic(pollUpdates, 1000 * 3),
 
       // check login every 1 minutes
-      periodic(loginCheck, 1000 * 60 * 1),
+      poll && periodic(loginCheck, 1000 * 60 * 1),
 
       // hook into history changes
       history.onPop(() => {
@@ -76,7 +79,7 @@
       })
     ];
 
-    return () => teardownHooks.forEach(fn => fn());
+    return () => teardownHooks.forEach(fn => fn && fn());
   });
 
   function filterChanged(value) {
@@ -264,7 +267,7 @@
     const dataset = el.dataset;
 
     return {
-      id: parseInt(dataset.draggableId, 10),
+      id: dataset.draggableId,
       index: parseInt(dataset.draggableIndex, 10)
     };
   }
