@@ -66,8 +66,24 @@ class Store {
 
     const {
       id,
-      order
+      order,
+      labels
     } = issue;
+
+    issue = {
+      ...issue,
+      labels: labels.map(label => {
+
+        if (this.columns.isColumnLabel(label.name)) {
+          return {
+            ...label,
+            column_label: true
+          };
+        }
+
+        return label;
+      })
+    };
 
     const issues = this.issues;
 

@@ -11,11 +11,23 @@ class Columns {
   constructor(columns) {
     this.columns = columns;
 
+    this.columnLabels = columns.reduce((labels, column) => {
+      if (column.label) {
+        labels[column.label] = true;
+      }
+
+      return labels;
+    }, {});
+
     this._getter = columnGetter(columns);
   }
 
   getForIssue(issue) {
     return this._getter(issue);
+  }
+
+  isColumnLabel(label) {
+    return this.columnLabels[label];
   }
 }
 

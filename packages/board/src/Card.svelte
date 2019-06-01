@@ -14,7 +14,7 @@
   $: title = item.title;
   $: repository = item.repository;
   $: milestone = item.milestone;
-  $: labels = item.labels;
+  $: labels = item.labels.filter(l => !l.column_label);
   $: pull_request = item.pull_request;
 
   $: assignees = item.assignees;
