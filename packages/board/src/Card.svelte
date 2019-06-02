@@ -4,6 +4,7 @@
   } from './util';
 
   import Tag from './components/Tag.svelte';
+  import PullRequestIcon from './components/PullRequestIcon.svelte';
 
   import CardLink from './CardLink.svelte';
 
@@ -74,7 +75,7 @@
   <div class="board-card">
     <div class="header">
       {#if pull_request}
-        PR
+        <PullRequestIcon item={ item } />
       {/if}
 
       <a href={ cardUrl }
