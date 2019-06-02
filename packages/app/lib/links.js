@@ -110,6 +110,34 @@ class Links {
     this.links[sourceId] = {};
   }
 
+  /**
+   * Serialize data to JSON so that it can
+   * later be loaded via #loadJSON.
+   */
+  asJSON() {
+    const {
+      links,
+      inverseLinks
+    } = this;
+
+    return JSON.stringify({
+      links,
+      inverseLinks
+    });
+  }
+
+  /**
+   * Load a JSON object, previously serialized via Links#toJSON.
+   */
+  loadJSON(json) {
+    const {
+      links,
+      inverseLinks
+    } = JSON.parse(json);
+
+    this.links = links || {};
+    this.inverseLinks = inverseLinks || {};
+  }
 }
 
 
