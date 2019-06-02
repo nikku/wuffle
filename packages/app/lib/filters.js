@@ -222,7 +222,7 @@ function filterIssue(issue, repository) {
     milestone: milestone ? filterMilestone(milestone) : null,
     comments,
     repository: filterRepository(repository),
-    pull_request: pull_request && true
+    pull_request: !!pull_request
   };
 
 }
