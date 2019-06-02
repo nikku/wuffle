@@ -6,6 +6,18 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 ___Note:__ Yet to be released changes appear here._
 
+## 0.4.0
+
+#### General
+
+* `FEAT`: remove issues that failed to synchronize during background sync
+* `FEAT`: parse and publish issue links
+
+#### Board
+
+* `FEAT`: collapse issue and closing PR into single card
+* `FEAT`: add pull request icon
+
 ## 0.3.0
 
 #### General
