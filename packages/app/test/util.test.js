@@ -11,7 +11,7 @@ const {
 const {
   PARENT_OF,
   CHILD_OF,
-  REQUIRES,
+  DEPENDS_ON,
   REQUIRED_BY,
   RELATED_TO,
   CLOSES
@@ -42,27 +42,27 @@ describe('util', function() {
       // then
       expect(links).to.eql([
         {
-          type: REQUIRES, number: 1
+          type: DEPENDS_ON, number: 1
         },
         {
-          type: REQUIRES, number: 2
+          type: DEPENDS_ON, number: 2
         },
         {
-          type: REQUIRES, number: 3
+          type: DEPENDS_ON, number: 3
         },
         {
-          type: REQUIRES, number: 4
+          type: DEPENDS_ON, number: 4
         },
         {
-          type: REQUIRES, number: 5,
+          type: DEPENDS_ON, number: 5,
           owner: 'foo', repo: 'bar',
         },
         {
-          type: REQUIRES, number: 6,
+          type: DEPENDS_ON, number: 6,
           owner: 'foo', repo: 'bar'
         },
         {
-          type: REQUIRES, number: 1828,
+          type: DEPENDS_ON, number: 1828,
           owner: 'foo', repo: 'bar'
         }
       ]);
