@@ -4,20 +4,6 @@
 </script>
 
 <style>
-  i {
-    display: inline-block;
-    color: inherit;
-    font-style: normal;
-    line-height: 0;
-    text-align: center;
-    text-transform: none;
-  }
-
-  i > * {
-    display: inline-block;
-    line-height: 1;
-  }
-
   .avatar {
     position: relative;
     display: inline-block;
