@@ -131,7 +131,7 @@ module.exports = async (app, config, store) => {
       const key = closedIssue.pull_request ? 'pull_number' : 'issue_number';
       const endpoint = closedIssue.pull_request ? 'pulls' : 'issues';
 
-      const { number } = closedIssue;
+      const { id, number } = closedIssue;
 
       const { repo, owner } = repoAndOwner(closedIssue);
 
@@ -166,7 +166,7 @@ module.exports = async (app, config, store) => {
 
         log.warn(issueContext, 'failed to synchronize issue', error);
 
-        false && store.removeIssue(closedIssue);
+        store.removeIssueById(id);
       }
     }
   }
