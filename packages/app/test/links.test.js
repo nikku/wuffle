@@ -104,7 +104,7 @@ describe('links', function() {
   });
 
 
-  it('should JSON.stringify and restore', function() {
+  it('should export to JSON and restore', function() {
 
     // given
     const links = new Links();
@@ -113,9 +113,10 @@ describe('links', function() {
     links.addLink(1, 3, LinkTypes.LINKED_TO);
 
     // when
-    const data = JSON.parse(JSON.stringify(links, null, '  '));
+    const data = links.asJSON();
 
-    const clonedLinks = new Links(data);
+    const clonedLinks = new Links();
+    clonedLinks.loadJSON(data);
 
     // when
     const issueLinks = clonedLinks.getBySource(1);
