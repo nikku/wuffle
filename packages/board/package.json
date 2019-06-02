@@ -1,6 +1,7 @@
 {
   "name": "wuffle-board",
   "version": "0.3.0",
+  "private": true,
   "devDependencies": {
     "@fortawesome/fontawesome-free": "^5.8.2",
     "bootstrap": "^4.3.1",
