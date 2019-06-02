@@ -42,15 +42,19 @@ class Links {
   addLink(sourceId, targetId, linkType) {
 
     if (!LinkTypes[linkType]) {
-      throw new Error('unrecognized link type');
+      throw new Error(`unrecognized link type <${linkType}>`);
     }
+
+    const key = `${targetId}-${linkType}`;
 
     const links = this.links[sourceId] = (this.links[sourceId] || {});
 
-    links[`${targetId}-${linkType}`] = {
+    const link = {
       targetId,
       type: linkType
     };
+
+    links[key] = link;
 
     const inverseLinkType = InverseLinkTypes[linkType];
 
@@ -64,6 +68,10 @@ class Links {
       };
     }
 
+    return {
+      key,
+      link
+    };
   }
 
   /**
@@ -111,7 +119,7 @@ class Links {
 
     this.links[sourceId] = {};
 
-    return Object.values(links);
+    return links;
   }
 
   /**
