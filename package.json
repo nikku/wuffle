@@ -14,6 +14,8 @@
     "test:app": "cd packages/app && npm test",
     "test:board": "cd packages/board && npm test",
     "test": "NODE_ENV=test run-s test:*",
+    "auto-test:app": "cd packages/app && npm run auto-test",
+    "auto-test": "NODE_ENV=test run-s auto-test:*",
     "start": "cd packages/app && npm run start",
     "postinstall": "NODE_ENV=development lerna bootstrap"
   },
