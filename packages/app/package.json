@@ -23,7 +23,7 @@
     "dev": "nodemon",
     "start": "probot run ./index.js",
     "test": "mocha test --exit",
-    "test:watch": "npm test -- --watch"
+    "auto-test": "npm test -- --watch"
   },
   "dependencies": {
     "body-parser": "^1.18.3",
