@@ -152,7 +152,7 @@ module.exports = async (app, config, store) => {
       id,
     } = body;
 
-    const issue = store.getIssue({ id });
+    const issue = store.getIssueById(id);
 
     const repo = repoAndOwner(issue);
 

@@ -3,167 +3,205 @@ const {
 } = require('chai');
 
 const Store = require('../lib/store');
+const Columns = require('../lib/columns');
+
+const {
+  getKey
+} = require('../lib/filters');
+
+const {
+  merge
+} = require('min-dash');
 
 
-describe.skip('Store', function() {
+describe('store', function() {
 
-  let store;
+  describe('issue add / update', function() {
 
-  beforeEach(function() {
-    store = new Store({
-      columns: [
-        { name: 'Inbox', label: null },
-        { name: 'Backlog', label: 'backlog' },
-        { name: 'Ready', label: 'ready' },
-        { name: 'In Progress', label: 'in progress' },
-        { name: 'Needs Review', label: 'needs review' },
-        { name: 'Done', label: null, closed: true }
-      ]
+    it('should add', function() {
+
+      // given
+      const store = createStore();
+
+      // when
+      const newIssue = createIssue();
+
+      const createdIssue = store.updateIssue(newIssue);
+
+      const {
+        column,
+        order,
+        ...data
+      } = createdIssue;
+
+      // then
+      const issues = store.getIssues();
+
+      expect(issues).to.eql([ createdIssue ]);
+
+      expect(column).to.eql('Inbox');
+      expect(order).to.exist;
+      expect(data).to.eql(newIssue);
+    });
+
+
+    it('should update', function() {
+
+      // given
+      const store = createStore();
+
+      const newIssue = store.updateIssue(createIssue());
+
+      // when
+      const updatedIssue = store.updateIssue({
+        ...newIssue,
+        title: 'BAR',
+        body: 'BLUB',
+        labels: [
+          {
+            name: 'backlog',
+            column_label: true
+          },
+          {
+            name: 'other'
+          }
+        ]
+      });
+
+      const {
+        column,
+        order
+      } = updatedIssue;
+
+      // then
+      const issues = store.getIssues();
+
+      expect(issues).to.eql([ updatedIssue ]);
+
+      expect(column).to.eql('Backlog');
+      expect(order).to.exist;
     });
 
   });
 
 
-  it('should add issue', function() {
+  describe('issue retrival', function() {
 
-    // when
-    const issue = {
-      id: 'foo',
-      title: 'Foo',
-      type: 'issue',
-      labels: []
-    };
+    it('should get by id', function() {
 
-    store.addIssue(issue);
+      // given
+      const store = createStore();
 
-    // then
-    const issues = store.getIssues();
+      const createdIssue = store.updateIssue(createIssue());
 
-    expect(issues).to.have.length(1);
-    expect(issues[0]).to.eql({
-      ...issue,
-      column: 'Inbox'
+      // when
+      const issue = store.getIssueById(createdIssue.id);
+
+      // then
+      expect(issue).to.equal(createdIssue);
     });
-  });
 
 
-  it('should remove issue', function() {
+    it('should get by key', function() {
 
-    // given
-    const issue = {
-      id: 'foo',
-      title: 'Foo',
-      type: 'issue',
-      labels: []
-    };
+      // given
+      const store = createStore();
 
-    store.addIssue(issue);
+      const createdIssue = store.updateIssue(createIssue());
 
-    // when
-    store.removeIssue(issue);
+      // when
+      const issue = store.getIssueByKey(createdIssue.key);
 
-    // then
-    expect(store.getIssues()).to.have.length(0);
-  });
-
-
-  it('should replace issue', function() {
-
-    // given
-    const issue = {
-      id: 'foo',
-      title: 'Foo',
-      type: 'issue',
-      labels: []
-    };
-
-    const updatedIssue = {
-      id: 'foo',
-      title: 'Bar',
-      type: 'issue',
-      labels: [
-        { name: 'in progress' }
-      ]
-    };
-
-    store.addIssue(issue);
-
-    // when
-    store.replaceIssue(updatedIssue);
-
-    // then
-    const issues = store.getIssues({ id: 'foo' });
-
-    expect(store.getIssues()).to.have.length(1);
-    expect(issues[0].title).to.eql('Bar');
-    expect(issues[0].column).to.eql('In Progress');
-  });
-
-
-  it('should get issues (filter)', function() {
-
-    // given
-    const issue1 = {
-      id: 'foo',
-      title: 'Foo',
-      type: 'issue',
-      labels: []
-    };
-
-    const issue2 = {
-      id: 'bar',
-      title: 'Bar',
-      type: 'pull-request',
-      labels: []
-    };
-
-    store.addIssue(issue1);
-    store.addIssue(issue2);
-
-    // assume
-    expect(store.getIssues()).to.have.length(2);
-
-    // when
-    const issues = store.getIssues({ id: 'foo' });
-
-    // then
-    expect(issues).to.have.length(1);
-    expect(issues[0]).to.eql({
-      ...issue1,
-      column: 'Inbox'
+      // then
+      expect(issue).to.equal(createdIssue);
     });
+
   });
 
 
-  it('should get single issue (filter)', function() {
+  describe('issue removal', function() {
 
-    // given
-    const issue1 = {
-      id: 'foo',
-      title: 'Foo',
-      type: 'pull-request',
-      labels: []
-    };
+    it('should remove', function() {
 
-    const issue2 = {
-      id: 'bar',
-      title: 'Bar',
-      type: 'issue',
-      labels: []
-    };
+      // given
+      const store = createStore();
 
-    store.addIssue(issue1);
-    store.addIssue(issue2);
+      const { id, key } = store.updateIssue(createIssue());
 
-    // assume
-    expect(store.getIssues()).to.have.length(2);
+      // when
+      store.removeIssueById(id);
 
-    // when
-    const issue = store.getIssue({ id: 'foo' });
+      // then
+      expect(store.getIssueById(id)).not.to.exist;
+      expect(store.getIssueByKey(key)).not.to.exist;
 
-    // then
-    expect(issue).to.exist;
-    expect(issue.id).to.eql('foo');
+      const issues = store.getIssues();
+
+      expect(issues).to.be.empty;
+    });
+
   });
 
 });
+
+
+// helpers //////////////////
+
+function createStore(columnConfig) {
+
+  const log = {
+    info: () => {},
+    error: () => {},
+    warn: () => {},
+    debug: () => {}
+  };
+
+  const defaultColumnConfig = [
+    { name: 'Inbox', label: null },
+    { name: 'Backlog', label: 'backlog' },
+    { name: 'Ready', label: 'ready' },
+    { name: 'In Progress', label: 'in progress' },
+    { name: 'Needs Review', label: 'needs review' },
+    { name: 'Done', label: null, closed: true }
+  ];
+
+  const columns = new Columns(columnConfig || defaultColumnConfig);
+
+  return new Store(columns, log);
+}
+
+
+const createIssue = (function() {
+
+  let counter = 0;
+
+  return function createIssue(config) {
+
+    const number = counter++;
+
+    const defaultConfig = {
+      id: `i-${number}`,
+      number,
+      title: 'test title',
+      body: 'empty body',
+      labels: [],
+      milestone: null,
+      pull_request: false,
+      assignees: [],
+      requested_reviewers: [],
+      repository: {
+        name: 'test-repo',
+        owner: {
+          login: 'test-owner'
+        }
+      }
+    };
+
+    const issue = merge({}, defaultConfig, config);
+
+    return {
+      ...issue,
+      key: getKey(issue, issue.repository)
+    };
+  };
+})();
