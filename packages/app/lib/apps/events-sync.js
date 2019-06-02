@@ -72,7 +72,7 @@ module.exports = async (app, config, store) => {
 
     const id = getIdentifier(issue, repository);
 
-    store.removeIssue(id);
+    store.removeIssueById(id);
   });
 
   // pull requests //////////////////

@@ -15,6 +15,8 @@ class Store {
     this.updates = new Updates();
 
     this.issueOrder = {};
+    this.issuesByKey = {};
+    this.issuesById = {};
 
     this.columns = columns;
 
@@ -52,6 +54,8 @@ class Store {
     issue = this.insertOrUpdateIssue(issue);
 
     this.updates.add(issue.id, { type: 'update', issue });
+
+    return issue;
   }
 
   updateOrder(issue, before, after, column) {
@@ -59,13 +63,14 @@ class Store {
 
     this.setOrder(issue, order);
 
-    this.updateIssue(this.getIssue({ id: issue }), column);
+    this.updateIssue(this.getIssueById(issue), column);
   }
 
   insertOrUpdateIssue(issue) {
 
     const {
       id,
+      key,
       order,
       labels
     } = issue;
@@ -85,13 +90,10 @@ class Store {
       })
     };
 
-    const issues = this.issues;
+    const existingIssue = this.issuesById[id];
 
-    // ensure we do not double add issues
-    const currentIdx = issues.findIndex(issue => issue.id === id);
-
-    if (currentIdx !== -1) {
-      const existingIssue = issues[currentIdx];
+    if (existingIssue) {
+      delete this.issuesByKey[existingIssue.key];
 
       // merge issue with existing data as we may receive a update
       // (i.e. issue data for a pull request) only
@@ -99,7 +101,17 @@ class Store {
         ...existingIssue,
         ...issue
       };
+    }
 
+    this.issuesById[id] = issue;
+    this.issuesByKey[key] = issue;
+
+    const issues = this.issues;
+
+    // ensure we do not double add issues
+    const currentIdx = issues.findIndex(issue => issue.id === id);
+
+    if (currentIdx !== -1) {
       // remove existing issue
       issues.splice(currentIdx, 1);
     }
@@ -115,30 +127,30 @@ class Store {
     return issue;
   }
 
-  removeIssue(issue) {
-    const {
-      id
-    } = issue;
+  removeIssueById(id) {
+
+    const issue = this.getIssueById(id);
+
+    if (!issue) {
+      return;
+    }
 
     this.log.info({ issue: issueIdent(issue) }, 'remove');
 
-    this.issues = this.issues.filter(issue => issue.id === id);
+    const {
+      key
+    } = issue;
+
+    delete this.issuesById[id];
+    delete this.issuesByKey[key];
+
+    this.issues = this.issues.filter(issue => issue.id !== id);
 
     this.updates.add(id, { type: 'remove', issue });
   }
 
-  getIssues(filter) {
-    return this._get(this.issues, filter);
-  }
-
-  getIssue(filter) {
-    const issues = this._get(this.issues, filter);
-
-    if (issues.length > 1) {
-      throw new Error('more than one issue found');
-    }
-
-    return issues[0];
+  getIssues() {
+    return this.issues;
   }
 
   computeOrder(issue, before, after) {
@@ -170,15 +182,16 @@ class Store {
     return this.issueOrder[String(issueId)];
   }
 
-  _get(array, filter) {
-    if (!filter) {
-      return array;
-    }
+  getIssueById(id) {
+    return this.issuesById[id];
+  }
 
-    return array.filter(item => match(item, filter));
+  getIssueByKey(key) {
+    return this.issuesByKey[key];
   }
 
   getBoard() {
+    // TODO(nikku): cache by column
     return groupBy(this.issues, i => i.column);
   }
 
@@ -230,6 +243,18 @@ class Store {
     this.issues = issues || [];
     this.lastSync = lastSync;
     this.issueOrder = issueOrder || {};
+
+    this.issuesById = this.issues.reduce((map, issue) => {
+      map[issue.id] = issue;
+
+      return map;
+    }, {});
+
+    this.issuesByKey = this.issues.reduce((map, issue) => {
+      map[issue.key] = issue;
+
+      return map;
+    }, {});
   }
 
 }
@@ -321,28 +346,3 @@ class Updates {
 }
 
 module.exports = Store;
-
-// helpers //////////
-
-function isObject(value) {
-  return Object.prototype.toString.call(value) === '[object Object]';
-}
-
-function match(properties, filter) {
-
-  return Object.entries(filter).reduce((accumulator, entry) => {
-    const [ key, value ] = entry;
-
-    if (isObject(value)) {
-      if (!isObject(properties[ key ])) {
-        return false;
-      }
-
-      return match(properties[ key ], value);
-    }
-
-    return accumulator && (properties[ key ] === value);
-
-  }, true);
-
-}
