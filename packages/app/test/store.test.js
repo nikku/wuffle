@@ -142,6 +142,54 @@ describe('store', function() {
 
   });
 
+
+  describe('links', function() {
+
+    const repository = {
+      name: 'foo',
+      owner: {
+        login: 'bar'
+      }
+    };
+
+    const otherRepository = {
+      name: 'other',
+      owner: {
+        login: 'bar'
+      }
+    };
+
+
+    it('should establish links', function() {
+
+      // given
+      const store = createStore();
+
+      const issue_1 = store.updateIssue(createIssue({
+        repository
+      }));
+
+      const issue_2 = store.updateIssue(createIssue({
+        repository: otherRepository
+      }));
+
+      // when
+      store.updateIssue(createIssue({
+        title: `Closes #${issue_1.number}`,
+        repository,
+        body: `
+          Depends on ${otherRepository.owner.login}/${otherRepository.name}#${issue_2.number}
+        `
+      }));
+
+      const updates = store.updates.getSince();
+
+      // then
+      expect(updates).to.have.length(3);
+    });
+
+  });
+
 });
 
 

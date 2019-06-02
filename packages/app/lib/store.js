@@ -6,6 +6,12 @@ const {
   issueIdent
 } = require('./util');
 
+const {
+  findLinks
+} = require('./util/links');
+
+const { Links } = require('./links');
+
 
 class Store {
 
@@ -18,6 +24,9 @@ class Store {
     this.issuesByKey = {};
     this.issuesById = {};
 
+    this.linkedCache = {};
+
+    this.links = new Links();
     this.columns = columns;
 
     this.log = log;
@@ -53,7 +62,19 @@ class Store {
 
     issue = this.insertOrUpdateIssue(issue);
 
-    this.updates.add(issue.id, { type: 'update', issue });
+    const linkedIssues = this.updateLinks(issue);
+
+    const updatedIssues = [ issue, ...linkedIssues ];
+
+    for (const issue of updatedIssues) {
+      this.updates.add(issue.id, {
+        type: 'update',
+        issue: {
+          ...issue,
+          links: this.getIssueLinks(issue)
+        }
+      });
+    }
 
     return issue;
   }
@@ -64,6 +85,103 @@ class Store {
     this.setOrder(issue, order);
 
     this.updateIssue(this.getIssueById(issue), column);
+  }
+
+  updateLinks(issue) {
+
+    const { id } = issue;
+
+    const repoAndOwner = {
+      repo: issue.repository.name,
+      owner: issue.repository.owner.login
+    };
+
+    const removedLinks = this.links.removeBySource(id);
+
+    const createdLinks = findLinks(issue).reduce((map, link) => {
+
+      // add repository meta-data, if missing
+      link = {
+        ...repoAndOwner,
+        ...link
+      };
+
+      const {
+        owner,
+        repo,
+        number,
+        type: linkType
+      } = link;
+
+      const key = `${owner}/${repo}#${number}`;
+
+      const linkedIssue = this.getIssueByKey(key);
+
+      if (linkedIssue) {
+
+        const { id: linkedId } = linkedIssue;
+
+        const { key, link } = this.links.addLink(id, linkedId, linkType);
+
+        map[key] = link;
+      }
+
+      return map;
+    }, {});
+
+    const unlinkedIssues = Object.keys(removedLinks).reduce((issues, linkId) => {
+
+      if (linkId in createdLinks) {
+        return issues;
+      }
+
+      const link = removedLinks[linkId];
+
+      const linkedIssue = this.getIssueById(link.targetId);
+
+      if (!linkedIssue) {
+        return issues;
+      }
+
+      issues.push(linkedIssue);
+
+      return issues;
+    }, []);
+
+
+    const linkedIssues = Object.keys(createdLinks).reduce((issues, linkId) => {
+
+      if (linkId in removedLinks) {
+        return issues;
+      }
+
+      const link = createdLinks[linkId];
+
+      const linkedIssue = this.getIssueById(link.targetId);
+
+      if (!linkedIssue) {
+        return issues;
+      }
+
+      issues.push(linkedIssue);
+
+      return issues;
+    }, []);
+
+    const changedIssues = [
+      ...unlinkedIssues,
+      ...linkedIssues
+    ];
+
+    if (changedIssues.length) {
+      changedIssues.forEach(changed => {
+        delete this.linkedCache[changed.id];
+      });
+
+      delete this.linkedCache[id];
+    }
+
+    return changedIssues;
   }
 
   insertOrUpdateIssue(issue) {
@@ -127,6 +245,29 @@ class Store {
     return issue;
   }
 
+  getIssueLinks(issue) {
+    const { id } = issue;
+
+    let linked = this.linkedCache[id];
+
+    if (!linked) {
+      linked = this.linkedCache[id] = this.links.getBySource(id).map(link => {
+
+        const {
+          type,
+          targetId
+        } = link;
+
+        return {
+          type,
+          target: this.getIssueById(targetId)
+        };
+      }).filter(link => link.target);
+    }
+
+    return linked;
+  }
+
   removeIssueById(id) {
 
     const issue = this.getIssueById(id);
@@ -143,10 +284,16 @@ class Store {
 
     delete this.issuesById[id];
     delete this.issuesByKey[key];
+    delete this.linkedCache[id];
 
     this.issues = this.issues.filter(issue => issue.id !== id);
 
-    this.updates.add(id, { type: 'remove', issue });
+    this.links.removeBySource(id);
+
+    this.updates.add(id, {
+      type: 'remove',
+      issue: { id }
+    });
   }
 
   getIssues() {
@@ -192,7 +339,12 @@ class Store {
 
   getBoard() {
     // TODO(nikku): cache by column
-    return groupBy(this.issues, i => i.column);
+    return groupBy(this.issues.map(issue => {
+      return {
+        ...issue,
+        links: this.getIssueLinks(issue)
+      };
+    }), i => i.column);
   }
 
   updateIssues(openIssues) {
@@ -219,13 +371,15 @@ class Store {
     const {
       issues,
       lastSync,
-      issueOrder
+      issueOrder,
+      links
     } = this;
 
     return JSON.stringify({
       issues,
       lastSync,
-      issueOrder
+      issueOrder,
+      links: links.asJSON()
     });
   }
 
@@ -237,12 +391,17 @@ class Store {
     const {
       issues,
       lastSync,
-      issueOrder
+      issueOrder,
+      links
     } = JSON.parse(json);
 
     this.issues = issues || [];
     this.lastSync = lastSync;
     this.issueOrder = issueOrder || {};
+
+    if (links) {
+      this.links.loadJSON(links);
+    }
 
     this.issuesById = this.issues.reduce((map, issue) => {
       map[issue.id] = issue;
