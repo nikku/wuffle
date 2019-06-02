@@ -26,6 +26,13 @@
   border: solid 1px #EEE;
   margin: 3px;
   background: rgb(235, 236, 240);
+
+  &.collapsed {
+    line-height: 2em;
+    min-width: auto;
+
+    flex: 0 0 0%;
+  }
 }
 
 .taskboard-column-items {
@@ -48,31 +55,27 @@
   padding: 0 12px;
   line-height: 2.4em;
   margin-right: -20px;
+  font-size: 1.2rem;
 }
 
-.taskboard-column-collapsed {
-  line-height: 2em;
-  min-width: auto;
+.taskboard-column.collapsed {
 
-  flex: 0;
-  flex-shrink: initial;
-}
+  .taskboard-column-collapse {
+    float: right;
+    padding: 4px 12px;
+    margin: -7px 0 0 0;
+  }
 
-.taskboard-column-collapsed .taskboard-column-collapse {
-  float: right;
-  padding: 12px 0;
-  margin-right: 6px;
-}
+  .taskboard-column-header {
+    transform: rotate(-180deg);
+    writing-mode: vertical-rl;
+    text-align: right;
+    flex: 1;
+  }
 
-.taskboard-column-collapsed .taskboard-column-header {
-  transform: rotate(-180deg);
-  writing-mode: vertical-rl;
-  text-align: right;
-  flex: 1;
-}
-
-.taskboard-column-collapsed .taskboard-column-issue-count {
-  padding: 5px 0;
+  .taskboard-column-issue-count {
+    padding: 5px 0;
+  }
 }
 
 .taskboard-column-issue-count {
