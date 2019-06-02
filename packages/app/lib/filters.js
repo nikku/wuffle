@@ -1,3 +1,10 @@
+function getKey(issueOrPr, repository) {
+  return `${repository.owner.login}/${repository.name}#${issueOrPr.number}`;
+}
+
+module.exports.getKey = getKey;
+
+
 function getIdentifier(issueOrPr, repository) {
   return `${repository.id}-${issueOrPr.number}`;
 }
@@ -147,8 +154,11 @@ function filterPull(pull_request, repository) {
   // stable ID that is independent from GitHubs internal issue/pr distinction
   const id = getIdentifier(pull_request, repository);
 
+  const key = getKey(pull_request, repository);
+
   return {
     id,
+    key,
     url,
     number,
     state,
@@ -204,11 +214,14 @@ function filterIssue(issue, repository) {
   // stable ID that is independent from GitHubs internal issue/pr distinction
   const id = getIdentifier(issue, repository);
 
+  const key = getKey(issue, repository);
+
   // handle issues which are actual pull requests
   const url = pull_request ? pull_request.url : issue.url;
 
   return {
     id,
+    key,
     url,
     number,
     state,
