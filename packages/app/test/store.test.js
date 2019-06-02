@@ -174,18 +174,93 @@ describe('store', function() {
       }));
 
       // when
-      await store.updateIssue(createIssue({
+      const issue = await store.updateIssue(createIssue({
         title: `Closes #${issue_1.number}`,
         repository,
         body: `
-          Depends on ${otherRepository.owner.login}/${otherRepository.name}#${issue_2.number}
+          Depends on ${issue_2.repository.owner.login}/${issue_2.repository.name}#${issue_2.number}
         `
       }));
 
+      // then
       const updates = store.updates.getSince();
 
-      // then
       expect(updates).to.have.length(3);
+
+      const links = store.getIssueLinks(issue);
+
+      expect(links).to.have.length(2);
+
+      const links_1 = store.getIssueLinks(issue_1);
+
+      expect(links_1).to.have.length(1);
+    });
+
+
+    it('should update links', async function() {
+
+      // given
+      const store = createStore();
+
+      const issue_1 = await store.updateIssue(createIssue({
+        repository
+      }));
+
+      const issue_2 = await store.updateIssue(createIssue({
+        repository: otherRepository
+      }));
+
+      const issue = await store.updateIssue(createIssue({
+        title: `Closes #${issue_1.number}`,
+        repository,
+        body: `
+          Depends on ${issue_2.repository.owner.login}/${issue_2.repository.name}#${issue_2.number}
+        `
+      }));
+
+      // when
+      await store.updateIssue({
+        ...issue,
+        title: 'FOO',
+        body: 'BAR'
+      });
+
+      const links = store.getIssueLinks(issue);
+
+      // then
+      expect(links).to.be.empty;
+
+      const links_1 = store.getIssueLinks(issue_1);
+
+      expect(links_1).to.be.empty;
+    });
+
+
+    it('should remove links', async function() {
+
+      // given
+      const store = createStore();
+
+      const linkedIssue = await store.updateIssue(createIssue({
+        repository
+      }));
+
+      const issue = await store.updateIssue(createIssue({
+        title: `Closes #${linkedIssue.number}`,
+        repository
+      }));
+
+      // when
+      await store.removeIssueById(issue.id);
+
+      // then
+      const issueLinks = store.getIssueLinks(issue);
+
+      expect(issueLinks).to.be.empty;
+
+      const linkedLinks = store.getIssueLinks(linkedIssue);
+
+      expect(linkedLinks).to.be.empty;
     });
 
   });

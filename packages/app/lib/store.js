@@ -288,7 +288,11 @@ class Store {
 
     this.issues = this.issues.filter(issue => issue.id !== id);
 
-    this.links.removeBySource(id);
+    const removedLinks = this.links.removeBySource(id);
+
+    Object.values(removedLinks).forEach(link => {
+      delete this.linkedCache[link.targetId];
+    });
 
     this.updates.add(id, {
       type: 'remove',
