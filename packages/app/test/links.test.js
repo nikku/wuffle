@@ -65,12 +65,14 @@ describe('links', function() {
     links.addLink(4, 1, LinkTypes.DEPENDS_ON);
     links.addLink(5, 1, LinkTypes.CHILD_OF);
 
-    links.removeBySource(1);
-
     // when
+    const removed = links.removeBySource(1);
+
     const issueLinks = links.getBySource(1);
 
     // then
+    expect(removed).to.have.length(2);
+
     expect(issueLinks).to.eql([
       { targetId: 4, type: LinkTypes.REQUIRED_BY },
       { targetId: 5, type: LinkTypes.PARENT_OF }
