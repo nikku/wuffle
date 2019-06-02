@@ -109,9 +109,9 @@
   &.reviewer:before {
     content: '';
     display: block;
-    background: $warning;
-    width: .8em;
-    height: .8em;
+    background: $info;
+    width: .7em;
+    height: .7em;
     border: solid 2px white;
     border-radius: 50%;
     position: absolute;
