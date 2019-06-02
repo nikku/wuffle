@@ -48,7 +48,17 @@ module.exports = async (app, config, store) => {
 
       return Object.entries(items).reduce((filteredItems, [ columnKey, columnIssues ]) => {
 
-        const accessFiltered = columnIssues.filter(canAccess);
+        const accessFiltered = columnIssues.filter(canAccess).map(issue => {
+
+          const {
+            links
+          } = issue;
+
+          return {
+            ...issue,
+            links: links.filter(l => canAccess(l.target))
+          };
+        });
 
         const searchFiltered = searchFilter ? accessFiltered.filter(searchFilter) : accessFiltered;
 
@@ -67,7 +77,23 @@ module.exports = async (app, config, store) => {
 
     return getIssueReadFilter(req).then(canAccess => {
 
-      const accessFiltered = updates.filter(update => canAccess(update.issue));
+      const accessFiltered = updates.filter(update => canAccess(update.issue)).map(update => {
+        const {
+          issue
+        } = update;
+
+        const {
+          links
+        } = issue;
+
+        return {
+          ...update,
+          issue: {
+            ...issue,
+            links: links.filter(l => canAccess(l.target))
+          }
+        };
+      });
 
       const searchFiltered = searchFilter ? accessFiltered.map(update => {
 
