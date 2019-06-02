@@ -27,7 +27,7 @@ module.exports = async (app, config, store) => {
       repository
     } = payload;
 
-    store.updateIssue(filterIssue(issue, repository));
+    return store.updateIssue(filterIssue(issue, repository));
   });
 
   app.onActive([
@@ -43,7 +43,7 @@ module.exports = async (app, config, store) => {
       repository
     } = payload;
 
-    store.updateIssue(filterIssue(issue, repository));
+    return store.updateIssue(filterIssue(issue, repository));
   });
 
   // available for issues only, we must manually
@@ -58,7 +58,7 @@ module.exports = async (app, config, store) => {
       repository
     } = payload;
 
-    store.updateIssue(filterIssueOrPull(issue, repository));
+    return store.updateIssue(filterIssueOrPull(issue, repository));
   });
 
   app.onActive([
@@ -72,7 +72,7 @@ module.exports = async (app, config, store) => {
 
     const id = getIdentifier(issue, repository);
 
-    store.removeIssueById(id);
+    return store.removeIssueById(id);
   });
 
   // pull requests //////////////////
@@ -86,7 +86,7 @@ module.exports = async (app, config, store) => {
       repository
     } = payload;
 
-    store.updateIssue(filterPull(pull_request, repository));
+    return store.updateIssue(filterPull(pull_request, repository));
   });
 
   app.onActive([
@@ -103,7 +103,7 @@ module.exports = async (app, config, store) => {
       repository
     } = payload;
 
-    store.updateIssue(filterPull(pull_request, repository));
+    return store.updateIssue(filterPull(pull_request, repository));
   });
 
 };

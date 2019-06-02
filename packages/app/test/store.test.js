@@ -18,7 +18,7 @@ describe('store', function() {
 
   describe('issue add / update', function() {
 
-    it('should add', function() {
+    it('should add', async function() {
 
       // given
       const store = createStore();
@@ -26,7 +26,7 @@ describe('store', function() {
       // when
       const newIssue = createIssue();
 
-      const createdIssue = store.updateIssue(newIssue);
+      const createdIssue = await store.updateIssue(newIssue);
 
       const {
         column,
@@ -45,15 +45,15 @@ describe('store', function() {
     });
 
 
-    it('should update', function() {
+    it('should update', async function() {
 
       // given
       const store = createStore();
 
-      const newIssue = store.updateIssue(createIssue());
+      const newIssue = await store.updateIssue(createIssue());
 
       // when
-      const updatedIssue = store.updateIssue({
+      const updatedIssue = await store.updateIssue({
         ...newIssue,
         title: 'BAR',
         body: 'BLUB',
@@ -87,12 +87,12 @@ describe('store', function() {
 
   describe('issue retrival', function() {
 
-    it('should get by id', function() {
+    it('should get by id', async function() {
 
       // given
       const store = createStore();
 
-      const createdIssue = store.updateIssue(createIssue());
+      const createdIssue = await store.updateIssue(createIssue());
 
       // when
       const issue = store.getIssueById(createdIssue.id);
@@ -102,12 +102,12 @@ describe('store', function() {
     });
 
 
-    it('should get by key', function() {
+    it('should get by key', async function() {
 
       // given
       const store = createStore();
 
-      const createdIssue = store.updateIssue(createIssue());
+      const createdIssue = await store.updateIssue(createIssue());
 
       // when
       const issue = store.getIssueByKey(createdIssue.key);
@@ -121,15 +121,15 @@ describe('store', function() {
 
   describe('issue removal', function() {
 
-    it('should remove', function() {
+    it('should remove', async function() {
 
       // given
       const store = createStore();
 
-      const { id, key } = store.updateIssue(createIssue());
+      const { id, key } = await store.updateIssue(createIssue());
 
       // when
-      store.removeIssueById(id);
+      await store.removeIssueById(id);
 
       // then
       expect(store.getIssueById(id)).not.to.exist;
@@ -160,21 +160,21 @@ describe('store', function() {
     };
 
 
-    it('should establish links', function() {
+    it('should establish links', async function() {
 
       // given
       const store = createStore();
 
-      const issue_1 = store.updateIssue(createIssue({
+      const issue_1 = await store.updateIssue(createIssue({
         repository
       }));
 
-      const issue_2 = store.updateIssue(createIssue({
+      const issue_2 = await store.updateIssue(createIssue({
         repository: otherRepository
       }));
 
       // when
-      store.updateIssue(createIssue({
+      await store.updateIssue(createIssue({
         title: `Closes #${issue_1.number}`,
         repository,
         body: `

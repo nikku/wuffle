@@ -36,7 +36,7 @@ class Store {
     return this.columns.getForIssue(issue);
   }
 
-  updateIssue(issue, column) {
+  async updateIssue(issue, column) {
 
     const { id } = issue;
 
@@ -79,12 +79,12 @@ class Store {
     return issue;
   }
 
-  updateOrder(issue, before, after, column) {
+  async updateOrder(issue, before, after, column) {
     const order = this.computeOrder(issue, before, after);
 
     this.setOrder(issue, order);
 
-    this.updateIssue(this.getIssueById(issue), column);
+    await this.updateIssue(this.getIssueById(issue), column);
   }
 
   updateLinks(issue) {
@@ -268,7 +268,7 @@ class Store {
     return linked;
   }
 
-  removeIssueById(id) {
+  async removeIssueById(id) {
 
     const issue = this.getIssueById(id);
 
@@ -345,13 +345,6 @@ class Store {
         links: this.getIssueLinks(issue)
       };
     }), i => i.column);
-  }
-
-  updateIssues(openIssues) {
-
-    openIssues.map(issue => {
-      this.updateIssue(issue);
-    });
   }
 
   getUpdateHead() {

@@ -97,7 +97,7 @@ module.exports = async (app, config, store) => {
 
           const update = filterIssue(issue, repository);
 
-          store.updateIssue(update);
+          await store.updateIssue(update);
 
           // mark as found
           foundIssues[update.id] = update;
@@ -107,7 +107,7 @@ module.exports = async (app, config, store) => {
 
           const update = filterPull(pull_request, repository);
 
-          store.updateIssue(update);
+          await store.updateIssue(update);
 
           // mark as found
           foundIssues[update.id] = true;
@@ -158,7 +158,7 @@ module.exports = async (app, config, store) => {
 
         const update = filterIssueOrPull(issue, repository);
 
-        store.updateIssue(update);
+        await store.updateIssue(update);
 
         log.info(issueContext, 'synched issue');
 
@@ -166,7 +166,7 @@ module.exports = async (app, config, store) => {
 
         log.warn(issueContext, 'failed to synchronize issue', error);
 
-        store.removeIssueById(id);
+        await store.removeIssueById(id);
       }
     }
   }
