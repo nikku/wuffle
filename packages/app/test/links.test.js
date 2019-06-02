@@ -8,6 +8,28 @@ const {
 
 describe('links', function() {
 
+  it('should add link', function() {
+
+    // given
+    const links = new Links();
+
+    // when
+    const {
+      key,
+      link
+    } = links.addLink(1, 2, LinkTypes.CLOSES);
+
+    // then
+    expect(key).to.eql(`2-${LinkTypes.CLOSES}`);
+
+    expect(link).to.eql({
+      targetId: 2,
+      type: LinkTypes.CLOSES
+    });
+
+  });
+
+
   it('should retrieve self links', function() {
 
     // given
@@ -71,7 +93,7 @@ describe('links', function() {
     const issueLinks = links.getBySource(1);
 
     // then
-    expect(removed).to.have.length(2);
+    expect(removed).to.have.keys([ '2-CLOSES', '3-LINKED_TO' ]);
 
     expect(issueLinks).to.eql([
       { targetId: 4, type: LinkTypes.REQUIRED_BY },
