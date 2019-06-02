@@ -198,10 +198,10 @@ class Store {
   }
 
   /**
-   * Serialize store contents to JSON so that it can
+   * Serialize data to JSON so that it can
    * later be loaded via #loadJSON.
    */
-  toJSON() {
+  asJSON() {
 
     const {
       issues,

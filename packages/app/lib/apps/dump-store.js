@@ -69,7 +69,7 @@ module.exports = async (app, config, store) => {
 
   function dumpStore() {
 
-    return upload(store.toJSON()).then(() => {
+    return upload(store.asJSON()).then(() => {
       log.info(params, 'dumped');
     }).catch(err => {
       log.error(params, 'dump failed', err);
