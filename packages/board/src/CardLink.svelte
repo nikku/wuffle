@@ -1,4 +1,6 @@
 <script>
+  import PullRequestIcon from './components/PullRequestIcon.svelte';
+
   export let item;
 
   export let className = '';
@@ -69,7 +71,7 @@
 <div class="card-link" class:card-impl={ type === 'CLOSES' }>
   <div class="header">
     {#if pull_request}
-      PR
+      <PullRequestIcon item={ item } />
     {/if}
 
     <a href={ cardUrl }
