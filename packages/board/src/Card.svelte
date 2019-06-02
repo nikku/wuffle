@@ -5,6 +5,8 @@
 
   import Tag from './components/Tag.svelte';
 
+  import CardLink from './CardLink.svelte';
+
   export let item;
 
   export let className = '';
@@ -16,6 +18,17 @@
   $: milestone = item.milestone;
   $: labels = item.labels.filter(l => !l.column_label);
   $: pull_request = item.pull_request;
+
+  $: links = item.links;
+
+  $: closedBy = (links.find(link => {
+    const {
+      type,
+      target
+    } = link;
+
+    return type === 'CLOSED_BY';
+  }) || {}).target;
 
   $: assignees = item.assignees;
 
@@ -55,43 +68,6 @@
     color: $gray-800 !important;
     border: solid 1px $gray-600;
   }
-
-  .assignee {
-    border-radius: 3px;
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-size: 14px;
-    line-height: 1.5;
-    position: relative;
-    display: inline-block;
-    text-align: center;
-    vertical-align: middle;
-    border-radius: 3px;
-
-    width: 20px;
-    height: 20px;
-    line-height: 20px;
-
-    img {
-      width: 100%;
-      height: 100%;
-    }
-
-    &.reviewer:before {
-      content: '';
-      display: block;
-      background: $warning;
-      width: 12px;
-      height: 12px;
-      border: solid 2px white;
-      border-radius: 50%;
-      position: absolute;
-      top: -3px;
-      right: -3px;
-    }
-  }
-
 </style>
 
 <div class="board-card-container { className }" { ...otherProps }>
@@ -144,4 +120,10 @@
       </div>
     </div>
   </div>
+
+  {#if closedBy}
+    <div class="board-card-links">
+      <CardLink item={ closedBy } type="CLOSES" />
+    </div>
+  {/if}
 </div>
