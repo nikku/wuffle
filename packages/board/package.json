@@ -20,6 +20,7 @@
     "svelte-preprocess-sass": "^0.2.0"
   },
   "scripts": {
+    "test": "echo \"no tests\"",
     "build": "run-p build:*:prod",
     "build:watch": "run-p build:*:watch",
     "build:js:prod": "rollup -c",
