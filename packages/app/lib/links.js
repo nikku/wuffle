@@ -86,6 +86,8 @@ class Links {
    * Remove primary links that have the issue as the source.
    *
    * @param {Number} sourceId
+   *
+   * @return {Object} removedLinks
    */
   removeBySource(sourceId) {
 
@@ -108,6 +110,8 @@ class Links {
     }
 
     this.links[sourceId] = {};
+
+    return Object.values(links);
   }
 
   /**
