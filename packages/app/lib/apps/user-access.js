@@ -65,7 +65,7 @@ module.exports = async (app, config, store) => {
 
       const repository = getRepository(issue);
 
-      return repository.full_name in repositoryMap;
+      return fullName(repository) in repositoryMap;
     };
   }
 
@@ -82,7 +82,7 @@ module.exports = async (app, config, store) => {
           res => res.data
         );
       }).then(repositories => {
-        const repositoryNames = repositories.map(repo => repo.full_name);
+        const repositoryNames = repositories.map(fullName);
 
         return createMemberFilter(repositoryNames);
       });
@@ -149,3 +149,10 @@ module.exports = async (app, config, store) => {
   }
 
 };
+
+
+// helpers //////////////
+
+function fullName(repository) {
+  return `${repository.owner.login}/${repository.name}`;
+}
