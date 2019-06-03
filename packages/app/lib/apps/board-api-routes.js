@@ -156,7 +156,7 @@ module.exports = async (app, config, store) => {
         cursor
       });
     }).catch(err => {
-      log.error(err);
+      log.error('card filtering failed', err);
 
       res.status(500).json({ error : true });
     });
@@ -192,7 +192,7 @@ module.exports = async (app, config, store) => {
       filterUpdates(req, updates)
         .then(filteredUpdates => res.type('json').json(filteredUpdates))
         .catch(err => {
-          log.error(err);
+          log.error('update filtering failed', { cursor, updates }, err);
 
           res.status(500).json({ error : true });
         })
