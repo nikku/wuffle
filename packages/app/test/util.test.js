@@ -280,6 +280,19 @@ describe('util', function() {
 
     });
 
+
+    it('should value with colon', function() {
+
+      // when
+      const search = parseSearch('is:"open:b"');
+
+      // then
+      expect(search).to.eql([
+        { qualifier: 'is', value: 'open:b' }
+      ]);
+
+    });
+
   });
 
 });
