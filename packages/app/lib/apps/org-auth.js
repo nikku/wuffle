@@ -17,7 +17,7 @@ module.exports = async (app, config, store) => {
 
   let authByLogin = {};
 
-  let installations;
+  let installations = null;
 
 
   // functionality /////////////////
@@ -83,7 +83,7 @@ module.exports = async (app, config, store) => {
   // https://developer.github.com/v3/activity/events/types/#installationevent
   app.on('installation', () => {
     // expire cached entries
-    installations = {};
+    installations = null;
     authByLogin = {};
   });
 
