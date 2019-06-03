@@ -147,7 +147,7 @@ module.exports = async (app, config, store) => {
   app.router.get('/wuffle/board/cards', ...middlewares, (req, res) => {
 
     const items = store.getBoard();
-    const cursor = store.getUpdateHead().id;
+    const cursor = store.getUpdateCursor();
 
     return filterBoardItems(req, items).then(filteredItems => {
 

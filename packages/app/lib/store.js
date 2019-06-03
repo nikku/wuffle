@@ -367,8 +367,8 @@ class Store {
     }), i => i.column);
   }
 
-  getUpdateHead() {
-    return this.updates.getHead();
+  getUpdateCursor() {
+    return this.updates.getHead().id;
   }
 
   getUpdates(cursor) {

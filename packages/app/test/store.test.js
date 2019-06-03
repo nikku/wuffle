@@ -143,6 +143,25 @@ describe('store', function() {
   });
 
 
+  describe('updates', function() {
+
+    it('should always return cursor', function() {
+
+      // given
+      const store = createStore();
+
+      // when
+      const cursor = store.getUpdateCursor();
+
+      // then
+      expect(cursor).to.exist;
+
+      expect(store.getUpdates(cursor)).to.be.empty;
+    });
+
+  });
+
+
   describe('links', function() {
 
     const repository = {
