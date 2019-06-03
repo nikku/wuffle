@@ -82,6 +82,9 @@ module.exports = async (app, config, store) => {
 
   // https://developer.github.com/v3/activity/events/types/#installationevent
   app.on('installation', () => {
+
+    log.info('installations update, resetting cache');
+
     // expire cached entries
     installations = null;
     authByLogin = {};
