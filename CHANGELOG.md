@@ -6,6 +6,15 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 ___Note:__ Yet to be released changes appear here._
 
+## 0.4.1
+
+* `CHORE`: numerous error handling and logging improvements
+* `CHORE`: propagate board api errors
+* `FIX`: correctly handle _related to_ links
+* `FIX`: update all (including already existing) links
+* `FIX`: recover from background sync failures
+* `FIX`: correctly reset org-auth installation cache
+
 ## 0.4.0
 
 #### General
