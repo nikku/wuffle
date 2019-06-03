@@ -16,7 +16,8 @@
     Id,
     createLocalStore,
     createHistory,
-    periodic
+    periodic,
+    throttle
   } from './util';
 
   import loaderImage from './loader.png';
@@ -50,6 +51,8 @@
 
   let accessNotification = false;
 
+  const renderCount = 25;
+
   $: localStore.set(COLUMNS_COLLAPSED_KEY, collapsed);
   $: shownItems = Object.keys(items).reduce((shownItems, column) => {
 
@@ -58,6 +61,12 @@
     shownItems[column] = columnItems.filter(item => !isClosingPR(item));
 
     return shownItems;
+  }, {});
+
+  $: renderedItems = Object.keys(items).reduce((renderedItems, column) => {
+    renderedItems[column] = renderCount;
+
+    return renderedItems;
   }, {});
 
   onMount(() => {
@@ -449,6 +458,35 @@
       return type === 'CLOSES' && itemsById[target.id];
     });
   }
+
+  function checkRender(columnName) {
+
+    return throttle(function(event) {
+
+      const node = event.target;
+
+      const {
+        scrollHeight,
+        scrollTop,
+        offsetHeight
+      } = node;
+
+      if (scrollTop + offsetHeight > scrollHeight * .95) {
+
+        const shown = (shownItems[columnName] || []).length;
+
+        const rendered = renderedItems[columnName] || renderCount;
+
+        if (rendered < shown) {
+          renderedItems = {
+            ...renderedItems,
+            [columnName]: rendered + renderCount / 5
+          };
+        }
+      }
+    }, 5);
+  }
+
 </script>
 
 <style lang="scss">
@@ -557,13 +595,18 @@
         </div>
 
         {#if !collapsed[column.name] }
-          <div class="taskboard-column-items" data-droppable-id={ column.name }>
+          <div class="taskboard-column-items"
+               data-droppable-id={ column.name }
+               on:scroll={ checkRender(column.name) }>
             {#each (shownItems[column.name] || []) as item, index (item.id) }
-              <Card
-                item={item}
-                data-draggable-id={ item.id }
-                data-draggable-index={ index }
-              />
+
+              {#if index <= (renderedItems[column.name] || renderCount) }
+                <Card
+                  item={item}
+                  data-draggable-id={ item.id }
+                  data-draggable-index={ index }
+                />
+              {/if}
             {/each}
           </div>
         {/if}

@@ -23,4 +23,7 @@ export function periodic(fn, interval) {
   };
 }
 
-export { debounce } from 'min-dash';
+export {
+  debounce,
+  throttle
+} from 'min-dash';
