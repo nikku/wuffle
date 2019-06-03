@@ -24,14 +24,12 @@ module.exports = async (app, config, store) => {
 
   function getRepository(issue) {
     const {
-      id,
+      key,
       repository
     } = issue;
 
     if (!repository) {
-      log.warn('could not retrieve repository for issue', { issue_id: id });
-
-      throw new Error('failed to retrieve repository from issue');
+      throw new Error(`missing repository meta-data for issue (key=${ key })`);
     }
 
     return repository;
@@ -95,7 +93,7 @@ module.exports = async (app, config, store) => {
     }
 
     return cache.get(token, createReadFilter).catch(err => {
-      log.warn('could not retrieve token-based access filter', err);
+      log.warn('failed to retrieve token-based access filter, defaulting to public read', err);
 
       return filterPublic;
     });
@@ -125,7 +123,7 @@ module.exports = async (app, config, store) => {
           permission === 'admin'
         );
       }).catch(err => {
-        log.warn('could not determine write status', { username, owner, repo }, err);
+        log.warn('failed to determine write status', { username, owner, repo }, err);
 
         return false;
       });
