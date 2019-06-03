@@ -145,35 +145,16 @@ class Store {
       return map;
     }, {});
 
-    const unlinkedIssues = Object.keys(removedLinks).reduce((issues, linkId) => {
+    const allLinks = {
+      ...removedLinks,
+      ...createdLinks
+    };
 
-      if (linkId in createdLinks) {
-        return issues;
-      }
+    const changedIssues = Object.keys(allLinks).reduce((issues, linkId) => {
 
-      const link = removedLinks[linkId];
+      const { targetId } = allLinks[linkId];
 
-      const linkedIssue = this.getIssueById(link.targetId);
-
-      if (!linkedIssue) {
-        return issues;
-      }
-
-      issues.push(linkedIssue);
-
-      return issues;
-    }, []);
-
-
-    const linkedIssues = Object.keys(createdLinks).reduce((issues, linkId) => {
-
-      if (linkId in removedLinks) {
-        return issues;
-      }
-
-      const link = createdLinks[linkId];
-
-      const linkedIssue = this.getIssueById(link.targetId);
+      const linkedIssue = this.getIssueById(targetId);
 
       if (!linkedIssue) {
         return issues;
@@ -183,11 +164,6 @@ class Store {
 
       return issues;
     }, []);
-
-    const changedIssues = [
-      ...unlinkedIssues,
-      ...linkedIssues
-    ];
 
     if (changedIssues.length) {
       changedIssues.forEach(changed => {

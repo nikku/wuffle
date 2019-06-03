@@ -221,20 +221,13 @@ describe('store', function() {
       // given
       const store = createStore();
 
-      const issue_1 = await store.updateIssue(createIssue({
+      const linkedIssue = await store.updateIssue(createIssue({
         repository
       }));
 
-      const issue_2 = await store.updateIssue(createIssue({
-        repository: otherRepository
-      }));
-
       const issue = await store.updateIssue(createIssue({
-        title: `Closes #${issue_1.number}`,
-        repository,
-        body: `
-          Depends on ${issue_2.repository.owner.login}/${issue_2.repository.name}#${issue_2.number}
-        `
+        title: `Closes #${linkedIssue.number}`,
+        repository
       }));
 
       // when
@@ -244,14 +237,41 @@ describe('store', function() {
         body: 'BAR'
       });
 
+      // then
       const links = store.getIssueLinks(issue);
+      const linkedLinks = store.getIssueLinks(linkedIssue);
+
+      expect(links).to.be.empty;
+      expect(linkedLinks).to.be.empty;
+    });
+
+
+    it('should update inverse links', async function() {
+
+      // given
+      const store = createStore();
+
+      const linkedIssue = await store.updateIssue(createIssue({
+        repository
+      }));
+
+      const issue = await store.updateIssue(createIssue({
+        title: `Closes #${linkedIssue.number}`,
+        repository
+      }));
+
+      // when
+      await store.updateIssue({
+        ...issue,
+        body: 'CHANGED'
+      });
+
+      const linkedLinks = store.getIssueLinks(linkedIssue);
 
       // then
-      expect(links).to.be.empty;
+      expect(linkedLinks).to.have.length(1);
 
-      const links_1 = store.getIssueLinks(issue_1);
-
-      expect(links_1).to.be.empty;
+      expect(linkedLinks[0].target.body).to.eql('CHANGED');
     });
 
 
