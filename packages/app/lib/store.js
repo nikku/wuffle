@@ -16,20 +16,20 @@ const { Links } = require('./links');
 class Store {
 
   constructor(columns, log) {
+    this.log = log;
+    this.columns = columns;
+
     this.issues = [];
+    this.issueOrder = {};
 
     this.updates = new Updates();
+    this.links = new Links();
 
-    this.issueOrder = {};
     this.issuesByKey = {};
     this.issuesById = {};
 
     this.linkedCache = {};
-
-    this.links = new Links();
-    this.columns = columns;
-
-    this.log = log;
+    this.boardCache = null;
   }
 
   getIssueColumn(issue) {
@@ -173,6 +173,8 @@ class Store {
       delete this.linkedCache[id];
     }
 
+    this.boardCache = null;
+
     return changedIssues;
   }
 
@@ -278,6 +280,8 @@ class Store {
     delete this.issuesByKey[key];
     delete this.linkedCache[id];
 
+    this.boardCache = null;
+
     this.issues = this.issues.filter(issue => issue.id !== id);
 
     const removedLinks = this.links.removeBySource(id);
@@ -334,13 +338,17 @@ class Store {
   }
 
   getBoard() {
-    // TODO(nikku): cache by column
-    return groupBy(this.issues.map(issue => {
-      return {
-        ...issue,
-        links: this.getIssueLinks(issue)
-      };
-    }), i => i.column);
+
+    const boardCache = this.boardCache = (
+      this.boardCache || groupBy(this.issues.map(issue => {
+        return {
+          ...issue,
+          links: this.getIssueLinks(issue)
+        };
+      }), i => i.column)
+    );
+
+    return boardCache;
   }
 
   getUpdateCursor() {
