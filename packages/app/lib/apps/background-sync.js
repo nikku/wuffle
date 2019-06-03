@@ -6,6 +6,7 @@ const {
 
 const {
   repoAndOwner,
+  issueIdent,
   Cache
 } = require('../util');
 
@@ -97,7 +98,11 @@ module.exports = async (app, config, store) => {
 
           const update = filterIssue(issue, repository);
 
-          await store.updateIssue(update);
+          try {
+            await store.updateIssue(update);
+          } catch (error) {
+            log.warn({ issue: issueIdent(update) }, 'failed to synchronize', error);
+          }
 
           // mark as found
           foundIssues[update.id] = update;
@@ -107,7 +112,11 @@ module.exports = async (app, config, store) => {
 
           const update = filterPull(pull_request, repository);
 
-          await store.updateIssue(update);
+          try {
+            await store.updateIssue(update);
+          } catch (error) {
+            log.warn({ issue: issueIdent(update) }, 'failed to synchronize', error);
+          }
 
           // mark as found
           foundIssues[update.id] = true;
@@ -220,8 +229,3 @@ module.exports = async (app, config, store) => {
   }
 
 };
-
-
-function issueIdent({ repo, owner, issue_number }) {
-  return `${owner}/${repo}#${issue_number}`;
-}
