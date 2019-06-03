@@ -62,7 +62,7 @@ module.exports = async (app, config, store) => {
     for (const repositoryName of repositories) {
       const [ owner, repo ] = repositoryName.split('/');
 
-      log.debug({ repositoryName }, 'syncing open issues');
+      log.debug({ repositoryName }, 'open issues update start');
 
       try {
         const github = await app.orgAuth(owner);
@@ -101,7 +101,7 @@ module.exports = async (app, config, store) => {
           try {
             await store.updateIssue(update);
           } catch (error) {
-            log.warn({ issue: issueIdent(update) }, 'failed to synchronize', error);
+            log.warn({ issue: issueIdent(update) }, 'update failed', error);
           }
 
           // mark as found
@@ -115,16 +115,16 @@ module.exports = async (app, config, store) => {
           try {
             await store.updateIssue(update);
           } catch (error) {
-            log.warn({ issue: issueIdent(update) }, 'failed to synchronize', error);
+            log.warn({ issue: issueIdent(update) }, 'update failed', error);
           }
 
           // mark as found
           foundIssues[update.id] = true;
         }
 
-        log.info({ repositoryName }, 'synched open issues');
+        log.debug({ repositoryName }, 'open issues update completed');
       } catch (error) {
-        log.warn({ repositoryName }, 'failed to synchronize open issues', error);
+        log.warn({ repositoryName }, 'open issues update failed', error);
       }
 
     }
@@ -135,6 +135,9 @@ module.exports = async (app, config, store) => {
 
     const closedIssues = Object.keys(knownIssues).filter(k => !(k in foundIssues)).map(k => knownIssues[k]);
 
+
+    log.debug('closed issues update start');
+
     for (const closedIssue of closedIssues) {
 
       const key = closedIssue.pull_request ? 'pull_number' : 'issue_number';
@@ -144,11 +147,9 @@ module.exports = async (app, config, store) => {
 
       const { repo, owner } = repoAndOwner(closedIssue);
 
-      const issueParams = { repo, owner, [key]: number };
+      const issueContext = { issue: `${owner}/${repo}#${number}` };
 
-      const issueContext = { issue: issueIdent(issueParams) };
-
-      log.info(issueContext, 'syncing issue');
+      log.info(issueContext, 'updating');
 
       try {
         const github = await app.orgAuth(owner);
@@ -169,26 +170,28 @@ module.exports = async (app, config, store) => {
 
         await store.updateIssue(update);
 
-        log.info(issueContext, 'synched issue');
+        log.debug(issueContext, 'updated');
 
       } catch (error) {
 
-        log.warn(issueContext, 'failed to synchronize issue', error);
+        log.warn(issueContext, 'update failed', error);
 
         await store.removeIssueById(id);
       }
     }
+
+    log.debug('closed issues update completed');
   }
 
   async function backgroundSync() {
 
-    log.info('syncing project');
+    log.info('project sync start');
 
     try {
       await doSync(repositories);
-      log.info('synched project');
+      log.info('project sync completed');
     } catch (error) {
-      log.warn('failed to sync project', error);
+      log.warn('project sync failed', error);
     }
   }
 
