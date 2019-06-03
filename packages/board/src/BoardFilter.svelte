@@ -259,7 +259,9 @@
       nextIndex = 0;
     }
 
-    return hints[nextIndex].name;
+    const hint = hints[nextIndex];
+
+    return hint && hint.name;
   }
 
   function handleKey(event) {
