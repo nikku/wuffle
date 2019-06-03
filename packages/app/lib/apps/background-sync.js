@@ -101,7 +101,7 @@ module.exports = async (app, config, store) => {
           try {
             await store.updateIssue(update);
           } catch (error) {
-            log.warn({ issue: issueIdent(update) }, 'update failed', error);
+            log.error({ issue: issueIdent(update) }, 'update failed', error);
           }
 
           // mark as found
@@ -115,7 +115,7 @@ module.exports = async (app, config, store) => {
           try {
             await store.updateIssue(update);
           } catch (error) {
-            log.warn({ issue: issueIdent(update) }, 'update failed', error);
+            log.error({ issue: issueIdent(update) }, 'update failed', error);
           }
 
           // mark as found
@@ -168,10 +168,13 @@ module.exports = async (app, config, store) => {
 
         const update = filterIssueOrPull(issue, repository);
 
-        await store.updateIssue(update);
+        try {
+          await store.updateIssue(update);
 
-        log.debug(issueContext, 'updated');
-
+          log.debug(issueContext, 'updated');
+        } catch (error) {
+          log.error({ issue: issueIdent(update) }, 'update failed', error);
+        }
       } catch (error) {
 
         log.warn(issueContext, 'update failed', error);
