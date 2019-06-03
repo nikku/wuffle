@@ -63,9 +63,9 @@
   onMount(() => {
 
     Promise.all([
+      fetchCards(filter),
       loginCheck(),
-      fetchBoard(),
-      fetchCards(filter)
+      fetchBoard()
     ]).catch(() => {
       error = true;
     }).finally(() => {
