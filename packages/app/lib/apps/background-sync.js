@@ -170,8 +170,6 @@ module.exports = async (app, config, store) => {
 
         try {
           await store.updateIssue(update);
-
-          log.debug(issueContext, 'updated');
         } catch (error) {
           log.error({ issue: issueIdent(update) }, 'update failed', error);
         }
