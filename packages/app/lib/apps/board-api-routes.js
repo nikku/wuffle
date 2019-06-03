@@ -171,7 +171,7 @@ module.exports = async (app, config, store) => {
       name
     } = config;
 
-    return res.json({
+    return res.type('json').json({
       columns: columns.map(c => {
         const { name } = c;
 
