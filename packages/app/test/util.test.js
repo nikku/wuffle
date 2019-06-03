@@ -13,7 +13,7 @@ const {
   CHILD_OF,
   DEPENDS_ON,
   REQUIRED_BY,
-  RELATED_TO,
+  LINKED_TO,
   CLOSES
 } = linkTypes;
 
@@ -157,7 +157,7 @@ describe('util', function() {
     });
 
 
-    it('should recognize related-to', function() {
+    it('should recognize related to', function() {
 
       // given
       const issue = createIssue(
@@ -171,10 +171,10 @@ describe('util', function() {
       // then
       expect(links).to.eql([
         {
-          type: RELATED_TO, number: 2
+          type: LINKED_TO, number: 2
         },
         {
-          type: RELATED_TO, number: 1828,
+          type: LINKED_TO, number: 1828,
           owner: 'foo', repo: 'bar'
         }
       ]);
@@ -237,12 +237,12 @@ describe('util', function() {
       );
 
       // when
-      const links = findLinks(issue, { PARENT_OF, RELATED_TO });
+      const links = findLinks(issue, { PARENT_OF, LINKED_TO });
 
       // then
       expect(links).to.eql([
         { type: PARENT_OF, number: 2 },
-        { type: RELATED_TO, number: 12 }
+        { type: LINKED_TO, number: 12 }
       ]);
 
     });

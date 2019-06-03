@@ -2,7 +2,7 @@ const CHILD_OF = 'CHILD_OF';
 const PARENT_OF = 'PARENT_OF';
 const DEPENDS_ON = 'DEPENDS_ON';
 const REQUIRED_BY = 'REQUIRED_BY';
-const RELATED_TO = 'RELATED_TO';
+const LINKED_TO = 'LINKED_TO';
 const CLOSES = 'CLOSES';
 
 const phrasesToTypes = {
@@ -15,7 +15,7 @@ const phrasesToTypes = {
   'requires': DEPENDS_ON,
   'required by': REQUIRED_BY,
   'needed by': REQUIRED_BY,
-  'related to': RELATED_TO
+  'related to': LINKED_TO
 };
 
 const linkTypes = {
@@ -23,7 +23,7 @@ const linkTypes = {
   PARENT_OF,
   DEPENDS_ON,
   REQUIRED_BY,
-  RELATED_TO,
+  LINKED_TO,
   CLOSES
 };
 
