@@ -83,14 +83,16 @@
 
       // hook into history changes
       history.onPop(() => {
-        filter = parseSearchFilter();
+        const newFilter = parseSearchFilter();
+
+        filterChanged(newFilter, false);
       })
     ];
 
     return () => teardownHooks.forEach(fn => fn && fn());
   });
 
-  function filterChanged(value) {
+  function filterChanged(value, pushHistory=true) {
 
     if (value === filter) {
       return;
@@ -98,7 +100,9 @@
 
     filter = value;
 
-    history.push(`/board${buildQueryString(filter)}`);
+    if (pushHistory) {
+      history.push(`/board${buildQueryString(filter)}`);
+    }
 
     fetchCards(filter);
   }
