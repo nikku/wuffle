@@ -18,6 +18,10 @@ const {
  */
 module.exports = async (app, config, store) => {
 
+  const log = app.log.child({
+    name: 'wuffle:board-api-routes'
+  });
+
   const middlewares = [
     withSession
   ];
@@ -114,6 +118,29 @@ module.exports = async (app, config, store) => {
 
   }
 
+  function moveIssue(context, issue, params) {
+
+    const {
+      id
+    } = issue;
+
+    const {
+      before,
+      after,
+      column
+    } = params;
+
+    store.updateOrder(id, before, after, column);
+
+    // we move the issue via GitHub and rely on the automatic-dev-flow
+    // to pick up the update (and react to it)
+
+    return Promise.all([
+      app.moveIssue(context, issue, column),
+      app.moveReferencedIssues(context, issue, column)
+    ]);
+
+  }
 
   // public endpoints ////////
 
@@ -128,6 +155,10 @@ module.exports = async (app, config, store) => {
         items: filteredItems,
         cursor
       });
+    }).catch(err => {
+      log.error(err);
+
+      res.status(500).json({ error : true });
     });
   });
 
@@ -157,7 +188,15 @@ module.exports = async (app, config, store) => {
 
     const updates = cursor ? store.getUpdates(cursor) : [];
 
-    return filterUpdates(req, updates).then(filteredUpdates => res.type('json').json(filteredUpdates));
+    return (
+      filterUpdates(req, updates)
+        .then(filteredUpdates => res.type('json').json(filteredUpdates))
+        .catch(err => {
+          log.error(err);
+
+          res.status(500).json({ error : true });
+        })
+    );
   });
 
 
@@ -172,10 +211,8 @@ module.exports = async (app, config, store) => {
     const body = JSON.parse(req.body);
 
     const {
-      before,
-      after,
-      column,
       id,
+      ...params
     } = body;
 
     const issue = store.getIssueById(id);
@@ -187,8 +224,6 @@ module.exports = async (app, config, store) => {
     if (!canWrite) {
       return res.status(403).json({});
     }
-
-    store.updateOrder(issue.id, before, after, column);
 
     const token = app.getGitHubToken(req);
 
@@ -204,15 +239,18 @@ module.exports = async (app, config, store) => {
       }
     };
 
-    // we move the issue via GitHub and rely on the automatic-dev-flow
-    // to pick up the update (and react to it)
+    return (
+      moveIssue(context, issue, params)
+        .then(() => {
+          res.type('json').json({});
+        })
+        .catch(err => {
+          log.error(err);
 
-    await Promise.all([
-      app.moveIssue(context, issue, column),
-      app.moveReferencedIssues(context, issue, column)
-    ]);
+          res.status(500).json({ error : true });
+        })
+    );
 
-    res.type('json').json({});
   });
 
 };
