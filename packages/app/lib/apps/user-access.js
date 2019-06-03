@@ -2,7 +2,7 @@ const {
   Cache
 } = require('../util');
 
-// 5 minutes
+// 10 minutes
 const TTL = 1000 * 60 * 10;
 
 
