@@ -38,7 +38,23 @@ class Store {
 
   async updateIssue(issue, column) {
 
-    const { id } = issue;
+    const {
+      id,
+      key,
+      repository
+    } = issue;
+
+    if (!id) {
+      throw new Error('{ id } required');
+    }
+
+    if (!key) {
+      throw new Error('{ key } required');
+    }
+
+    if (!repository) {
+      throw new Error('{ repository } required');
+    }
 
     let order = this.getOrder(id);
 
