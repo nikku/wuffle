@@ -12,6 +12,8 @@
 
   export let className = '';
 
+  export let shown = true;
+
   $: id = item.id;
   $: number = item.number;
   $: title = item.title;
@@ -71,6 +73,8 @@
   }
 </style>
 
+{#if shown}
+
 <div class="board-card-container { className }" { ...otherProps }>
   <div class="board-card">
     <div class="header">
@@ -128,3 +132,5 @@
     </div>
   {/if}
 </div>
+
+{/if}

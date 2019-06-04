@@ -600,13 +600,12 @@
                on:scroll={ checkRender(column.name) }>
             {#each (shownItems[column.name] || []) as item, index (item.id) }
 
-              {#if index <= (renderedItems[column.name] || renderCount) }
-                <Card
-                  item={item}
-                  data-draggable-id={ item.id }
-                  data-draggable-index={ index }
-                />
-              {/if}
+              <Card
+                item={item}
+                shown={ index <= (renderedItems[column.name] || renderCount) }
+                data-draggable-id={ item.id }
+                data-draggable-index={ index }
+              />
             {/each}
           </div>
         {/if}
