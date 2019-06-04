@@ -23,10 +23,14 @@
   display: flex;
   align-items: center;
   user-select: none;
-}
 
-.spacer {
-  flex: 1;
+  & > * {
+    flex-shrink: 0;
+  }
+
+  & > .repository {
+    flex: 1;
+  }
 }
 
 .issue-type {
@@ -84,7 +88,6 @@
   color: $gray-600;
 }
 
-
 .assignee {
   box-sizing: border-box;
   margin: 0;
@@ -93,8 +96,9 @@
   position: relative;
   display: inline-block;
   text-align: center;
-  vertical-align: middle;
   border-radius: 3px;
+
+  margin-left: 3px;
 
   width: 1.3em;
   height: 1.3em;
@@ -118,8 +122,4 @@
     top: -3px;
     right: -3px;
   }
-}
-
-.assignee + .assignee {
-  margin-left: 3px;
 }
