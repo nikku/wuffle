@@ -2,18 +2,18 @@ export default function autoresize(node, params) {
 
   var offset = node.offsetHeight - node.clientHeight;
 
-  function onInput(event) {
-    var target = event.target;
-
-    target.style.height = 'auto';
-    target.style.height = target.scrollHeight + offset + 'px';
+  function updateHeight() {
+    node.style.height = 'auto';
+    node.style.height = node.scrollHeight + offset + 'px';
   }
 
-  node.addEventListener('input', onInput);
+  node.addEventListener('input', updateHeight);
+  node.addEventListener('focus', updateHeight);
 
   return {
     destroy: function() {
-      node.removeEventListener('input', onInput);
+      node.removeEventListener('input', updateHeight);
+      node.removeEventListener('focus', updateHeight);
     }
   };
 }
