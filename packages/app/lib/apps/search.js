@@ -128,10 +128,19 @@ module.exports = async (app, config, store) => {
     const filterFns = terms.map(term => {
       const {
         qualifier,
-        value
+        value,
+        negated
       } = term;
 
-      return (value && filters[qualifier] || noopFilter)(value);
+      const fn = (value && filters[qualifier] || noopFilter)(value);
+
+      if (negated) {
+        return function(arg) {
+          return !fn(arg);
+        };
+      }
+
+      return fn;
     });
 
     return function(issue) {

@@ -1,7 +1,7 @@
 
 function parseSearch(str) {
 
-  const regexp = /(?:([\w]+)|"([\w\s]+)"|([\w]+):(?:([\w]+)|"([\w: ]+)")?)(?:\s|$)/g;
+  const regexp = /(?:([\w]+)|"([\w\s]+)"|([\w]+):(-)?(?:([\w]+)|"([\w: ]+)")?)(?:\s|$)/g;
 
   const terms = [];
 
@@ -14,6 +14,7 @@ function parseSearch(str) {
       text,
       textEscaped,
       qualifier,
+      negated,
       qualifierText,
       qualifierTextEscaped
     ] = match;
@@ -33,7 +34,8 @@ function parseSearch(str) {
     if (qualifier) {
       terms.push({
         qualifier,
-        value: qualifierValue
+        value: qualifierValue,
+        negated: !!negated
       });
     }
   }

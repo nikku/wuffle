@@ -269,26 +269,43 @@ describe('util', function() {
 
       // then
       expect(search).to.eql([
-        { qualifier: 'is', value: 'open' },
+        { qualifier: 'is', value: 'open', negated: false },
         { qualifier: 'text', value: 'asdsad' },
-        { qualifier: 'milestone', value: 'FOO BAR' },
+        { qualifier: 'milestone', value: 'FOO BAR', negated: false },
         { qualifier: 'text', value: 'FOO BAR' },
-        { qualifier: 'milestone', value: '12asd' },
-        { qualifier: 'milestone', value: undefined },
-        { qualifier: 'label', value: 'in progress' }
+        { qualifier: 'milestone', value: '12asd', negated: false },
+        { qualifier: 'milestone', value: undefined, negated: false },
+        { qualifier: 'label', value: 'in progress', negated: false }
       ]);
 
     });
 
 
-    it('should value with colon', function() {
+    it('should parse value with colon', function() {
 
       // when
       const search = parseSearch('is:"open:b"');
 
       // then
       expect(search).to.eql([
-        { qualifier: 'is', value: 'open:b' }
+        { qualifier: 'is', value: 'open:b', negated: false }
+      ]);
+
+    });
+
+
+    it('should parse negated (-) value', function() {
+
+      // when
+      const search = parseSearch([
+        'is:-"open:b"',
+        'is:-FOO'
+      ].join(' '));
+
+      // then
+      expect(search).to.eql([
+        { qualifier: 'is', value: 'open:b', negated: true },
+        { qualifier: 'is', value: 'FOO', negated: true }
       ]);
 
     });
