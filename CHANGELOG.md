@@ -6,6 +6,13 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 ___Note:__ Yet to be released changes appear here._
 
+## 0.6.0
+
+* `FEAT`: add ability to search using `-` (not) matcher
+* `FEAT`: unlink closed, unmerged PRs from issue
+* `FEAT`:  autoresize card titles on focus
+* `FIX`: prevent shrinking of PR and collaborator icons
+
 ## 0.5.1
 
 * `FIX`: prevent error on card filtering
