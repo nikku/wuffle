@@ -1,6 +1,8 @@
 <script>
   import {
-    autoresize
+    autoresize,
+    isClosedByLink,
+    isOpenOrMergedPull
   } from './util';
 
   import Tag from './components/Tag.svelte';
@@ -25,12 +27,7 @@
   $: links = item.links;
 
   $: closedBy = (links.find(link => {
-    const {
-      type,
-      target
-    } = link;
-
-    return type === 'CLOSED_BY';
+    return isClosedByLink(link) && isOpenOrMergedPull(link.target);
   }) || {}).target;
 
   $: assignees = item.assignees;

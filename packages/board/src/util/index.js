@@ -24,6 +24,12 @@ export function periodic(fn, interval) {
 }
 
 export {
+  isClosingLink,
+  isClosedByLink,
+  isOpenOrMergedPull
+} from './links';
+
+export {
   debounce,
   throttle
 } from 'min-dash';

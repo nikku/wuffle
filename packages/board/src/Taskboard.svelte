@@ -16,6 +16,8 @@
     Id,
     createLocalStore,
     createHistory,
+    isClosingLink,
+    isOpenOrMergedPull,
     periodic,
     throttle
   } from './util';
@@ -449,13 +451,8 @@
   }
 
   function isClosingPR(item) {
-    return item.links.some(link => {
-      const {
-        type,
-        target
-      } = link;
-
-      return type === 'CLOSES' && itemsById[target.id];
+    return isOpenOrMergedPull(item) && item.links.some(link => {
+      return isClosingLink(link) && itemsById[link.target.id];
     });
   }
 
