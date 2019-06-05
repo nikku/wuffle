@@ -176,7 +176,7 @@ function filterPull(pull_request, repository) {
     head: filterBase(head),
     base: filterBase(base),
     draft,
-    merged,
+    merged: (merged || !!merged_at),
     mergeable,
     mergeable_state,
     merged_by,

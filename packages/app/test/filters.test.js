@@ -46,6 +46,23 @@ describe('filters', function() {
     expect(filtered).to.eql(expectedIssue);
   });
 
+
+  it('should filter pull request, shimming merged property', function() {
+
+    // given
+    const pull_request = loadApiResult('pull_request');
+
+    const repository = loadApiResult('repository');
+
+    const expectedIssue = loadFiltered('pull_request.background-synched');
+
+    // when
+    const filtered = filterPull(pull_request, repository);
+
+    // then
+    expect(filtered).to.eql(expectedIssue);
+  });
+
 });
 
 
@@ -62,6 +79,12 @@ function loadFiltered(name) {
 
 function loadEvent(name) {
   const json = fs.readFileSync(__dirname + '/fixtures/filters/events/' + name + '.json', 'utf8');
+
+  return JSON.parse(json);
+}
+
+function loadApiResult(name) {
+  const json = fs.readFileSync(__dirname + '/fixtures/filters/api-results/' + name + '.json', 'utf8');
 
   return JSON.parse(json);
 }
