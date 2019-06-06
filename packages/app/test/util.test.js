@@ -298,13 +298,15 @@ describe('util', function() {
 
       // when
       const search = parseSearch([
-        'is:-"open:b"',
-        'is:-FOO'
+        '-is:"open:b"',
+        '-is:FOO',
+        '!is:FOO'
       ].join(' '));
 
       // then
       expect(search).to.eql([
         { qualifier: 'is', value: 'open:b', negated: true },
+        { qualifier: 'is', value: 'FOO', negated: true },
         { qualifier: 'is', value: 'FOO', negated: true }
       ]);
 
