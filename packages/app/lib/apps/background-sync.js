@@ -1,14 +1,8 @@
 const {
   filterIssue,
-  filterPull,
-  filterIssueOrPull
+  filterPull
 } = require('../filters');
 
-const {
-  repoAndOwner,
-  issueIdent,
-  Cache
-} = require('../util');
 
 /**
  * This component performs a periodic background sync of a project.
@@ -18,6 +12,9 @@ const {
  * @param  {Store} store
  */
 module.exports = async (app, config, store) => {
+
+  // 30 days
+  const syncLookback = 1000 * 60 * 60 * 24 * 30;
 
   const log = app.log.child({
     name: 'wuffle:background-sync'
@@ -45,143 +42,132 @@ module.exports = async (app, config, store) => {
     }).then(res => res.data);
   }
 
-  async function doSync(repositories) {
-
-    const repoCache = new Cache(-1);
-
-    // get issues, keyed by id
-    const knownIssues = store.getIssues().reduce((byId, issue) => {
-      byId[issue.id] = issue;
-
-      return byId;
-    }, {});
+  async function syncRepositories(repositories, since) {
 
     const foundIssues = {};
 
-    // sync open issues
+    // sync issues
     for (const repositoryName of repositories) {
       const [ owner, repo ] = repositoryName.split('/');
 
-      log.debug({ repositoryName }, 'open issues update start');
+      const params = {
+        sort: 'updated',
+        direction: 'desc',
+        owner,
+        repo
+      };
+
+      log.debug({ repositoryName }, 'issues sync start');
 
       try {
         const github = await app.orgAuth(owner);
 
         const [
-          issues,
-          pull_requests,
+          open_issues,
+          closed_issues,
+          open_pull_requests,
+          closed_pull_requests,
           repository
         ] = await Promise.all([
+
+          // open issues
           github.paginate(
             github.issues.listForRepo.endpoint.merge({
-              owner,
-              repo
+              ...params,
+              state: 'open'
             }),
-            res => res.data
+            (response) => response.data.filter(issue => !issue.pull_request)
           ),
+
+          // closed issues, updated last 30 days
+          github.paginate(
+            github.issues.listForRepo.endpoint.merge({
+              ...params,
+              state: 'closed',
+              since: new Date(since).toISOString()
+            }),
+            (response) => response.data.filter(issue => !issue.pull_request)
+          ),
+
+          // open pulls
           github.paginate(
             github.pulls.list.endpoint.merge({
-              owner,
-              repo
+              ...params,
+              state: 'open'
             }),
-            res => res.data
+            (response) => response.data
           ),
-          repoCache.get(repositoryName, fetchRepository)
+
+          // closed pulls, updated last 30 days
+          github.paginate(
+            github.pulls.list.endpoint.merge({
+              ...params,
+              state: 'closed'
+            }),
+            (response, done) => {
+
+              const pulls = response.data;
+
+              const filtered = pulls.filter(pull => new Date(pull.updated_at).getTime() > since);
+
+              if (filtered.length !== pulls.length) {
+                done();
+              }
+
+              return filtered;
+            }
+          ),
+
+          // repository information
+          fetchRepository(repositoryName)
         ]);
 
-        for (const issue of issues) {
-
-          // ignore pull request issues with incomplete data
-          if (issue.pull_request) {
-            continue;
-          }
+        for (const issue of [ ...open_issues, ...closed_issues ]) {
 
           const update = filterIssue(issue, repository);
 
           try {
             await store.updateIssue(update);
           } catch (error) {
-            log.error({ issue: issueIdent(update) }, 'update failed', error);
+            log.error({ issue: update.key }, 'update failed', error);
           }
 
           // mark as found
           foundIssues[update.id] = update;
         }
 
-        for (const pull_request of pull_requests) {
+        for (const pull_request of [ ...open_pull_requests, ...closed_pull_requests ]) {
 
           const update = filterPull(pull_request, repository);
 
           try {
             await store.updateIssue(update);
           } catch (error) {
-            log.error({ issue: issueIdent(update) }, 'update failed', error);
+            log.error({ issue: update.key }, 'update failed', error);
           }
 
           // mark as found
           foundIssues[update.id] = true;
         }
 
-        log.debug({ repositoryName }, 'open issues update completed');
+        log.debug({ repositoryName }, 'issues sync completed');
       } catch (error) {
-        log.warn({ repositoryName }, 'open issues update failed', error);
-      }
-
-    }
-
-    // check for all known but not-yet synched issues,
-    // those are either deleted or already closed
-    // and we must manually retrieve them and update them
-
-    const closedIssues = Object.keys(knownIssues).filter(k => !(k in foundIssues)).map(k => knownIssues[k]);
-
-
-    log.debug('closed issues update start');
-
-    for (const closedIssue of closedIssues) {
-
-      const key = closedIssue.pull_request ? 'pull_number' : 'issue_number';
-      const endpoint = closedIssue.pull_request ? 'pulls' : 'issues';
-
-      const { id, number } = closedIssue;
-
-      const { repo, owner } = repoAndOwner(closedIssue);
-
-      const issueContext = { issue: `${owner}/${repo}#${number}` };
-
-      log.info(issueContext, 'updating');
-
-      try {
-        const github = await app.orgAuth(owner);
-
-        const [
-          issue,
-          repository
-        ] = await Promise.all([
-          github[endpoint].get({
-            owner,
-            repo,
-            [key]: number
-          }).then(res => res.data),
-          repoCache.get(`${owner}/${repo}`, fetchRepository)
-        ]);
-
-        const update = filterIssueOrPull(issue, repository);
-
-        try {
-          await store.updateIssue(update);
-        } catch (error) {
-          log.error({ issue: issueIdent(update) }, 'update failed', error);
-        }
-      } catch (error) {
-
-        log.warn(issueContext, 'update failed', error);
-
-        await store.removeIssueById(id);
+        log.warn({ repositoryName }, 'issues sync failed', error);
       }
     }
 
-    log.debug('closed issues update completed');
+    return foundIssues;
+  }
+
+  async function doSync(repositories) {
+
+    // synchronize existing issues
+    const foundIssues = await syncRepositories(repositories, Date.now() - syncLookback);
+
+    log.info(
+      'synched %s issues',
+      Object.keys(foundIssues).length
+    );
   }
 
   async function backgroundSync() {
