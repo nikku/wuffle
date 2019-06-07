@@ -3,7 +3,8 @@ const path = require('path');
 
 const mkdirp = require('mkdirp');
 
-const exitHook = require('exit-hook2');
+const { preExit } = require('../util');
+
 
 /**
  * This component restores a store dump on startup and periodically
@@ -95,18 +96,7 @@ module.exports = async (app, config, store) => {
   setInterval(dumpStore, dumpInterval);
 
   // dump on exit
-  exitHook(function(canCancel, signal, code) {
-
-    if (canCancel) {
-      exitHook.removeListener(this);
-
-      dumpStore().finally(() => {
-        process.exit(code);
-      });
-
-      return false;
-    }
-  });
+  preExit(dumpStore);
 
   // restore, initally
   return restoreStore();
