@@ -6,6 +6,16 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 ___Note:__ Yet to be released changes appear here._
 
+## 0.7.0
+
+* `FEAT`: improve background sync performance for closed issues
+* `FEAT`: expire and remove closed issues not updated for 60 days
+* `FEAT`: simplify board filter
+* `FEAT`: add initial focus hint to board filter
+* `FEAT`: put negation char before operator
+* `FEAT`: support `!` to negate a search operator
+* `FIX`: correct store not dumping on exit
+
 ## 0.6.0
 
 * `FEAT`: add ability to search using `-` (not) matcher
