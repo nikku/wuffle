@@ -164,6 +164,8 @@
       value = value.substring(value.lastIndexOf(' ') + 1);
     }
 
+    value = value.replace(/^[-!]{1}/, '');
+
     if (!value) {
       return {};
     }
@@ -210,6 +212,7 @@
     }, []);
 
     if (matchedCategories.length) {
+
       return {
         match: { categories: matchedCategories },
         keyboardSelectedHint: matchedCategories[0].values[0].name,
@@ -226,13 +229,15 @@
 
   function applyHint(hint) {
 
-    if (value.lastIndexOf(' ') !== -1) {
-      value = value.substring(0, value.lastIndexOf(' '));
-    } else {
-      value = '';
-    }
+    const spaceIdx = value.lastIndexOf(' ');
 
-    value += (value ? ' ' : '') + hint + (hint.includes(':') ? ' ' : ':');
+    const currentValue = spaceIdx !== -1 ? value.substring(spaceIdx + 1) : value;
+
+    const existingValue = spaceIdx !== -1 ? value.substring(0, spaceIdx + 1) : '';
+
+    const [ _, negationPrefix, actualValue ] = /^([-!]?)(.*)$/.exec(currentValue);
+
+    value = existingValue + (negationPrefix || '') + hint + (hint.includes(':') ? ' ' : ':');
 
     triggerChanged(value);
   }
