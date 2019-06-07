@@ -182,13 +182,13 @@
 
         categoryValue = categoryValue.toLowerCase();
 
-        if (categoryValue.indexOf(value) === 0) {
+        if (categoryValue.startsWith(value)) {
 
           const hint = {
             name: categoryValue,
             parts: [
               {
-                text: categoryValue.substring(0, value.length),
+                text: value,
                 matched: true
               },
               {
