@@ -85,6 +85,15 @@
         }
       }
 
+      .note {
+        padding: 0 .8rem;
+        color: $gray-600;
+
+        span {
+          font-style: italic;
+        }
+      }
+
       .matched {
         background: scale-color($primary, $alpha: -80%);
         color: darken($primary, 10%);
@@ -125,18 +134,13 @@
 
   const categories = [
     {
-      name: 'Queries',
+      name: 'Operators',
       values: [
         'label',
         'assignee',
         'repo',
         'reviewer',
-        'milestone'
-      ]
-    },
-    {
-      name: 'Qualifiers',
-      values: [
+        'milestone',
         'is:assigned',
         'is:unassigned'
       ]
@@ -339,6 +343,12 @@
           {/each}
         </ul>
       {/each}
+    </div>
+  {:else if focussed && !value}
+    <div class="help">
+      <div class="note">
+        Filter cards by title and description or refine your search with operators such as <span>milestone</span>, <span>repo</span>, <span>assignee</span>, and <span>label</span> or <span>is</span>.
+      </div>
     </div>
   {/if}
 </div>
