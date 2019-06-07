@@ -1,4 +1,4 @@
-const exitHook = require('exit-hook2');
+const { preExit } = require('../util');
 
 const S3 = require('aws-sdk/clients/s3');
 
@@ -101,17 +101,7 @@ module.exports = async (app, config, store) => {
   setInterval(dumpStore, dumpInterval);
 
   // dump on exit
-  exitHook(function(canCancel, signal, code) {
-    if (canCancel) {
-      exitHook.removeListener(this);
-
-      dumpStore().finally(() => {
-        process.exit(code);
-      });
-
-      return false;
-    }
-  });
+  preExit(dumpStore);
 
   // restore, initally
   return restoreStore();
