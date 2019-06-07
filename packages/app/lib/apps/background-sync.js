@@ -16,6 +16,9 @@ module.exports = async (app, config, store) => {
   // 30 days
   const syncLookback = 1000 * 60 * 60 * 24 * 30;
 
+  // 60 days
+  const removalLookback = 1000 * 60 * 60 * 24 * 60;
+
   const log = app.log.child({
     name: 'wuffle:background-sync'
   });
@@ -159,14 +162,65 @@ module.exports = async (app, config, store) => {
     return foundIssues;
   }
 
+  async function checkExpiration(issues, expiryTime) {
+
+    let expired = {};
+
+    log.debug('expiration check start');
+
+    for (const issue of issues) {
+
+      const {
+        id,
+        key,
+        updated_at
+      } = issue;
+
+      const updatedTime = new Date(updated_at).getTime();
+
+      if (updatedTime < expiryTime) {
+
+        try {
+          log.debug({ issue: key }, 'cleaning up');
+
+          await store.removeIssueById(id);
+
+          expired[id] = issue;
+        } catch (err) {
+          log.error({ issue: key }, 'cleanup failed', err);
+        }
+      }
+    }
+
+    log.debug('expiration check start');
+
+    return expired;
+  }
+
   async function doSync(repositories) {
+
+    // get issues, keyed by id
+    const knownIssues = store.getIssues().reduce((byId, issue) => {
+      byId[issue.id] = issue;
+
+      return byId;
+    }, {});
 
     // synchronize existing issues
     const foundIssues = await syncRepositories(repositories, Date.now() - syncLookback);
 
+    // check for all missing issues, these will
+    // be automatically expired once they reach a
+    // certain life-span without activity
+
+    const missingIssues = Object.keys(knownIssues).filter(k => !(k in foundIssues)).map(k => knownIssues[k]);
+
+    const expiredIssues = await checkExpiration(missingIssues, Date.now() - removalLookback);
+
     log.info(
-      'synched %s issues',
-      Object.keys(foundIssues).length
+      'synched %s, expired %s issues',
+      Object.keys(foundIssues).length,
+      Object.keys(expiredIssues).length
     );
   }
 
