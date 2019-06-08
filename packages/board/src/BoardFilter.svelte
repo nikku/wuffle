@@ -79,9 +79,15 @@
         padding: 0 .8rem;
         line-height: 2em;
 
-        &:hover,
-        &.active {
-          background: scale-color($primary, $alpha: -90%);
+        &:not(.text) {
+          &:hover,
+          &.active {
+            background: scale-color($primary, $alpha: -90%);
+          }
+        }
+
+        &.text {
+          color: $gray-600;
         }
       }
 
@@ -124,6 +130,8 @@
   export let completionOptions = {};
 
   export let onChange;
+
+  const maxElements = 7;
 
   let staticValues = {
     is: [
@@ -445,14 +453,20 @@
 
         <div class="category">{ category.name }</div>
         <ul>
-          {#each category.values as value}
-            <li
-              class:active={ selectedHint && selectedHint.name === value.name }
-              on:mouseover={ () => mouseSelectedHint = value }
-              on:mouseout={ () => mouseSelectedHint = null }
-              on:mousedown={ (event) => { event.preventDefault(); applyHint(mouseSelectedHint) } }
-            >{#each value.parts as part}<span class:matched={ part.matched }>{ part.text }</span>{/each}</li>
+          {#each category.values as value, idx}
+            {#if idx < maxElements || (selectedHint && selectedHint.name === value.name) }
+              <li
+                class:active={ selectedHint && selectedHint.name === value.name }
+                on:mouseover={ () => mouseSelectedHint = value }
+                on:mouseout={ () => mouseSelectedHint = null }
+                on:mousedown={ (event) => { event.preventDefault(); applyHint(mouseSelectedHint) } }
+              >{#each value.parts as part}<span class:matched={ part.matched }>{ part.text }</span>{/each}</li>
+            {/if}
           {/each}
+
+          {#if category.values.length > maxElements}
+            <li class="text">...</li>
+          {/if}
         </ul>
       {/each}
     </div>
