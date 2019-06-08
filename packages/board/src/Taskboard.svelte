@@ -55,6 +55,8 @@
 
   const renderCount = 25;
 
+  let filterOptions = {};
+
   $: localStore.set(COLUMNS_COLLAPSED_KEY, collapsed);
   $: shownItems = Object.keys(items).reduce((shownItems, column) => {
 
@@ -124,7 +126,7 @@
 
   function parseSearchFilter() {
     if (typeof window === 'undefined') {
-      return null;
+      return '';
     }
 
     const queryString = window.location.search;
@@ -159,6 +161,77 @@
     });
   }
 
+  function updateCards(_items, _cursor) {
+    console.time('Taskboard#updateCards');
+
+    const _itemsById = {};
+    const _filterOptions = {};
+
+    for (const columnItems of Object.values(_items)) {
+
+      for (const item of columnItems) {
+        const {
+          id,
+          milestone,
+          assignees,
+          labels,
+          repository,
+          requested_reviewers
+        } = item;
+
+        const repoOptions = _filterOptions['repo'] = _filterOptions['repo'] || {};
+
+        repoOptions[repository.name] = true;
+
+        if (milestone) {
+          const milestoneOptions = _filterOptions['milestone'] = _filterOptions['milestone'] || {};
+
+          milestoneOptions[milestone.title] = true;
+        }
+
+        assignees.forEach(assignee => {
+          const assigneeOptions = _filterOptions['assignee'] = _filterOptions['assignee'] || {};
+
+          assigneeOptions[assignee.login] = true;
+        });
+
+        if (requested_reviewers) {
+          requested_reviewers.forEach(reviewer => {
+            const reviewerOptions = _filterOptions['reviewer'] = _filterOptions['reviewer'] || {};
+
+            reviewerOptions[reviewer.login] = true;
+          });
+        }
+
+        labels.forEach(label => {
+
+          if (!label.column_label) {
+            const labelOptions = _filterOptions['label'] = _filterOptions['label'] || {};
+
+            labelOptions[label.name] = true;
+          }
+        });
+
+        _itemsById[id] = item;
+      }
+
+    }
+
+    items = _items;
+    itemsById = _itemsById;
+    filterOptions = Object.entries(_filterOptions).reduce((opts, entry) => {
+
+      const [ key, value ] = entry;
+
+      opts[key] = Object.keys(value);
+
+      return opts;
+    }, {});
+
+    cursor = _cursor;
+    console.timeEnd('Taskboard#updateCards');
+  }
+
   function fetchCards(newFilter) {
 
     updating++;
@@ -170,16 +243,12 @@
         return;
       }
 
-      items = result.items;
-      itemsById = Object.values(items).reduce((itemsById, items) => {
-        items.forEach(function(item) {
-          itemsById[item.id] = item;
-        });
+      const {
+        items,
+        cursor
+      } = result;
 
-        return itemsById;
-      }, {});
-
-      cursor = result.cursor;
+      updateCards(items, cursor);
     }).finally(() => updating--);
   }
 
@@ -552,7 +621,7 @@
       </ul>
 
       <form class="form-inline my-2 my-lg-0" on:submit={ (e) => e.preventDefault() }>
-        <BoardFilter value={ filter } onChange={ filterChanged } />
+        <BoardFilter value={ filter } completionOptions={ filterOptions } onChange={ filterChanged } />
       </form>
 
       <div class="vertical-divider"></div>

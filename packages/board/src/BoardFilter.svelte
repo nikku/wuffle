@@ -121,84 +121,154 @@
   export let className = '';
   export let value = '';
 
+  export let completionOptions = {};
+
   export let onChange;
 
-  let keyboardSelectedHint = '';
-  let mouseSelectedHint = '';
+  let staticValues = {
+    is: [
+      'assigned',
+      'unassigned',
+      'closed',
+      'open',
+      'issue',
+      'pull'
+    ].map(name => {
+      return { name, value: `${name} ` };
+    })
+  };
 
-  $: selectedHint = mouseSelectedHint || keyboardSelectedHint;
+  $: dynamicValues = Object.entries(completionOptions).reduce((values, entry) => {
 
-  let focussed = false;
-  let match;
-  let allHints;
+    const [ key, value ] = entry;
 
-  const categories = [
+    values[key] = value.map(name => {
+
+      const separator = /[: ]/.test(name) ? '"' : '';
+
+      return { name, value: `${separator}${name}${separator} ` };
+    });
+
+    return values;
+  }, {});
+
+  const qualifierCategories = [
     {
       name: 'Operators',
-      values: [
+      options: [
         'label',
         'assignee',
         'repo',
         'reviewer',
         'milestone',
-        'is:assigned',
-        'is:unassigned',
-        'is:closed',
-        'is:open',
-        'is:issue',
-        'is:pull'
-      ]
+        'is'
+      ].map(name => {
+        return {
+          name,
+          value: `${name}:`
+        };
+      })
     }
   ];
 
+  let keyboardSelectedHint;
+  let mouseSelectedHint;
+
+  $: categoryValues = {
+    ...staticValues,
+    ...dynamicValues
+  };
+
+  $: selectedHint = mouseSelectedHint || keyboardSelectedHint;
+
+  let input;
+
+  let focussed = false;
+  let match;
+  let allHints;
+
+  let position = 0;
+
   $: expanded = focussed || value;
   $: {
-    let opts = computeMatch(value);
+    console.time('BoardFilter#computeMatch');
+
+    let opts = computeMatch(value, position, categoryValues);
+
+    console.timeEnd('BoardFilter#computeMatch');
 
     match = opts.match;
-    keyboardSelectedHint = opts.keyboardSelectedHint;
     allHints = opts.allHints;
+    keyboardSelectedHint = (
+      allHints && keyboardSelectedHint && allHints.find(hint => hint.name === keyboardSelectedHint.name)
+      || opts.keyboardSelectedHint
+    );
   };
 
   const searchId = Id();
 
-  function computeMatch(value) {
+  function computeMatch(value, searchEnd, categoryValues) {
 
-    value = value || '';
+    const beforeCursor = value.substring(0, searchEnd);
 
-    value = value.toLowerCase();
+    const searchStart = beforeCursor.lastIndexOf(' ') + 1;
 
-    if (value.lastIndexOf(' ') !== -1) {
-      value = value.substring(value.lastIndexOf(' ') + 1);
-    }
+    value = value.substring(searchStart, searchEnd).toLowerCase();
 
-    value = value.replace(/^[-!]{1}/, '');
+    const match = /^([-!]?)(?:([a-z]+)(?:(\:)(?:"([a-z]+)"?|([a-z]+))?)?)$/.exec(value);
 
-    if (!value) {
+    if (!match) {
       return {};
     }
 
+    let [ _, negator, qualifier, sep, qualifierText, qualifierTextEscaped ] = match;
+
+    const qualifierValue = qualifierText || qualifierTextEscaped;
+
+    const search = sep ? (qualifierText || qualifierTextEscaped || '') : qualifier;
+
     const allHints = [];
+
+    const categories = sep ? [
+      {
+        name: 'Values',
+        options: categoryValues[qualifier] || []
+      }
+    ] : qualifierCategories;
 
     const matchedCategories = categories.reduce((matchedCategories, category) => {
 
-      const matchedValues = category.values.reduce((matchedValues, categoryValue) => {
+      const matchedValues = category.options.reduce((matchedValues, categoryOption) => {
 
-        categoryValue = categoryValue.toLowerCase();
+        const {
+          name,
+          value
+        } = categoryOption;
 
-        if (categoryValue.startsWith(value)) {
+        if (name.toLowerCase().startsWith(search)) {
 
           const hint = {
-            name: categoryValue,
+            name: name,
             parts: [
               {
-                text: value,
+                text: name.substring(0, search.length),
                 matched: true
               },
               {
-                text: categoryValue.substring(value.length)
+                text: name.substring(search.length)
               }
-            ]
+            ],
+            apply: (currentValue) => {
+
+              const before = currentValue.substring(0, searchStart);
+              const fix = (negator || '') + (sep ? qualifier + sep : '') + value;
+              const after = currentValue.substring(searchEnd);
+
+              return {
+                val: `${before}${fix}${after}`,
+                idx: before.length + fix.length
+              };
+            }
           };
 
           matchedValues.push(hint);
@@ -223,35 +293,37 @@
 
       return {
         match: { categories: matchedCategories },
-        keyboardSelectedHint: matchedCategories[0].values[0].name,
+        keyboardSelectedHint: matchedCategories[0].values[0],
         allHints
       };
     }
 
     return {
       match: null,
-      keyboardSelectedHint: '',
+      keyboardSelectedHint: null,
       allHints: []
     };
   }
 
   function applyHint(hint) {
 
-    const spaceIdx = value.lastIndexOf(' ');
+    const {
+      val,
+      idx
+    } = hint.apply(value);
 
-    const currentValue = spaceIdx !== -1 ? value.substring(spaceIdx + 1) : value;
-
-    const existingValue = spaceIdx !== -1 ? value.substring(0, spaceIdx + 1) : '';
-
-    const [ _, negationPrefix, actualValue ] = /^([-!]?)(.*)$/.exec(currentValue);
-
-    value = existingValue + (negationPrefix || '') + hint + (hint.includes(':') ? ' ' : ':');
+    input.value = value = val;
+    input.selectionEnd = input.selectionStart = position = idx;
 
     triggerChanged(value);
   }
 
   function handleInput(event) {
-    value = event.target.value;
+
+    const target = event.target;
+
+    value = target.value;
+    position = target.selectionStart;
 
     triggerChanged(value);
   }
@@ -260,7 +332,7 @@
 
     const hints = (allHints || []);
 
-    const currentIndex = hints.findIndex(h => h.name === currentHint) || 0;
+    const currentIndex = hints.findIndex(hint => hint.name === currentHint.name);
 
     let nextIndex = currentIndex + direction;
 
@@ -272,12 +344,10 @@
       nextIndex = 0;
     }
 
-    const hint = hints[nextIndex];
-
-    return hint && hint.name;
+    return hints[nextIndex];
   }
 
-  function handleKey(event) {
+  function handleInputKey(event) {
 
     const key = event.key;
 
@@ -303,7 +373,6 @@
   const triggerChanged = debounce((value) => {
     onChange && onChange(value);
   }, 500);
-
 </script>
 
 <div class="input-prefixed board-filter { className } { expanded && 'expanded' }">
@@ -321,9 +390,10 @@
     autocomplete="off"
     spellcheck="false"
     aria-label="Filter"
+    bind:this={ input }
     bind:value={ value }
     on:input={ handleInput }
-    on:keydown={ handleKey }
+    on:keydown={ handleInputKey }
     on:focus={ () => focussed = true }
     on:blur={ () => focussed = false }
   />
@@ -339,9 +409,9 @@
         <ul>
           {#each category.values as value}
             <li
-              class:active={ mouseSelectedHint ? value.name === mouseSelectedHint : value.name === keyboardSelectedHint }
-              on:mouseover={ () => mouseSelectedHint = value.name }
-              on:mouseout={ () => mouseSelectedHint = '' }
+              class:active={ selectedHint && selectedHint.name === value.name }
+              on:mouseover={ () => mouseSelectedHint = value }
+              on:mouseout={ () => mouseSelectedHint = null }
               on:mousedown={ (event) => { event.preventDefault(); applyHint(mouseSelectedHint) } }
             >{#each value.parts as part}<span class:matched={ part.matched }>{ part.text }</span>{/each}</li>
           {/each}
