@@ -142,7 +142,11 @@
         'reviewer',
         'milestone',
         'is:assigned',
-        'is:unassigned'
+        'is:unassigned',
+        'is:closed',
+        'is:open',
+        'is:issue',
+        'is:pull'
       ]
     }
   ];
