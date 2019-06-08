@@ -92,7 +92,6 @@ ___Note:__ Yet to be released changes appear here._
 * `FEAT`: display reviewers
 * `FEAT`: display all assignees
 
-
 ## 0.2.0
 
 _Initial version._
