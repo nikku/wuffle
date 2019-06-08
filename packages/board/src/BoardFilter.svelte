@@ -351,7 +351,7 @@
   {:else if focussed && !value}
     <div class="help">
       <div class="note">
-        Filter cards by title and description or refine your search with operators such as <span>milestone</span>, <span>repo</span>, <span>assignee</span>, and <span>label</span> or <span>is</span>.
+        Filter cards by title and description or refine your search with operators such as <span>milestone</span>, <span>repo</span>, <span>assignee</span>, <span>label</span> and <span>is</span>.
       </div>
     </div>
   {/if}
