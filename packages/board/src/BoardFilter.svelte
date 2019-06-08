@@ -368,12 +368,50 @@
       keyboardSelectedHint = nextHint(keyboardSelectedHint, 1);
       event.preventDefault();
     }
+
+    if (key === 'Escape' && !value) {
+      input.blur();
+
+      event.preventDefault();
+    }
   }
 
   const triggerChanged = debounce((value) => {
     onChange && onChange(value);
   }, 500);
+
+  function isInputTarget(event) {
+    const {
+      target
+    } = event;
+
+    return target === input;
+  }
+
+  function isFind(event) {
+
+    const {
+      ctrlKey,
+      metaKey,
+      key
+    } = event;
+
+    return (ctrlKey || metaKey) && key === 'f';
+  }
+
+  function handleGlobalKey(event) {
+
+    if (isFind(event)) {
+      event.preventDefault();
+
+      if (!isInputTarget(event)) {
+        input.focus();
+      }
+    }
+  }
 </script>
+
+<svelte:window on:keydown={ handleGlobalKey } />
 
 <div class="input-prefixed board-filter { className } { expanded && 'expanded' }">
   <label class="prefix" for={searchId}>
