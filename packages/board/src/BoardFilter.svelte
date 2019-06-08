@@ -223,7 +223,7 @@
 
     value = value.substring(searchStart, searchEnd).toLowerCase();
 
-    const match = /^([-!]?)(?:([a-z]+)(?:(\:)(?:"([a-z]+)"?|([a-z]+))?)?)$/.exec(value);
+    const match = /^([-!]?)(?:([\w]+)(?:(\:)(?:"([\w-]+)"?|([\w-]+))?)?)$/.exec(value);
 
     if (!match) {
       return {};

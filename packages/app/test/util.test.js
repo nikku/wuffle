@@ -312,6 +312,23 @@ describe('util', function() {
 
     });
 
+
+    it('should parse dash in value', function() {
+
+      // when
+      const search = parseSearch([
+        'is:open-bar',
+        'is:"open-bar"'
+      ].join(' '));
+
+      // then
+      expect(search).to.eql([
+        { qualifier: 'is', value: 'open-bar', negated: false },
+        { qualifier: 'is', value: 'open-bar', negated: false }
+      ]);
+
+    });
+
   });
 
 });
