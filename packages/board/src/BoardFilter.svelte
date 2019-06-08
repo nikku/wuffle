@@ -150,7 +150,7 @@
 
     const [ key, value ] = entry;
 
-    values[key] = value.map(name => {
+    values[key] = value.slice().sort().map(name => {
 
       const separator = /[: ]/.test(name) ? '"' : '';
 
