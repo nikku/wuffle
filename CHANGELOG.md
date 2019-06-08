@@ -6,6 +6,14 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 ___Note:__ Yet to be released changes appear here._
 
+## 0.8.0
+
+* `FEAT`: update only actually changed items during background sync
+* `FEAT`: add `is:{ open, closed, issue, pull }` search filters
+* `FEAT`: ignore search operators with empty values
+* `FEAT`: focus board filter on `CTRL/CMD + F`
+* `FEAT`: complete board filter qualifier values
+
 ## 0.7.0
 
 * `FEAT`: improve background sync performance for closed issues
