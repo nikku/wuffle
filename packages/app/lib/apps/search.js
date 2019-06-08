@@ -148,7 +148,17 @@ module.exports = async (app, config, store) => {
         negated
       } = term;
 
-      const fn = (value && filters[qualifier] || noopFilter)(value);
+      if (!value) {
+        return noopFilter();
+      }
+
+      const factoryFn = filters[qualifier];
+
+      if (!factoryFn) {
+        return noopFilter();
+      }
+
+      const fn = factoryFn(value);
 
       if (negated) {
         return function(arg) {
