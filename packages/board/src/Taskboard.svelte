@@ -109,13 +109,17 @@
       return;
     }
 
+    const currentFilter = filter;
+
     filter = value;
 
     if (pushHistory) {
       history.push(`/board${buildQueryString(filter)}`);
     }
 
-    fetchCards(filter);
+    if (currentFilter.trim() !== filter.trim()) {
+      fetchCards(filter);
+    }
   }
 
   function parseSearchFilter() {
@@ -128,7 +132,7 @@
     const search = queryString.split(/[?&]/).find(param => /^s=/.test(param));
 
     if (!search) {
-      return null;
+      return '';
     }
 
     return decodeURIComponent(search.split(/=/)[1]);
