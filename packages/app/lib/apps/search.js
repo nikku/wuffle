@@ -46,8 +46,24 @@ module.exports = async (app, config, store) => {
           return issue.assignees.length;
         };
       case 'unassigned':
-        return function filterAssigned(issue) {
+        return function filterUnassigned(issue) {
           return issue.assignees.length === 0;
+        };
+      case 'closed':
+        return function filterClosed(issue) {
+          return issue.state === 'closed';
+        };
+      case 'open':
+        return function filterOpen(issue) {
+          return issue.state === 'open';
+        };
+      case 'issue':
+        return function filterIssue(issue) {
+          return !issue.pull_request;
+        };
+      case 'pull':
+        return function filterPull(issue) {
+          return issue.pull_request;
         };
       default:
         return filterNoop;
