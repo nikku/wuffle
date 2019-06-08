@@ -45,6 +45,34 @@ module.exports = async (app, config, store) => {
     }).then(res => res.data);
   }
 
+  async function applyUpdate(update) {
+
+    const {
+      id,
+      key
+    } = update;
+
+    const existing = store.getIssueById(id);
+
+    if (!existing || existing.updated_at !== update.updated_at) {
+      try {
+        await store.updateIssue(update);
+      } catch (error) {
+        log.error({ issue: key }, 'update failed', error);
+      }
+    }
+
+    return { id };
+  }
+
+  function syncPull(pull_request, repository) {
+    return applyUpdate(filterPull(pull_request, repository));
+  }
+
+  function syncIssue(issue, repository) {
+    return applyUpdate(filterIssue(issue, repository));
+  }
+
   async function syncRepositories(repositories, since) {
 
     const foundIssues = {};
@@ -127,30 +155,22 @@ module.exports = async (app, config, store) => {
 
         for (const issue of [ ...open_issues, ...closed_issues ]) {
 
-          const update = filterIssue(issue, repository);
-
-          try {
-            await store.updateIssue(update);
-          } catch (error) {
-            log.error({ issue: update.key }, 'update failed', error);
-          }
+          const {
+            id
+          } = await syncIssue(issue, repository);
 
           // mark as found
-          foundIssues[update.id] = update;
+          foundIssues[id] = true;
         }
 
         for (const pull_request of [ ...open_pull_requests, ...closed_pull_requests ]) {
 
-          const update = filterPull(pull_request, repository);
-
-          try {
-            await store.updateIssue(update);
-          } catch (error) {
-            log.error({ issue: update.key }, 'update failed', error);
-          }
+          const {
+            id
+          } = await syncPull(pull_request, repository);
 
           // mark as found
-          foundIssues[update.id] = true;
+          foundIssues[id] = true;
         }
 
         log.debug({ repositoryName }, 'issues sync completed');
@@ -199,6 +219,8 @@ module.exports = async (app, config, store) => {
 
   async function doSync(repositories) {
 
+    const now = Date.now();
+
     // get issues, keyed by id
     const knownIssues = store.getIssues().reduce((byId, issue) => {
       byId[issue.id] = issue;
@@ -218,22 +240,25 @@ module.exports = async (app, config, store) => {
     const expiredIssues = await checkExpiration(missingIssues, Date.now() - removalLookback);
 
     log.info(
-      'synched %s, expired %s issues',
+      'synched %s, expired %s issues in %sms',
       Object.keys(foundIssues).length,
-      Object.keys(expiredIssues).length
+      Object.keys(expiredIssues).length,
+      Date.now() - now
     );
   }
 
   async function backgroundSync() {
 
-    log.info('project sync start');
+    log.info('start');
 
     try {
       await doSync(repositories);
-      log.info('project sync completed');
+
+      log.info('success');
     } catch (error) {
-      log.warn('project sync failed', error);
+      log.warn('error', error);
     }
+
   }
 
   const syncInterval = (
