@@ -329,6 +329,40 @@ describe('util', function() {
 
     });
 
+
+    it('should parse dot in value', function() {
+
+      // when
+      const search = parseSearch([
+        'is:open.bar',
+        'is:"open.bar"'
+      ].join(' '));
+
+      // then
+      expect(search).to.eql([
+        { qualifier: 'is', value: 'open.bar', negated: false },
+        { qualifier: 'is', value: 'open.bar', negated: false }
+      ]);
+
+    });
+
+
+    it('should parse underscore in value', function() {
+
+      // when
+      const search = parseSearch([
+        'is:open_bar',
+        'is:"open_bar"'
+      ].join(' '));
+
+      // then
+      expect(search).to.eql([
+        { qualifier: 'is', value: 'open_bar', negated: false },
+        { qualifier: 'is', value: 'open_bar', negated: false }
+      ]);
+
+    });
+
   });
 
 });
