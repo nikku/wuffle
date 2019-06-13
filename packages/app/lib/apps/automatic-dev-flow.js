@@ -243,7 +243,7 @@ module.exports = async (app, config, store) => {
 
     const assignee = pusher_type === 'user' ? sender.login : null;
 
-    const match = /(\d+)[-_]+/.exec(ref);
+    const match = /^(\d+)[-_]+/.exec(ref);
 
     if (!match) {
       return;
