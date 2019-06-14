@@ -2,7 +2,12 @@
   import {
     autoresize,
     isClosedByLink,
-    isOpenOrMergedPull
+    isOpenOrMergedPull,
+    isLinkedTo,
+    isDependentOn,
+    isRequiredBy,
+    isParentOf,
+    isChildOf,
   } from './util';
 
   import Tag from './components/Tag.svelte';
@@ -26,9 +31,17 @@
 
   $: links = item.links;
 
-  $: closedBy = (links.find(link => {
-    return isClosedByLink(link) && isOpenOrMergedPull(link.target);
-  }) || {}).target;
+  $: links_to_list = links.filter(link => isLinkedTo(link)) || [];
+
+  $: dependent_on_list = links.filter(link => isDependentOn(link)) || [];
+
+  $: required_by_list = links.filter(link => isRequiredBy(link)) || [];
+
+  $: children_of_list  = links.filter(link => isChildOf(link))|| [];
+
+  $: parent_of_list  = links.filter(link => isParentOf(link))|| [];
+
+  $: closed_by_list  = links.filter(link => (isClosedByLink(link) && isOpenOrMergedPull(link.target)))|| [];
 
   $: assignees = item.assignees;
 
@@ -123,13 +136,39 @@
         </a>
       </div>
     </div>
+    {#each parent_of_list as parent}
+    <div class="board-card-links">
+      <CardLink item={parent.target} type="PARENT_OF" />
+    </div>
+    {/each}
+    {#each children_of_list as childIssue}
+    <div class="board-card-links">
+      <CardLink item={childIssue.target} type="CHILD_OF" />
+    </div>
+    {/each}
+    {#each required_by_list as required}
+    <div class="board-card-links">
+      <CardLink item={required.target}  type="REQUIRED_BY" />
+    </div>
+    {/each}
+    {#each dependent_on_list as dependent}
+    <div class="board-card-links">
+      <CardLink item={dependent.target}  type="DEPENDS_ON" />
+    </div>
+    {/each}
+    {#each links_to_list as link}
+    <div class="board-card-links">
+      <CardLink item={link.target}  type="LINKED_TO" />
+    </div>
+    {/each}
   </div>
 
-  {#if closedBy}
-    <div class="board-card-links">
-      <CardLink item={ closedBy } type="CLOSES" />
-    </div>
-  {/if}
+  {#each closed_by_list as closed}
+  <div class="board-card-links">
+    <CardLink item={ closed.target } type="CLOSES" />
+  </div>
+  {/each}
+
 </div>
 
 {/if}

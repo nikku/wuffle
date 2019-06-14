@@ -79,7 +79,7 @@
        rel="noopener noreferrer"
        class="issue-number"
     >{ number }</a>
-    <span class="repository" title={ repositoryName }>{ repositoryName }</span>
+    <span class="repository" title={ title }>{ title }</span>
 
     <span class="collaborator-links">
       {#each assignees as assignee}
