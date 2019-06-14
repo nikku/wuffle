@@ -23,3 +23,11 @@ export function isClosedByLink(link) {
 
   return type === 'CLOSED_BY';
 }
+
+export function isLinkedTo(link) {
+  const {
+    type,
+  } = link;
+
+  return type === 'LINKED_TO';
+}

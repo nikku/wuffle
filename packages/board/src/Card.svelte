@@ -2,7 +2,8 @@
   import {
     autoresize,
     isClosedByLink,
-    isOpenOrMergedPull
+    isOpenOrMergedPull,
+    isLinkedTo
   } from './util';
 
   import Tag from './components/Tag.svelte';
@@ -25,6 +26,10 @@
   $: pull_request = item.pull_request;
 
   $: links = item.links;
+
+  $: linksTo = (links.find(link => {
+    return isLinkedTo(link);
+  }) || {}).target;
 
   $: closedBy = (links.find(link => {
     return isClosedByLink(link) && isOpenOrMergedPull(link.target);
@@ -123,6 +128,11 @@
         </a>
       </div>
     </div>
+    {#if linksTo}
+    <div class="board-card-links">
+      <CardLink item={ linksTo } type="LINKS" />
+    </div>
+    {/if}
   </div>
 
   {#if closedBy}
