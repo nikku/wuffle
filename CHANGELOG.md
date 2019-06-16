@@ -8,48 +8,48 @@ ___Note:__ Yet to be released changes appear here._
 
 ## 0.8.2
 
-* `FIX(search)`: recognize `_` in values
+* `FIX(search)`: recognize `_` in search values
 * `FIX(automatic-dev-flow)`: correct branch issue number globbing
 
 ## 0.8.1
 
-* `FIX`: recognize dashes in board filter qualifier values
+* `FIX(search)`: recognize dashes search values
 
 ## 0.8.0
 
-* `FEAT`: update only actually changed items during background sync
-* `FEAT`: add `is:{ open, closed, issue, pull }` search filters
-* `FEAT`: ignore search operators with empty values
-* `FEAT`: focus board filter on `CTRL/CMD + F`
-* `FEAT`: complete board filter qualifier values
+* `FEAT(background-sync)`: update only actually changed items
+* `FEAT(search)`: add `is:{ open, closed, issue, pull }` filters
+* `FEAT(search)`: ignore operators with empty values
+* `FEAT(board)`: focus board filter on `CTRL/CMD + F`
+* `FEAT(board)`: complete board filter qualifier values
 
 ## 0.7.0
 
-* `FEAT`: improve background sync performance for closed issues
-* `FEAT`: expire and remove closed issues not updated for 60 days
-* `FEAT`: simplify board filter
-* `FEAT`: add initial focus hint to board filter
-* `FEAT`: put negation char before operator
-* `FEAT`: support `!` to negate a search operator
-* `FIX`: correct store not dumping on exit
+* `FEAT(background-sync)`: improve sync performance for closed issues
+* `FEAT(background-sync)`: expire and remove closed issues not updated for 60 days
+* `FEAT(board)`: simplify board filter
+* `FEAT(board)`: add initial focus hint to board filter
+* `FEAT(search)`: put negation char before operator
+* `FEAT(search)`: support `!` to negate a search operator
+* `FIX(dump-store)`: correct store not dumping on exit
 
 ## 0.6.0
 
-* `FEAT`: add ability to search using `-` (not) matcher
-* `FEAT`: unlink closed, unmerged PRs from issue
-* `FEAT`:  autoresize card titles on focus
-* `FIX`: prevent shrinking of PR and collaborator icons
+* `FEAT(search)`: add ability to negate search using `-`
+* `FEAT(links)`: unlink closed, unmerged PRs from issue
+* `FEAT(board)`:  autoresize card titles on focus
+* `FIX(board)`: prevent shrinking of PR and collaborator icons
 
 ## 0.5.1
 
-* `FIX`: prevent error on card filtering
+* `FIX(board)`: prevent error on card filtering
 
 ## 0.5.0
 
-* `FEAT`: optimize card fetching
-* `CHORE`: cache board
-* `FEAT`: incrementally render cards
-* `FIX`: recognize colons in search values
+* `FEAT(app)`: optimize card fetching
+* `CHORE(app)`: cache board
+* `FEAT(board)`: incrementally render cards
+* `FIX(search)`: recognize colons in search values
 
 ## 0.4.1
 
