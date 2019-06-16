@@ -6,6 +6,11 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 ___Note:__ Yet to be released changes appear here._
 
+## 0.8.2
+
+* `FIX(search)`: recognize `_` in values
+* `FIX(automatic-dev-flow)`: correct branch issue number globbing
+
 ## 0.8.1
 
 * `FIX`: recognize dashes in board filter qualifier values
