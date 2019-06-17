@@ -7,5 +7,6 @@ module.exports = {
     { name: 'Needs Review', label: 'needs review' },
     { name: 'Done', label: null, closed: true }
   ],
-  repositories: []
+  repositories: [],
+  syncIntervalInMinutes: 5
 };

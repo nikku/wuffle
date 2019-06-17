@@ -261,13 +261,8 @@ module.exports = async (app, config, store) => {
 
   }
 
-  const syncInterval = (
-    process.env.NODE_ENV === 'development'
-      // one minute
-      ? 1000 * 60
-      // one hour
-      : 1000 * 60 * 60
-  );
+  // SyncInterval
+  const syncInterval = config.syncIntervalInMinutes * 1000 * 60;
 
   // five seconds
   const checkInterval = 5000;

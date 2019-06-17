@@ -25,7 +25,8 @@ module.exports = function loadConfig(log) {
 
   return {
     columns: defaultColumns,
-    repositories: []
+    repositories: [],
+    syncIntervalInMinutes: 1
   };
 
 };
