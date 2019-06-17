@@ -3,7 +3,11 @@
     autoresize,
     isClosedByLink,
     isOpenOrMergedPull,
-    isLinkedTo
+    isLinkedTo,
+    isRequiredBy,
+    isDependentOn,
+    isParentOf,
+    isChildOf
   } from './util';
 
   import Tag from './components/Tag.svelte';
@@ -29,6 +33,22 @@
 
   $: linksTo = (links.find(link => {
     return isLinkedTo(link);
+  }) || {}).target;
+
+  $: requiredBy = (links.find(link => {
+    return isRequiredBy(link);
+  }) || {}).target;
+
+  $: dependsOn = (links.find(link => {
+    return isDependentOn(link);
+  }) || {}).target;
+
+  $: parentOf = (links.find(link => {
+    return isParentOf(link);
+  }) || {}).target;
+
+  $: childOf = (links.find(link => {
+    return isChildOf(link);
   }) || {}).target;
 
   $: closedBy = (links.find(link => {
@@ -130,7 +150,27 @@
     </div>
     {#if linksTo}
     <div class="board-card-links">
-      <CardLink item={ linksTo } type="LINKS" />
+      <CardLink item={ linksTo } type="LINKED_TO" />
+    </div>
+    {/if}
+    {#if requiredBy}
+    <div class="board-card-links">
+      <CardLink item={ requiredBy } type="DEPENDS_ON" />
+    </div>
+    {/if}
+    {#if dependsOn}
+    <div class="board-card-links">
+      <CardLink item={ dependsOn } type="REQUIRED_BY" />
+    </div>
+    {/if}
+    {#if parentOf}
+    <div class="board-card-links">
+      <CardLink item={ parentOf } type="CHILD_OF" />
+    </div>
+    {/if}
+    {#if childOf}
+    <div class="board-card-links">
+      <CardLink item={ childOf } type="PARENT_OF" />
     </div>
     {/if}
   </div>
