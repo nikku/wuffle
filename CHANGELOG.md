@@ -6,6 +6,13 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 ___Note:__ Yet to be released changes appear here._
 
+## 0.9.0
+
+* `FEAT(project)`: add `Procfile`
+* `FIX(dump-store-s3)`: correctly handle inbound data
+* `CHORE(dump-store-s3)`: set dump interval to five minutes
+* `CHORE(dump-store*)`: log pre-exit actions and timings
+
 ## 0.8.2
 
 * `FIX(search)`: recognize `_` in search values
