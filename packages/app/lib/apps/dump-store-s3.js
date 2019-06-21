@@ -64,7 +64,7 @@ module.exports = async (app, config, store) => {
         if (err) {
           reject(err);
         } else {
-          resolve(data.Data);
+          resolve(data.Body.toString('utf8'));
         }
       });
     });
