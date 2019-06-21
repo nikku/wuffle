@@ -70,8 +70,10 @@ module.exports = async (app, config, store) => {
 
   function dumpStore() {
 
+    let start = Date.now();
+
     return upload(store.asJSON()).then(() => {
-      log.info(params, 'dumped');
+      log.info(params, 'dumped in %sms', Date.now() - start);
     }).catch(err => {
       log.error(params, 'dump failed', err);
     });
@@ -79,11 +81,13 @@ module.exports = async (app, config, store) => {
 
   function restoreStore() {
 
+    let start = Date.now();
+
     return download().then(dump => {
 
       store.loadJSON(dump);
 
-      log.info(params, 'restored');
+      log.info(params, 'restored in %sms', Date.now() - start);
     }).catch(err => {
       log.warn(params, 'restore failed', err);
     });
@@ -96,7 +100,11 @@ module.exports = async (app, config, store) => {
   setInterval(dumpStore, dumpInterval);
 
   // dump on exit
-  preExit(dumpStore);
+  preExit(function() {
+    log.info('pre-exit dump');
+
+    return dumpStore();
+  });
 
   // restore, initally
   return restoreStore();
