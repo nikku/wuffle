@@ -26,6 +26,7 @@
     "auto-test": "npm test -- --watch"
   },
   "dependencies": {
+    "aws-sdk": "^2.480.0",
     "body-parser": "^1.18.3",
     "compression": "^1.7.4",
     "exit-hook2": "^1.0.8",
