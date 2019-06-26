@@ -1,6 +1,7 @@
 const apps = [
   require('./apps/log-events'),
   require('./apps/route-compression'),
+  require('./apps/route-https'),
   (
     process.env.S3_BUCKET
       ? require('./apps/dump-store-s3')
