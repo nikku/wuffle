@@ -273,7 +273,8 @@ class Store {
     this.log.info({ issue: issueIdent(issue) }, 'remove');
 
     const {
-      key
+      key,
+      repository
     } = issue;
 
     delete this.issuesById[id];
@@ -292,7 +293,13 @@ class Store {
 
     this.updates.add(id, {
       type: 'remove',
-      issue: { id }
+      // dummy placeholder for removed issues
+      issue: {
+        id,
+        key,
+        repository,
+        links: []
+      }
     });
   }
 
