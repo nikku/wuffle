@@ -28,10 +28,8 @@ export {
   isClosedByLink,
   isOpenOrMergedPull,
   isLinkedTo,
-  isRequiredBy,
   isDependentOn,
-  isParentOf,
-  isChildOf
+  isParentOf
 } from './links';
 
 export {

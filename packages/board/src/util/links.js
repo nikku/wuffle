@@ -31,14 +31,6 @@ export function isLinkedTo(link) {
 
   return type === 'LINKED_TO';
 }
-
-export function isRequiredBy(link) {
-  const {
-    type,
-  } = link;
-
-  return type === 'REQUIRED_BY';
-}
 export function isDependentOn(link) {
   const {
     type,
@@ -53,13 +45,5 @@ export function isParentOf(link) {
   } = link;
 
   return type === 'PARENT_OF';
-}
-
-export function isChildOf(link) {
-  const {
-    type,
-  } = link;
-
-  return type === 'CHILD_OF';
 }
 

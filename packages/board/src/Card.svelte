@@ -4,10 +4,8 @@
     isClosedByLink,
     isOpenOrMergedPull,
     isLinkedTo,
-    isRequiredBy,
     isDependentOn,
     isParentOf,
-    isChildOf
   } from './util';
 
   import Tag from './components/Tag.svelte';
