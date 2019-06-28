@@ -161,12 +161,13 @@
       <CardLink item={parent.target} type="PARENT_OF" />
     </div>
     {/each}
-    {#each closed_by_list as closed}
-    <div class="board-card-links">
-      <CardLink item={ closed.target } type="CLOSES" />
-    </div>
-    {/each}
   </div>
+
+  {#each closed_by_list as closed}
+  <div class="board-card-links">
+    <CardLink item={ closed.target } type="CLOSES" />
+  </div>
+  {/each}
 
 </div>
 
