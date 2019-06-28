@@ -147,7 +147,7 @@
     {/each}
     {#each listOfClosed as closed}
     <div class="board-card-links">
-      <CardLink item={ closedBy } type="CLOSES" />
+      <CardLink item={ closed.target } type="CLOSES" />
     </div>
     {/each}
   </div>
