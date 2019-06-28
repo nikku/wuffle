@@ -39,11 +39,27 @@ export function isDependentOn(link) {
   return type === 'DEPENDS_ON';
 }
 
+export function isRequiredBy(link) {
+  const {
+    type,
+  } = link;
+
+  return type === 'REQUIRED_BY';
+}
+
 export function isParentOf(link) {
   const {
     type,
   } = link;
 
   return type === 'PARENT_OF';
+}
+
+export function isChildOf(link) {
+  const {
+    type,
+  } = link;
+
+  return type === 'CHILD_OF';
 }
 

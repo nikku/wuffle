@@ -29,7 +29,9 @@ export {
   isOpenOrMergedPull,
   isLinkedTo,
   isDependentOn,
-  isParentOf
+  isRequiredBy,
+  isParentOf,
+  isChildOf
 } from './links';
 
 export {
