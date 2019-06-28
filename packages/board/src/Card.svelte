@@ -29,21 +29,13 @@
 
   $: links = item.links;
 
-  $: linksTo = (links.find(link => {
-    return isLinkedTo(link);
-  }) || {}).target;
+  $: listOfLinks = links.filter(link => isLinkedTo(link)) || [];
 
-  $: dependsOn = (links.find(link => {
-    return isDependentOn(link);
-  }) || {}).target;
+  $: listOfDependents = links.filter(link => isDependentOn(link)) || [];
 
-  $: parentOf = (links.find(link => {
-    return isParentOf(link);
-  }) || {}).target;
+  $: listOfChildren  = links.filter(link => isParentOf(link))|| [];
 
-  $: closedBy = (links.find(link => {
-    return isClosedByLink(link) && isOpenOrMergedPull(link.target);
-  }) || {}).target;
+  $: listOfClosed  = links.filter(link => (isClosedByLink(link) && isOpenOrMergedPull(link.target)))|| [];
 
   $: assignees = item.assignees;
 
@@ -138,28 +130,28 @@
         </a>
       </div>
     </div>
-    {#if linksTo}
+    {#each listOfLinks as linky}
     <div class="board-card-links">
-      <CardLink item={ linksTo } type="LINKED_TO" />
+      <CardLink item={linky.target}  type="LINKED_TO" />
     </div>
-    {/if}
-    {#if dependsOn}
+    {/each}
+    {#each listOfDependents as dependent}
     <div class="board-card-links">
-      <CardLink item={ dependsOn } type="DEPENDS_ON" />
+      <CardLink item={dependent.target}  type="DEPENDS_ON" />
     </div>
-    {/if}
-    {#if parentOf}
+    {/each}
+    {#each listOfChildren as childIssue}
     <div class="board-card-links">
-      <CardLink item={ parentOf } type="PARENT_OF" />
+      <CardLink item={childIssue.target} type="PARENT_OF" />
     </div>
-    {/if}
-  </div>
-
-  {#if closedBy}
+    {/each}
+    {#each listOfClosed as closed}
     <div class="board-card-links">
       <CardLink item={ closedBy } type="CLOSES" />
     </div>
-  {/if}
+    {/each}
+  </div>
+
 </div>
 
 {/if}
