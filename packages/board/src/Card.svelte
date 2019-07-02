@@ -136,19 +136,9 @@
         </a>
       </div>
     </div>
-    {#each links_to_list as link}
+    {#each parent_of_list as parent}
     <div class="board-card-links">
-      <CardLink item={link.target}  type="LINKED_TO" />
-    </div>
-    {/each}
-    {#each dependent_on_list as dependent}
-    <div class="board-card-links">
-      <CardLink item={dependent.target}  type="DEPENDS_ON" />
-    </div>
-    {/each}
-    {#each required_by_list as required}
-    <div class="board-card-links">
-      <CardLink item={required.target}  type="REQUIRED_BY" />
+      <CardLink item={parent.target} type="PARENT_OF" />
     </div>
     {/each}
     {#each children_of_list as childIssue}
@@ -156,9 +146,19 @@
       <CardLink item={childIssue.target} type="CHILD_OF" />
     </div>
     {/each}
-    {#each parent_of_list as parent}
+    {#each required_by_list as required}
     <div class="board-card-links">
-      <CardLink item={parent.target} type="PARENT_OF" />
+      <CardLink item={required.target}  type="REQUIRED_BY" />
+    </div>
+    {/each}
+    {#each dependent_on_list as dependent}
+    <div class="board-card-links">
+      <CardLink item={dependent.target}  type="DEPENDS_ON" />
+    </div>
+    {/each}
+    {#each links_to_list as link}
+    <div class="board-card-links">
+      <CardLink item={link.target}  type="LINKED_TO" />
     </div>
     {/each}
   </div>
