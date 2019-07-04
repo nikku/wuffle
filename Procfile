@@ -1,1 +1,1 @@
-web: cd packages/app && node_modules/.bin/probot run ./index.js
+web: cd packages/app && node bin/run.js

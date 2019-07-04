@@ -21,7 +21,7 @@
   ],
   "scripts": {
     "dev": "nodemon",
-    "start": "probot run ./index.js",
+    "start": "node ./bin/run.js",
     "test": "mocha test --exit",
     "auto-test": "npm test -- --watch"
   },
@@ -58,7 +58,8 @@
       "."
     ],
     "ignore": [
-      "tmp/*"
+      "tmp/*",
+      "test/*"
     ]
   }
 }
