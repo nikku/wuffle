@@ -6,6 +6,15 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 ___Note:__ Yet to be released changes appear here._
 
+## 0.10.0
+
+* `FEAT(app)`: add ability to force HTTPS redirect
+* `FEAT(project)`: provide pre-built docker images ([#25](https://github.com/nikku/wuffle/issues/25))
+* `FEAT(app)`: add run script
+* `FEAT(app)`: validate environment configuration before start
+* `FIX(app)`: expose required information for deleted issues
+* `DOCS(project)`: document environment variables
+
 ## 0.9.0
 
 * `FEAT(project)`: add `Procfile`
