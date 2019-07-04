@@ -4,7 +4,11 @@
 
 A multi-repository task board for [GitHub issues](https://guides.github.com/features/issues/).
 
-![Wuffle Screenshot](./docs/screenshot.png)
+<p>
+  <a target="_blank" rel="noopener noreferrer" href="https://github.com/nikku/wuffle">
+    <img src="https://raw.githubusercontent.com/nikku/wuffle/master/docs/screenshot.png" width="100%" alt="Wuffle Screenshot" style="max-width:100%;" />
+  </a>
+</p>
 
 
 ## Features
@@ -20,7 +24,7 @@ A multi-repository task board for [GitHub issues](https://guides.github.com/feat
 ## Resources
 
 * [Issues](https://github.com/nikku/wuffle/issues)
-* [Changelog](./CHANGELOG.md)
+* [Changelog](https://github.com/nikku/wuffle/blob/master/CHANGELOG.md)
 
 
 ## Philosophy
@@ -54,10 +58,10 @@ Execute the following steps to initially setup the app
 
 ## Components
 
-* [board](./packages/board) - the task board front-end
-* [app](./packages/app) - the back-end and board API
+* [board](https://github.com/nikku/wuffle/blob/master/packages/board) - the task board front-end
+* [app](https://github.com/nikku/wuffle/blob/master/packages/app) - the back-end and board API
 
 
 ## License
 
-[MIT](LICENSE)
+[MIT](https://github.com/nikku/wuffle/blob/master/LICENSE)
