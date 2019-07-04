@@ -1,6 +1,6 @@
 # Docker
 
-Run the board via our pre-built [Docker](https://www.docker.com/) image, configured via environment variables:
+Run the board via our pre-built [Docker image](https://hub.docker.com/r/nrehwaldt/wuffle), configured via environment variables:
 
 ```sh
 docker run -p 3000:3000 -e APP_ID=YOUR_APP_ID -e ... nrehwaldt/wuffle:latest
