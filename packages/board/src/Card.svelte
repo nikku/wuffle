@@ -18,6 +18,10 @@
     'LINKED_TO': 4
   };
 
+  function isPR(issue) {
+    return issue.pull_request;
+  }
+
   export let item;
 
   export let className = '';
@@ -35,14 +39,14 @@
   $: links = item.links || [];
 
   $: embeddedLinks = links.filter(
-    (link) => !isClosedByLink(link)
+    (link) => !isPR(link.target)
   ).sort(
     (a, b) => {
       return linkOrder[a.type] - linkOrder[b.type];
     }
   );
 
-  $: closedByLinks = links.filter(link => isClosedByLink(link) && isOpenOrMergedPull(link.target));
+  $: prLinks = links.filter(link => isPR(link.target) && isOpenOrMergedPull(link.target));
 
   $: assignees = item.assignees;
 
@@ -162,9 +166,9 @@
 
 
 
-  {#if closedByLinks.length}
+  {#if prLinks.length}
     <div class="board-card-links attached">
-      {#each closedByLinks as link}
+      {#each prLinks as link}
         <CardLink item={ link.target } type={ link.type } />
       {/each}
     </div>
