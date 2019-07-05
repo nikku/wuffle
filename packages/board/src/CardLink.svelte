@@ -57,9 +57,7 @@
   }
 
   .card-link .assignee {
-    width: 1.1em;
-    height: 1.1em;
-    line-height: 1.1em;
+    height: 16px;
   }
 </style>
 
