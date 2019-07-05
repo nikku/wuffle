@@ -2,18 +2,21 @@
   import {
     autoresize,
     isClosedByLink,
-    isOpenOrMergedPull,
-    isLinkedTo,
-    isDependentOn,
-    isRequiredBy,
-    isParentOf,
-    isChildOf,
+    isOpenOrMergedPull
   } from './util';
 
   import Tag from './components/Tag.svelte';
   import PullRequestIcon from './components/PullRequestIcon.svelte';
 
   import CardLink from './CardLink.svelte';
+
+  const linkOrder = {
+    'PARENT_OF': 0,
+    'CHILD_OF': 1,
+    'REQUIRED_BY': 2,
+    'DEPENDS_ON': 3,
+    'LINKED_TO': 4
+  };
 
   export let item;
 
@@ -29,19 +32,17 @@
   $: labels = item.labels.filter(l => !l.column_label);
   $: pull_request = item.pull_request;
 
-  $: links = item.links;
+  $: links = item.links || [];
 
-  $: links_to_list = links.filter(link => isLinkedTo(link)) || [];
+  $: embeddedLinks = links.filter(
+    (link) => !isClosedByLink(link)
+  ).sort(
+    (a, b) => {
+      return linkOrder[a.type] - linkOrder[b.type];
+    }
+  );
 
-  $: dependent_on_list = links.filter(link => isDependentOn(link)) || [];
-
-  $: required_by_list = links.filter(link => isRequiredBy(link)) || [];
-
-  $: children_of_list  = links.filter(link => isChildOf(link))|| [];
-
-  $: parent_of_list  = links.filter(link => isParentOf(link))|| [];
-
-  $: closed_by_list  = links.filter(link => (isClosedByLink(link) && isOpenOrMergedPull(link.target)))|| [];
+  $: closedByLinks = links.filter(link => isClosedByLink(link) && isOpenOrMergedPull(link.target));
 
   $: assignees = item.assignees;
 
@@ -80,6 +81,19 @@
   :global(.tag).milestone {
     color: $gray-800 !important;
     border: solid 1px $gray-600;
+  }
+
+  .board-card-links.attached {
+    background: #F9F9F9;
+    border-radius: 0 0 4px 4px;
+    box-shadow: inset 0 3px 5px -2px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.1);
+    margin-top: -6px;
+    position: relative;
+    padding: 7px 8px 4px 8px;
+
+    :global(.card-link):first-child {
+      border-top: none;
+    }
   }
 </style>
 
@@ -136,38 +150,24 @@
         </a>
       </div>
     </div>
-    {#each parent_of_list as parent}
-    <div class="board-card-links">
-      <CardLink item={parent.target} type="PARENT_OF" />
-    </div>
-    {/each}
-    {#each children_of_list as childIssue}
-    <div class="board-card-links">
-      <CardLink item={childIssue.target} type="CHILD_OF" />
-    </div>
-    {/each}
-    {#each required_by_list as required}
-    <div class="board-card-links">
-      <CardLink item={required.target}  type="REQUIRED_BY" />
-    </div>
-    {/each}
-    {#each dependent_on_list as dependent}
-    <div class="board-card-links">
-      <CardLink item={dependent.target}  type="DEPENDS_ON" />
-    </div>
-    {/each}
-    {#each links_to_list as link}
-    <div class="board-card-links">
-      <CardLink item={link.target}  type="LINKED_TO" />
-    </div>
-    {/each}
+    {#if embeddedLinks.length}
+      <div class="board-card-links embedded">
+        {#each embeddedLinks as link}
+          <CardLink item={link.target} type={ link.type } />
+        {/each}
+      </div>
+    {/if}
   </div>
 
-  {#each closed_by_list as closed}
-  <div class="board-card-links">
-    <CardLink item={ closed.target } type="CLOSES" />
-  </div>
-  {/each}
+
+
+  {#if closedByLinks.length}
+    <div class="board-card-links attached">
+      {#each closedByLinks as link}
+        <CardLink item={ link.target } type={ link.type } />
+      {/each}
+    </div>
+  {/if}
 
 </div>
 

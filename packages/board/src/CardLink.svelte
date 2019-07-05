@@ -13,7 +13,7 @@
   $: repository = item.repository;
   $: pull_request = item.pull_request;
 
-  $: assignees = item.assignees;
+  $: assignees = item.assignees || [];
 
   $: requested_reviewers = item.requested_reviewers || [];
 
@@ -52,13 +52,8 @@
     }
   }
 
-  .card-impl {
-    background: #F9F9F9;
-    border-radius: 0 0 4px 4px;
-    margin-top: -6px;
-    box-shadow: inset 0 3px 5px -2px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.1);
-    position: relative;
-    padding: 8px 8px 4px 8px;
+  .card-link .short-title {
+    flex: 1;
   }
 
   .card-link .assignee {
@@ -68,7 +63,7 @@
   }
 </style>
 
-<div class="card-link" class:card-impl={ type === 'CLOSES' }>
+<div class="card-link">
   <div class="header">
     {#if pull_request}
       <PullRequestIcon item={ item } />
@@ -79,7 +74,7 @@
        rel="noopener noreferrer"
        class="issue-number"
     >{ number }</a>
-    <span class="repository" title={ title }>{ title }</span>
+    <span class="short-title" title={ title }>{ title }</span>
 
     <span class="collaborator-links">
       {#each assignees as assignee}

@@ -19,6 +19,10 @@
   }
 }
 
+.board-card-links {
+  margin-top: 2px;
+}
+
 .header {
   display: flex;
   align-items: center;
@@ -46,7 +50,8 @@
   margin-right: 6px;
 }
 
-.repository {
+.repository,
+.short-title {
   color: $gray-600;
 
   white-space: nowrap;
