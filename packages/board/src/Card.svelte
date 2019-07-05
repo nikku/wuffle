@@ -110,6 +110,7 @@
          target="_blank"
          rel="noopener noreferrer"
          class="issue-number"
+         title="{ repositoryName }#{ number }"
       >{ number }</a>
 
       <span class="repository" title={ repositoryName }>{ repositoryName }</span>
