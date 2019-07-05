@@ -59,9 +59,9 @@ class Store {
     let order = this.getOrder(id);
 
     if (!order) {
-      const lastIssue = this.issues[this.issues.length - 1];
+      const firstIssue = this.issues[0];
 
-      order = this.computeOrder(id, null, lastIssue && lastIssue.id);
+      order = this.computeOrder(id, firstIssue && firstIssue.id, null);
 
       this.setOrder(id, order);
     }

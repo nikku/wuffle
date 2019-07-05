@@ -45,6 +45,22 @@ describe('store', function() {
     });
 
 
+    it('should add new issue to front', async function() {
+
+      // given
+      const store = createStore();
+
+      // when
+      const firstIssue = await store.updateIssue(createIssue());
+      const secondIssue = await store.updateIssue(createIssue());
+
+      // then
+      const issues = store.getIssues();
+
+      expect(issues).to.eql([ secondIssue, firstIssue ]);
+    });
+
+
     it('should update', async function() {
 
       // given
