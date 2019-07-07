@@ -101,7 +101,7 @@ class Links {
 
     const links = this.links[sourceId] || {};
 
-    for (const [_, link] of Object.entries(links)) {
+    for (const link of Object.values(links)) {
 
       const {
         targetId,
