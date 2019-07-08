@@ -11,6 +11,12 @@ const IN_PROGRESS = 'In Progress';
 const NEEDS_REVIEW = 'Needs Review';
 const DONE = 'Done';
 
+const allButClosedLinkTypes = Object.keys(linkTypes).filter(linkType => {
+  return linkType !== CLOSES;
+}).reduce((filteredLinkTypes, linkType) => {
+  filteredLinkTypes[linkType] = linkTypes[linkType];
+  return filteredLinkTypes;
+}, {});
 
 /**
  * This component implements automatic movement of issues
@@ -111,7 +117,7 @@ module.exports = async (app, config, store) => {
       .then((issue) => issue && moveIssue(context, issue, newState, newAssignee));
   }
 
-  async function moveReferencedIssues(context, issue, newState, newAssignee) {
+  async function moveReferencedIssues(context, issue, newState, newAssignee, linkTypes) {
 
     // TODO(nikku): do that lazily, i.e. react to PR label changes?
     // would slower the movement but support manual moving-issue with PR
@@ -121,7 +127,7 @@ module.exports = async (app, config, store) => {
       owner: issueOwner
     } = context.repo();
 
-    const links = findLinks(issue, CLOSES).filter(link => {
+    const links = findLinks(issue, linkTypes).filter(link => {
       const {
         repo,
         owner
@@ -180,8 +186,12 @@ module.exports = async (app, config, store) => {
       pull_request,
       issue
     } = context.payload;
+    log.info('Issue/PR request closed', context.payload.number)
 
-    await moveIssue(context, issue || pull_request, DONE);
+    await Promise.all([
+      pull_request ? moveReferencedIssues(context, pull_request, IN_PROGRESS, undefined, allButClosedLinkTypes) : Promise.resolve(),
+      moveIssue(context, issue || pull_request, DONE)
+    ]);
   });
 
   app.onActive('pull_request.ready_for_review', async (context) => {
@@ -189,6 +199,7 @@ module.exports = async (app, config, store) => {
     const {
       pull_request
     } = context.payload;
+    log.info('PR request ready_for_review', context.payload.number)
 
     await Promise.all([
       moveIssue(context, pull_request, NEEDS_REVIEW),
@@ -206,6 +217,7 @@ module.exports = async (app, config, store) => {
     } = context.payload;
 
     const newState = isDraft(pull_request) ? IN_PROGRESS : NEEDS_REVIEW;
+    log.info('PR request opened', context.payload.number, newState);
 
     await Promise.all([
       moveIssue(context, pull_request, newState),
@@ -220,6 +232,7 @@ module.exports = async (app, config, store) => {
     } = context.payload;
 
     const columns = getCurrentColumns(pull_request);
+    log.info('PR request edited', context.payload.number, columns);
 
     // move issue to reflect PR lazy reference
 
@@ -250,6 +263,7 @@ module.exports = async (app, config, store) => {
     }
 
     const issue_number = match[1];
+    log.info('Something created', context.payload.number, issue_number);
 
     return findAndMoveIssue(context, issue_number, IN_PROGRESS, assignee);
   });

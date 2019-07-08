@@ -16,8 +16,7 @@
     Id,
     createLocalStore,
     createHistory,
-    isClosingLink,
-    isOpenOrMergedPull,
+    isOpenPullOrMergedPull,
     periodic,
     throttle
   } from './util';
@@ -62,7 +61,7 @@
 
     const columnItems = items[column];
 
-    shownItems[column] = columnItems.filter(item => !isClosingPR(item));
+    shownItems[column] = columnItems.filter(item => !isPRWithLinks(item));
 
     return shownItems;
   }, {});
@@ -523,10 +522,8 @@
     };
   }
 
-  function isClosingPR(item) {
-    return isOpenOrMergedPull(item) && item.links.some(link => {
-      return isClosingLink(link) && itemsById[link.target.id];
-    });
+  function isPRWithLinks(item) {
+    return isOpenPullOrMergedPull(item) && item.links.length > 0
   }
 
   function checkRender(columnName) {

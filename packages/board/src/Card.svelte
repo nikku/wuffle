@@ -7,6 +7,7 @@
 
   import Tag from './components/Tag.svelte';
   import PullRequestIcon from './components/PullRequestIcon.svelte';
+  import EpicIcon from './components/EpicIcon.svelte';
 
   import CardLink from './CardLink.svelte';
 
@@ -17,7 +18,6 @@
     'DEPENDS_ON': 3,
     'LINKED_TO': 4
   };
-
   function isPR(issue) {
     return issue.pull_request;
   }
@@ -45,6 +45,8 @@
       return linkOrder[a.type] - linkOrder[b.type];
     }
   );
+
+  $: epic = embeddedLinks.find(l => l.type=== 'PARENT_OF');
 
   $: prLinks = links.filter(link => isPR(link.target) && isOpenOrMergedPull(link.target));
 
@@ -106,6 +108,9 @@
 <div class="board-card-container { className }" { ...otherProps }>
   <div class="board-card">
     <div class="header">
+    {#if epic }
+        <EpicIcon item={ item } linktype="PARENT_OF" />
+    {/if}
       {#if pull_request}
         <PullRequestIcon item={ item } />
       {/if}

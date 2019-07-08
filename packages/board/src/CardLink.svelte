@@ -1,5 +1,7 @@
 <script>
   import PullRequestIcon from './components/PullRequestIcon.svelte';
+  import EpicIcon from './components/EpicIcon.svelte';
+  import Icons from './components/Icons.svelte';
 
   export let item;
 
@@ -12,6 +14,8 @@
   $: title = item.title;
   $: repository = item.repository;
   $: pull_request = item.pull_request;
+  $: child = type === 'CHILD_OF';
+  $: link = type === 'DEPENDS_ON'||'LINKED_TO'||'REQUIRED_BY';
 
   $: assignees = item.assignees || [];
 
@@ -65,6 +69,10 @@
   <div class="header">
     {#if pull_request}
       <PullRequestIcon item={ item } />
+    {:else if child}
+      <EpicIcon item={ item } linktype={ type }/>
+    {:else if link}
+      <Icons state={ item.state } linktype={ type }/>
     {/if}
 
     <a href={ cardUrl }

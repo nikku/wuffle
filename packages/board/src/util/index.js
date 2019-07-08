@@ -26,7 +26,8 @@ export function periodic(fn, interval) {
 export {
   isClosingLink,
   isClosedByLink,
-  isOpenOrMergedPull
+  isOpenOrMergedPull,
+  isOpenPullOrMergedPull
 } from './links';
 
 export {
