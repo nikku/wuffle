@@ -4,3 +4,8 @@
 @import "./_style";
 
 @import "dragula/dist/dragula";
+
+/* Fix drag container scrolling */
+.gu-mirror {
+  pointer-events: none;
+}
