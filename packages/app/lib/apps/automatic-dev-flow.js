@@ -186,7 +186,7 @@ module.exports = async (app, config, store) => {
       pull_request,
       issue
     } = context.payload;
-    log.info('Issue/PR request closed', context.payload.number)
+    log.info('Issue/PR request closed', context.payload.number);
 
     await Promise.all([
       pull_request ? moveReferencedIssues(context, pull_request, IN_PROGRESS, undefined, allButClosedLinkTypes) : Promise.resolve(),
@@ -199,7 +199,7 @@ module.exports = async (app, config, store) => {
     const {
       pull_request
     } = context.payload;
-    log.info('PR request ready_for_review', context.payload.number)
+    log.info('PR request ready_for_review', context.payload.number);
 
     await Promise.all([
       moveIssue(context, pull_request, NEEDS_REVIEW),
