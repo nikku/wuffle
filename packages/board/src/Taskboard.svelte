@@ -63,7 +63,7 @@
 
     const columnItems = items[column];
 
-    shownItems[column] = columnItems.filter(item => !isClosingPR(item));
+    shownItems[column] = columnItems.filter(item => !isClosingPull(item));
 
     return shownItems;
   }, {});
@@ -524,7 +524,7 @@
     };
   }
 
-  function isClosingPR(item) {
+  function isClosingPull(item) {
     return isPull(item) && isOpenOrMerged(item) && item.links.some(link => {
       return isClosingLink(link) && itemsById[link.target.id];
     });

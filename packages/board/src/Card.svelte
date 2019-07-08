@@ -7,6 +7,7 @@
 
   import Tag from './components/Tag.svelte';
   import PullRequestIcon from './components/PullRequestIcon.svelte';
+  import EpicIcon from './components/EpicIcon.svelte';
 
   import CardLink from './CardLink.svelte';
 
@@ -41,6 +42,8 @@
       return linkOrder[a.type] - linkOrder[b.type];
     }
   );
+
+  $: epic = embeddedLinks.find(l => l.type === 'PARENT_OF');
 
   $: prLinks = links.filter(link => isPull(link.target) && isOpenOrMerged(link.target));
 
@@ -102,6 +105,10 @@
 <div class="board-card-container { className }" { ...otherProps }>
   <div class="board-card">
     <div class="header">
+      {#if epic}
+        <EpicIcon item={ item } linkType="PARENT_OF" />
+      {/if}
+
       {#if pull_request}
         <PullRequestIcon item={ item } />
       {/if}
