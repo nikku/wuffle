@@ -423,7 +423,7 @@
 
 <div class="input-prefixed board-filter { className } { expanded && 'expanded' }">
   <label class="prefix" for={searchId}>
-    <Icon class="icon" className="BOO">
+    <Icon class="icon">
       <SearchIcon />
     </Icon>
   </label>
