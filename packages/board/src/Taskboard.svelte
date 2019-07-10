@@ -18,6 +18,7 @@
     createHistory,
     isClosingLink,
     isOpenOrMerged,
+    isPull,
     periodic,
     throttle
   } from './util';
@@ -524,7 +525,7 @@
   }
 
   function isClosingPR(item) {
-    return isOpenOrMergedPull(item) && item.links.some(link => {
+    return isPull(item) && isOpenOrMerged(item) && item.links.some(link => {
       return isClosingLink(link) && itemsById[link.target.id];
     });
   }
