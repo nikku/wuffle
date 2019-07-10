@@ -1,7 +1,8 @@
 <script>
   import {
     autoresize,
-    isOpenOrMerged
+    isOpenOrMerged,
+    isPull
   } from './util';
 
   import Tag from './components/Tag.svelte';
@@ -16,10 +17,6 @@
     'DEPENDS_ON': 3,
     'LINKED_TO': 4
   };
-
-  function isPR(issue) {
-    return issue.pull_request;
-  }
 
   export let item;
 
@@ -38,14 +35,14 @@
   $: links = item.links || [];
 
   $: embeddedLinks = links.filter(
-    (link) => !isPR(link.target)
+    (link) => !isPull(link.target)
   ).sort(
     (a, b) => {
       return linkOrder[a.type] - linkOrder[b.type];
     }
   );
 
-  $: prLinks = links.filter(link => isPR(link.target) && isOpenOrMerged(link.target));
+  $: prLinks = links.filter(link => isPull(link.target) && isOpenOrMerged(link.target));
 
   $: assignees = item.assignees;
 
