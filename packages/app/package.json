@@ -23,6 +23,7 @@
     "dev": "nodemon",
     "start": "node ./bin/run.js",
     "test": "mocha test --exit",
+    "lint": "eslint .",
     "auto-test": "npm test -- --watch"
   },
   "dependencies": {
@@ -36,6 +37,8 @@
   },
   "devDependencies": {
     "chai": "^4.2.0",
+    "eslint": "^6.0.1",
+    "eslint-plugin-bpmn-io": "^0.8.2",
     "mkdirp": "^0.5.1",
     "mocha": "^6.1.4",
     "nock": "^10.0.0",
