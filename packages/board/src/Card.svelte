@@ -1,7 +1,7 @@
 <script>
   import {
     autoresize,
-    isOpenOrMergedPull
+    isOpenOrMerged
   } from './util';
 
   import Tag from './components/Tag.svelte';
@@ -45,7 +45,7 @@
     }
   );
 
-  $: prLinks = links.filter(link => isPR(link.target) && isOpenOrMergedPull(link.target));
+  $: prLinks = links.filter(link => isPR(link.target) && isOpenOrMerged(link.target));
 
   $: assignees = item.assignees;
 

@@ -17,7 +17,7 @@
     createLocalStore,
     createHistory,
     isClosingLink,
-    isOpenOrMergedPull,
+    isOpenOrMerged,
     periodic,
     throttle
   } from './util';

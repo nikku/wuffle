@@ -25,9 +25,24 @@ export function periodic(fn, interval) {
 
 export {
   isClosingLink,
-  isClosedByLink,
-  isOpenOrMergedPull
+  isClosedByLink
 } from './links';
+
+export function isOpen(issue) {
+  return issue.state === 'open';
+}
+
+export function isMerged(issue) {
+  return issue.merged;
+}
+
+export function isOpenOrMerged(issue) {
+  return isOpen(issue) || isMerged(issue);
+}
+
+export function isPull(issue) {
+  return issue.pull_request;
+}
 
 export {
   debounce,
