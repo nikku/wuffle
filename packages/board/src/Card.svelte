@@ -1,7 +1,6 @@
 <script>
   import {
     autoresize,
-    isClosedByLink,
     isOpenOrMergedPull
   } from './util';
 

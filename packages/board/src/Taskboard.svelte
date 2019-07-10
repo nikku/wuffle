@@ -597,6 +597,12 @@
     <img src={ loaderImage } width="64" alt="Loading" />
   </Loader>
 
+  {#if error}
+    <div class="error">
+      We encountered problems to display the board.
+    </div>
+  {/if}
+
   {#if accessNotification}
     <Notification message="Failed to move card">
       {#if accessNotification === 'forbidden'}
