@@ -9,7 +9,7 @@
 <style lang="scss">
 
   .pull-request-icon {
-    margin-right: 2px;
+    margin-right: 1px;
 
     &.open {
       color: #28a745;
