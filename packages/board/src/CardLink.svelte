@@ -1,7 +1,6 @@
 <script>
   import PullRequestIcon from './components/PullRequestIcon.svelte';
-  import EpicIcon from './components/EpicIcon.svelte';
-  import Icons from './components/Icons.svelte';
+  import LinkIcon from './components/LinkIcon.svelte';
 
   export let item;
 
@@ -14,9 +13,6 @@
   $: title = item.title;
   $: repository = item.repository;
   $: pull_request = item.pull_request;
-
-  $: child = type === 'CHILD_OF';
-  $: link = type === 'DEPENDS_ON' || 'LINKED_TO' || 'REQUIRED_BY';
 
   $: assignees = item.assignees || [];
 
@@ -34,27 +30,6 @@
     border-top: solid 1px #F0F0F0;
     margin-top: 1px;
     padding-top: 1px;
-
-    .link-type {
-      margin-right: 6px;
-      color: #999;
-    }
-
-    .link-depends-on {
-      color: red;
-    }
-
-    .link-required-by {
-      color: orange;
-    }
-
-    .link-related-to {
-      color: #999;
-    }
-
-    .link-part-of {
-      color: lightblue;
-    }
   }
 
   .card-link .short-title {
@@ -64,20 +39,48 @@
   .card-link .assignee {
     height: 16px;
   }
+
+  :global(.card-link) .epic {
+    color: #1d76db;
+  }
 </style>
 
 <div class="card-link">
   <div class="header">
     {#if pull_request}
       <PullRequestIcon item={ item } />
-    {:else if child}
-      <EpicIcon item={ item } type={ type }/>
-    {:else if link}
-      <Icons state={ item.state } linkType={ type }/>
-    {/if}
+    {:else}
+      {#if type === 'PARENT_OF'}
+        <LinkIcon
+          name="issue"
+          state={ item.state }
+          class="child-of"
+        />
+      {/if}
 
-    {#if type === 'PARENT_OF'}
-      <Icons state={ item.state } linkType={ 'CHILD_OF' }/>
+      {#if type === 'CHILD_OF'}
+        <LinkIcon class="epic" name="epic" />
+      {/if}
+
+      {#if type === 'DEPENDS_ON' || type === 'CLOSED_BY'}
+        <LinkIcon
+          class="depends-on"
+          name="depends-on"
+          state={ item.state }
+        />
+      {/if}
+
+      {#if type === 'REQUIRED_BY' || type === 'CLOSES' }
+        <LinkIcon
+          class="issue"
+          name="issue"
+          state={ item.state }
+        />
+      {/if}
+
+      {#if type === 'LINKED_TO'}
+        <LinkIcon class="linked-to" name="linked-to" />
+      {/if}
     {/if}
 
     <a href={ cardUrl }
@@ -86,6 +89,7 @@
        class="issue-number"
        title="{ repositoryName }#{ number }"
     >{ number }</a>
+
     <span class="short-title" title={ title }>{ title }</span>
 
     <span class="collaborator-links">
