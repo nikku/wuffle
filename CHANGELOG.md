@@ -10,10 +10,10 @@ ___Note:__ Yet to be released changes appear here._
 
 * `FEAT(board)`: display issue links ([#3](https://github.com/nikku/wuffle/issues/3))
 * `FEAT(board)`: display full issue key on hover
-* `FEAT(board)`: add epic icon and links
+* `FEAT(board)`: add epic icon and links ([#30](https://github.com/nikku/wuffle/pull/30))
 * `FEAT(app)`: add new/updated issues without order to column top
+* `FEAT(project)`: add [docker image](https://hub.docker.com/r/nrehwaldt/wuffle)
 * `FIX(board)`: allow scrolling while dragging card
-
 
 ## 0.10.0
 
