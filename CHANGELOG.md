@@ -6,6 +6,15 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 ___Note:__ Yet to be released changes appear here._
 
+## 0.11.0
+
+* `FEAT(board)`: display issue links ([#3](https://github.com/nikku/wuffle/issues/3))
+* `FEAT(board)`: display full issue key on hover
+* `FEAT(board)`: add epic icon and links
+* `FEAT(app)`: add new/updated issues without order to column top
+* `FIX(board)`: allow scrolling while dragging card
+
+
 ## 0.10.0
 
 * `FEAT(app)`: add ability to force HTTPS redirect
