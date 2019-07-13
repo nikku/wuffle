@@ -255,13 +255,15 @@ describe('util', function() {
     it('should parse terms', function() {
 
       const searchString = [
+        '"Copy& Paste"',
         'is:open',
         'asdsad',
         'milestone:"FOO BAR"',
         '"FOO BAR"',
         'milestone:12asd',
         'milestone:',
-        'label:"in progress"'
+        'label:"in progress"',
+        'ref:foo/bar#80'
       ].join(' ');
 
       // when
@@ -269,13 +271,15 @@ describe('util', function() {
 
       // then
       expect(search).to.eql([
+        { qualifier: 'text', value: 'Copy& Paste' },
         { qualifier: 'is', value: 'open', negated: false },
         { qualifier: 'text', value: 'asdsad' },
         { qualifier: 'milestone', value: 'FOO BAR', negated: false },
         { qualifier: 'text', value: 'FOO BAR' },
         { qualifier: 'milestone', value: '12asd', negated: false },
         { qualifier: 'milestone', value: undefined, negated: false },
-        { qualifier: 'label', value: 'in progress', negated: false }
+        { qualifier: 'label', value: 'in progress', negated: false },
+        { qualifier: 'ref', value: 'foo/bar#80', negated: false }
       ]);
 
     });
