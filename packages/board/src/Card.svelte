@@ -41,7 +41,7 @@
   $: links = item.links || [];
 
   $: embeddedLinks = links.filter(
-    (link) => !isPull(link.target)
+    (link) => !isPull(link.target) && link.type !== 'LINKED_BY'
   ).sort(
     (a, b) => {
       return linkOrder[a.type] - linkOrder[b.type];

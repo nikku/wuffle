@@ -2,6 +2,7 @@ const LinkTypes = [
   'CLOSES',
   'CLOSED_BY',
   'LINKED_TO',
+  'LINKED_BY',
   'DEPENDS_ON',
   'REQUIRED_BY',
   'CHILD_OF',
@@ -18,7 +19,8 @@ const InverseLinkTypes = {
   DEPENDS_ON: LinkTypes.REQUIRED_BY,
   REQUIRED_BY: LinkTypes.DEPENDS_ON,
   CHILD_OF: LinkTypes.PARENT_OF,
-  PARENT_OF: LinkTypes.CHILD_OF
+  PARENT_OF: LinkTypes.CHILD_OF,
+  LINKED_TO: LinkTypes.LINKED_BY
 };
 
 

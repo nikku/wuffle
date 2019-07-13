@@ -70,6 +70,7 @@ describe('links', function() {
     // then
     expect(issueLinks).to.eql([
       { targetId: 2, type: LinkTypes.CLOSED_BY },
+      { targetId: 3, type: LinkTypes.LINKED_BY },
       { targetId: 4, type: LinkTypes.REQUIRED_BY },
       { targetId: 5, type: LinkTypes.PARENT_OF }
     ]);
