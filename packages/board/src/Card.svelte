@@ -25,6 +25,8 @@
 
   export let shown = true;
 
+  let showChildren = false;
+
   $: id = item.id;
   $: number = item.number;
   $: title = item.title;
@@ -43,7 +45,10 @@
     }
   );
 
-  $: epic = embeddedLinks.find(l => l.type === 'PARENT_OF');
+  $: shownLinks = embeddedLinks.filter(link => showChildren || link.type !== 'PARENT_OF');
+
+  $: children = embeddedLinks.filter(l => l.type === 'PARENT_OF');
+  $: completedChildren = children.filter(l => l.target.state === 'closed');
 
   $: prLinks = links.filter(link => isPull(link.target) && isOpenOrMerged(link.target));
 
@@ -98,6 +103,47 @@
       border-top: none;
     }
   }
+
+  .progress {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 7px;
+
+    cursor: pointer;
+
+    &:hover {
+      svg {
+        color: $gray-600;
+      }
+    }
+
+    svg {
+      color: #CCC;
+      transition: color .3s;
+    }
+
+    .bar {
+      border-radius: 3px;
+      height: 5px;
+      width: 80px;
+      background: #EEE;
+      margin: auto 6px;
+
+      .indicator {
+        border-radius: 3px;
+        background: $gray-600;
+        height: 100%;
+      }
+    }
+
+    .text {
+      margin-left: 6px;
+      font-size: 0.9rem;
+      color: $gray-600;
+    }
+  }
+
 </style>
 
 {#if shown}
@@ -105,7 +151,7 @@
 <div class="board-card-container { className }" { ...otherProps }>
   <div class="board-card">
     <div class="header">
-      {#if epic}
+      {#if children.length}
         <EpicIcon item={ item } linkType="PARENT_OF" />
       {/if}
 
@@ -139,6 +185,22 @@
     <div class="title">
       <textarea use:autoresize>{ title }</textarea>
     </div>
+    {#if children.length}
+      <div
+        class="progress"
+        on:click={ () => showChildren = !showChildren }
+        title="Click toggle child tasks ({ completedChildren.length } of { children.length } completed)">
+        <svg class="icon issue closed" width="1rem" height="1rem" viewBox="0 0 16 16" version="1.1" aria-hidden="true" fill="currentColor">
+          <path fill-rule="evenodd" d="M7 10h2v2H7v-2zm2-6H7v5h2V4zm1.5 1.5l-1 1L12 9l4-4.5-1-1L12 7l-1.5-1.5zM8 13.7A5.71 5.71 0 0 1 2.3 8c0-3.14 2.56-5.7 5.7-5.7 1.83 0 3.45.88 4.5 2.2l.92-.92A6.947 6.947 0 0 0 8 1C4.14 1 1 4.14 1 8s3.14 7 7 7 7-3.14 7-7l-1.52 1.52c-.66 2.41-2.86 4.19-5.48 4.19v-.01z"></path>
+        </svg>
+        <div class="text">
+          { completedChildren.length } of { children.length }
+        </div>
+        <div class="bar">
+          <div class="indicator" style="width: { completedChildren.length / children.length * 100 }%"></div>
+        </div>
+      </div>
+    {/if}
     <div class="footer">
       {#if milestone}
         <Tag class="tag milestone" name={ milestone.title } />
@@ -158,9 +220,9 @@
         </a>
       </div>
     </div>
-    {#if embeddedLinks.length}
+    {#if shownLinks.length}
       <div class="board-card-links embedded">
-        {#each embeddedLinks as link}
+        {#each shownLinks as link}
           <CardLink item={link.target} type={ link.type } />
         {/each}
       </div>
