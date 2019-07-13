@@ -25,6 +25,8 @@
 
   import loaderImage from './loader.png';
 
+  import wuffleLogo from './wuffle.svg';
+
   import { onMount } from 'svelte';
 
   const COLUMNS_COLLAPSED_KEY = 'Taskboard_columns_collapsed_state';
@@ -588,6 +590,25 @@
   .muted {
     color:  $gray-600;
   }
+
+  .taskboard {
+    position: relative;
+  }
+
+  .powered-by-logo {
+    position: absolute;
+    bottom: 18px;
+    right: 12px;
+
+    opacity: .5;
+    transition: opacity .3s;
+
+    z-index: 10;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
 </style>
 
 <svelte:head>
@@ -618,7 +639,15 @@
     </Notification>
   {/if}
 
+  <a class="powered-by-logo" href="https://wuffle.dev"
+     target="_blank"
+     rel="noopener noreferrer"
+     title="This task board is powered by Wuffle">
+    <img src={ wuffleLogo } width="20" height="20" alt="Wuffle logo" class="logo">
+  </a>
+
   <nav class="navbar navbar-expand navbar-light taskboard-header">
+
     <a class="navbar-brand mb-0 h1" href="/">
       <img src="./logo.svg" width="20" height="20" alt="" class="logo">
       { name }
