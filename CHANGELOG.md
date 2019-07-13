@@ -6,6 +6,15 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 ___Note:__ Yet to be released changes appear here._
 
+## 0.12.0
+
+* `FEAT(board)`: add powered by link
+* `FEAT(app)`: allow searching by `ref`
+* `FEAT(app)`: inverse link related to issues
+* `FEAT(board)`: add ability to filter by issue with dependencies
+* `FEAT(board)`: show epic progress bar and completed count ([#27](https://github.com/nikku/wuffle/issues/27))
+* `FIX(apps/search)`: allow more special keys in search
+
 ## 0.11.0
 
 * `FEAT(board)`: display issue links ([#3](https://github.com/nikku/wuffle/issues/3))
