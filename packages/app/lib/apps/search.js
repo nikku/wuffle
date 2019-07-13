@@ -38,6 +38,24 @@ module.exports = async (app, config, store) => {
 
     },
 
+    ref: function referenceFilter(text) {
+
+      const issue = store.getIssueByKey(text);
+      const links = issue && store.getIssueLinks(issue);
+
+      const byKey = (links || []).reduce((keyed, link) => {
+        keyed[link.target.key] = true;
+
+        return keyed;
+      }, {});
+
+      return function filterReferenced(issue) {
+        const { key } = issue;
+
+        return key === text || byKey[key];
+      };
+    },
+
     is: function isFilter(value) {
 
       switch (value) {
