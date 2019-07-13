@@ -48,3 +48,8 @@ export {
   debounce,
   throttle
 } from 'min-dash';
+
+
+export function hasModifier(event) {
+  return event.ctrlKey || event.shiftKey || event.altKey || event.metaKey;
+}

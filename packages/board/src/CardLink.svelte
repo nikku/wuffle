@@ -2,9 +2,15 @@
   import PullRequestIcon from './components/PullRequestIcon.svelte';
   import LinkIcon from './components/LinkIcon.svelte';
 
+  import {
+    hasModifier
+  } from './util';
+
   export let item;
 
   export let className = '';
+
+  export let onClick;
 
   export let type;
 
@@ -21,6 +27,14 @@
   $: repositoryName = `${repository.owner.login}/${repository.name}`;
 
   $: cardUrl = `https://github.com/${ repositoryName }/issues/${ number }`;
+
+  function linkClicked(event) {
+    if (!hasModifier(event) && onClick) {
+      event.preventDefault();
+
+      onClick(item);
+    }
+  }
 </script>
 
 <style lang="scss">
@@ -88,6 +102,7 @@
        rel="noopener noreferrer"
        class="issue-number"
        title="{ repositoryName }#{ number }"
+       on:click={ linkClicked }
     >{ number }</a>
 
     <span class="short-title" title={ title }>{ title }</span>

@@ -106,6 +106,10 @@
     return () => teardownHooks.forEach(fn => fn && fn());
   });
 
+  function filterByItem(item) {
+    return filterChanged('ref:' + item.key);
+  }
+
   function filterChanged(value, pushHistory=true) {
 
     if (value === filter) {
@@ -680,6 +684,7 @@
               <Card
                 item={item}
                 shown={ index <= (renderedItems[column.name] || renderCount) }
+                onClick={ filterByItem }
                 data-draggable-id={ item.id }
                 data-draggable-index={ index }
               />

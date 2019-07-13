@@ -2,7 +2,8 @@
   import {
     autoresize,
     isOpenOrMerged,
-    isPull
+    isPull,
+    hasModifier
   } from './util';
 
   import Tag from './components/Tag.svelte';
@@ -24,6 +25,8 @@
   export let className = '';
 
   export let shown = true;
+
+  export let onClick;
 
   let showChildren = false;
 
@@ -65,6 +68,8 @@
   $: {
     let {
       item,
+      shown,
+      onClick,
       ...rest
     } = $$props;
 
@@ -73,6 +78,19 @@
     otherProps = rest;
   }
 
+  function cardClicked(event) {
+    if (!hasModifier(event) && onClick) {
+      event.preventDefault();
+
+      onClick(item);
+    }
+  }
+
+  function linkClicked(item) {
+    if (onClick) {
+      onClick(item);
+    }
+  }
 </script>
 
 <style lang="scss">
@@ -164,6 +182,7 @@
          rel="noopener noreferrer"
          class="issue-number"
          title="{ repositoryName }#{ number }"
+         on:click={ cardClicked }
       >{ number }</a>
 
       <span class="repository" title={ repositoryName }>{ repositoryName }</span>
@@ -223,7 +242,7 @@
     {#if shownLinks.length}
       <div class="board-card-links embedded">
         {#each shownLinks as link}
-          <CardLink item={link.target} type={ link.type } />
+          <CardLink item={link.target} type={ link.type } onClick={ linkClicked } />
         {/each}
       </div>
     {/if}
@@ -234,7 +253,7 @@
   {#if prLinks.length}
     <div class="board-card-links attached">
       {#each prLinks as link}
-        <CardLink item={ link.target } type={ link.type } />
+        <CardLink item={ link.target } type={ link.type } onClick={ linkClicked } />
       {/each}
     </div>
   {/if}
