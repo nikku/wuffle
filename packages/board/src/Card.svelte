@@ -3,7 +3,8 @@
     autoresize,
     isOpenOrMerged,
     isPull,
-    hasModifier
+    hasModifier,
+    noDuplicates
   } from './util';
 
   import Tag from './components/Tag.svelte';
@@ -53,7 +54,9 @@
   $: children = embeddedLinks.filter(l => l.type === 'PARENT_OF');
   $: completedChildren = children.filter(l => l.target.state === 'closed');
 
-  $: prLinks = links.filter(link => isPull(link.target) && isOpenOrMerged(link.target));
+  $: prLinks = links.filter(
+    link => isPull(link.target) && isOpenOrMerged(link.target)
+  ).filter(noDuplicates(link => link.target.id));
 
   $: assignees = item.assignees;
 

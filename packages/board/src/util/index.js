@@ -53,3 +53,20 @@ export {
 export function hasModifier(event) {
   return event.ctrlKey || event.shiftKey || event.altKey || event.metaKey;
 }
+
+export function noDuplicates(keyFn) {
+
+  const found = {};
+
+  return function filter(element) {
+    const key = keyFn(element);
+
+    if (key in found) {
+      return false;
+    }
+
+    found[key] = true;
+
+    return true;
+  };
+}
