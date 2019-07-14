@@ -19,13 +19,17 @@
   export let color = '';
   export let className = '';
 
+  export let onClick;
+
   $: inverted = color && isLight(color);
 </script>
 
 <span
   class:inverted={ inverted }
   class="tag { className }"
+  class:clickable={ onClick }
   style="background-color: { color }"
+  on:click={ onClick }
 >{ name }</span>
 
 <style lang="scss">
@@ -50,6 +54,10 @@
 
     &.inverted {
       color: #333;
+    }
+
+    &.clickable {
+      cursor: pointer;
     }
   }
 </style>

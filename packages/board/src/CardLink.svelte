@@ -10,7 +10,7 @@
 
   export let className = '';
 
-  export let onClick;
+  export let onSelect;
 
   export let type;
 
@@ -28,12 +28,18 @@
 
   $: cardUrl = `https://github.com/${ repositoryName }/issues/${ number }`;
 
-  function linkClicked(event) {
-    if (!hasModifier(event) && onClick) {
+  function handleSelection(qualifier, value) {
+
+    return function(event) {
+
+      if (hasModifier(event)) {
+        return;
+      }
+
       event.preventDefault();
 
-      onClick(item);
-    }
+      onSelect(qualifier, value);
+    };
   }
 </script>
 
@@ -102,7 +108,7 @@
        rel="noopener noreferrer"
        class="issue-number"
        title="{ repositoryName }#{ number }"
-       on:click={ linkClicked }
+       on:click={ onSelect && handleSelection('ref', item.key) }
     >{ number }</a>
 
     <span class="short-title" title={ title }>{ title }</span>

@@ -26,7 +26,7 @@
 
   export let shown = true;
 
-  export let onClick;
+  export let onSelect;
 
   let showChildren = false;
 
@@ -69,7 +69,7 @@
     let {
       item,
       shown,
-      onClick,
+      onSelect,
       ...rest
     } = $$props;
 
@@ -78,18 +78,18 @@
     otherProps = rest;
   }
 
-  function cardClicked(event) {
-    if (!hasModifier(event) && onClick) {
+  function handleSelection(qualifier, value) {
+
+    return function(event) {
+
+      if (hasModifier(event)) {
+        return;
+      }
+
       event.preventDefault();
 
-      onClick(item);
-    }
-  }
-
-  function linkClicked(item) {
-    if (onClick) {
-      onClick(item);
-    }
+      onSelect(qualifier, value);
+    };
   }
 </script>
 
@@ -182,7 +182,7 @@
          rel="noopener noreferrer"
          class="issue-number"
          title="{ repositoryName }#{ number }"
-         on:click={ cardClicked }
+         on:click={ handleSelection('ref', item.key) }
       >{ number }</a>
 
       <span class="repository" title={ repositoryName }>{ repositoryName }</span>
@@ -222,11 +222,20 @@
     {/if}
     <div class="footer">
       {#if milestone}
-        <Tag class="tag milestone" name={ milestone.title } />
+        <Tag
+          class="tag milestone"
+          name={ milestone.title }
+          onClick={ onSelect && handleSelection('milestone', milestone.title) }
+        />
       {/if}
 
       {#each labels as { name, color }}
-        <Tag class="tag label" color="#{ color }" name={ name } />
+        <Tag
+          class="tag label"
+          color="#{ color }"
+          name={ name }
+          onClick={ onSelect && handleSelection('label', name) }
+        />
       {/each}
 
       <div class="links">
@@ -239,21 +248,21 @@
         </a>
       </div>
     </div>
+
     {#if shownLinks.length}
       <div class="board-card-links embedded">
         {#each shownLinks as link}
-          <CardLink item={link.target} type={ link.type } onClick={ linkClicked } />
+          <CardLink item={link.target} type={ link.type } onSelect={ onSelect } />
         {/each}
       </div>
     {/if}
+
   </div>
-
-
 
   {#if prLinks.length}
     <div class="board-card-links attached">
       {#each prLinks as link}
-        <CardLink item={ link.target } type={ link.type } onClick={ linkClicked } />
+        <CardLink item={ link.target } type={ link.type } onSelect={ onSelect } />
       {/each}
     </div>
   {/if}

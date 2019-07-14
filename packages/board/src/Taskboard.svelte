@@ -108,8 +108,15 @@
     return () => teardownHooks.forEach(fn => fn && fn());
   });
 
-  function filterByItem(item) {
-    return filterChanged('ref:' + item.key);
+  function applyFilter(qualifier, value) {
+
+    if (/[\s:]+/.test(value)) {
+      value = '"' + value + '"';
+    }
+
+    if (value) {
+      return filterChanged(`${qualifier}:${value}`);
+    }
   }
 
   function filterChanged(value, pushHistory=true) {
@@ -713,7 +720,7 @@
               <Card
                 item={item}
                 shown={ index <= (renderedItems[column.name] || renderCount) }
-                onClick={ filterByItem }
+                onSelect={ applyFilter }
                 data-draggable-id={ item.id }
                 data-draggable-index={ index }
               />
