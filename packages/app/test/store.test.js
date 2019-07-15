@@ -45,22 +45,6 @@ describe('store', function() {
     });
 
 
-    it('should add new issue to front', async function() {
-
-      // given
-      const store = createStore();
-
-      // when
-      const firstIssue = await store.updateIssue(createIssue());
-      const secondIssue = await store.updateIssue(createIssue());
-
-      // then
-      const issues = store.getIssues();
-
-      expect(issues).to.eql([ secondIssue, firstIssue ]);
-    });
-
-
     it('should update', async function() {
 
       // given
@@ -346,6 +330,193 @@ describe('store', function() {
       const linkedLinks = store.getIssueLinks(linkedIssue);
 
       expect(linkedLinks).to.be.empty;
+    });
+
+  });
+
+
+  describe('ordering', function() {
+
+    function expectOrder(store, issues) {
+
+      for (const i in issues) {
+
+        const last = issues[i - 1];
+        const current = issues[i];
+
+        if (last) {
+
+          const lastOrder = store.getOrder(last.id);
+          const currentOrder = store.getOrder(current.id);
+
+          if (lastOrder > currentOrder) {
+            throw new Error(
+              `expected order [ "${last.title}", "${current.title}" ], found inverse`
+            );
+          }
+        }
+      }
+    }
+
+
+    it('should add new issue to front', async function() {
+
+      // given
+      const store = createStore();
+
+      // when
+      const issue_A = await store.updateIssue(createIssue());
+      const issue_B = await store.updateIssue(createIssue());
+
+      // then
+      expectOrder(store, [ issue_B, issue_A ]);
+    });
+
+
+    it('should put before CLOSES', async function() {
+
+      // given
+      const store = createStore();
+
+      const issue_A = await store.updateIssue(createIssue({
+        number: 1,
+        title: '1'
+      }));
+
+      // when
+      const issue_B = await store.updateIssue(createIssue({
+        number: 2,
+        title: 'Closes #1'
+      }));
+
+      // then
+      expectOrder(store, [ issue_B, issue_A ]);
+    });
+
+
+    it('should put after DEPENDS_ON', async function() {
+
+      // given
+      const store = createStore();
+
+      const issue_A = await store.updateIssue(createIssue({
+        number: 1,
+        title: '1'
+      }));
+
+      // when
+      const issue_B = await store.updateIssue(createIssue({
+        number: 2,
+        title: 'Depends on #1'
+      }));
+
+      // then
+      expectOrder(store, [ issue_A, issue_B ]);
+    });
+
+
+    it('should put between', async function() {
+
+      // given
+      const store = createStore();
+
+      const issue_A = await store.updateIssue(createIssue({
+        number: 1,
+        title: '1'
+      }));
+
+      const issue_B = await store.updateIssue(createIssue({
+        number: 2,
+        title: '2'
+      }));
+
+      // when
+      const issue_C = await store.updateIssue(createIssue({
+        title: 'Depends on #2 Closes #1'
+      }));
+
+      // then
+      expectOrder(store, [ issue_B, issue_C, issue_A ]);
+    });
+
+
+    it('should put after two', async function() {
+
+      // given
+      const store = createStore();
+
+      const issue = await store.updateIssue(createIssue({
+        number: 1,
+        title: '1'
+      }));
+
+      const issue_B = await store.updateIssue(createIssue({
+        number: 2,
+        title: '2'
+      }));
+
+      // when
+      const issue_C = await store.updateIssue(createIssue({
+        title: 'Depends on #2 Depends on #1'
+      }));
+
+      // then
+      expectOrder(store, [ issue_B, issue, issue_C ]);
+    });
+
+
+    it('should put before two', async function() {
+
+      // given
+      const store = createStore();
+
+      const issue_A = await store.updateIssue(createIssue({
+        number: 1,
+        title: '1'
+      }));
+
+      const issue_B = await store.updateIssue(createIssue({
+        number: 2,
+        title: 'Depends on #1'
+      }));
+
+      const issue_C = await store.updateIssue(createIssue({
+        number: 3,
+        title: 'Depends on #2'
+      }));
+
+      // when
+      const issue_D = await store.updateIssue(createIssue({
+        title: 'Closes on #2 Closes on #3'
+      }));
+
+      // then
+      expectOrder(store, [ issue_D, issue_A, issue_B, issue_C ]);
+    });
+
+
+    it('should handle ordering conflict', async function() {
+
+      // given
+      const store = createStore();
+
+      const issue_A = await store.updateIssue(createIssue({
+        number: 1,
+        title: '1'
+      }));
+
+      const issue_B = await store.updateIssue(createIssue({
+        number: 2,
+        title: '2'
+      }));
+
+      // when
+      const issue_C = await store.updateIssue(createIssue({
+        title: 'Depends on #1 Closes #2'
+      }));
+
+      // then
+      expectOrder(store, [ issue_B, issue_C, issue_A ]);
     });
 
   });

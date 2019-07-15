@@ -36,7 +36,7 @@ class Store {
     return this.columns.getForIssue(issue);
   }
 
-  async updateIssue(issue, column) {
+  async updateIssue(issue, newColumn, newOrder) {
 
     const {
       id,
@@ -56,31 +56,39 @@ class Store {
       throw new Error('{ repository } required');
     }
 
-    let order = this.getOrder(id);
+    const ident = issueIdent(issue);
 
-    if (!order) {
-      const firstIssue = this.issues[0];
+    this.log.debug({
+      issue: ident,
+      newColumn,
+      newOrder
+    }, 'issue update');
 
-      order = this.computeOrder(id, firstIssue && firstIssue.id, null);
+    const {
+      touchedIssues,
+      links
+    } = this.updateLinks(issue);
 
-      this.setOrder(id, order);
-    }
+    const column = newColumn || this.getIssueColumn(issue);
 
-    column = column || this.getIssueColumn(issue);
+    // automatically compute desired order unless
+    // the order is provided by the user
+    //
+    // this ensures the board is automatically pre-sorted
+    // as links are being created and removed on GitHub
+    const order = newOrder || this.computeLinkedOrder(
+      issue, column,
+      this.getOrder(id),
+      links
+    );
 
-    issue = {
+    issue = this.insertOrUpdateIssue({
       ...issue,
       order,
       column
-    };
+    });
 
-    this.log.info({ issue: issueIdent(issue), column, order }, 'update');
-
-    issue = this.insertOrUpdateIssue(issue);
-
-    const linkedIssues = this.updateLinks(issue);
-
-    const updatedIssues = [ issue, ...linkedIssues ];
+    const updatedIssues = [ ...touchedIssues, issue ];
 
     for (const issue of updatedIssues) {
       this.updates.add(issue.id, {
@@ -92,15 +100,66 @@ class Store {
       });
     }
 
+    this.log.info({ issue: ident, column, order }, 'issue updated');
+
     return issue;
   }
 
   async updateOrder(issue, before, after, column) {
-    const order = this.computeOrder(issue, before, after);
+    const order = this.computeOrder(before, after);
 
-    this.setOrder(issue, order);
+    await this.updateIssue(this.getIssueById(issue), column, order);
+  }
 
-    await this.updateIssue(this.getIssueById(issue), column);
+  computeLinkedOrder(issue, column, order, links) {
+
+    const beforeTypes = {
+      REQUIRED_BY: 1,
+      CLOSES: 1,
+      CHILD_OF: 1
+    };
+
+    const afterTypes = {
+      DEPENDS_ON: 1,
+      CLOSED_BY: 1,
+      PARENT_OF: 1
+    };
+
+    let before, after;
+
+    for (const link of Object.values(links)) {
+
+      const {
+        type,
+        targetId
+      } = link;
+
+      const target = this.getIssueById(targetId);
+
+      if (target && target.column === column) {
+
+        if (beforeTypes[type]) {
+          before = before && before.order < target.order ? before : target;
+        }
+
+        if (afterTypes[type]) {
+          after = after && after.order > target.order ? after : target;
+        }
+      }
+    }
+
+    if (!before && !after) {
+
+      // keep order if issue stays within column
+      if (column === issue.column) {
+        return order;
+      }
+
+      // insert on top of column
+      before = this.issues[0];
+    }
+
+    return this.computeOrder(before && before.id, after && after.id);
   }
 
   updateLinks(issue) {
@@ -147,13 +206,17 @@ class Store {
       return map;
     }, {});
 
-    const allLinks = {
-      ...removedLinks,
+    const newLinks = {
       ...inverseLinks,
       ...createdLinks
     };
 
-    const changedIssues = Object.keys(allLinks).reduce((issues, linkId) => {
+    const allLinks = {
+      ...newLinks,
+      ...removedLinks
+    };
+
+    const touchedIssues = Object.keys(allLinks).reduce((issues, linkId) => {
 
       const { targetId } = allLinks[linkId];
 
@@ -168,8 +231,8 @@ class Store {
       return issues;
     }, []);
 
-    if (changedIssues.length) {
-      changedIssues.forEach(changed => {
+    if (touchedIssues.length) {
+      touchedIssues.forEach(changed => {
         delete this.linkedCache[changed.id];
       });
 
@@ -178,7 +241,10 @@ class Store {
 
     this.boardCache = null;
 
-    return changedIssues;
+    return {
+      touchedIssues,
+      links: newLinks
+    };
   }
 
   insertOrUpdateIssue(issue) {
@@ -190,6 +256,10 @@ class Store {
       labels
     } = issue;
 
+    // update order
+    this.setOrder(id, order);
+
+    // attach column label meta-data
     issue = {
       ...issue,
       labels: labels.map(label => {
@@ -310,10 +380,10 @@ class Store {
     return this.issues;
   }
 
-  computeOrder(issue, before, after) {
+  computeOrder(beforeId, afterId) {
 
-    const beforeOrder = before && this.issueOrder[before];
-    const afterOrder = after && this.issueOrder[after];
+    const beforeOrder = beforeId && this.issueOrder[beforeId];
+    const afterOrder = afterId && this.issueOrder[afterId];
 
     if (beforeOrder && afterOrder) {
       return (beforeOrder + afterOrder) / 2;
@@ -328,7 +398,7 @@ class Store {
     }
 
     // a good start :)
-    return -9999999999.89912;
+    return 779999.89912;
   }
 
   setOrder(issueId, order) {
