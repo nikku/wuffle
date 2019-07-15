@@ -1,13 +1,13 @@
 # Setup
 
-Learn how to setup and run your own [Wuffle board](https://wuffle.dev).
+Learn how to setup, configure and run your own [Wuffle board](https://wuffle.dev).
 
-## Table of Contents
-
-* [Create GitHub app](#create-github-app)
-* [Configure GitHub app](#configure-github-app)
-* [Configure Board](#configure-board)
-* [Run Board](#run-board)
+| Table of Contents |
+| :--- |
+| [Create GitHub App](#create-github-app) |
+| [Configure GitHub App](#configure-github-app) |
+| [Configure Board](#configure-board) |
+| [Run Board](#run-board) |
 
 
 ## Create GitHub App
