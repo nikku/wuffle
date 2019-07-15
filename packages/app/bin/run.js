@@ -4,7 +4,12 @@ require('dotenv').config();
 
 const { Probot } = require('probot');
 
-const log = console;
+const { logger } = require('probot/lib/logger');
+const { wrapLogger } = require('probot/lib/wrap-logger');
+
+const log = wrapLogger(logger, logger).child({
+  name: 'wuffle:run'
+});
 
 const { version } = require('../package');
 
