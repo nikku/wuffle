@@ -6,6 +6,12 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 ___Note:__ Yet to be released changes appear here._
 
+## 0.14.0
+
+* `DOCS`: new setup and run guide :tada:
+* `FIX`: correct various getting started / configuration glitches
+* `FIX`: validate `BASE_URL` in run script
+
 ## 0.13.0
 
 * `FEAT(board)`: filter by tags
