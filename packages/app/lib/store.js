@@ -245,7 +245,7 @@ class Store {
     let linked = this.linkedCache[id];
 
     if (!linked) {
-      linked = this.linkedCache[id] = this.links.getBySource(id).map(link => {
+      linked = this.linkedCache[id] = Object.values(this.links.getBySource(id)).map(link => {
 
         const {
           type,

@@ -44,12 +44,12 @@ describe('links', function() {
     const issueLinks = links.getBySource(1);
 
     // then
-    expect(issueLinks).to.eql([
-      { targetId: 2, type: LinkTypes.CLOSES },
-      { targetId: 3, type: LinkTypes.LINKED_TO },
-      { targetId: 4, type: LinkTypes.DEPENDS_ON },
-      { targetId: 5, type: LinkTypes.CHILD_OF }
-    ]);
+    expect(issueLinks).to.eql({
+      '2-CLOSES': { targetId: 2, type: LinkTypes.CLOSES },
+      '3-LINKED_TO': { targetId: 3, type: LinkTypes.LINKED_TO },
+      '4-DEPENDS_ON': { targetId: 4, type: LinkTypes.DEPENDS_ON },
+      '5-CHILD_OF': { targetId: 5, type: LinkTypes.CHILD_OF }
+    });
 
   });
 
@@ -68,12 +68,12 @@ describe('links', function() {
     const issueLinks = links.getBySource(1);
 
     // then
-    expect(issueLinks).to.eql([
-      { targetId: 2, type: LinkTypes.CLOSED_BY },
-      { targetId: 3, type: LinkTypes.LINKED_BY },
-      { targetId: 4, type: LinkTypes.REQUIRED_BY },
-      { targetId: 5, type: LinkTypes.PARENT_OF }
-    ]);
+    expect(issueLinks).to.eql({
+      '2-CLOSED_BY': { targetId: 2, type: LinkTypes.CLOSED_BY },
+      '3-LINKED_BY': { targetId: 3, type: LinkTypes.LINKED_BY },
+      '4-REQUIRED_BY': { targetId: 4, type: LinkTypes.REQUIRED_BY },
+      '5-PARENT_OF': { targetId: 5, type: LinkTypes.PARENT_OF }
+    });
 
   });
 
@@ -96,10 +96,10 @@ describe('links', function() {
     // then
     expect(removed).to.have.keys([ '2-CLOSES', '3-LINKED_TO' ]);
 
-    expect(issueLinks).to.eql([
-      { targetId: 4, type: LinkTypes.REQUIRED_BY },
-      { targetId: 5, type: LinkTypes.PARENT_OF }
-    ]);
+    expect(issueLinks).to.eql({
+      '4-REQUIRED_BY': { targetId: 4, type: LinkTypes.REQUIRED_BY },
+      '5-PARENT_OF': { targetId: 5, type: LinkTypes.PARENT_OF }
+    });
 
   });
 
@@ -121,10 +121,10 @@ describe('links', function() {
     const issueLinks = links.getBySource(1);
 
     // then
-    expect(issueLinks).to.eql([
-      { targetId: 2, type: LinkTypes.CLOSES },
-      { targetId: 3, type: LinkTypes.LINKED_TO }
-    ]);
+    expect(issueLinks).to.eql({
+      '2-CLOSES': { targetId: 2, type: LinkTypes.CLOSES },
+      '3-LINKED_TO': { targetId: 3, type: LinkTypes.LINKED_TO }
+    });
 
   });
 
@@ -147,10 +147,10 @@ describe('links', function() {
     const issueLinks = clonedLinks.getBySource(1);
 
     // then
-    expect(issueLinks).to.eql([
-      { targetId: 2, type: LinkTypes.CLOSES },
-      { targetId: 3, type: LinkTypes.LINKED_TO }
-    ]);
+    expect(issueLinks).to.eql({
+      '2-CLOSES': { targetId: 2, type: LinkTypes.CLOSES },
+      '3-LINKED_TO': { targetId: 3, type: LinkTypes.LINKED_TO }
+    });
   });
 
 });

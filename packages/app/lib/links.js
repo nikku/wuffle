@@ -80,16 +80,18 @@ class Links {
    * Get all links that have the issue as the source.
    *
    * @param {Number} sourceId
+   *
+   * @return {Array<Object>} links
    */
   getBySource(sourceId) {
     const links = this.links[sourceId] || {};
 
     const inverseLinks = this.inverseLinks[sourceId] || {};
 
-    return Object.values({
+    return {
       ...links,
       ...inverseLinks
-    });
+    };
   }
 
   /**
