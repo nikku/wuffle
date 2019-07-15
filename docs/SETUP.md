@@ -83,7 +83,7 @@ Read through our [configuration section](./CONFIG.md) to learn about all availab
 Make sure to pass the correct `BASE_URL` and update it on your GitHub app once it changes for production.
 
 
-### Run Via Docker
+### Run via Docker
 
 If you use the [docker distribution](https://hub.docker.com/r/nrehwaldt/wuffle), pass your app configuration via environment variables:
 
