@@ -2,7 +2,7 @@
 
 Learn how to setup and run your own [Wuffle board](https://wuffle.dev).
 
-## TOC
+## Table of Contents
 
 * [Setup GitHub app](#setup-github-app)
 * [Configure GitHub app](#configure-github-app)
