@@ -25,7 +25,7 @@ A multi-repository task board for [GitHub issues](https://guides.github.com/feat
 
 * [Issues](https://github.com/nikku/wuffle/issues)
 * [Changelog](https://github.com/nikku/wuffle/blob/master/CHANGELOG.md)
-
+* [Setup and Run](https://github.com/nikku/wuffle/blob/master/docs/SETUP.md)
 
 ## Philosophy
 
