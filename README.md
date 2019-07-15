@@ -40,20 +40,9 @@ Some key aspects separate [Wuffle](https://github.com/nikku/wuffle) from the Git
 * __Hackable.__ Wuffle is open source, MIT licensed. Contribute to it to make it even better. Self-host it and stay the owner of your data.
 
 
-## Run it
+## Setup and Run
 
-```
-npm install
-npm run dev
-```
-
-## Setup
-
-Execute the following steps to initially setup the app
-
-* Go to [`localhost:3000/probot`](http://localhost:3000/probot) to register your GitHub app
-* Update the created `packages/app/.env` file with additional details based on the [`.env.example`](packages/app/.env.example)
-* Create a `packages/app/wuffle.config.js` based on the [`wuffle.config.example.js`](packages/app/wuffle.config.example.js)
+Read the [setup instructions](https://github.com/nikku/wuffle/blob/master/SETUP.md) to learn how to set up and run the board.
 
 
 ## Components
