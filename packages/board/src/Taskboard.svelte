@@ -375,25 +375,14 @@
     const nextOrder = nextEl && getCardOrder(nextEl);
     const previousOrder = previousEl && getCardOrder(previousEl);
 
-    const newOrder = previousOrder && nextOrder
-      ? (
-        (previousOrder + nextOrder) / 2
-      )
-      : (
-        previousOrder
-          ? (
-            previousOrder + 731241.218
-          )
-          : (
-            nextOrder
-              ? (
-                nextOrder - 811231.691
-              )
-              : (
-                -71271.88455
-              )
-          )
-        );
+    const newOrder =
+      previousOrder && nextOrder
+        ? (previousOrder + nextOrder) / 2
+        : previousOrder
+          ? previousOrder + 731241.218
+          : nextOrder
+            ? nextOrder - 811231.691
+            : -71271.88455;
 
     handleCardDrop(
       itemsById[cardId],
