@@ -27,6 +27,7 @@ A multi-repository task board for [GitHub issues](https://guides.github.com/feat
 * [Changelog](https://github.com/nikku/wuffle/blob/master/CHANGELOG.md)
 * [Setup and Run](https://github.com/nikku/wuffle/blob/master/docs/SETUP.md)
 
+
 ## Philosophy
 
 Some key aspects separate [Wuffle](https://github.com/nikku/wuffle) from the GitHub task board competition:
