@@ -309,34 +309,27 @@
 
       const {
         id,
-        column: newColumn
+        column: newColumn,
+        order
       } = issue;
 
       const existingItem = itemsById[id];
 
-      // update in existing column
-
       const oldColumn = existingItem && existingItem.column;
 
-      // remove from existing column
-      if (oldColumn && (oldColumn !== newColumn || type === 'remove')) {
-        items = {
-          ...items,
-          [oldColumn]: (items[oldColumn] || []).filter(existingItem => existingItem.id !== id)
-        };
-      }
+      // remove from old column
+      if (oldColumn) {
+        const updatedColumn = removeIssue(issue, items[oldColumn]);
 
-      // update in existing column
-      if (oldColumn && (oldColumn === newColumn && type !== 'remove')) {
         items = {
           ...items,
-          [oldColumn]: (items[oldColumn] || []).map(existingItem => existingItem.id === id ? issue : existingItem)
+          [oldColumn]: updatedColumn
         };
       }
 
       // add to new column
-      if (oldColumn !== newColumn && type !== 'remove') {
-        const updatedColumn = insertIssue(issue, (items[newColumn] || []));
+      if (type !== 'remove' && newColumn) {
+        const updatedColumn = insertIssue(issue, items[newColumn]);
 
         items = {
           ...items,
@@ -344,6 +337,7 @@
         };
       }
 
+      // remove from index
       if (type === 'remove') {
         const {
           [id]: removedItem,
@@ -352,6 +346,8 @@
 
         itemsById = remainingItems;
       } else {
+
+        // update in index
         itemsById = {
           ...itemsById,
           [id]: issue
@@ -434,7 +430,12 @@
             after
           } = newPosition;
 
-          return api.moveIssue(cardId, cardDestination.column, before, after);
+          return api.moveIssue(
+            cardId,
+            cardDestination.column,
+            before && before.id,
+            after && after.id
+          );
         }).catch(err => {
           console.warn('reverting card movement', err);
 
@@ -457,8 +458,8 @@
       itemIndex = column.length - 1;
     }
 
-    const after = itemIndex > 0 ? column[itemIndex - 1].id : null;
-    const before = itemIndex < column.length - 1 ? column[itemIndex + 1].id : null;
+    const after = itemIndex > 0 ? column[itemIndex - 1] : null;
+    const before = itemIndex < column.length - 1 ? column[itemIndex + 1] : null;
 
     return {
       before,
@@ -466,46 +467,44 @@
     };
   }
 
+  function removeIssue(issue, column = []) {
+    const { id } = issue;
+
+    return column.filter(existingItem => existingItem.id !== id);
+  }
+
   function insertIssue(issue, column = []) {
-    const { after } = issue;
+    const { order } = issue;
 
-    if (after === null) {
-      return [ issue, ...column ];
+    const insertIdx = column.findIndex(issue => issue.order > order);
+
+    console.log('insertIssue', issue.key, order, insertIdx);
+
+    if (insertIdx === -1) {
+      return [ ...column, issue ];
     }
 
-    if (after) {
-      const indexAfter = column.findIndex(issue => issue.id === after);
+    return [
+      ...column.slice(0, insertIdx),
+      issue,
+      ...column.slice(insertIdx)
+    ];
 
-      if (indexAfter > -1) {
-        return [
-          ...column.slice(0, indexAfter),
-          issue,
-          ...column.slice(indexAfter)
-        ];
-      }
-    }
-
-    return [ ...column, issue ];
   }
 
   function moveCard(cardId, source, destination) {
-
     const updatedItems = moveItem(items, source, destination);
-
     const {
       before,
       after
     } = getNeightbors(updatedItems[destination.column], destination.index);
-
     // TODO(nikku): properly update issue column
     const issue = itemsById[cardId];
     issue.column = destination.column;
-
     items = {
       ...items,
       ...updatedItems
     };
-
     return Promise.resolve({
       before,
       after
