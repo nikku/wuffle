@@ -308,34 +308,17 @@
       } = update;
 
       const {
-        id,
-        column: newColumn,
-        order
+        id
       } = issue;
 
-      const existingItem = itemsById[id];
+      const from = itemsById[id];
 
-      const oldColumn = existingItem && existingItem.column;
+      const to = type !== 'remove' && issue;
 
-      // remove from old column
-      if (oldColumn) {
-        const updatedColumn = removeIssue(issue, items[oldColumn]);
-
-        items = {
-          ...items,
-          [oldColumn]: updatedColumn
-        };
-      }
-
-      // add to new column
-      if (type !== 'remove' && newColumn) {
-        const updatedColumn = insertIssue(issue, items[newColumn]);
-
-        items = {
-          ...items,
-          [newColumn]: updatedColumn
-        };
-      }
+      items = {
+        ...items,
+        ...moveItem(items, issue, from, to)
+      };
 
       // remove from index
       if (type === 'remove') {
@@ -364,168 +347,161 @@
 
   const drake = Dragula({
     isContainer: (el) => {
-      return el.matches('[data-droppable-id]');
+      return el.matches('[data-column-id]');
     }
   });
 
-  function getDraggableMetaData(el) {
-
+  function getCardId(el) {
     const dataset = el.dataset;
-
-    return {
-      id: dataset.draggableId,
-      index: parseInt(dataset.draggableIndex, 10)
-    };
+    return dataset.cardId;
   }
 
-  function getDroppableMetaData(el) {
-
+  function getCardOrder(el) {
     const dataset = el.dataset;
-
-    return {
-      id: dataset.droppableId
-    };
+    return parseFloat(dataset.cardOrder);
   }
 
-  drake.on('drop', (el, target, source, sibling) => {
-    const draggedCard = getDraggableMetaData(el);
+  function getColumnId(el) {
+    const dataset = el.dataset;
+    return dataset.columnId;
+  }
 
-    const droppedBeforeCard = sibling && getDraggableMetaData(sibling);
+  drake.on('drop', (el, target, source, nextEl) => {
+    const cardId = getCardId(el);
+    const cardOrder = getCardOrder(el);
 
-    const targetColumn = getDroppableMetaData(target);
+    const previousEl = el.previousElementSibling;
 
-    const sourceColumn = getDroppableMetaData(source);
+    const nextOrder = nextEl && getCardOrder(nextEl);
+    const previousOrder = previousEl && getCardOrder(previousEl);
 
-    const sourceIndex = draggedCard.index;
+    const newOrder = previousOrder && nextOrder
+      ? (
+        (previousOrder + nextOrder) / 2
+      )
+      : (
+        previousOrder
+          ? (
+            previousOrder + 731241.218
+          )
+          : (
+            nextOrder
+              ? (
+                nextOrder - 811231.691
+              )
+              : (
+                -71271.88455
+              )
+          )
+        );
 
-    const dropBeforeIndex = droppedBeforeCard ? droppedBeforeCard.index : -1;
-
-    const targetIndex = targetColumn.id === sourceColumn.id && dropBeforeIndex > sourceIndex
-      ? dropBeforeIndex - 1
-      : dropBeforeIndex;
-
-    const cardId = draggedCard.id;
-
-    const cardSource = {
-      column: sourceColumn.id,
-      index: sourceIndex
-    };
-
-    const cardDestination = {
-      column: targetColumn.id,
-      index: targetIndex
-    };
-
-    handleCardDrop(cardId, cardSource, cardDestination);
-  });
-
-  function handleCardDrop(cardId, cardSource, cardDestination) {
-
-    return (
-      moveCard(cardId, cardSource, cardDestination)
-        .then(newPosition => {
-
-          const {
-            before,
-            after
-          } = newPosition;
-
-          return api.moveIssue(
-            cardId,
-            cardDestination.column,
-            before && before.id,
-            after && after.id
-          );
-        }).catch(err => {
-          console.warn('reverting card movement', err);
-
-          accessNotification = user ? 'forbidden' : 'authentication-required';
-
-          setTimeout(() => {
-            accessNotification = false;
-          }, 8000);
-
-          return moveCard(cardId, cardDestination, cardSource).catch(
-            err => console.warn('failed to revert card movement', err)
-          );
-        })
+    handleCardDrop(
+      itemsById[cardId],
+      {
+        order: cardOrder,
+        column: getColumnId(source)
+      },
+      {
+        order: newOrder,
+        column: getColumnId(target)
+      }
     );
+  });
+
+  function handleCardDrop(card, from, to) {
+
+    const { before, after } = moveCard(card, from, to);
+
+    return api.moveIssue(
+      card.id,
+      to.column,
+      before && before.id,
+      after && after.id
+    ).catch(err => {
+      console.warn('reverting card movement', err);
+
+      accessNotification = user ? 'forbidden' : 'authentication-required';
+
+      setTimeout(() => {
+        accessNotification = false;
+      }, 8000);
+
+      moveCard(card, to, from);
+    });
   }
 
-  function getNeightbors(column, itemIndex) {
+  function removeItem(item, list = []) {
+    const { id } = item;
 
-    if (itemIndex === -1) {
-      itemIndex = column.length - 1;
-    }
-
-    const after = itemIndex > 0 ? column[itemIndex - 1] : null;
-    const before = itemIndex < column.length - 1 ? column[itemIndex + 1] : null;
-
-    return {
-      before,
-      after
-    };
+    return list.filter(existing => existing.id !== id);
   }
 
-  function removeIssue(issue, column = []) {
-    const { id } = issue;
-
-    return column.filter(existingItem => existingItem.id !== id);
-  }
-
-  function insertIssue(issue, column = []) {
-    const { order } = issue;
-
-    const insertIdx = column.findIndex(issue => issue.order > order);
-
-    console.log('insertIssue', issue.key, order, insertIdx);
+  function insertItem(item, order, list = []) {
+    const insertIdx = list.findIndex(existing => existing.order > order);
 
     if (insertIdx === -1) {
-      return [ ...column, issue ];
+      return [ ...list, item ];
     }
 
     return [
-      ...column.slice(0, insertIdx),
-      issue,
-      ...column.slice(insertIdx)
+      ...list.slice(0, insertIdx),
+      item,
+      ...list.slice(insertIdx)
     ];
 
   }
 
-  function moveCard(cardId, source, destination) {
-    const updatedItems = moveItem(items, source, destination);
-    const {
-      before,
-      after
-    } = getNeightbors(updatedItems[destination.column], destination.index);
-    // TODO(nikku): properly update issue column
-    const issue = itemsById[cardId];
-    issue.column = destination.column;
+  function moveCard(card, from, to) {
+
+    // temporarily update card with new column and ordering
+    card.column = to.column;
+    card.order = to.order;
+
+    const updatedItems = moveItem(items, card, from, to);
+
     items = {
       ...items,
       ...updatedItems
     };
-    return Promise.resolve({
-      before,
-      after
-    });
-  }
 
-  function moveItem(lists, source, destination) {
-    const fromList = Array.from(lists[source.column] || []);
-    const toList = source.column === destination.column ? fromList : Array.from(lists[destination.column] || []);
+    const targetColumn = updatedItems[to.column];
 
-    const fromIndex = source.index;
-    const toIndex = destination.index;
-
-    const [removed] = fromList.splice(fromIndex === -1 ? fromList.length - 1 : fromIndex, 1);
-
-    toList.splice(toIndex === -1 ? toList.length : toIndex, 0, removed);
+    const cardIndex = targetColumn.findIndex(el => el.id === card.id);
 
     return {
-      [ source.column ]: fromList,
-      [ destination.column ]: toList
+      after: targetColumn[cardIndex - 1],
+      before: targetColumn[cardIndex + 1]
     };
+  }
+
+  function moveItem(items, item, from, to) {
+
+    const oldColumn = from && from.column;
+
+    const newColumn = to && to.column;
+    const newOrder = to && to.order;
+
+    // remove from old column
+    if (oldColumn) {
+      const updatedColumn = removeItem(item, items[oldColumn]);
+
+      items = {
+        ...items,
+        [oldColumn]: updatedColumn
+      };
+    }
+
+    // add to new column
+    if (newColumn) {
+      const updatedColumn = insertItem(item, newOrder, items[newColumn]);
+
+      items = {
+        ...items,
+        [newColumn]: updatedColumn
+      };
+    }
+
+    return items;
   }
 
   function toggleCollapse(column) {
@@ -712,7 +688,7 @@
 
         {#if !collapsed[column.name] }
           <div class="taskboard-column-items"
-               data-droppable-id={ column.name }
+               data-column-id={ column.name }
                on:scroll={ checkRender(column.name) }>
             {#each (shownItems[column.name] || []) as item, index (item.id) }
 
@@ -720,8 +696,8 @@
                 item={item}
                 shown={ index <= (renderedItems[column.name] || renderCount) }
                 onSelect={ applyFilter }
-                data-draggable-id={ item.id }
-                data-draggable-index={ index }
+                data-card-id={ item.id }
+                data-card-order={ item.order }
               />
             {/each}
           </div>
