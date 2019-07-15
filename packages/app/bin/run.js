@@ -119,8 +119,8 @@ if (problems.length) {
 
 // run /////////
 
-const app = require('../');
-
 log.info(`Starting Wuffle v${version}`);
+
+const app = require('../');
 
 Probot.run(app);
