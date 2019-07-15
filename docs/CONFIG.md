@@ -38,4 +38,4 @@ Several aspects of the board application are configured via environment variable
 
 ---
 
-See also: [Setup](./Setup)
+See also: [Setup](./Setup.md)
