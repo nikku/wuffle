@@ -17,12 +17,14 @@ Several aspects of the board application are configured via environment variable
 
 | Parameter | Required? | Description |
 | :--- | :---: |:--- |
-| `BASE_URL` | :ballot_box_with_check: | Base URL of your board |
+| `BASE_URL` | :ballot_box_with_check: | Base URL of your board `*` |
 | `SESSION_SECRET` | :ballot_box_with_check: | Session secret for encrypting app cookies |
 | `FORCE_HTTPS` | | Whether to enforce HTTPS on all routes |
-| `BOARD_CONFIG` | | JSON encoded board configuration `*` |
+| `BOARD_CONFIG` | | JSON encoded board configuration `**` |
 
-`*` = Use this property instead of configuring your board via a `package/app/wuffle.config.js` file.
+`*` This must match the webhook URL that you configured for your GitHub app.
+
+`**` Use this property instead of configuring your board via a `package/app/wuffle.config.js` file.
 
 
 ### Persistence
