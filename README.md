@@ -42,7 +42,7 @@ Some key aspects separate [Wuffle](https://github.com/nikku/wuffle) from the Git
 
 ## Setup and Run
 
-Read the [setup instructions](https://github.com/nikku/wuffle/blob/master/SETUP.md) to learn how to set up and run the board.
+Read the [setup instructions](https://github.com/nikku/wuffle/blob/master/docs/SETUP.md) to learn how to set up and run the board.
 
 
 ## Components
