@@ -38,6 +38,8 @@ class Store {
 
   async updateIssue(issue, newColumn, newOrder) {
 
+    const t = Date.now();
+
     const {
       id,
       key,
@@ -100,7 +102,7 @@ class Store {
       });
     }
 
-    this.log.info({ issue: ident, column, order }, 'issue updated');
+    this.log.info({ issue: ident, column, order, t: Date.now() - t }, 'issue updated');
 
     return issue;
   }

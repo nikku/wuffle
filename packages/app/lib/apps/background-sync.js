@@ -240,10 +240,10 @@ module.exports = async (app, config, store) => {
     const expiredIssues = await checkExpiration(missingIssues, Date.now() - removalLookback);
 
     log.info(
-      'synched %s, expired %s issues in %sms',
+      { t: Date.now() - now },
+      'synched %s, expired %s issues',
       Object.keys(foundIssues).length,
-      Object.keys(expiredIssues).length,
-      Date.now() - now
+      Object.keys(expiredIssues).length
     );
   }
 

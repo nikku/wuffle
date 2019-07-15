@@ -73,9 +73,9 @@ module.exports = async (app, config, store) => {
     let start = Date.now();
 
     return upload(store.asJSON()).then(() => {
-      log.info(params, 'dumped in %sms', Date.now() - start);
+      log.info({ ...params, t: Date.now() - start }, 'dumped');
     }).catch(err => {
-      log.error(params, 'dump failed', err);
+      log.error({ ...params, t: Date.now() - start }, 'dump failed', err);
     });
   }
 
@@ -87,9 +87,9 @@ module.exports = async (app, config, store) => {
 
       store.loadJSON(dump);
 
-      log.info(params, 'restored in %sms', Date.now() - start);
+      log.info({ ...params, t: Date.now() - start }, 'restored');
     }).catch(err => {
-      log.warn(params, 'restore failed', err);
+      log.warn({ ...params, t: Date.now() - start }, 'restore failed', err);
     });
   }
 
