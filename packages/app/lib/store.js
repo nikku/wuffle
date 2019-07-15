@@ -114,6 +114,8 @@ class Store {
 
     const removedLinks = this.links.removeBySource(id);
 
+    const inverseLinks = this.links.getBySource(id);
+
     const createdLinks = findLinks(issue).reduce((map, link) => {
 
       // add repository meta-data, if missing
@@ -147,6 +149,7 @@ class Store {
 
     const allLinks = {
       ...removedLinks,
+      ...inverseLinks,
       ...createdLinks
     };
 

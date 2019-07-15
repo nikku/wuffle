@@ -195,7 +195,7 @@ describe('store', function() {
     };
 
 
-    it('should establish links', async function() {
+    it('should establish', async function() {
 
       // given
       const store = createStore();
@@ -232,7 +232,7 @@ describe('store', function() {
     });
 
 
-    it('should update links', async function() {
+    it('should update', async function() {
 
       // given
       const store = createStore();
@@ -262,7 +262,7 @@ describe('store', function() {
     });
 
 
-    it('should update inverse links', async function() {
+    it('should update inverse', async function() {
 
       // given
       const store = createStore();
@@ -291,7 +291,37 @@ describe('store', function() {
     });
 
 
-    it('should remove links', async function() {
+    it('should mark link source as changed', async function() {
+
+      // given
+      const store = createStore();
+
+      const linkedIssue = await store.updateIssue(createIssue({
+        title: 'LINKED',
+        repository
+      }));
+
+      const issue = await store.updateIssue(createIssue({
+        title: `Closes #${linkedIssue.number}`,
+        repository
+      }));
+
+      // when
+      await store.updateIssue({
+        ...linkedIssue,
+        body: 'CHANGED'
+      });
+
+      const issueLinks = store.getIssueLinks(issue);
+
+      // then
+      expect(issueLinks).to.have.length(1);
+
+      expect(issueLinks[0].target.body).to.eql('CHANGED');
+    });
+
+
+    it('should remove', async function() {
 
       // given
       const store = createStore();
