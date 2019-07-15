@@ -4,13 +4,13 @@ Learn how to setup and run your own [Wuffle board](https://wuffle.dev).
 
 ## Table of Contents
 
-* [Setup GitHub app](#setup-github-app)
+* [Create GitHub app](#create-github-app)
 * [Configure GitHub app](#configure-github-app)
 * [Configure Board](#configure-board)
 * [Run Board](#run-board)
 
 
-## Setup GitHub App
+## Create GitHub App
 
 The board is connected to GitHub as a [GitHub app](https://developer.github.com/apps/). Get started by creating a GitHub app, either via the development setup or using [manual configuration steps](#manual-steps) as documented below.
 
