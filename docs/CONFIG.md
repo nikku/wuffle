@@ -34,3 +34,8 @@ Several aspects of the board application are configured via environment variable
 | `S3_BUCKET` |  | Name of S3 bucket to load and dump task board to |
 | `AWS_ACCESS_KEY_ID` |  | Your AWS access key ID |
 | `AWS_SECRET_ACCESS_KEY` |  | Your AWS secret access key |
+
+
+---
+
+See also: [Setup](./Setup)
