@@ -4,11 +4,17 @@ require('dotenv').config();
 
 const { Probot } = require('probot');
 
+const log = console;
+
+const { version } = require('../package');
+
 // validate ///////////
 
 const NODE_ENV = process.env.NODE_ENV || 'development';
 
 const IS_PROD = NODE_ENV === 'production';
+
+log.info('Validating configuration');
 
 const problems = [
   checkEnv('APP_ID', IS_PROD),
@@ -17,11 +23,32 @@ const problems = [
   checkEnv('GITHUB_CLIENT_ID', IS_PROD),
   checkEnv('GITHUB_CLIENT_SECRET', IS_PROD),
   checkEnv('SESSION_SECRET', IS_PROD),
-  checkConfig()
+  checkEnv('BASE_URL', IS_PROD),
+  checkConfig(),
+  checkBaseUrl()
 ].filter(problem => problem);
 
 function isFatal(problem) {
   return problem.type === 'ERROR';
+}
+
+function checkBaseUrl() {
+
+  const baseUrl = process.env.BASE_URL;
+
+  if (baseUrl) {
+    if (baseUrl.includes('/board')) {
+      return error('env.BASE_URL must point to the root of the webapp');
+    }
+
+    if (!baseUrl.startsWith('http')) {
+      return error('env.BASE_URL must start with protocol (http/https)');
+    }
+
+    if (baseUrl.endsWith('/')) {
+      return error('env.BASE_URL must not end with trailing slash');
+    }
+  }
 }
 
 function checkConfig() {
@@ -72,16 +99,14 @@ const fatal = problems.some(isFatal);
 
 if (problems.length) {
 
-  console.warn(`Found ${ fatal ? '' : 'potential'} configuration issues:\n`);
-
   for (const problem of problems) {
-    console[isFatal(problem) ? 'error' : 'warn'](`${problem.type}\t${problem.message}`);
+    log[isFatal(problem) ? 'error' : 'warn'](problem.message);
   }
 
-  console.warn();
+  log.error('Please refer to https://wuffle.dev for setup instructions');
 
   if (fatal) {
-    console.error('Exiting due to ERROR(s)');
+    log.error('Exiting due to error(s)');
     process.exit(1);
   }
 }
@@ -90,5 +115,7 @@ if (problems.length) {
 // run /////////
 
 const app = require('../');
+
+log.info(`Starting Wuffle v${version}`);
 
 Probot.run(app);
