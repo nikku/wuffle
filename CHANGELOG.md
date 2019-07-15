@@ -6,6 +6,13 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 ___Note:__ Yet to be released changes appear here._
 
+## 0.13.0
+
+* `FEAT(board)`: filter by tags
+* `FIX(board)`: de-duplicate attached PR links
+* `FIX(app)`: properly update link sources if linked issue changes ([#33](https://github.com/nikku/wuffle/issues/33))
+* `CHORE(app)`: improve start validation and hints
+
 ## 0.12.0
 
 * `FEAT(board)`: add powered by link
