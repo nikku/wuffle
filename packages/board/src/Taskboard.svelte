@@ -395,6 +395,7 @@
         column: getColumnId(target)
       }
     );
+
   });
 
   function handleCardDrop(card, from, to) {
@@ -681,13 +682,18 @@
                on:scroll={ checkRender(column.name) }>
             {#each (shownItems[column.name] || []) as item, index (item.id) }
 
-              <Card
-                item={item}
-                shown={ index <= (renderedItems[column.name] || renderCount) }
-                onSelect={ applyFilter }
-                data-card-id={ item.id }
-                data-card-order={ item.order }
-              />
+              {#if index <= (renderedItems[column.name] || renderCount)}
+                <div
+                  class="card-container"
+                  data-card-id={ item.id }
+                  data-card-order={ item.order }
+                >
+                  <Card
+                    item={item}
+                    onSelect={ applyFilter }
+                  />
+                </div>
+              {/if}
             {/each}
           </div>
         {/if}

@@ -25,8 +25,6 @@
 
   export let className = '';
 
-  export let shown = true;
-
   export let onSelect;
 
   let showChildren = false;
@@ -65,21 +63,6 @@
   $: repositoryName = `${repository.owner.login}/${repository.name}`;
 
   $: cardUrl = `https://github.com/${ repositoryName }/issues/${ number }`;
-
-  let otherProps;
-
-  $: {
-    let {
-      item,
-      shown,
-      onSelect,
-      ...rest
-    } = $$props;
-
-    delete rest['class'];
-
-    otherProps = rest;
-  }
 
   function handleSelection(qualifier, value) {
 
@@ -167,9 +150,7 @@
 
 </style>
 
-{#if shown}
-
-<div class="board-card-container { className }" { ...otherProps }>
+<div class="board-card-container { className }">
   <div class="board-card">
     <div class="header">
       {#if children.length}
@@ -271,5 +252,3 @@
   {/if}
 
 </div>
-
-{/if}
