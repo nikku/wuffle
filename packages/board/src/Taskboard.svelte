@@ -29,6 +29,8 @@
 
   import { onMount } from 'svelte';
 
+  const DEFAULT_PER_COLUMN_RENDER_COUNT = 25;
+
   const COLUMNS_COLLAPSED_KEY = 'Taskboard_columns_collapsed_state';
   const POLL_KEY = 'Taskboard_polling';
 
@@ -56,11 +58,13 @@
 
   let accessNotification = false;
 
-  const renderCount = 25;
+  let renderCountByColumn = {};
 
   let filterOptions = {};
 
   $: localStore.set(COLUMNS_COLLAPSED_KEY, collapsed);
+
+  // shown items
   $: shownItems = Object.keys(items).reduce((shownItems, column) => {
 
     const columnItems = items[column];
@@ -70,8 +74,13 @@
     return shownItems;
   }, {});
 
-  $: renderedItems = Object.keys(items).reduce((renderedItems, column) => {
-    renderedItems[column] = renderCount;
+  // actually rendered items
+  $: renderedItems = Object.keys(shownItems).reduce((renderedItems, column) => {
+
+    const renderCount = renderCountByColumn[column] || DEFAULT_PER_COLUMN_RENDER_COUNT;
+    const items = shownItems[column];
+
+    renderedItems[column] = items.slice(0, renderCount);
 
     return renderedItems;
   }, {});
@@ -522,14 +531,15 @@
 
       if (scrollTop + offsetHeight > scrollHeight * .95) {
 
-        const shown = (shownItems[columnName] || []).length;
+        const columnItems = shownItems[columnName] || [];
 
-        const rendered = renderedItems[columnName] || renderCount;
+        const columnRenderedCount = renderCountByColumn[columnName] || DEFAULT_PER_COLUMN_RENDER_COUNT;
 
-        if (rendered < shown) {
-          renderedItems = {
-            ...renderedItems,
-            [columnName]: rendered + renderCount / 5
+        if (columnRenderedCount < columnItems.length) {
+
+          renderCountByColumn = {
+            ...renderCountByColumn,
+            [columnName]: columnRenderedCount + DEFAULT_PER_COLUMN_RENDER_COUNT / 5
           };
         }
       }
@@ -680,21 +690,20 @@
           <div class="taskboard-column-items"
                data-column-id={ column.name }
                on:scroll={ checkRender(column.name) }>
-            {#each (shownItems[column.name] || []) as item, index (item.id) }
 
-              {#if index <= (renderedItems[column.name] || renderCount)}
-                <div
-                  class="card-container"
-                  data-card-id={ item.id }
-                  data-card-order={ item.order }
-                >
-                  <Card
-                    item={item}
-                    onSelect={ applyFilter }
-                  />
-                </div>
-              {/if}
+            {#each (renderedItems[column.name] || []) as item, index (item.id) }
+              <div
+                class="card-container"
+                data-card-id={ item.id }
+                data-card-order={ item.order }
+              >
+                <Card
+                  item={item}
+                  onSelect={ applyFilter }
+                />
+              </div>
             {/each}
+
           </div>
         {/if}
       </div>
