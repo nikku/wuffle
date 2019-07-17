@@ -50,8 +50,8 @@ Setup a `packages/app/wuffle.config.js` file describing all repositories your bo
 module.exports = {
   columns: [
     { name: 'Inbox', label: null },
-    { name: 'Backlog', label: 'backlog' },
-    { name: 'Ready', label: 'ready' },
+    { name: 'Backlog', label: 'backlog', sorting: true },
+    { name: 'Ready', label: 'ready', sorting: true },
     { name: 'In Progress', label: 'in progress' },
     { name: 'Needs Review', label: 'needs review' },
     { name: 'Done', label: null, closed: true }
