@@ -6,6 +6,12 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 ___Note:__ Yet to be released changes appear here._
 
+## 0.15.0
+
+* `FEAT(app)`: compute issue order based on links ([#29](https://github.com/nikku/wuffle/issues/29))
+* `FIX(app)`: correct GitHub app manifest
+* `FIX(board)`: correctly handler reordering updates
+
 ## 0.14.0
 
 * `DOCS`: new setup and run guide :tada:
