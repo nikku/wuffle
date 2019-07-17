@@ -8,7 +8,7 @@ ___Note:__ Yet to be released changes appear here._
 
 ## 0.15.0
 
-* `FEAT(app)`: mark column as `sorting=true` to incrementally compute card order based on links ([#29](https://github.com/nikku/wuffle/issues/29))
+* `FEAT(app)`: mark column as `sorting=true` to incrementally sort cards based on links ([#29](https://github.com/nikku/wuffle/issues/29))
 * `FIX(app)`: correct GitHub app manifest
 * `FIX(board)`: correctly handle reordering updates
 
