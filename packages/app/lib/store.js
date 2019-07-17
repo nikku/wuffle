@@ -129,23 +129,25 @@ class Store {
 
     let before, after;
 
-    for (const link of Object.values(links)) {
+    if (this.columns.isSorting(column)) {
+      for (const link of Object.values(links)) {
 
-      const {
-        type,
-        targetId
-      } = link;
+        const {
+          type,
+          targetId
+        } = link;
 
-      const target = this.getIssueById(targetId);
+        const target = this.getIssueById(targetId);
 
-      if (target && target.column === column) {
+        if (target && target.column === column) {
 
-        if (beforeTypes[type]) {
-          before = before && before.order < target.order ? before : target;
-        }
+          if (beforeTypes[type]) {
+            before = before && before.order < target.order ? before : target;
+          }
 
-        if (afterTypes[type]) {
-          after = after && after.order > target.order ? after : target;
+          if (afterTypes[type]) {
+            after = after && after.order > target.order ? after : target;
+          }
         }
       }
     }

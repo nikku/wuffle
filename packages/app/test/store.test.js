@@ -373,6 +373,26 @@ describe('store', function() {
     });
 
 
+    it('should not sort in closed column', async function() {
+
+      // given
+      const store = createStore();
+
+      // when
+      const issue_A = await store.updateIssue(createIssue({
+        state: 'closed'
+      }));
+
+      const issue_B = await store.updateIssue(createIssue({
+        state: 'closed',
+        title: `Depends on #${issue_A.number}`
+      }));
+
+      // then
+      expectOrder(store, [ issue_B, issue_A ]);
+    });
+
+
     it('should put before CLOSES', async function() {
 
       // given
@@ -536,11 +556,11 @@ function createStore(columnConfig) {
   };
 
   const defaultColumnConfig = [
-    { name: 'Inbox', label: null },
-    { name: 'Backlog', label: 'backlog' },
-    { name: 'Ready', label: 'ready' },
-    { name: 'In Progress', label: 'in progress' },
-    { name: 'Needs Review', label: 'needs review' },
+    { name: 'Inbox', label: null, sorting: true },
+    { name: 'Backlog', label: 'backlog', sorting: true },
+    { name: 'Ready', label: 'ready', sorting: true },
+    { name: 'In Progress', label: 'in progress', sorting: true },
+    { name: 'Needs Review', label: 'needs review', sorting: true },
     { name: 'Done', label: null, closed: true }
   ];
 

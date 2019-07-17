@@ -11,12 +11,20 @@ class Columns {
   constructor(columns) {
     this.columns = columns;
 
-    this.columnLabels = columns.reduce((labels, column) => {
+    this.columnsByLabel = columns.reduce((columnsByLabel, column) => {
       if (column.label) {
-        labels[column.label] = true;
+        columnsByLabel[column.label] = column;
       }
 
-      return labels;
+      return columnsByLabel;
+    }, {});
+
+    this.columnsByName = columns.reduce((columnsByName, column) => {
+      if (column.name) {
+        columnsByName[column.name] = column;
+      }
+
+      return columnsByName;
     }, {});
 
     this._getter = columnGetter(columns);
@@ -26,9 +34,16 @@ class Columns {
     return this._getter(issue);
   }
 
-  isColumnLabel(label) {
-    return this.columnLabels[label];
+  isSorting(name) {
+    const column = this.columnsByName[name];
+
+    return column && column.sorting;
   }
+
+  isColumnLabel(label) {
+    return label in this.columnsByLabel;
+  }
+
 }
 
 
