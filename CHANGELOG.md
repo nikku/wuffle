@@ -6,6 +6,10 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 ___Note:__ Yet to be released changes appear here._
 
+## 0.15.1
+
+* `FIX(app)`: capture requested reviewer changes
+
 ## 0.15.0
 
 * `FEAT(app)`: mark column as `sorting=true` to incrementally sort cards based on links ([#29](https://github.com/nikku/wuffle/issues/29))
