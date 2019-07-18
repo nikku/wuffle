@@ -96,7 +96,9 @@ module.exports = async (app, config, store) => {
     'pull_request.ready_for_review',
     'pull_request.assigned',
     'pull_request.unassigned',
-    'pull_request.closed'
+    'pull_request.closed',
+    'pull_request.review_requested',
+    'pull_request.review_request_removed'
   ], async ({ payload }) => {
     const {
       pull_request,
