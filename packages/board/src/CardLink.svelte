@@ -1,12 +1,14 @@
 <script>
   import PullRequestIcon from './components/PullRequestIcon.svelte';
   import LinkIcon from './components/LinkIcon.svelte';
+  import Status from './components/Status.svelte';
 
   import {
     hasModifier
   } from './util';
 
   export let item;
+  export let status;
 
   export let className = '';
 
@@ -19,6 +21,8 @@
   $: title = item.title;
   $: repository = item.repository;
   $: pull_request = item.pull_request;
+
+  $: status = status || [];
 
   $: assignees = item.assignees || [];
 
@@ -127,4 +131,15 @@
       {/each}
     </span>
   </div>
+  {#if status.length }
+  <div class="status">
+    <span>
+    {#each status as prStatus}
+        <a href={ prStatus.target_url } title={ prStatus.key } >
+            <Status state = {prStatus.state} length={ status.length}/>
+        </a>
+    {/each}
+    </span>
+  </div>
+        {/if}
 </div>

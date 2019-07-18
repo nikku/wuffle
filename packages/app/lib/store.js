@@ -11,6 +11,7 @@ const {
 } = require('./util/links');
 
 const { Links } = require('./links');
+const { Status } = require('./status');
 
 
 class Store {
@@ -24,6 +25,7 @@ class Store {
 
     this.updates = new Updates();
     this.links = new Links();
+    this.statuses = new Status();
 
     this.issuesByKey = {};
     this.issuesById = {};
@@ -34,6 +36,37 @@ class Store {
 
   getIssueColumn(issue) {
     return this.columns.getForIssue(issue);
+  }
+
+  async updateStatus(status) {
+
+    const {
+      sha,
+      contexts,
+    } = status;
+
+    if (!sha) {
+      throw new Error('{ sha } required');
+    }
+
+    if (!contexts) {
+      throw new Error('{ context } required');
+    }
+
+    return this.statuses.addStatusEvent(status);
+  }
+
+  insertOrUpdateCombinedStatus(combinedStatusesForIssues) {
+    const {
+      sha
+    } = combinedStatusesForIssues;
+
+    const context = this.statuses.addMultipleStatus(combinedStatusesForIssues);
+
+    return {
+      sha,
+      context
+    };
   }
 
   async updateIssue(issue, newColumn, newOrder) {
@@ -97,7 +130,8 @@ class Store {
         type: 'update',
         issue: {
           ...issue,
-          links: this.getIssueLinks(issue)
+          links: this.getIssueLinks(issue),
+          statuses: this.getStatusByIssue(issue)
         }
       });
     }
@@ -329,14 +363,28 @@ class Store {
           targetId
         } = link;
 
+        const targetIssue = this.getIssueById(targetId);
+        const targetStatus = this.getStatusByIssue(targetIssue);
+
         return {
           type,
-          target: this.getIssueById(targetId)
+          target: targetIssue,
+          status: targetStatus
         };
       }).filter(link => link.target);
     }
 
     return linked;
+  }
+
+  getStatusByIssue(issue) {
+    let currentStatus = [];
+    if (issue && issue.pull_request) {
+      let status = this.statuses.statuses[issue.head.sha] || {};
+      currentStatus = this.statuses.getStatus(status);
+    }
+
+    return currentStatus;
   }
 
   async removeIssueById(id) {
@@ -427,7 +475,8 @@ class Store {
       this.boardCache || groupBy(this.issues.map(issue => {
         return {
           ...issue,
-          links: this.getIssueLinks(issue)
+          links: this.getIssueLinks(issue),
+          statuses : this.getStatusByIssue(issue)
         };
       }), i => i.column)
     );
@@ -453,14 +502,16 @@ class Store {
       issues,
       lastSync,
       issueOrder,
-      links
+      links,
+      statuses
     } = this;
 
     return JSON.stringify({
       issues,
       lastSync,
       issueOrder,
-      links: links.asJSON()
+      links: links.asJSON(),
+      statuses: statuses.asJSON()
     });
   }
 
@@ -473,7 +524,8 @@ class Store {
       issues,
       lastSync,
       issueOrder,
-      links
+      links,
+      statuses
     } = JSON.parse(json);
 
     this.issues = issues || [];
@@ -482,6 +534,9 @@ class Store {
 
     if (links) {
       this.links.loadJSON(links);
+    }
+    if (statuses) {
+      this.statuses.loadJSON(statuses);
     }
 
     this.issuesById = this.issues.reduce((map, issue) => {

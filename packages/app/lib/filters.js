@@ -11,6 +11,11 @@ function getIdentifier(issueOrPr, repository) {
 
 module.exports.getIdentifier = getIdentifier;
 
+function getStatusKey(context) {
+  return `${context.toUpperCase()}`;
+}
+
+module.exports.getStatusKey = getStatusKey;
 
 function filterIssueOrPull(issueOrPr, repository) {
 
@@ -241,3 +246,29 @@ function filterIssue(issue, repository) {
 }
 
 module.exports.filterIssue = filterIssue;
+
+
+function filterStatus(payload) {
+  const {
+    sha,
+    target_url,
+    context,
+    state
+  } = payload;
+
+  const contextJob = {
+    target_url,
+    state
+  };
+  const key = getStatusKey(context);
+
+  const contexts={};
+  contexts[key]= contextJob;
+
+  return {
+    sha,
+    key,
+    contexts
+  };
+}
+module.exports.filterStatus = filterStatus;

@@ -55,12 +55,14 @@ module.exports = async (app, config, store) => {
         const accessFiltered = columnIssues.filter(canAccess).map(issue => {
 
           const {
-            links
+            links,
+            statuses
           } = issue;
 
           return {
             ...issue,
-            links: links.filter(l => canAccess(l.target))
+            links: links.filter(l => canAccess(l.target)),
+            statuses
           };
         });
 
@@ -87,14 +89,16 @@ module.exports = async (app, config, store) => {
         } = update;
 
         const {
-          links
+          links,
+          statuses
         } = issue;
 
         return {
           ...update,
           issue: {
             ...issue,
-            links: links.filter(l => canAccess(l.target))
+            links: links.filter(l => canAccess(l.target)),
+            statuses
           }
         };
       });

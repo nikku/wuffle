@@ -132,3 +132,11 @@
     right: -3px;
   }
 }
+.status {
+  height: 5px;
+  line-height: 5px;
+  font-size: 5px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
