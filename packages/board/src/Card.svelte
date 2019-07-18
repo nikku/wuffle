@@ -8,6 +8,7 @@
   } from './util';
 
   import Tag from './components/Tag.svelte';
+  import Status from './components/Status.svelte';
   import PullRequestIcon from './components/PullRequestIcon.svelte';
   import EpicIcon from './components/EpicIcon.svelte';
 
@@ -56,7 +57,9 @@
     link => isPull(link.target) && isOpenOrMerged(link.target)
   ).filter(noDuplicates(link => link.target.id));
 
-  $: assignees = item.assignees;
+  $: status = item.statuses || [];
+
+  $: assignees = item.assignees || [];
 
   $: requested_reviewers = item.requested_reviewers || [];
 
@@ -231,6 +234,18 @@
       </div>
     </div>
 
+    {#if status.length }
+    <div class="status">
+        <span>
+        {#each status as prStatus}
+            <a href={ prStatus.target_url } title={ prStatus.key } >
+                <Status state = { prStatus.state } length={ status.length} />
+            </a>
+        {/each}
+        </span>
+    </div>
+    {/if}
+
     {#if shownLinks.length}
       <div class="board-card-links embedded">
         {#each shownLinks as link}
@@ -244,7 +259,7 @@
   {#if prLinks.length}
     <div class="board-card-links attached">
       {#each prLinks as link}
-        <CardLink item={ link.target } type={ link.type } onSelect={ onSelect } />
+        <CardLink item={ link.target } type={ link.type } onSelect={ onSelect } status={ link.status } />
       {/each}
     </div>
   {/if}
