@@ -1,6 +1,6 @@
 # Wuffle
 
-[![Build Status](https://travis-ci.com/nikku/wuffle.svg?branch=master)](https://travis-ci.com/nikku/wuffle) ![Project Status - alpha](https://img.shields.io/badge/status-alpha-orange.svg)
+[![Build Status](https://travis-ci.com/nikku/wuffle.svg?branch=master)](https://travis-ci.com/nikku/wuffle) ![Project Status - alpha](https://img.shields.io/badge/status-pre_release-orange.svg)
 
 A multi-repository task board for [GitHub issues](https://guides.github.com/features/issues/).
 
