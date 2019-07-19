@@ -40,7 +40,47 @@ describe('status', function() {
     });
 
   });
+  it('should add combined status', function() {
 
+    // given
+    const status = new Status();
+
+    const combined_status_event = {
+      'statuses': [
+        {
+          'state': 'success',
+          'target_url': 'https://jenkins/test',
+          'context': 'jenkins/test',
+        },
+        {
+          'state': 'failure',
+          'target_url': 'https://other/test',
+          'context': 'other/test',
+        }],
+      'sha': 'test2'
+    };
+
+    // when
+    const {
+      sha,
+      context
+    } = status.addMultipleStatus(combined_status_event);
+
+    // then
+    expect(sha).to.eql('test2');
+
+    expect(context).to.eql({
+      'JENKINS/TEST': {
+        'state': 'success',
+        'target_url': 'https://jenkins/test'
+      },
+      'OTHER/TEST': {
+        'state': 'failure',
+        'target_url': 'https://other/test'
+      }
+    });
+
+  });
 
   it('should retrieve status with single status', function() {
 

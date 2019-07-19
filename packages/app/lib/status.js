@@ -13,7 +13,7 @@ class Status {
       statuses
     } = combinedStatusesForIssues;
 
-    const existingStatus = this.statuses[sha] || {};
+    const existingStatus = this.statuses[sha];
     let contexts ={};
 
     statuses.forEach(function(status) {
