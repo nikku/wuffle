@@ -383,8 +383,7 @@ class Store {
   getStatusByIssue(issue) {
     let currentStatus = [];
     if (issue && issue.pull_request) {
-      let status = this.statuses.statuses[issue.head.sha] || {};
-      currentStatus = this.statuses.getStatus(status);
+      currentStatus = this.statuses.getStatusBySha(issue.head.sha);
     }
 
     return currentStatus;
@@ -409,6 +408,10 @@ class Store {
     delete this.issuesByKey[key];
     delete this.linkedCache[id];
 
+    if (issue.pull_request) {
+      this.statuses.removeStatusBySha(issue.head.sha);
+    }
+
     this.boardCache = null;
 
     this.issues = this.issues.filter(issue => issue.id !== id);
@@ -426,7 +429,8 @@ class Store {
         id,
         key,
         repository,
-        links: []
+        links: [],
+        statuses: []
       }
     });
   }
