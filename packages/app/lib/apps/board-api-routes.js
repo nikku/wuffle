@@ -167,7 +167,6 @@ module.exports = async (app, config, store) => {
 
     const {
       columns,
-      repositories,
       name
     } = config;
 
@@ -177,7 +176,7 @@ module.exports = async (app, config, store) => {
 
         return { name };
       }),
-      name: name || repositories[0] || 'empty'
+      name: name || 'Wuffle Board'
     });
 
   });
