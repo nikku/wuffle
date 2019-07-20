@@ -8,33 +8,10 @@
  */
 module.exports = async (app, config, store) => {
 
-  const repositoryMap = config.repositories.reduce((map, name) => {
-    map[name] = true;
-
-    return map;
-  }, {});
-
-
-  function onActive(events, fn) {
-
-    app.on(events, function(context) {
-
-      const {
-        repository
-      } = context.payload;
-
-      if (!repositoryMap[repository.full_name]) {
-        return;
-      }
-
-      return fn(context);
-    });
-
-  }
-
+  // NOTE: this is a noop, since we dropped config.repositories
 
   // api ////////////////////
 
-  app.onActive = onActive;
+  app.onActive = app.on;
 
 };
