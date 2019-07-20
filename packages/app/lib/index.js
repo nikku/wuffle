@@ -8,6 +8,7 @@ const apps = [
       : require('./apps/dump-store')
   ),
   require('./apps/on-active'),
+  require('./apps/installations'),
   require('./apps/org-auth'),
   require('./apps/user-auth'),
   require('./apps/events-sync'),
