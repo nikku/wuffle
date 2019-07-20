@@ -44,10 +44,11 @@ Go to your GitHub app page on `https://github.com/apps/YOUR_APP_NAME` and instal
 
 ## Configure Board
 
-Setup a `packages/app/wuffle.config.js` file describing all repositories your board should synchronize:
+Setup a `packages/app/wuffle.config.js` file, configuring the board:
 
 ```js
 module.exports = {
+  name: 'My Wuffle Board',
   columns: [
     { name: 'Inbox', label: null },
     { name: 'Backlog', label: 'backlog', sorting: true },
@@ -55,20 +56,16 @@ module.exports = {
     { name: 'In Progress', label: 'in progress' },
     { name: 'Needs Review', label: 'needs review' },
     { name: 'Done', label: null, closed: true }
-  ],
-  repositories: [
-    'org1/repo1',
-    'org2/repo2'
   ]
 };
 ```
 
-Make sure that you [configured your app](#configure-github-app) for all these repositories.
+Make sure that you [enabled your app](#configure-github-app) for all repositories that you would like to connect to the board.
 
 
 ## Run Board
 
-If you started your app in development mode the board should reload automatically. If properly configured, background sync will pickup configured repositories, fetch issues from GitHub and populate your board.
+If you started your app in development mode the board should reload automatically. If properly configured, background sync will pickup repositories, fetch issues from GitHub and populate your board.
 
 ### Run in Production
 
