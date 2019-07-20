@@ -17,7 +17,7 @@ module.exports = async (app, config, store) => {
 
   let authByLogin = {};
 
-  let installations = null;
+  let installationsByLogin = null;
 
 
   // functionality /////////////////
@@ -27,25 +27,22 @@ module.exports = async (app, config, store) => {
    *
    * @return {Promise<Object<String, Installation>>}
    */
-  function getInstallations() {
+  function getInstallationsByLogin() {
 
-    installations = installations || app.auth().then(github => {
-      return github.paginate(
-        github.apps.listInstallations.endpoint.merge({ per_page: 100 }),
-        res => res.data
-      );
-    }).then(installations => installations.reduce((byLogin, installation) => {
-      byLogin[installation.account.login] = installation;
+    installationsByLogin = installationsByLogin || app.getInstallations().then(
+      installations => installations.reduce((byLogin, installation) => {
+        byLogin[installation.account.login] = installation;
 
-      return byLogin;
-    }, {}));
+        return byLogin;
+      }, {})
+    );
 
-    return installations;
+    return installationsByLogin;
   }
 
   function getInstallationByLogin(login) {
-    return getInstallations().then(installations => {
-      const installation = installations[login];
+    return getInstallationsByLogin().then(installationsByLogin => {
+      const installation = installationsByLogin[login];
 
       if (!installation) {
         throw new Error('not installed for ' + login);
@@ -83,10 +80,10 @@ module.exports = async (app, config, store) => {
   // https://developer.github.com/v3/activity/events/types/#installationevent
   app.on('installation', () => {
 
-    log.info('installations update, resetting cache');
+    log.debug('installations update, resetting cache');
 
     // expire cached entries
-    installations = null;
+    installationsByLogin = null;
     authByLogin = {};
   });
 
