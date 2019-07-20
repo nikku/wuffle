@@ -6,6 +6,15 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 ___Note:__ Yet to be released changes appear here._
 
+## 0.16.0
+
+* `FEAT`: connect all repositories connected to GitHub app
+
+### Breaking Change
+
+* `config.repositories` is now obsolete
+* The board does not default to a repository for its name, configure a board name via `config.name`
+
 ## 0.15.1
 
 * `FIX(app)`: capture requested reviewer changes
