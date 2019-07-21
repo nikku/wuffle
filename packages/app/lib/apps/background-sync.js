@@ -84,6 +84,16 @@ We automatically synchronize all repositories you granted us access to via the G
         const owner = repository.owner.login;
         const repo = repository.name;
 
+        // we ignore archived repositories
+        if (repository.archived) {
+          log.debug({
+            owner,
+            repo
+          }, 'archived, ignoring');
+
+          continue;
+        }
+
         try {
 
           log.debug({
