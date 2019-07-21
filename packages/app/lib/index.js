@@ -35,6 +35,7 @@ module.exports = async app => {
   // intialize ///////////////////
 
   const logger = app.log;
+  const router = app.router;
 
   const log = logger.child({
     name: 'wuffle'
@@ -53,6 +54,7 @@ module.exports = async app => {
   const coreModule = {
     'app': [ 'value', app ],
     'config': [ 'value', config ],
+    'router': [ 'value', router ],
     'logger': [ 'value', logger ],
     'columns': [ 'type', Columns ],
     'store': [ 'type', Store ]
