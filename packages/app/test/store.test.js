@@ -555,6 +555,12 @@ function createStore(columnConfig) {
     debug: () => {}
   };
 
+  const logger = {
+    child(name) {
+      return log;
+    }
+  };
+
   const defaultColumnConfig = [
     { name: 'Inbox', label: null, sorting: true },
     { name: 'Backlog', label: 'backlog', sorting: true },
@@ -566,7 +572,7 @@ function createStore(columnConfig) {
 
   const columns = new Columns(columnConfig || defaultColumnConfig);
 
-  return new Store(columns, log);
+  return new Store(columns, logger);
 }
 
 

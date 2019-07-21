@@ -46,6 +46,7 @@ class Columns {
 
 }
 
+Columns.$inject = [ 'config.columns' ];
 
 module.exports = Columns;
 

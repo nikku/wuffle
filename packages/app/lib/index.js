@@ -1,3 +1,5 @@
+const { AsyncInjector } = require('async-didi');
+
 const apps = [
   require('./apps/log-events'),
   require('./apps/route-compression'),
@@ -32,30 +34,45 @@ module.exports = async app => {
 
   // intialize ///////////////////
 
-  const log = app.log.child({
+  const logger = app.log;
+
+  const log = logger.child({
     name: 'wuffle'
   });
 
   const config = loadConfig(log);
 
-  const columns = new Columns(config.columns);
-
-  const storeLog = app.log.child({
-    name: 'wuffle:store'
-  });
-
-  const store = new Store(columns, storeLog);
-
-
-  // public API ////////////////////
-
-  app.store = store;
-
-
   // load child apps ///////////////
 
-  for (const appFn of apps) {
-    await appFn(app, config, store);
+  const modules = apps.map(app => {
+    return {
+      __init__: [ app ]
+    };
+  });
+
+  const coreModule = {
+    'app': [ 'value', app ],
+    'config': [ 'value', config ],
+    'logger': [ 'value', logger ],
+    'columns': [ 'type', Columns ],
+    'store': [ 'type', Store ]
+  };
+
+  const injector = new AsyncInjector([
+    coreModule,
+    ...modules
+  ]);
+
+  // initialize modules
+
+  for (const module of modules) {
+
+    const init = module.__init__ || [];
+
+    for (const component of init) {
+      await injector[typeof component === 'function' ? 'invoke' : 'get'](component);
+    }
+
   }
 
   log.info('wuffle started');
