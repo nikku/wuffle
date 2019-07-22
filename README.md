@@ -14,11 +14,12 @@ A multi-repository task board for [GitHub issues](https://guides.github.com/feat
 ## Features
 
 * Multi-repository / organization support
-* Private repository support (you only see the issues you'd see on GitHub, too)
-* Only contributors can move/reorder issues on the board
-* Configure columns and GitHub label to column mappings
-* Automatically moves your issues across columns, as you develop
-* Filter issues by name, issue label, and more
+* Maps cards to columns via issue labels and/or close states
+* Allows you to filter cards by name, issue label, and more
+* Automatically moves cards across columns, as you develop
+* Supports private repositories: Visitors only see cards for issues they see on GitHub, too
+* Contributors can move/reorder cards
+* Simple setup: Connects to GitHub as a [GitHub app](https://developer.github.com/apps/)
 
 
 ## Resources
