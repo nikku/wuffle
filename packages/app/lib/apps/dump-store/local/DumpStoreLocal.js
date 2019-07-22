@@ -3,8 +3,6 @@ const path = require('path');
 
 const mkdirp = require('mkdirp');
 
-const { preExit } = require('../../../util');
-
 
 /**
  * This component restores a store dump on startup and periodically
@@ -12,8 +10,9 @@ const { preExit } = require('../../../util');
  *
  * @param  {Logger} logger
  * @param  {Store} store
+ * @param  {Events} events
  */
-function DumpStoreLocal(logger, store) {
+function DumpStoreLocal(logger, store, events) {
 
   const log = logger.child({
     name: 'wuffle:dump-store-local'
@@ -92,15 +91,23 @@ function DumpStoreLocal(logger, store) {
     });
   }
 
-  // dump every 30 seconds
-  const dumpInterval = 1000 * 30;
+  // 30 seconds
+  const DUMP_INTERVAL = 1000 * 30;
 
-  setInterval(dumpStore, dumpInterval);
+  let interval;
 
-  // TODO(nikku): hook into pre-exit
-  // dump on exit
-  preExit(function() {
-    log.info('pre-exit dump');
+  events.once('wuffle.start', function() {
+
+    interval = setInterval(dumpStore, DUMP_INTERVAL);
+
+    return restoreStore();
+  });
+
+  events.once('wuffle.pre-exit', function() {
+
+    if (interval) {
+      clearInterval(interval);
+    }
 
     return dumpStore();
   });
@@ -111,11 +118,6 @@ function DumpStoreLocal(logger, store) {
   this.restoreStore = restoreStore;
   this.dumpStore = dumpStore;
 
-
-
-  // TODO(nikku): hook into ready
-  // restore, initally
-  return restoreStore();
 }
 
 module.exports = DumpStoreLocal;

@@ -1,5 +1,7 @@
 const { AsyncInjector } = require('async-didi');
 
+const { preExit } = require('./util');
+
 const apps = [
   require('./apps/log-events'),
   require('./apps/webhook-events'),
@@ -28,6 +30,8 @@ const loadConfig = require('./load-config');
 
 const Store = require('./store');
 
+const PromiseEvents = require('promise-events');
+
 const Columns = require('./columns');
 
 
@@ -43,6 +47,8 @@ module.exports = async app => {
   });
 
   const config = loadConfig(log);
+
+  const events = new PromiseEvents();
 
   // load child apps //////////////
 
@@ -63,7 +69,8 @@ module.exports = async app => {
     'router': [ 'value', router ],
     'logger': [ 'value', logger ],
     'columns': [ 'type', Columns ],
-    'store': [ 'type', Store ]
+    'store': [ 'type', Store ],
+    'events': [ 'value', events ]
   };
 
   const injector = new AsyncInjector([
@@ -83,6 +90,15 @@ module.exports = async app => {
 
   }
 
-  log.info('wuffle started');
+  await events.emit('wuffle.start');
+
+  log.info('started');
+
+  preExit(function() {
+
+    log.info('pre-exit');
+
+    return events.emit('wuffle.pre-exit');
+  });
 
 };

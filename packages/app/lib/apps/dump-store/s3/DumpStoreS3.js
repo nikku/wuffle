@@ -1,6 +1,5 @@
-const { preExit } = require('../../../util');
-
 const S3 = require('aws-sdk/clients/s3');
+
 
 /**
  * This component restores a store dump on startup and periodically
@@ -8,8 +7,9 @@ const S3 = require('aws-sdk/clients/s3');
  *
  * @param  {Logger} logger
  * @param  {Store} store
+ * @param  {Events} events
  */
-function DumpStoreS3(logger, store) {
+function DumpStoreS3(logger, store, events) {
 
   const log = logger.child({
     name: 'wuffle:dump-store-s3'
@@ -98,15 +98,23 @@ function DumpStoreS3(logger, store) {
   }
 
 
-  // dump every five minutes
-  const dumpInterval = 1000 * 60 * 5;
+  // five minutes
+  const DUMP_INTERVAL = 1000 * 60 * 5;
 
-  setInterval(dumpStore, dumpInterval);
+  let interval;
 
-  // TODO(nikku): hook into pre-exit
-  // dump on exit
-  preExit(function() {
-    log.info('pre-exit dump');
+  events.once('wuffle.start', function() {
+
+    interval = setInterval(dumpStore, DUMP_INTERVAL);
+
+    return restoreStore();
+  });
+
+  events.once('wuffle.pre-exit', function() {
+
+    if (interval) {
+      clearInterval(interval);
+    }
 
     return dumpStore();
   });
@@ -117,9 +125,6 @@ function DumpStoreS3(logger, store) {
   this.restoreStore = restoreStore;
   this.dumpStore = dumpStore;
 
-  // TODO(nikku): hook into ready
-  // restore, initally
-  return restoreStore();
 }
 
 module.exports = DumpStoreS3;
