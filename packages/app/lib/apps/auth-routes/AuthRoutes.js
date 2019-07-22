@@ -4,11 +4,11 @@ const fetch = require('node-fetch');
 
 const {
   withSession
-} = require('../middleware');
+} = require('../../middleware');
 
 const {
   randomString
-} = require('../util');
+} = require('../../util');
 
 
 /**
@@ -18,24 +18,24 @@ const {
  * Under the hood, it uses GitHub's APIs to perform user authentication
  * via OAuth.
  *
- * @param {Application} app
- * @param {Object} config
- * @param {Store} store
+ * @param {Logger} app
+ * @param {Router} router
+ * @param {SecurityContext} securityContext
  */
-module.exports = async (app, config, store) => {
+function AuthRoutes(logger, router, securityContext) {
 
   const middlewares = [
     withSession
   ];
 
-  const log = app.log.child({
+  const log = logger.child({
     name: 'wuffle:auth-flow'
   });
 
   /**
    * Trigger login via GitHub OAuth flow.
    */
-  app.router.get('/wuffle/login', ...middlewares, (req, res) => {
+  router.get('/wuffle/login', ...middlewares, (req, res) => {
 
     const state = randomString();
 
@@ -59,7 +59,7 @@ module.exports = async (app, config, store) => {
   /**
    * Trigger login via GitHub OAuth flow.
    */
-  app.router.get('/wuffle/logout', ...middlewares, (req, res) => {
+  router.get('/wuffle/logout', ...middlewares, (req, res) => {
 
     const redirectTo = safeGetReferer(req, '/board');
 
@@ -73,7 +73,7 @@ module.exports = async (app, config, store) => {
   /**
    * Handle login callback received from GitHub OAuth flow.
    */
-  app.router.get('/wuffle/login/callback', ...middlewares, async (req, res) => {
+  router.get('/wuffle/login/callback', ...middlewares, async (req, res) => {
 
     const {
       state,
@@ -122,7 +122,7 @@ module.exports = async (app, config, store) => {
   /**
    * Retrieve logged in user information.
    */
-  app.router.get('/wuffle/login_check', ...middlewares, async (req, res) => {
+  router.get('/wuffle/login_check', ...middlewares, async (req, res) => {
 
     const {
       session
@@ -148,7 +148,7 @@ module.exports = async (app, config, store) => {
     }
 
     try {
-      const user = await app.getAuthenticated(token);
+      const user = await securityContext.getAuthenticatedUser(token);
 
       log.info(logContext, 'fetched GitHub profile');
 
@@ -168,15 +168,18 @@ module.exports = async (app, config, store) => {
 
   // api ///////////////////////
 
-  app.getGitHubToken = function(req) {
+  this.getGitHubToken = function(req) {
     return req.session && req.session.githubAuth && req.session.githubAuth.access_token;
   };
 
-  app.getGitHubLogin = function(req) {
+  this.getGitHubLogin = function(req) {
     return req.session && req.session.githubProfile && req.session.githubProfile.login;
   };
 
-};
+}
+
+
+module.exports = AuthRoutes;
 
 
 // helpers ///////////////////////

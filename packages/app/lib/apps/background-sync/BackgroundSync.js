@@ -1,7 +1,7 @@
 const {
   filterIssue,
   filterPull
-} = require('../filters');
+} = require('../../filters');
 
 
 /**
@@ -10,8 +10,9 @@ const {
  * @param  {Application} app
  * @param  {Object} config
  * @param  {Store} store
+ * @param  {GitHubClient} githubClient
  */
-module.exports = async (app, config, store) => {
+function BackgroundSync(app, config, store, githubClient) {
 
   // 30 days
   const syncLookback = 1000 * 60 * 60 * 24 * 30;
@@ -72,7 +73,7 @@ We automatically synchronize all repositories you granted us access to via the G
     log.debug({ installation: owner }, 'sync start');
 
     try {
-      const github = await app.orgAuth(owner);
+      const github = await githubClient.getOrgScoped(owner);
 
       const repositories = await github.paginate(
         github.apps.listRepos.endpoint.merge({ per_page: 100 }),
@@ -351,7 +352,7 @@ We automatically synchronize all repositories you granted us access to via the G
 
   // api ///////////////////
 
-  app.backgroundSync = backgroundSync;
+  this.backgroundSync = backgroundSync;
 
 
   // behavior ///////////////
@@ -362,4 +363,6 @@ We automatically synchronize all repositories you granted us access to via the G
     setTimeout(checkSync, checkInterval);
   }
 
-};
+}
+
+module.exports = BackgroundSync;

@@ -1,16 +1,13 @@
+const {
+  GitHubAPI,
+  ProbotOctokit
+} = require('probot/lib/github');
 
-/**
- * This app offers the App#orgAuth(login) method to get an
- * authenticated GitHub client for the given login or organization.
- *
- * @param {Application} app
- * @param {Object} config
- * @param {Store} store
- */
-module.exports = async (app, config, store) => {
 
-  const log = app.log.child({
-    name: 'wuffle:org-auth'
+function GitHubClient(app, logger) {
+
+  const log = logger.child({
+    name: 'wuffle:github-client'
   });
 
   // cached data ///////////////////
@@ -18,6 +15,21 @@ module.exports = async (app, config, store) => {
   let authByLogin = {};
 
   let installationsByLogin = null;
+
+
+  // reactivity ////////////////////
+
+  // TODO: nikku periodically expire installations / authByLogin
+
+  // https://developer.github.com/v3/activity/events/types/#installationevent
+  app.on('installation', () => {
+
+    log.debug('installations update, resetting cache');
+
+    // expire cached entries
+    installationsByLogin = null;
+    authByLogin = {};
+  });
 
 
   // functionality /////////////////
@@ -52,7 +64,11 @@ module.exports = async (app, config, store) => {
     });
   }
 
-  function orgAuth(login) {
+  function getInstallationScoped(id) {
+    return app.auth(id);
+  }
+
+  function getOrgScoped(login) {
 
     let auth = authByLogin[login];
 
@@ -65,7 +81,7 @@ module.exports = async (app, config, store) => {
     auth = authByLogin[login] =
       getInstallationByLogin(login)
         .then(
-          installation => app.auth(installation.id),
+          installation => this.getInstallationScoped(installation.id),
           error => {
             log.error({ login }, 'failed to authenticate', error);
             throw error;
@@ -75,20 +91,25 @@ module.exports = async (app, config, store) => {
     return auth;
   }
 
-  // TODO: nikku periodically expire installations / authByLogin
+  function getUserScoped(token) {
 
-  // https://developer.github.com/v3/activity/events/types/#installationevent
-  app.on('installation', () => {
+    return Promise.resolve(
+      GitHubAPI({
+        Octokit: ProbotOctokit,
+        auth: `token ${token}`,
+        logger: logger.child({ name: 'github:user-auth' })
+      })
+    );
 
-    log.debug('installations update, resetting cache');
-
-    // expire cached entries
-    installationsByLogin = null;
-    authByLogin = {};
-  });
+  }
 
 
-  // public API ///////////////////////
+  // api ////////////////////
 
-  app.orgAuth = orgAuth;
-};
+  this.getInstallationScoped = getInstallationScoped;
+  this.getOrgScoped = getOrgScoped;
+  this.getUserScoped = getUserScoped;
+
+}
+
+module.exports = GitHubClient;

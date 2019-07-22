@@ -11,8 +11,8 @@ const apps = [
   ),
   require('./apps/on-active'),
   require('./apps/installations'),
-  require('./apps/org-auth'),
-  require('./apps/user-auth'),
+  require('./apps/github'),
+  require('./apps/context'),
   require('./apps/events-sync'),
   require('./apps/user-access'),
   require('./apps/search'),
@@ -46,9 +46,14 @@ module.exports = async app => {
   // load child apps ///////////////
 
   const modules = apps.map(app => {
-    return {
-      __init__: [ app ]
-    };
+
+    if (typeof app === 'function') {
+      return {
+        __init__: [ app ]
+      };
+    }
+
+    return app;
   });
 
   const coreModule = {
