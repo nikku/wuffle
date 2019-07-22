@@ -7,12 +7,14 @@ const {
 /**
  * This component performs a periodic background sync of a project.
  *
- * @param  {Application} app
- * @param  {Object} config
- * @param  {Store} store
- * @param  {GitHubClient} githubClient
+ * @param {Logger} logger
+ * @param {Object} config
+ * @param {Store} store
+ * @param {GitHubClient} githubClient
+ * @param {GithubApp} githubApp
+ * @param {Events} events
  */
-function BackgroundSync(app, config, store, githubClient) {
+function BackgroundSync(logger, config, store, githubClient, githubApp, events) {
 
   // 30 days
   const syncLookback = 1000 * 60 * 60 * 24 * 30;
@@ -20,7 +22,7 @@ function BackgroundSync(app, config, store, githubClient) {
   // 60 days
   const removalLookback = 1000 * 60 * 60 * 24 * 60;
 
-  const log = app.log.child({
+  const log = logger.child({
     name: 'wuffle:background-sync'
   });
 
@@ -311,7 +313,7 @@ We automatically synchronize all repositories you granted us access to via the G
 
     try {
 
-      const installations = await app.getInstallations();
+      const installations = await githubApp.getInstallations();
 
       await doSync(installations);
 
@@ -333,6 +335,7 @@ We automatically synchronize all repositories you granted us access to via the G
   // five seconds
   const checkInterval = 5000;
 
+  let timeout;
 
   async function checkSync() {
 
@@ -347,7 +350,7 @@ We automatically synchronize all repositories you granted us access to via the G
       store.lastSync = now;
     }
 
-    setTimeout(checkSync, checkInterval);
+    timeout = setTimeout(checkSync, checkInterval);
   }
 
   // api ///////////////////
@@ -355,13 +358,17 @@ We automatically synchronize all repositories you granted us access to via the G
   this.backgroundSync = backgroundSync;
 
 
-  // behavior ///////////////
+  // life-cycle ////////////
 
-  if (config.backgroundSync !== false && process.env.NODE_ENV !== 'test') {
+  events.once('wuffle.start', function() {
+    timeout = setTimeout(checkSync, checkInterval);
+  });
 
-    // start synchronization check
-    setTimeout(checkSync, checkInterval);
-  }
+  events.once('wuffle.pre-exit', function() {
+    if (timeout) {
+      clearTimeout(timeout);
+    }
+  });
 
 }
 
