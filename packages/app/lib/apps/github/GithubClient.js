@@ -68,6 +68,10 @@ function GitHubClient(app, logger) {
     return app.auth(id);
   }
 
+  function getAppScoped() {
+    return app.auth();
+  }
+
   function getOrgScoped(login) {
 
     let auth = authByLogin[login];
@@ -106,8 +110,12 @@ function GitHubClient(app, logger) {
 
   // api ////////////////////
 
+  this.getAppScoped = getAppScoped;
+
   this.getInstallationScoped = getInstallationScoped;
+
   this.getOrgScoped = getOrgScoped;
+
   this.getUserScoped = getUserScoped;
 
 }
