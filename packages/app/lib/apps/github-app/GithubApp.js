@@ -35,16 +35,6 @@ function GithubApp(logger, githubClient) {
     name: 'wuffle:github-app'
   });
 
-  /*
-  app.on([
-    'installation',
-    'installation_repositories'
-  ], async ({ payload }) => {
-
-    console.log('installation update', payload);
-  });
-  */
-
   function isRequiredLevel(requested, actual) {
     return PermissionLevels[requested] <= PermissionLevels[actual || 'none'];
   }
