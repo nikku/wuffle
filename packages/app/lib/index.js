@@ -15,7 +15,7 @@ const apps = [
   require('./apps/github-app'),
   require('./apps/github-issues'),
   require('./apps/github-client'),
-  require('./apps/context'),
+  require('./apps/security-context'),
   require('./apps/events-sync'),
   require('./apps/user-access'),
   require('./apps/search'),
