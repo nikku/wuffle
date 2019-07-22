@@ -18,10 +18,6 @@ function DumpStoreLocal(logger, store, events) {
     name: 'wuffle:dump-store-local'
   });
 
-  if (process.env.NODE_ENV !== 'development') {
-    return;
-  }
-
   const storeLocation = 'tmp/storedump.json';
 
   const params = { storeLocation };
@@ -91,8 +87,12 @@ function DumpStoreLocal(logger, store, events) {
     });
   }
 
-  // 30 seconds
-  const DUMP_INTERVAL = 1000 * 30;
+  const DUMP_INTERVAL = process.env.NODE_ENV === 'development'
+    // 30 seconds
+    ? 1000 * 30
+    // five minutes
+    : 1000 * 60 * 5;
+
 
   let interval;
 
