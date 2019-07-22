@@ -7,8 +7,8 @@ const apps = [
   require('./apps/route-https'),
   (
     process.env.S3_BUCKET
-      ? require('./apps/dump-store-s3')
-      : require('./apps/dump-store')
+      ? require('./apps/dump-store/s3')
+      : require('./apps/dump-store/local')
   ),
   require('./apps/on-active'),
   require('./apps/installations'),

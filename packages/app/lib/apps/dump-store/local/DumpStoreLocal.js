@@ -3,7 +3,7 @@ const path = require('path');
 
 const mkdirp = require('mkdirp');
 
-const { preExit } = require('../util');
+const { preExit } = require('../../../util');
 
 
 /**
@@ -97,7 +97,7 @@ function DumpStoreLocal(logger, store) {
 
   setInterval(dumpStore, dumpInterval);
 
-  // TODO(nikku): await on pre-exit
+  // TODO(nikku): hook into pre-exit
   // dump on exit
   preExit(function() {
     log.info('pre-exit dump');
@@ -105,7 +105,15 @@ function DumpStoreLocal(logger, store) {
     return dumpStore();
   });
 
-  // TODO(nikku): await on ready
+
+  // api //////////////////
+
+  this.restoreStore = restoreStore;
+  this.dumpStore = dumpStore;
+
+
+
+  // TODO(nikku): hook into ready
   // restore, initally
   return restoreStore();
 }
