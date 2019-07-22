@@ -5,11 +5,9 @@ const {
 /**
  * Enables https redirects and strict transport security.
  *
- * @param {Application} app
- * @param {Object} config
- * @param {Store} store
+ * @param {Router} router
  */
-module.exports = async (app, config, store) => {
+module.exports = function(router) {
 
   if (!process.env.FORCE_HTTPS) {
     return;
@@ -25,5 +23,5 @@ module.exports = async (app, config, store) => {
     throw new Error('BASE_URL must start with https');
   }
 
-  app.router.use(useHttps(baseUrl));
+  router.use(useHttps(baseUrl));
 };

@@ -6,19 +6,17 @@ const {
 } = require('../filters');
 
 
-
 /**
  * This component updates the stored issues based on GitHub events.
  *
- * @param {Application} app
- * @param {Object} config
+ * @param {WebhookEvents} webhookEvents
  * @param {Store} store
  */
-module.exports = async (app, config, store) => {
+module.exports = function(webhookEvents, store) {
 
   // issues /////////////////////
 
-  app.onActive([
+  webhookEvents.on([
     'issues.opened',
     'issues.reopened'
   ], async ({ payload }) => {
@@ -30,7 +28,7 @@ module.exports = async (app, config, store) => {
     return store.updateIssue(filterIssue(issue, repository));
   });
 
-  app.onActive([
+  webhookEvents.on([
     'issues.labeled',
     'issues.unlabeled',
     'issues.assigned',
@@ -48,7 +46,7 @@ module.exports = async (app, config, store) => {
 
   // available for issues only, we must manually
   // fetch the related pull request
-  app.onActive([
+  webhookEvents.on([
     'issues.milestoned',
     'issues.demilestoned',
   ], async ({ payload }) => {
@@ -61,7 +59,7 @@ module.exports = async (app, config, store) => {
     return store.updateIssue(filterIssueOrPull(issue, repository));
   });
 
-  app.onActive([
+  webhookEvents.on([
     'issues.deleted'
   ], async ({ payload }) => {
 
@@ -77,7 +75,7 @@ module.exports = async (app, config, store) => {
 
   // pull requests //////////////////
 
-  app.onActive([
+  webhookEvents.on([
     'pull_request.opened',
     'pull_request.reopened'
   ], async ({ payload }) => {
@@ -89,7 +87,7 @@ module.exports = async (app, config, store) => {
     return store.updateIssue(filterPull(pull_request, repository));
   });
 
-  app.onActive([
+  webhookEvents.on([
     'pull_request.labeled',
     'pull_request.unlabeled',
     'pull_request.edited',

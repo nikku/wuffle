@@ -3,11 +3,10 @@ const compression = require('compression');
 /**
  * Enables compression for routes
  *
- * @param {Application} app
- * @param {Object} config
- * @param {Store} store
+ * @param {Router} router
  */
-module.exports = async (app, config, store) => {
+module.exports = function(router) {
 
-  app.router.use(compression());
+  router.use(compression());
+
 };
