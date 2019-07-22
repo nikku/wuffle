@@ -12,7 +12,6 @@ const {
 /**
  * This component provides the board API routes.
  *
- * @param {Application} app
  * @param {Object} config
  * @param {Store} store
  * @param {Router} router
@@ -20,12 +19,14 @@ const {
  * @param {GitHubClient} githubClient
  * @param {AuthRoutes} authRoutes
  * @param {GithubIssues} githubIssues
+ * @param {Search} search
  */
 module.exports = async (
-  app, config, store,
+  config, store,
   router, logger,
   githubClient, authRoutes,
-  userAccess, githubIssues
+  userAccess, githubIssues,
+  search
 ) => {
 
   const log = logger.child({
@@ -39,13 +40,13 @@ module.exports = async (
   // endpoints ///////////////////
 
   function getIssueSearchFilter(req) {
-    const search = req.query.s;
+    const s = req.query.s;
 
-    if (!search) {
+    if (!s) {
       return null;
     }
 
-    return app.getSearchFilter(search);
+    return search.getSearchFilter(s);
   }
 
   function getIssueReadFilter(req) {
