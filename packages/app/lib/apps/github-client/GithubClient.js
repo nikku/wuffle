@@ -4,7 +4,7 @@ const {
 } = require('probot/lib/github');
 
 
-function GitHubClient(app, logger) {
+function GitHubClient(app, webhookEvents, logger, injector) {
 
   const log = logger.child({
     name: 'wuffle:github-client'
@@ -22,7 +22,7 @@ function GitHubClient(app, logger) {
   // TODO: nikku periodically expire installations / authByLogin
 
   // https://developer.github.com/v3/activity/events/types/#installationevent
-  app.on('installation', () => {
+  webhookEvents.on('installation', () => {
 
     log.debug('installations update, resetting cache');
 
@@ -41,7 +41,9 @@ function GitHubClient(app, logger) {
    */
   function getInstallationsByLogin() {
 
-    installationsByLogin = installationsByLogin || app.getInstallations().then(
+    installationsByLogin = installationsByLogin || injector.get('githubApp').then(
+      githubApp => githubApp.getInstallations()
+    ).then(
       installations => installations.reduce((byLogin, installation) => {
         byLogin[installation.account.login] = installation;
 
