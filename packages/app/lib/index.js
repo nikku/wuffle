@@ -10,7 +10,6 @@ const apps = [
       ? require('./apps/dump-store/s3')
       : require('./apps/dump-store/local')
   ),
-  require('./apps/on-active'),
   require('./apps/installations'),
   require('./apps/github-issues'),
   require('./apps/github'),
