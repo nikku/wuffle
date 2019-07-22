@@ -2,6 +2,7 @@ const { AsyncInjector } = require('async-didi');
 
 const apps = [
   require('./apps/log-events'),
+  require('./apps/webhook-events'),
   require('./apps/route-compression'),
   require('./apps/route-https'),
   (
