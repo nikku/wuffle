@@ -12,6 +12,7 @@ const apps = [
   ),
   require('./apps/on-active'),
   require('./apps/installations'),
+  require('./apps/github-issues'),
   require('./apps/github'),
   require('./apps/context'),
   require('./apps/events-sync'),

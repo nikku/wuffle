@@ -19,12 +19,13 @@ const {
  * @param {Logger} logger
  * @param {GitHubClient} githubClient
  * @param {AuthRoutes} authRoutes
+ * @param {GithubIssues} githubIssues
  */
 module.exports = async (
   app, config, store,
   router, logger,
   githubClient, authRoutes,
-  userAccess
+  userAccess, githubIssues
 ) => {
 
   const log = logger.child({
@@ -145,8 +146,8 @@ module.exports = async (
     // to pick up the update (and react to it)
 
     return Promise.all([
-      app.moveIssue(context, issue, column),
-      app.moveReferencedIssues(context, issue, column)
+      githubIssues.moveIssue(context, issue, column),
+      githubIssues.moveReferencedIssues(context, issue, column)
     ]);
 
   }

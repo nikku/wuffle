@@ -1,5 +1,5 @@
-const GitHubClient = require('./GitHubClient');
+const GithubClient = require('./GithubClient');
 
 module.exports = {
-  githubClient: [ 'type', GitHubClient ]
+  githubClient: [ 'type', GithubClient ]
 };
