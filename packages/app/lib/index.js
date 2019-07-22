@@ -44,7 +44,7 @@ module.exports = async app => {
 
   const config = loadConfig(log);
 
-  // load child apps ///////////////
+  // load child apps //////////////
 
   const modules = apps.map(app => {
 
@@ -71,7 +71,7 @@ module.exports = async app => {
     ...modules
   ]);
 
-  // initialize modules
+  // initialize modules ////////////
 
   for (const module of modules) {
 
