@@ -12,6 +12,7 @@ const {
  * @param {Store} store
  * @param {GitHubClient} githubClient
  * @param {GithubApp} githubApp
+ * @param {WebhookEvents} webhookEvents
  * @param {Events} events
  */
 function BackgroundSync(logger, config, store, githubClient, githubApp, events) {
@@ -37,6 +38,14 @@ We automatically synchronize all repositories you granted us access to via the G
     );
   }
 
+
+  function getSyncSince() {
+    return Date.now() - syncLookback;
+  }
+
+  function getRemoveBefore() {
+    return Date.now() - removalLookback;
+  }
 
   async function applyUpdate(update) {
 
@@ -289,7 +298,7 @@ We automatically synchronize all repositories you granted us access to via the G
     }, {});
 
     // synchronize existing issues
-    const foundIssues = await syncInstallations(installations, Date.now() - syncLookback);
+    const foundIssues = await syncInstallations(installations, getSyncSince());
 
     // check for all missing issues, these will
     // be automatically expired once they reach a
@@ -297,7 +306,7 @@ We automatically synchronize all repositories you granted us access to via the G
 
     const missingIssues = Object.keys(knownIssues).filter(k => !(k in foundIssues)).map(k => knownIssues[k]);
 
-    const expiredIssues = await checkExpiration(missingIssues, Date.now() - removalLookback);
+    const expiredIssues = await checkExpiration(missingIssues, getRemoveBefore());
 
     log.info(
       { t: Date.now() - now },
@@ -335,8 +344,6 @@ We automatically synchronize all repositories you granted us access to via the G
   // five seconds
   const checkInterval = 5000;
 
-  let timeout;
-
   async function checkSync() {
 
     const now = Date.now();
@@ -350,7 +357,7 @@ We automatically synchronize all repositories you granted us access to via the G
       store.lastSync = now;
     }
 
-    timeout = setTimeout(checkSync, checkInterval);
+    checkTimeout = setTimeout(checkSync, checkInterval);
   }
 
   // api ///////////////////
@@ -360,13 +367,15 @@ We automatically synchronize all repositories you granted us access to via the G
 
   // life-cycle ////////////
 
+  let checkTimeout;
+
   events.once('wuffle.start', function() {
-    timeout = setTimeout(checkSync, checkInterval);
+    checkTimeout = setTimeout(checkSync, checkInterval);
   });
 
   events.once('wuffle.pre-exit', function() {
-    if (timeout) {
-      clearTimeout(timeout);
+    if (checkTimeout) {
+      clearTimeout(checkTimeout);
     }
   });
 

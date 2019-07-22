@@ -12,8 +12,9 @@ const TTL = 1000 * 60 * 10;
  *
  * @param {Logger} logger
  * @param {GitHubClient} githubClient
+ * @param {Events} events
  */
-function UserAccess(logger, githubClient) {
+function UserAccess(logger, githubClient, events) {
 
   const log = logger.child({
     name: 'wuffle:user-access'
@@ -140,9 +141,11 @@ function UserAccess(logger, githubClient) {
 
   if (process.env.NODE_ENV !== 'test') {
 
-    setInterval(() => {
-      cache.evict();
-    }, 1000 * 10);
+    events.once('wuffle.start', function() {
+      setInterval(() => {
+        cache.evict();
+      }, 1000 * 10);
+    });
   }
 
 }
