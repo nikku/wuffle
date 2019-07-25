@@ -47,6 +47,20 @@ We automatically synchronize all repositories you granted us access to via the G
     return Date.now() - removalLookback;
   }
 
+
+  async function getStatuses(pull_request, repository) {
+    let ref = pull_request.head.sha;
+    const [ owner, repo ] = repository.full_name.split('/');
+    return githubClient.getOrgScoped(owner).then(github => {
+      return github.repos.getCombinedStatusForRef({
+        owner,
+        repo,
+        ref
+      });
+    }).then(res => res.data);
+  }
+
+
   async function applyUpdate(update) {
 
     const {
@@ -65,6 +79,12 @@ We automatically synchronize all repositories you granted us access to via the G
     }
 
     return { id };
+  }
+
+  async function syncStatus(statuses) {
+    let combinedStatusesForIssues = await statuses;
+    return combinedStatusesForIssues.state !== 'pending'?
+      store.insertOrUpdateCombinedStatus(combinedStatusesForIssues): {};
   }
 
   function syncPull(pull_request, repository) {
@@ -195,6 +215,7 @@ We automatically synchronize all repositories you granted us access to via the G
           }
 
           for (const pull_request of [ ...open_pull_requests, ...closed_pull_requests ]) {
+            await syncStatus(getStatuses(pull_request, repository));
 
             try {
               const {

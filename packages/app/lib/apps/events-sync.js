@@ -108,7 +108,7 @@ module.exports = function(webhookEvents, store) {
   });
 
 
-  app.onActive([
+  webhookEvents.on([
     'status'
   ], async ({ payload }) => {
 
