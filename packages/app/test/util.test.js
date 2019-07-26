@@ -208,6 +208,120 @@ describe('util', function() {
     });
 
 
+    describe('should recognize issue list', function() {
+
+      it('comma separated', function() {
+
+        // given
+        const issue = createIssue(
+          'FOO',
+          'Closes #2, #5, https://github.com/foo/bar/issues/1828, #10'
+        );
+
+        // when
+        const links = findLinks(issue);
+
+        // then
+        expect(links).to.eql([
+          {
+            type: CLOSES, number: 2
+          },
+          {
+            type: CLOSES, number: 5
+          },
+          {
+            type: CLOSES, number: 1828,
+            owner: 'foo', repo: 'bar'
+          },
+          {
+            type: CLOSES, number: 10
+          }
+        ]);
+      });
+
+
+      it('space separated', function() {
+
+        // given
+        const issue = createIssue(
+          'FOO',
+          'Closes #2  https://github.com/foo/bar/issues/1828 #10'
+        );
+
+        // when
+        const links = findLinks(issue);
+
+        // then
+        expect(links).to.eql([
+          {
+            type: CLOSES, number: 2
+          },
+          {
+            type: CLOSES, number: 1828,
+            owner: 'foo', repo: 'bar'
+          },
+          {
+            type: CLOSES, number: 10
+          }
+        ]);
+      });
+
+
+      it('and separated', function() {
+
+        // given
+        const issue = createIssue(
+          'FOO',
+          'Closes https://github.com/foo/bar/issues/1 and #5, and #10, and, #12'
+        );
+
+        // when
+        const links = findLinks(issue);
+
+        // then
+        expect(links).to.eql([
+          {
+            type: CLOSES, number: 1,
+            owner: 'foo', repo: 'bar'
+          },
+          {
+            type: CLOSES, number: 5
+          },
+          {
+            type: CLOSES, number: 10
+          },
+          {
+            type: CLOSES, number: 12
+          }
+        ]);
+      });
+
+
+      it('break on unrecognized separator', function() {
+
+        // given
+        const issue = createIssue(
+          'FOO',
+          'Closes #2, #5, what about https://github.com/foo/bar/issues/1828?'
+        );
+
+        // when
+        const links = findLinks(issue);
+
+        // then
+        expect(links).to.eql([
+          {
+            type: CLOSES, number: 2
+          },
+          {
+            type: CLOSES, number: 5
+          }
+        ]);
+      });
+
+    });
+
+
     it('should find by type', function() {
 
       // given

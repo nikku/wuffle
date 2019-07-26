@@ -37,32 +37,70 @@ function findLinks(issue, types) {
 
   const text = [ title, body ].join('\n --- \n').toLowerCase();
 
-  const pattern = /(closes|fixes|child of|parent of|depends on|needs|requires|required by|needed by|related to)\s+(?:(?:([a-z0-9-]+)\/([a-z0-9-]+))?#(\d+)|https:\/\/github.com\/([a-z0-9-]+)\/([a-z0-9-]+)\/(?:issues|pull)\/(\d+))/g;
+  const namePart = '[a-z0-9-]+';
+
+  const typePart = '(closes|fixes|child of|parent of|depends on|needs|requires|required by|needed by|related to)\\s+';
+  const issueShortHandPart = `(?:(${namePart})\\/(${namePart}))?#(\\d+)`;
+  const issueUrlPart = `https:\\/\\/github.com\\/(${namePart})\\/(${namePart})\\/(?:issues|pull)\\/(\\d+)`;
+  const issuePart = `(?:${issueShortHandPart}|${issueUrlPart})`;
+  const separatorPart = '(?:[\\s,]+(?:and[\\s,]+)?)';
+
+  const pattern = new RegExp(`${typePart}${issuePart}`, 'ig');
+  const continuationPattern = new RegExp(`^${separatorPart}${issuePart}`, 'i');
 
   const links = [];
 
-  let match;
+  let match, continuationMatch;
 
   // find all links with the given types
 
   while ((match = pattern.exec(text))) {
 
     const type = phrasesToTypes[match[1]];
-    const number = parseInt(match[4] || match[7], 10);
-    const owner = match[2] || match[5];
-    const repo = match[3] || match[6];
 
-    const link = owner ? {
-      type,
-      number,
-      owner,
-      repo
-    } : {
-      type,
-      number
-    };
+    let issueMatches = match.slice(2);
 
-    links.push(link);
+    let continuationIdx = match.index + match[0].length;
+
+    do {
+      continuationMatch = continuationPattern.exec(text.slice(continuationIdx));
+
+      if (continuationMatch) {
+        issueMatches = [
+          ...issueMatches,
+          ...continuationMatch.slice(1)
+        ];
+
+        continuationIdx += continuationMatch[0].length;
+      }
+
+    } while (continuationMatch);
+
+
+    for (let i = 0; i < issueMatches.length / 3; i++) {
+
+      const offset = i * 3;
+
+      if (typeof issueMatches[offset + 2] === 'undefined') {
+        continue;
+      }
+
+      const owner = issueMatches[offset];
+      const repo = issueMatches[offset + 1];
+      const number = parseInt(issueMatches[offset + 2], 10);
+
+      const link = owner ? {
+        type,
+        number,
+        owner,
+        repo
+      } : {
+        type,
+        number
+      };
+
+      links.push(link);
+    }
   }
 
   if (typeof types !== 'undefined') {
