@@ -1,2 +1,6 @@
 test
+tmp
+wuffle.*.js
+!wuffle.config.example.js
+.eslintrc
 .env
