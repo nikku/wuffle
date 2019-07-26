@@ -82,6 +82,12 @@ function AuthRoutes(logger, router, securityContext) {
 
     const login = req.session.login;
 
+    if (!login) {
+      log.warn('missing login state');
+
+      return res.redirect(safeGetReferer(req, '/'));
+    }
+
     if (state !== login.state) {
       log.warn('state missmatch, aborting');
 
