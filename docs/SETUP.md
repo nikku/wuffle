@@ -6,6 +6,7 @@ Learn how to setup, configure and run your own [Wuffle board](https://wuffle.dev
 | :--- |
 | [Create GitHub App](#create-github-app) |
 | [Configure GitHub App](#configure-github-app) |
+| [Install GitHub App](#configure-github-app) |
 | [Configure Board](#configure-board) |
 | [Run Board](#run-board) |
 
@@ -39,7 +40,14 @@ Create a `packages/app/.env` file with the required configuration variables as p
 
 ## Configure GitHub App
 
-Go to your GitHub app page on `https://github.com/apps/YOUR_APP_NAME` and install the app for all desired repositories and organizations. This sets up the required change notifications and write permissions to keep the board in sync with GitHub issues.
+The board requires your visitors to login via GitHub if the would like to perform board operations or move cards around. 
+
+To enable the login flow point the `User authorization callback URL` property on your GitHub App settings page to `$BASE_URL/wuffle/login/callback`.
+
+
+## Install GitHub App
+
+Go to your GitHub app user page on `https://github.com/apps/YOUR_APP_NAME` and install the app for all desired repositories and organizations. This sets up the required change notifications and write permissions to keep the board in sync with GitHub issues.
 
 
 ## Configure Board
