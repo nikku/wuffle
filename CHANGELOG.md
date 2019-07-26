@@ -6,6 +6,12 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 ___Note:__ Yet to be released changes appear here._
 
+## 0.18.0
+
+* `FEAT(app)`: recognize list of linked issues with the same type
+* `DOCS`: document login callback url
+* `FIX(auth-routes)`: gracefully handle missing cached data in auth callback
+
 ## 0.17.0
 
 * `FEAT(background-sync)`: ignore archived repositories
