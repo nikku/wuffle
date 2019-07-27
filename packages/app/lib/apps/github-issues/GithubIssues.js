@@ -8,13 +8,11 @@ const {
 } = linkTypes;
 
 
-function GithubIssues(logger, config) {
+function GithubIssues(logger, config, columns) {
 
   const log = logger.child({
     name: 'wuffle:github-issues'
   });
-
-  const columns = config.columns;
 
 
   function getAssigneeUpdate(issue, newAssignee) {
@@ -42,7 +40,7 @@ function GithubIssues(logger, config) {
 
     let update = {};
 
-    const newColumn = columns.find(c => c.name === newState);
+    const newColumn = columns.findByName(newState);
 
     const issueState = newColumn.closed ? 'closed' : 'open';
 
@@ -59,7 +57,7 @@ function GithubIssues(logger, config) {
 
     const labelsToAdd = (!newLabel || issueLabels.includes(newLabel)) ? [] : [ newLabel ];
 
-    const labelsToRemove = columns.map(c => c.label).filter(
+    const labelsToRemove = columns.getAll().map(c => c.label).filter(
       label => label && label !== newLabel && issueLabels.includes(label)
     );
 

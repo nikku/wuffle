@@ -10,15 +10,9 @@ const DONE = 'Done';
  *
  * @param {WebhookEvents} webhookEvents
  * @param {GithubIssues} githubIssues
- * @param {Object} config
+ * @param {Columns} columns
  */
-module.exports = function(webhookEvents, githubIssues, config) {
-
-  const columns = config.columns;
-
-  function getCurrentColumns(issue) {
-    return columns.filter(c => issue.labels.some(l => l.name === c.label));
-  }
+module.exports = function(webhookEvents, githubIssues, columns) {
 
   webhookEvents.on([
     'issues.closed',
@@ -68,13 +62,9 @@ module.exports = function(webhookEvents, githubIssues, config) {
       pull_request
     } = context.payload;
 
-    const columns = getCurrentColumns(pull_request);
+    const column = columns.getIssueColumn(pull_request);
 
-    // move issue to reflect PR lazy reference
-
-    if (columns.length) {
-      await githubIssues.moveReferencedIssues(context, pull_request, columns[0].name);
-    }
+    await githubIssues.moveReferencedIssues(context, pull_request, column);
   });
 
   webhookEvents.on('create', async (context) => {

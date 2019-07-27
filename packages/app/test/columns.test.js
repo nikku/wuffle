@@ -99,7 +99,7 @@ describe('columns', function() {
 
   function expectColumn(issue, expectColumn) {
 
-    const column = columns.getForIssue(issue);
+    const column = columns.getIssueColumn(issue);
 
     expect(column).to.eql(expectColumn);
   }

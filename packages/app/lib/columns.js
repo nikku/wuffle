@@ -30,12 +30,20 @@ class Columns {
     this._getter = columnGetter(columns);
   }
 
-  getForIssue(issue) {
+  getAll() {
+    return this.columns;
+  }
+
+  getIssueColumn(issue) {
     return this._getter(issue);
   }
 
-  isSorting(name) {
-    const column = this.columnsByName[name];
+  findByName(columnName) {
+    return this.columnsByName[columnName];
+  }
+
+  isSorting(columnName) {
+    const column = this.findByName(columnName);
 
     return column && column.sorting;
   }

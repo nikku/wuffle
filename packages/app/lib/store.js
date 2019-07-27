@@ -36,7 +36,7 @@ class Store {
   }
 
   getIssueColumn(issue) {
-    return this.columns.getForIssue(issue);
+    return this.columns.getIssueColumn(issue);
   }
 
   async updateIssue(issue, newColumn, newOrder) {
