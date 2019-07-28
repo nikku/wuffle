@@ -36,11 +36,9 @@ function GithubIssues(logger, config, columns) {
 
   }
 
-  function getStateUpdate(issue, newState) {
+  function getStateUpdate(issue, newColumn) {
 
     let update = {};
-
-    const newColumn = columns.getByName(newState);
 
     const issueState = newColumn.closed ? 'closed' : 'open';
 
@@ -88,12 +86,12 @@ function GithubIssues(logger, config, columns) {
       });
   }
 
-  function findAndMoveIssue(context, number, newState, newAssignee) {
+  function findAndMoveIssue(context, number, newColumn, newAssignee) {
     return findIssue(context, number)
-      .then((issue) => issue && moveIssue(context, issue, newState, newAssignee));
+      .then((issue) => issue && moveIssue(context, issue, newColumn, newAssignee));
   }
 
-  async function moveReferencedIssues(context, issue, newState, newAssignee) {
+  async function moveReferencedIssues(context, issue, newColumn, newAssignee) {
 
     // TODO(nikku): do that lazily, i.e. react to PR label changes?
     // would slower the movement but support manual moving-issue with PR
@@ -124,11 +122,11 @@ function GithubIssues(logger, config, columns) {
         number
       } = link;
 
-      return findAndMoveIssue(context, number, newState, newAssignee);
+      return findAndMoveIssue(context, number, newColumn, newAssignee);
     }));
   }
 
-  function moveIssue(context, issue, newState, newAssignee) {
+  function moveIssue(context, issue, newColumn, newAssignee) {
 
     const {
       number: issue_number
@@ -136,7 +134,7 @@ function GithubIssues(logger, config, columns) {
 
     const update = {
       ...getAssigneeUpdate(issue, newAssignee),
-      ...getStateUpdate(issue, newState)
+      ...getStateUpdate(issue, newColumn)
     };
 
     if (!hasKeys(update)) {

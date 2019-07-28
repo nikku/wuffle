@@ -108,7 +108,7 @@ function createColumnGetter(columns) {
       return issue.labels.find(l => l.name === columnLabel);
     });
 
-    return (column || defaultColumn).name;
+    return (column || defaultColumn);
   };
 }
 
@@ -118,6 +118,7 @@ function groupByStates(columns) {
     const defaultName = StateToNames[state];
 
     const column = (
+      columns.find(c => c.states && c.states.includes(state)) ||
       columns.find(c => c.name === defaultName)
     );
 

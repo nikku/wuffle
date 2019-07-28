@@ -146,7 +146,7 @@ describe('columns', function() {
 
       const column = columns.getIssueColumn(issue);
 
-      expect(column).to.eql(expectedColumn);
+      expect(column.name).to.eql(expectedColumn);
     }
 
   });
@@ -177,6 +177,50 @@ describe('columns', function() {
 
       it('<Done> to CLOSED', function() {
         expectStateColumn('CLOSED', 'Done');
+      });
+
+
+      // helpers ////////////////////
+
+      function expectStateColumn(state, expectedColumn) {
+
+        const column = columns.getByState(state);
+
+        expect(column).to.exist;
+        expect(column.name).to.eql(expectedColumn);
+      }
+
+    });
+
+
+    describe('should map explicit', function() {
+
+      const columns = new Columns([
+        { name: 'Default', label: null, states: [ 'DEFAULT' ] },
+        { name: 'External Contribution', label: null, states: [ 'EXTERNAL_CONTRIBUTION' ] },
+        { name: 'Doing', label: 'in progress', states: [ 'IN_PROGRESS' ] },
+        { name: 'Reviewing', label: 'needs review', states: [ 'IN_REVIEW' ] },
+        { name: 'Closed', label: null, closed: true, states: [ 'CLOSED' ] }
+      ]);
+
+
+      it('<Default> to DEFAULT', function() {
+        expectStateColumn('DEFAULT', 'Default');
+      });
+
+
+      it('<External Contribution> to EXTERNAL_CONTRIBUTION', function() {
+        expectStateColumn('EXTERNAL_CONTRIBUTION', 'External Contribution');
+      });
+
+
+      it('<Reviewing> to IN_REVIEW', function() {
+        expectStateColumn('IN_REVIEW', 'Reviewing');
+      });
+
+
+      it('<Closed> to CLOSED', function() {
+        expectStateColumn('CLOSED', 'Closed');
       });
 
 

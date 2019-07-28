@@ -74,7 +74,7 @@ class Store {
       links
     } = this.updateLinks(issue);
 
-    const column = newColumn || this.getIssueColumn(issue);
+    const column = newColumn || this.getIssueColumn(issue).name;
 
     // automatically compute desired order unless
     // the order is provided by the user

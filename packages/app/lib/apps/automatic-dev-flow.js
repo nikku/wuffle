@@ -1,6 +1,6 @@
-const IN_PROGRESS = 'In Progress';
-const NEEDS_REVIEW = 'Needs Review';
-const DONE = 'Done';
+const IN_PROGRESS = 'IN_PROGRESS';
+const IN_REVIEW = 'IN_REVIEW';
+const CLOSED = 'CLOSED';
 
 
 /**
@@ -24,7 +24,9 @@ module.exports = function(webhookEvents, githubIssues, columns) {
       issue
     } = context.payload;
 
-    await githubIssues.moveIssue(context, issue || pull_request, DONE);
+    const column = columns.getByState(CLOSED);
+
+    await githubIssues.moveIssue(context, issue || pull_request, column);
   });
 
   webhookEvents.on('pull_request.ready_for_review', async (context) => {
@@ -33,9 +35,11 @@ module.exports = function(webhookEvents, githubIssues, columns) {
       pull_request
     } = context.payload;
 
+    const column = columns.getByState(IN_REVIEW);
+
     await Promise.all([
-      githubIssues.moveIssue(context, pull_request, NEEDS_REVIEW),
-      githubIssues.moveReferencedIssues(context, pull_request, NEEDS_REVIEW)
+      githubIssues.moveIssue(context, pull_request, column),
+      githubIssues.moveReferencedIssues(context, pull_request, column)
     ]);
   });
 
@@ -48,11 +52,13 @@ module.exports = function(webhookEvents, githubIssues, columns) {
       pull_request
     } = context.payload;
 
-    const newState = isDraft(pull_request) ? IN_PROGRESS : NEEDS_REVIEW;
+    const newState = isDraft(pull_request) ? IN_PROGRESS : IN_REVIEW;
+
+    const column = columns.getByState(newState);
 
     await Promise.all([
-      githubIssues.moveIssue(context, pull_request, newState),
-      githubIssues.moveReferencedIssues(context, pull_request, newState)
+      githubIssues.moveIssue(context, pull_request, column),
+      githubIssues.moveReferencedIssues(context, pull_request, column)
     ]);
   });
 
@@ -90,7 +96,9 @@ module.exports = function(webhookEvents, githubIssues, columns) {
 
     const issue_number = match[1];
 
-    return githubIssues.findAndMoveIssue(context, issue_number, IN_PROGRESS, assignee);
+    const column = columns.getByState(IN_PROGRESS);
+
+    return githubIssues.findAndMoveIssue(context, issue_number, column, assignee);
   });
 
 };

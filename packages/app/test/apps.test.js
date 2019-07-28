@@ -27,7 +27,7 @@ describe('apps', () => {
 
   describe('githubIssues', function() {
 
-    let app, githubIssues;
+    let app, githubIssues, columns;
 
     beforeEach(async function() {
       app = await bootstrap({
@@ -35,12 +35,14 @@ describe('apps', () => {
       });
 
       githubIssues = await app.get('githubIssues');
+
+      columns = await app.get('columns');
     });
 
 
     describe('state update', function() {
 
-      it('should compute Inbox -> Done', function() {
+      it('should compute Inbox -> Done', async function() {
 
         // given
         const issue = {
@@ -52,8 +54,10 @@ describe('apps', () => {
           state: 'open'
         };
 
+        const newColumn = columns.getByState('CLOSED');
+
         // when
-        const update = githubIssues.getStateUpdate(issue, 'Done');
+        const update = githubIssues.getStateUpdate(issue, newColumn);
 
         // then
         expect(update).to.eql({
@@ -75,8 +79,10 @@ describe('apps', () => {
           state: 'open'
         };
 
+        const newColumn = columns.getByState('DEFAULT');
+
         // when
-        const update = githubIssues.getStateUpdate(issue, 'Inbox');
+        const update = githubIssues.getStateUpdate(issue, newColumn);
 
         // then
         expect(update).to.eql({});
@@ -99,8 +105,10 @@ describe('apps', () => {
           state: 'open'
         };
 
+        const newColumn = columns.getByState('CLOSED');
+
         // when
-        const update = githubIssues.getStateUpdate(issue, 'Done');
+        const update = githubIssues.getStateUpdate(issue, newColumn);
 
         // then
         expect(update).to.eql({
@@ -126,8 +134,10 @@ describe('apps', () => {
           state: 'open'
         };
 
+        const newColumn = columns.getByState('DEFAULT');
+
         // when
-        const update = githubIssues.getStateUpdate(issue, 'Inbox');
+        const update = githubIssues.getStateUpdate(issue, newColumn);
 
         // then
         expect(update).to.eql({
@@ -155,8 +165,10 @@ describe('apps', () => {
           state: 'closed'
         };
 
+        const newColumn = columns.getByState('CLOSED');
+
         // when
-        const update = githubIssues.getStateUpdate(issue, 'Done');
+        const update = githubIssues.getStateUpdate(issue, newColumn);
 
         // then
         expect(update).to.eql({
