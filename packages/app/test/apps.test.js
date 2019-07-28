@@ -54,7 +54,7 @@ describe('apps', () => {
           state: 'open'
         };
 
-        const newColumn = columns.getByState('CLOSED');
+        const newColumn = columns.getByState('DONE');
 
         // when
         const update = githubIssues.getStateUpdate(issue, newColumn);
@@ -105,7 +105,7 @@ describe('apps', () => {
           state: 'open'
         };
 
-        const newColumn = columns.getByState('CLOSED');
+        const newColumn = columns.getByState('DONE');
 
         // when
         const update = githubIssues.getStateUpdate(issue, newColumn);
@@ -165,7 +165,7 @@ describe('apps', () => {
           state: 'closed'
         };
 
-        const newColumn = columns.getByState('CLOSED');
+        const newColumn = columns.getByState('DONE');
 
         // when
         const update = githubIssues.getStateUpdate(issue, newColumn);

@@ -46,7 +46,7 @@ describe('columns', function() {
           { name: 'Inbox', label: null },
           { name: 'In Progress', label: 'in progress' },
           { name: 'Needs Review', label: 'needs review' }
-        ], 'no column mapped to state CLOSED or called Done');
+        ], 'no column mapped to state DONE or called Done');
       });
 
     });
@@ -175,8 +175,8 @@ describe('columns', function() {
       });
 
 
-      it('<Done> to CLOSED', function() {
-        expectStateColumn('CLOSED', 'Done');
+      it('<Done> to DONE', function() {
+        expectStateColumn('DONE', 'Done');
       });
 
 
@@ -200,7 +200,7 @@ describe('columns', function() {
         { name: 'External Contribution', label: null, states: [ 'EXTERNAL_CONTRIBUTION' ] },
         { name: 'Doing', label: 'in progress', states: [ 'IN_PROGRESS' ] },
         { name: 'Reviewing', label: 'needs review', states: [ 'IN_REVIEW' ] },
-        { name: 'Closed', label: null, closed: true, states: [ 'CLOSED' ] }
+        { name: 'Closed', label: null, closed: true, states: [ 'DONE' ] }
       ]);
 
 
@@ -219,8 +219,8 @@ describe('columns', function() {
       });
 
 
-      it('<Closed> to CLOSED', function() {
-        expectStateColumn('CLOSED', 'Closed');
+      it('<Closed> to DONE', function() {
+        expectStateColumn('DONE', 'Closed');
       });
 
 

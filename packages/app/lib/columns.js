@@ -1,7 +1,7 @@
 const States = {
   DEFAULT: 'DEFAULT',
   IN_PROGRESS: 'IN_PROGRESS',
-  CLOSED: 'CLOSED',
+  DONE: 'DONE',
   IN_REVIEW: 'IN_REVIEW',
   EXTERNAL_CONTRIBUTION: 'EXTERNAL_CONTRIBUTION'
 };
@@ -9,7 +9,7 @@ const States = {
 const StateToNames = {
   DEFAULT: 'Inbox',
   IN_PROGRESS: 'In Progress',
-  CLOSED: 'Done',
+  DONE: 'Done',
   IN_REVIEW: 'Needs Review',
   EXTERNAL_CONTRIBUTION: 'Inbox'
 };

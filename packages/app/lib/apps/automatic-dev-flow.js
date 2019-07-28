@@ -1,6 +1,6 @@
 const IN_PROGRESS = 'IN_PROGRESS';
 const IN_REVIEW = 'IN_REVIEW';
-const CLOSED = 'CLOSED';
+const DONE = 'DONE';
 
 
 /**
@@ -24,7 +24,7 @@ module.exports = function(webhookEvents, githubIssues, columns) {
       issue
     } = context.payload;
 
-    const column = columns.getByState(CLOSED);
+    const column = columns.getByState(DONE);
 
     await githubIssues.moveIssue(context, issue || pull_request, column);
   });
