@@ -5,6 +5,55 @@ const Columns = require('../lib/columns');
 
 describe('columns', function() {
 
+  describe('validation', function() {
+
+    describe('should reject invalid config', function() {
+
+      function expectError(columns, message) {
+        expect(() => {
+          new Columns(columns);
+        }).to.throw(message);
+      }
+
+      it('missing DEFAULT column', function() {
+        expectError([
+          { name: 'In Progress', label: 'in progress' },
+          { name: 'Needs Review', label: 'needs review' },
+          { name: 'Done', label: null, closed: true }
+        ], 'no column mapped to state DEFAULT or called Inbox');
+      });
+
+      it('missing IN_PROGRESS column', function() {
+        expectError([
+          { name: 'Inbox', label: null },
+          { name: 'Needs Review', label: 'needs review' },
+          { name: 'Done', label: null, closed: true }
+        ], 'no column mapped to state IN_PROGRESS or called In Progress');
+      });
+
+
+      it('missing IN_REVIEW column', function() {
+        expectError([
+          { name: 'Inbox', label: null },
+          { name: 'In Progress', label: 'in progress' },
+          { name: 'Done', label: null, closed: true }
+        ], 'no column mapped to state IN_REVIEW or called Needs Review');
+      });
+
+
+      it('missing DONE column', function() {
+        expectError([
+          { name: 'Inbox', label: null },
+          { name: 'In Progress', label: 'in progress' },
+          { name: 'Needs Review', label: 'needs review' }
+        ], 'no column mapped to state CLOSED or called Done');
+      });
+
+    });
+
+  });
+
+
   describe('should map issue', function() {
 
     const columns = new Columns([
