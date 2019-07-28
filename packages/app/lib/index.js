@@ -35,70 +35,81 @@ const PromiseEvents = require('promise-events');
 const Columns = require('./columns');
 
 
-module.exports = async app => {
-
-  // intialize ///////////////////
+module.exports = function(app) {
 
   const logger = app.log;
-  const router = app.router;
 
   const log = logger.child({
     name: 'wuffle'
   });
 
-  const config = loadConfig(log);
 
-  const events = new PromiseEvents();
+  async function setup() {
 
-  // load child apps //////////////
+    // intialize ///////////////////
 
-  const modules = apps.map(app => {
+    const router = app.router;
 
-    if (typeof app === 'function') {
-      return {
-        __init__: [ app ]
-      };
+    const config = loadConfig(log);
+
+    const events = new PromiseEvents();
+
+    // load child apps //////////////
+
+    const modules = apps.map(app => {
+
+      if (typeof app === 'function') {
+        return {
+          __init__: [ app ]
+        };
+      }
+
+      return app;
+    });
+
+    const coreModule = {
+      'app': [ 'value', app ],
+      'config': [ 'value', config ],
+      'router': [ 'value', router ],
+      'logger': [ 'value', logger ],
+      'columns': [ 'type', Columns ],
+      'store': [ 'type', Store ],
+      'events': [ 'value', events ]
+    };
+
+    const injector = new AsyncInjector([
+      coreModule,
+      ...modules
+    ]);
+
+    // initialize modules ////////////
+
+    for (const module of modules) {
+
+      const init = module.__init__ || [];
+
+      for (const component of init) {
+        await injector[typeof component === 'function' ? 'invoke' : 'get'](component);
+      }
+
     }
 
-    return app;
-  });
+    await events.emit('wuffle.start');
 
-  const coreModule = {
-    'app': [ 'value', app ],
-    'config': [ 'value', config ],
-    'router': [ 'value', router ],
-    'logger': [ 'value', logger ],
-    'columns': [ 'type', Columns ],
-    'store': [ 'type', Store ],
-    'events': [ 'value', events ]
+    log.info('started');
+
+    preExit(function() {
+
+      log.info('pre-exit');
+
+      return events.emit('wuffle.pre-exit');
+    });
   };
 
-  const injector = new AsyncInjector([
-    coreModule,
-    ...modules
-  ]);
-
-  // initialize modules ////////////
-
-  for (const module of modules) {
-
-    const init = module.__init__ || [];
-
-    for (const component of init) {
-      await injector[typeof component === 'function' ? 'invoke' : 'get'](component);
+  return setup().catch(
+    err => {
+      log.fatal('failed to create app', err);
+      process.exit(21)
     }
-
-  }
-
-  await events.emit('wuffle.start');
-
-  log.info('started');
-
-  preExit(function() {
-
-    log.info('pre-exit');
-
-    return events.emit('wuffle.pre-exit');
-  });
-
+  );
 };
