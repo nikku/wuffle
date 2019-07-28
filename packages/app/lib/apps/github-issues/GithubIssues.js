@@ -40,7 +40,7 @@ function GithubIssues(logger, config, columns) {
 
     let update = {};
 
-    const newColumn = columns.findByName(newState);
+    const newColumn = columns.getByName(newState);
 
     const issueState = newColumn.closed ? 'closed' : 'open';
 

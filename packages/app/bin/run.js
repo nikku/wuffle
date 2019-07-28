@@ -11,6 +11,8 @@ const log = wrapLogger(logger, logger).child({
   name: 'wuffle:run'
 });
 
+const Columns = require('../lib/columns');
+
 const { version } = require('../package');
 
 const NODE_ENV = process.env.NODE_ENV || 'development';
@@ -18,6 +20,14 @@ const NODE_ENV = process.env.NODE_ENV || 'development';
 const IS_PROD = NODE_ENV === 'production';
 const IS_DEV = NODE_ENV === 'development';
 
+
+// shim
+
+if (typeof Array.prototype.flat !== 'function') {
+  Array.prototype.flat = function() {
+    return Array.prototype.concat.call(this, ...this);
+  };
+}
 
 async function validate() {
 
@@ -33,7 +43,7 @@ async function validate() {
     checkEnv('BASE_URL', IS_PROD),
     checkConfig(),
     checkBaseUrl()
-  ].filter(problem => problem);
+  ].flat().filter(problem => problem);
 
   function isFatal(problem) {
     return problem.type === 'ERROR';
@@ -58,27 +68,62 @@ async function validate() {
     }
   }
 
+  function checkConfigName(config) {
+    const problem = IS_PROD ? error : warning;
+
+    if (!config.name) {
+      return problem('missing config.name');
+    }
+  }
+
+  function checkConfigColumns(config) {
+
+    if (!config.columns) {
+      return error('missing config.columns');
+    }
+
+    try {
+      new Columns(config.columns);
+    } catch (error) {
+      // always an error, regardless of PROD / DEV
+      return error(error.message);
+    }
+  }
+
+  function checkConfigValues(config) {
+
+    return [
+      checkConfigName(config),
+      checkConfigColumns(config)
+    ];
+
+  }
+
   function checkConfig() {
 
     const problem = IS_PROD ? error : warning;
 
+    let config;
+
     if (process.env.BOARD_CONFIG) {
       try {
-        JSON.parse(process.env.BOARD_CONFIG);
-
-        // we cool!
-        return;
+        config = JSON.parse(process.env.BOARD_CONFIG);
       } catch (err) {
         return problem(`Failed to parse env.BOARD_CONFIG as JSON: ${err.message}`);
       }
     }
 
-    try {
-      require('../wuffle.config.js');
-    } catch (err) {
-      return problem('Board not configured via env.BOARD_CONFIG or wuffle.config.js');
+    if (!config) {
+      try {
+        config = require('../wuffle.config.js');
+      } catch (err) {
+        return problem('Board not configured via env.BOARD_CONFIG or wuffle.config.js');
+      }
     }
 
+    if (config) {
+      return checkConfigValues(config);
+    }
   }
 
   function checkEnv(key, isError=false) {

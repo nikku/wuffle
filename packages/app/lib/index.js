@@ -104,12 +104,13 @@ module.exports = function(app) {
 
       return events.emit('wuffle.pre-exit');
     });
-  };
+  }
 
   return setup().catch(
     err => {
       log.fatal('failed to create app', err);
-      process.exit(21)
+
+      process.exit(21);
     }
   );
 };

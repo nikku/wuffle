@@ -5,31 +5,29 @@ const Columns = require('../lib/columns');
 
 describe('columns', function() {
 
-  const config = [
-    { name: 'Inbox', label: null },
-    { name: 'Backlog', label: 'backlog' },
-    { name: 'Ready', label: 'ready' },
-    { name: 'In Progress', label: 'in progress' },
-    { name: 'Needs Review', label: 'needs review' },
-    { name: 'Done', label: null, closed: true },
-    { name: 'Some Column', label: 'special label', closed: true }
-  ];
+  describe('should map issue', function() {
 
-  const columns = new Columns(config);
+    const columns = new Columns([
+      { name: 'Inbox', label: null },
+      { name: 'Backlog', label: 'backlog' },
+      { name: 'Ready', label: 'ready' },
+      { name: 'In Progress', label: 'in progress' },
+      { name: 'Needs Review', label: 'needs review' },
+      { name: 'Done', label: null, closed: true },
+      { name: 'Some Column', label: 'post-done', closed: true }
+    ]);
 
 
-  describe('issue mapping', function() {
+    it('open, no column label', function() {
 
-    it('should map Inbox', function() {
-
-      expectColumn({
+      expectIssueColumn({
         labels: [
           { name: 'bug' }
         ],
         state: 'open'
       }, 'Inbox');
 
-      expectColumn({
+      expectIssueColumn({
         labels: [],
         state: 'open'
       }, 'Inbox');
@@ -37,9 +35,9 @@ describe('columns', function() {
     });
 
 
-    it('should map Needs Review', function() {
+    it('open, column label <needs review>', function() {
 
-      expectColumn({
+      expectIssueColumn({
         labels: [
           { name: 'bug' },
           { name: 'needs review' }
@@ -50,9 +48,9 @@ describe('columns', function() {
     });
 
 
-    it('should map Backlog', function() {
+    it('open, column label <backlog>', function() {
 
-      expectColumn({
+      expectIssueColumn({
         labels: [
           { name: 'enhancement' },
           { name: 'backlog' }
@@ -63,9 +61,9 @@ describe('columns', function() {
     });
 
 
-    it('should map Done', function() {
+    it('closed', function() {
 
-      expectColumn({
+      expectIssueColumn({
         labels: [
           { name: 'enhancement' },
           { name: 'backlog' }
@@ -73,7 +71,7 @@ describe('columns', function() {
         state: 'closed'
       }, 'Done');
 
-      expectColumn({
+      expectIssueColumn({
         labels: [],
         state: 'closed'
       }, 'Done');
@@ -81,26 +79,70 @@ describe('columns', function() {
     });
 
 
-    it('should map Some Column', function() {
+    it('closed, colum label <post-done>', function() {
 
-      expectColumn({
+      expectIssueColumn({
         labels: [
-          { name: 'special label' }
+          { name: 'post-done' }
         ],
         state: 'closed'
       }, 'Some Column');
 
     });
 
+
+    // helpers ////////////////////
+
+    function expectIssueColumn(issue, expectedColumn) {
+
+      const column = columns.getIssueColumn(issue);
+
+      expect(column).to.eql(expectedColumn);
+    }
+
   });
 
 
-  // helpers ///////////////////
+  describe('state mapping', function() {
 
-  function expectColumn(issue, expectColumn) {
+    describe('should map by name', function() {
 
-    const column = columns.getIssueColumn(issue);
+      const columns = new Columns([
+        { name: 'Inbox', label: null },
+        { name: 'In Progress', label: 'in progress' },
+        { name: 'Needs Review', label: 'needs review' },
+        { name: 'Done', label: null, closed: true }
+      ]);
 
-    expect(column).to.eql(expectColumn);
-  }
+
+      it('<Inbox> to DEFAULT + EXTERNAL_CONTRIBUTION', function() {
+        expectStateColumn('DEFAULT', 'Inbox');
+        expectStateColumn('EXTERNAL_CONTRIBUTION', 'Inbox');
+      });
+
+
+      it('<Needs Review> to IN_REVIEW', function() {
+        expectStateColumn('IN_REVIEW', 'Needs Review');
+      });
+
+
+      it('<Done> to CLOSED', function() {
+        expectStateColumn('CLOSED', 'Done');
+      });
+
+
+      // helpers ////////////////////
+
+      function expectStateColumn(state, expectedColumn) {
+
+        const column = columns.getByState(state);
+
+        expect(column).to.exist;
+        expect(column.name).to.eql(expectedColumn);
+      }
+
+    });
+
+  });
+
 });
