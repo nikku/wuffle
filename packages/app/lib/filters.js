@@ -1,37 +1,37 @@
-function getKey(issueOrPr, repository) {
-  return `${repository.owner.login}/${repository.name}#${issueOrPr.number}`;
+function getKey(githubIssueOrPull, repository) {
+  return `${repository.owner.login}/${repository.name}#${githubIssueOrPull.number}`;
 }
 
 module.exports.getKey = getKey;
 
 
-function getIdentifier(issueOrPr, repository) {
-  return `${repository.id}-${issueOrPr.number}`;
+function getIdentifier(githubIssueOrPull, repository) {
+  return `${repository.id}-${githubIssueOrPull.number}`;
 }
 
 module.exports.getIdentifier = getIdentifier;
 
 
-function filterIssueOrPull(issueOrPr, repository) {
+function filterIssueOrPull(githubIssueOrPull, repository) {
 
-  if ('issue_url' in issueOrPr) {
-    return filterPull(issueOrPr, repository);
+  if ('issue_url' in githubIssueOrPull) {
+    return filterPull(githubIssueOrPull, repository);
   } else {
-    return filterIssue(issueOrPr, repository);
+    return filterIssue(githubIssueOrPull, repository);
   }
 }
 
 module.exports.filterIssueOrPull = filterIssueOrPull;
 
 
-function filterRepository(repository) {
+function filterRepository(githubRepository) {
 
   const {
     id,
     name,
     'private': isPrivate,
     owner
-  } = repository;
+  } = githubRepository;
 
   return {
     id,
@@ -44,13 +44,13 @@ function filterRepository(repository) {
 module.exports.filterRepository = filterRepository;
 
 
-function filterUser(user) {
+function filterUser(githubUser) {
 
   const {
     id,
     login,
     avatar_url
-  } = user;
+  } = githubUser;
 
   return {
     id,
@@ -62,13 +62,13 @@ function filterUser(user) {
 module.exports.filterUser = filterUser;
 
 
-function filterLabel(label) {
+function filterLabel(githubLabel) {
 
   const {
     id,
     name,
     color
-  } = label;
+  } = githubLabel;
 
   return {
     id,
@@ -80,13 +80,13 @@ function filterLabel(label) {
 module.exports.filterLabel = filterLabel;
 
 
-function filterBase(base) {
+function filterBase(githubBase) {
   const {
     ref,
     sha,
     user,
     repo
-  } = base;
+  } = githubBase;
 
   return {
     ref,
@@ -99,14 +99,14 @@ function filterBase(base) {
 module.exports.filterBase = filterBase;
 
 
-function filterMilestone(milestone) {
+function filterMilestone(githubMilestone) {
 
   const {
     id,
     number,
     title,
     state
-  } = milestone;
+  } = githubMilestone;
 
   return {
     id,
@@ -119,7 +119,7 @@ function filterMilestone(milestone) {
 module.exports.filterMilestone = filterMilestone;
 
 
-function filterPull(pull_request, repository) {
+function filterPull(githubPull, githubRepository) {
 
   const {
     url,
@@ -149,12 +149,12 @@ function filterPull(pull_request, repository) {
     additions,
     deletions,
     changed_files
-  } = pull_request;
+  } = githubPull;
 
   // stable ID that is independent from GitHubs internal issue/pr distinction
-  const id = getIdentifier(pull_request, repository);
+  const id = getIdentifier(githubPull, githubRepository);
 
-  const key = getKey(pull_request, repository);
+  const key = getKey(githubPull, githubRepository);
 
   return {
     id,
@@ -187,14 +187,14 @@ function filterPull(pull_request, repository) {
     deletions,
     changed_files,
     pull_request: true,
-    repository: filterRepository(repository)
+    repository: filterRepository(githubRepository)
   };
 }
 
 module.exports.filterPull = filterPull;
 
 
-function filterIssue(issue, repository) {
+function filterIssue(githubIssue, githubRepository) {
 
   const {
     number,
@@ -209,15 +209,15 @@ function filterIssue(issue, repository) {
     milestone,
     comments,
     pull_request
-  } = issue;
+  } = githubIssue;
 
   // stable ID that is independent from GitHubs internal issue/pr distinction
-  const id = getIdentifier(issue, repository);
+  const id = getIdentifier(githubIssue, githubRepository);
 
-  const key = getKey(issue, repository);
+  const key = getKey(githubIssue, githubRepository);
 
   // handle issues which are actual pull requests
-  const url = pull_request ? pull_request.url : issue.url;
+  const url = pull_request ? pull_request.url : githubIssue.url;
 
   return {
     id,
@@ -234,7 +234,7 @@ function filterIssue(issue, repository) {
     labels: labels.map(filterLabel),
     milestone: milestone ? filterMilestone(milestone) : null,
     comments,
-    repository: filterRepository(repository),
+    repository: filterRepository(githubRepository),
     pull_request: !!pull_request
   };
 
