@@ -122,7 +122,7 @@ function groupByStates(columns) {
     );
 
     if (!column) {
-      throw new Error('no column mapped to state: ' + state);
+      throw new Error('no column mapped to state ' + state + ' or called ' + StateToNames[state]);
     }
 
     columnsByState[state] = column;
