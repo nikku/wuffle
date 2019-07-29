@@ -71,6 +71,32 @@ module.exports = {
 Make sure that you [enabled your app](#configure-github-app) for all repositories that you would like to connect to the board.
 
 
+### Mapping Special Columns
+
+The board requires you to map a number of special columns in order to know, how to react to PR opening, issue closing and so on. The following table shows the states and their mapping to the default column names used above:
+
+| State | Default Column |
+| :--- | :--- |
+| `DEFAULT` / `EXTERNAL_CONTRIBUTION` | Inbox |
+| `IN_PROGRESS` | In Progress |
+| `IN_REVIEW` | Needs Review |
+| `DONE` | Done |
+
+If you would like to use custom-named columns, attach their special state via the `states` property:
+
+```js
+module.exports = {
+  name: 'My Wuffle Board',
+  columns: [
+    { name: 'New', label: null, states: [ 'DEFAULT', 'EXTERNAL_CONTRIBUTION' ] },
+    { name: 'Doing it', label: 'doing it', states: [ 'IN_PROGRESS' ] },
+    { name: 'Review', label: 'review', states: [ 'IN_REVIEW' ] },
+    { name: 'Finished', label: null, closed: true, states: [ 'DONE' ] }
+  ]
+};
+```
+
+
 ## Run Board
 
 If you started your app in development mode the board should reload automatically. If properly configured, background sync will pickup repositories, fetch issues from GitHub and populate your board.
