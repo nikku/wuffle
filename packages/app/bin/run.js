@@ -25,7 +25,7 @@ const IS_DEV = NODE_ENV === 'development';
 
 if (typeof Array.prototype.flat !== 'function') {
   Array.prototype.flat = function() {
-    return Array.prototype.concat.call(this, ...this);
+    return [].concat(...this);
   };
 }
 
