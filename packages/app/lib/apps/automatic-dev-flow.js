@@ -1,6 +1,7 @@
+const DONE = 'DONE';
+const EXTERNAL_CONTRIBUTION = 'EXTERNAL_CONTRIBUTION';
 const IN_PROGRESS = 'IN_PROGRESS';
 const IN_REVIEW = 'IN_REVIEW';
-const DONE = 'DONE';
 
 
 /**
@@ -35,7 +36,9 @@ module.exports = function(webhookEvents, githubIssues, columns) {
       pull_request
     } = context.payload;
 
-    const column = columns.getByState(IN_REVIEW);
+    const state = isExternal(pull_request) ? EXTERNAL_CONTRIBUTION : IN_REVIEW;
+
+    const column = columns.getByState(state);
 
     await Promise.all([
       githubIssues.moveIssue(context, pull_request, column),
@@ -52,7 +55,10 @@ module.exports = function(webhookEvents, githubIssues, columns) {
       pull_request
     } = context.payload;
 
-    const newState = isDraft(pull_request) ? IN_PROGRESS : IN_REVIEW;
+    const newState =
+      isExternal(pull_request) ? EXTERNAL_CONTRIBUTION : (
+        isDraft(pull_request) ? IN_PROGRESS : IN_REVIEW
+      );
 
     const column = columns.getByState(newState);
 
@@ -113,4 +119,15 @@ function isDraft(pull_request) {
   } = pull_request;
 
   return draft || /wip([^a-z]+|$)/i.test(title);
+}
+
+
+function isExternal(pull_request) {
+
+  const {
+    base,
+    head
+  } = pull_request;
+
+  return base.repo.id !== head.repo.id;
 }
