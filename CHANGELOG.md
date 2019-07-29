@@ -6,6 +6,11 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 ___Note:__ Yet to be released changes appear here._
 
+## 0.19.1
+
+* `DOCS`: add troubleshooting document
+* `DOCS`: document column to state mappings
+
 ## 0.19.0
 
 * `FEAT(app)`: handle PRs from external like new issues ([`8e0919d5`](https://github.com/nikku/wuffle/commit/8e0919d5358d1642bde2c08f138b4d1385bc1745))
