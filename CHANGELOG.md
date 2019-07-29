@@ -6,6 +6,13 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 ___Note:__ Yet to be released changes appear here._
 
+## 0.19.0
+
+* `FEAT(app)`: handle PRs from external like new issues ([`8e0919d5`](https://github.com/nikku/wuffle/commit/8e0919d5358d1642bde2c08f138b4d1385bc1745))
+* `FEAT(app)`: allow alternative column names and explicit state mappings ([`c2575b32`](https://github.com/nikku/wuffle/commit/c2575b3246195106a7c7a95c919cc2315c39a6fc))
+* `FEAT(app)`: validate board configuration ([#39](https://github.com/nikku/wuffle/issues/39))
+* `FEAT(app)`: crash on run failure ([`2d2ac864`](https://github.com/nikku/wuffle/commit/2d2ac864c31822546a7de7b25c3a375119a32048))
+
 ## 0.18.0
 
 * `FEAT(app)`: recognize list of linked issues with the same type
