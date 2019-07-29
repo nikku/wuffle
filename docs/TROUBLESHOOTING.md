@@ -19,4 +19,4 @@ The board requires some special columsn to exist by name or to be assigned to an
 
 ---
 
-Related: [Setup](https://github.com/nikku/wuffle/blob/master/docs/SETUP.md)
+See also: [Setup](https://github.com/nikku/wuffle/blob/master/docs/SETUP.md)
