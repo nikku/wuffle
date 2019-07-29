@@ -128,4 +128,4 @@ docker run -p 3000:3000 \
 
 ---
 
-See also: [Configuration](./CONFIG.md)
+See also: [Configuration](./CONFIG.md), [Troubleshooting](./TROUBLESHOOTING.md)
