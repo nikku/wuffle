@@ -54,6 +54,10 @@ export function hasModifier(event) {
   return event.ctrlKey || event.shiftKey || event.altKey || event.metaKey;
 }
 
+export function hasShiftModifier(event) {
+  return event.shiftKey;
+}
+
 export function noDuplicates(keyFn) {
 
   const found = {};

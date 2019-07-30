@@ -117,15 +117,35 @@
     return () => teardownHooks.forEach(fn => fn && fn());
   });
 
-  function applyFilter(qualifier, value) {
+  function applyFilter(qualifier, value, add) {
 
     if (/[\s:]+/.test(value)) {
       value = '"' + value + '"';
     }
 
-    if (value) {
-      return filterChanged(`${qualifier}:${value}`);
+    const criteria = value && `${qualifier}:${value}`;
+
+    if (!criteria) {
+      return;
     }
+
+    let newFilter;
+
+    const criteriaIndex = filter.indexOf(criteria);
+
+    if (criteriaIndex === 0) {
+      newFilter = filter.substring(criteria.length + 1);
+    } else if (criteriaIndex > 0) {
+      newFilter = filter.substring(0, criteriaIndex - 1) + filter.substring(criteriaIndex + criteria.length);
+    } else {
+      if (add && filter.trim()) {
+        newFilter = `${filter} ${qualifier}:${value}`;
+      } else {
+        newFilter = criteria;
+      }
+    }
+
+    return filterChanged(newFilter);
   }
 
   function filterChanged(value, pushHistory=true) {

@@ -3,7 +3,8 @@
   import LinkIcon from './components/LinkIcon.svelte';
 
   import {
-    hasModifier
+    hasModifier,
+    hasShiftModifier
   } from './util';
 
   export let item;
@@ -32,13 +33,13 @@
 
     return function(event) {
 
-      if (hasModifier(event)) {
+      if (!hasModifier(event)) {
         return;
       }
 
       event.preventDefault();
 
-      onSelect(qualifier, value);
+      onSelect(qualifier, value, hasShiftModifier(event));
     };
   }
 </script>

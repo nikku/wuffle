@@ -4,6 +4,7 @@
     isOpenOrMerged,
     isPull,
     hasModifier,
+    hasShiftModifier,
     noDuplicates
   } from './util';
 
@@ -64,17 +65,17 @@
 
   $: cardUrl = `https://github.com/${ repositoryName }/issues/${ number }`;
 
-  function handleSelection(qualifier, value) {
+  function handleSelection(qualifier, value, clickThrough=true) {
 
     return function(event) {
 
-      if (hasModifier(event)) {
+      if (clickThrough && !hasModifier(event)) {
         return;
       }
 
       event.preventDefault();
 
-      onSelect(qualifier, value);
+      onSelect(qualifier, value, hasShiftModifier(event));
     };
   }
 </script>
@@ -209,7 +210,7 @@
         <Tag
           class="tag milestone"
           name={ milestone.title }
-          onClick={ onSelect && handleSelection('milestone', milestone.title) }
+          onClick={ onSelect && handleSelection('milestone', milestone.title, false) }
         />
       {/if}
 
@@ -218,7 +219,7 @@
           class="tag label"
           color="#{ color }"
           name={ name }
-          onClick={ onSelect && handleSelection('label', name) }
+          onClick={ onSelect && handleSelection('label', name, false) }
         />
       {/each}
 
