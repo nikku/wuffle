@@ -6,6 +6,13 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 ___Note:__ Yet to be released changes appear here._
 
+## 0.20.0
+
+* `FEAT(board)`: make click on issue numbers open the issue on GitHub as the default interaction again ([#35](https://github.com/nikku/wuffle/issues/35))
+* `FEAT(board)`: make filtering by issue reference, tag or milestone available as `SHIFT` / `CTRL` + click
+* `FEAT(board)`: make consecutive click on reference, tag or milestone toggle the relevant filter
+* `FEAT(board)`: escape card dragging on `ESC` key
+
 ## 0.19.1
 
 * `DOCS`: add troubleshooting document
