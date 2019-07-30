@@ -375,6 +375,20 @@
     return dataset.columnId;
   }
 
+  function checkCancel(event) {
+    if (event.key === 'Escape') {
+      drake.cancel(true);
+    }
+  }
+
+  drake.on('drag', () => {
+    document.addEventListener('keydown', checkCancel);
+  });
+
+  drake.on('dragend', () => {
+    document.removeEventListener('keydown', checkCancel);
+  });
+
   drake.on('drop', (el, target, source, nextEl) => {
     const cardId = getCardId(el);
     const cardOrder = getCardOrder(el);
