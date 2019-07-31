@@ -51,7 +51,7 @@ export {
 
 
 export function hasModifier(event) {
-  return event.ctrlKey || event.shiftKey || event.altKey || event.metaKey;
+  return event.shiftKey || event.altKey;
 }
 
 export function hasShiftModifier(event) {
