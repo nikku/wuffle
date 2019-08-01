@@ -133,20 +133,15 @@ module.exports = async (
   function moveIssue(context, issue, column, position) {
 
     const {
-      id
-    } = issue;
-
-    const {
       before,
       after
     } = position;
-
-    store.updateOrder(id, before, after, column.name);
 
     // we move the issue via GitHub and rely on the automatic-dev-flow
     // to pick up the update (and react to it)
 
     return Promise.all([
+      store.updateIssueOrder(issue, before, after, column.name),
       githubIssues.moveIssue(context, issue, column),
       githubIssues.moveReferencedIssues(context, issue, column)
     ]);
