@@ -142,8 +142,7 @@ module.exports = async (
 
     return Promise.all([
       store.updateIssueOrder(issue, before, after, column.name),
-      githubIssues.moveIssue(context, issue, column),
-      githubIssues.moveReferencedIssues(context, issue, column)
+      githubIssues.moveIssue(context, issue, column)
     ]);
 
   }
