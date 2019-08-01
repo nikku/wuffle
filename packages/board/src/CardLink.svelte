@@ -92,11 +92,15 @@
       {/if}
 
       {#if type === 'REQUIRED_BY' || type === 'CLOSES' }
-        <LinkIcon
-          class="issue"
-          name="issue"
-          state={ item.state }
-        />
+        {#if item.state === 'open'}
+          <LinkIcon class="linked-to" name="linked-to" />
+        {:else}
+          <LinkIcon
+            class="issue"
+            name="issue"
+            state={ item.state }
+          />
+        {/if}
       {/if}
 
       {#if type === 'LINKED_TO'}
