@@ -1,6 +1,5 @@
 <script>
   import {
-    autoresize,
     isOpenOrMerged,
     isPull,
     hasModifier,
@@ -187,7 +186,7 @@
       </span>
     </div>
     <div class="title">
-      <textarea use:autoresize>{ title }</textarea>
+      { title }
     </div>
     {#if children.length}
       <div
