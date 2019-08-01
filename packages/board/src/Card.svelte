@@ -154,21 +154,24 @@
 <div class="board-card-container { className }">
   <div class="board-card">
     <div class="header">
-      {#if children.length}
-        <EpicIcon item={ item } linkType="PARENT_OF" />
-      {/if}
-
-      {#if pull_request}
-        <PullRequestIcon item={ item } />
-      {/if}
-
       <a href={ cardUrl }
          target="_blank"
          rel="noopener noreferrer"
          class="issue-number"
          title="{ repositoryName }#{ number }"
          on:click={ handleSelection('ref', item.key) }
-      >{ number }</a>
+      >
+
+        {#if children.length}
+          <EpicIcon item={ item } linkType="PARENT_OF" />
+        {/if}
+
+        {#if pull_request}
+          <PullRequestIcon item={ item } />
+        {/if}
+
+        { number }
+      </a>
 
       <span class="repository" title={ repositoryName }>{ repositoryName }</span>
 
