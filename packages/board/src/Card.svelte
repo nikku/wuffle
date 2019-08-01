@@ -14,11 +14,12 @@
   import CardLink from './CardLink.svelte';
 
   const linkOrder = {
-    'PARENT_OF': 0,
-    'CHILD_OF': 1,
-    'REQUIRED_BY': 2,
-    'DEPENDS_ON': 3,
-    'LINKED_TO': 4
+    'DEPENDS_ON': 1,
+    'CLOSED_BY': 2,
+    'PARENT_OF': 3,
+    'REQUIRED_BY': 4,
+    'LINKED_TO': 5,
+    'CHILD_OF': 6
   };
 
   export let item;
