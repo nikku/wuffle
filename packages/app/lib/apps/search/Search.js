@@ -96,11 +96,12 @@ function Search(store) {
     },
 
     repo: function repoFilter(name) {
-      return function filterRepo(issue) {
+
+      return function filterRepoAndOwner(issue) {
 
         const { repository } = issue;
 
-        return fuzzyMatches(repository.name, name);
+        return fuzzyMatches(`${repository.owner.login}/${repository.name}`, name);
       };
     },
 

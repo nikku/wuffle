@@ -224,7 +224,7 @@
 
         const repoOptions = _filterOptions['repo'] = _filterOptions['repo'] || {};
 
-        repoOptions[repository.name] = true;
+        repoOptions[repository.owner.login + '/' + repository.name] = true;
 
         if (milestone) {
           const milestoneOptions = _filterOptions['milestone'] = _filterOptions['milestone'] || {};
