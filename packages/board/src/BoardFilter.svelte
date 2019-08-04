@@ -4,19 +4,17 @@
 
   .board-filter {
 
+    position: relative;
+
     &.expanded {
       width: 500px;
       max-width: 100%;
     }
 
     width: 300px;
-
-    transition: width;
   }
 
   .input-prefixed {
-
-    position: relative;
 
     .prefix {
       position: absolute;
@@ -34,54 +32,55 @@
       width: 100%;
     }
 
-    .help {
+  }
 
-      border-radius: 4px;
-      margin: 6px 0 0;
-      text-align: left;
-      height: auto;
-      position: relative;
-      background: transparent;
-      border: none;
-      z-index: 999;
-      max-width: 600px;
-      min-width: 500px;
+  .help {
 
-      width: 100%;
-      min-width: 0!important;
-      max-width: none!important;
-      padding: .75rem 0!important;
-      background-color: #fff;
-      background-clip: padding-box;
-      border: 1px solid rgba(0,0,0,.1);
-      box-shadow: 0 0.5rem 1rem rgba(0,0,0,.175);
+    border-radius: 4px;
+    margin: 6px 0 0;
+    text-align: left;
+    height: auto;
+    position: relative;
+    background: transparent;
+    border: none;
+    z-index: 999;
+    max-width: 600px;
+    min-width: 500px;
 
-      position: absolute;
-      top: 100%;
-      z-index: 100;
-      left: 0px;
-      right: auto;
-      display: block;
+    width: 100%;
+    min-width: 0!important;
+    max-width: none!important;
+    padding: .75rem 0!important;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid rgba(0,0,0,.1);
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,.175);
 
-      .category {
-        color: $primary;
-        font-weight: bold;
-        padding: 0 .8rem;
-      }
+    position: absolute;
+    top: 100%;
+    z-index: 100;
+    left: 0px;
+    right: auto;
+    display: block;
 
-      .note {
-        padding: 0 .8rem;
-        color: $gray-600;
-
-        span {
-          font-style: italic;
-        }
-      }
+    .category {
+      color: $primary;
+      font-weight: bold;
+      padding: 0 .8rem;
     }
 
-    .icon {
-      color: $gray-300;
+    .note {
+      padding: 0 .8rem;
+      color: $gray-600;
+
+      span {
+        font-style: italic;
+      }
     }
+  }
+
+  .icon {
+    color: $gray-300;
   }
 </style>
 
@@ -400,28 +399,31 @@
 
 <svelte:window on:keydown={ handleGlobalKey } />
 
-<div class="input-prefixed board-filter { className } { expanded && 'expanded' }">
-  <label class="prefix" for={searchId}>
-    <Icon class="icon">
-      <SearchIcon />
-    </Icon>
-  </label>
+<div class="board-filter { className } { expanded && 'expanded' }">
+  <div class="input-prefixed">
 
-  <input
-    class="form-control"
-    type="search"
-    placeholder="Filter board"
-    id={searchId}
-    autocomplete="off"
-    spellcheck="false"
-    aria-label="Filter"
-    bind:this={ input }
-    bind:value={ value }
-    on:input={ handleInput }
-    on:keydown={ handleInputKey }
-    on:focus={ () => focussed = true }
-    on:blur={ () => focussed = false }
-  />
+    <label class="prefix" for={searchId}>
+      <Icon class="icon">
+        <SearchIcon />
+      </Icon>
+    </label>
+
+    <input
+      class="form-control"
+      type="search"
+      placeholder="Filter board"
+      id={searchId}
+      autocomplete="off"
+      spellcheck="false"
+      aria-label="Filter"
+      bind:this={ input }
+      bind:value={ value }
+      on:input={ handleInput }
+      on:keydown={ handleInputKey }
+      on:focus={ () => focussed = true }
+      on:blur={ () => focussed = false }
+    />
+  </div>
 
   {#if value && match}
     <div class="help">
