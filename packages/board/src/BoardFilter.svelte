@@ -69,28 +69,6 @@
         padding: 0 .8rem;
       }
 
-      ul {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-      }
-
-      li {
-        padding: 0 .8rem;
-        line-height: 2em;
-
-        &:not(.text) {
-          &:hover,
-          &.active {
-            background: scale-color($primary, $alpha: -90%);
-          }
-        }
-
-        &.text {
-          color: $gray-600;
-        }
-      }
-
       .note {
         padding: 0 .8rem;
         color: $gray-600;
@@ -98,11 +76,6 @@
         span {
           font-style: italic;
         }
-      }
-
-      .matched {
-        background: scale-color($primary, $alpha: -80%);
-        color: darken($primary, 10%);
       }
     }
 
@@ -116,7 +89,10 @@
 <script>
   import { Id } from './util';
 
-  import { Icon } from './components';
+  import {
+    Icon,
+    HintList
+  } from './components';
 
   import {
     debounce
@@ -130,8 +106,6 @@
   export let completionOptions = {};
 
   export let onChange;
-
-  const maxElements = 7;
 
   let staticValues = {
     is: [
@@ -457,22 +431,16 @@
         {/if}
 
         <div class="category">{ category.name }</div>
-        <ul>
-          {#each category.values as value, idx}
-            {#if idx < maxElements || (selectedHint && selectedHint.name === value.name) }
-              <li
-                class:active={ selectedHint && selectedHint.name === value.name }
-                on:mouseover={ () => mouseSelectedHint = value }
-                on:mouseout={ () => mouseSelectedHint = null }
-                on:mousedown={ (event) => { event.preventDefault(); applyHint(mouseSelectedHint); } }
-              >{#each value.parts as part}<span class:matched={ part.matched }>{ part.text }</span>{/each}</li>
-            {/if}
-          {/each}
 
-          {#if category.values.length > maxElements}
-            <li class="text">...</li>
-          {/if}
-        </ul>
+        <HintList
+          hints={ category.values }
+          selectedHint={ selectedHint }
+          onHover={ hint => mouseSelectedHint = hint }
+          onBlur={ () => mouseSelectedHint = null }
+          onSelect={ applyHint }
+          maxElements= { 7 }
+        />
+
       {/each}
     </div>
   {:else if focussed && !value}
