@@ -18,6 +18,10 @@ function Search(store) {
     return filterNoop;
   }
 
+  function includes(actual, pattern) {
+    return pattern && actual.toLowerCase().includes(pattern.toLowerCase());
+  }
+
   function fuzzyMatches(actual, pattern) {
     return pattern && actual.toLowerCase().startsWith(pattern.toLowerCase());
   }
@@ -29,9 +33,9 @@ function Search(store) {
       text = text.toLowerCase();
 
       return function filterText(issue) {
-        const issueText = `#${issue.number} ${issue.title}\n\n${issue.body}`.toLowerCase();
+        const issueText = `#${issue.number} ${issue.title}\n\n${issue.body}`;
 
-        return issueText.includes(text.toLowerCase());
+        return includes(issueText, text);
       };
 
     },
@@ -91,7 +95,7 @@ function Search(store) {
 
         const { labels } = issue;
 
-        return labels && labels.some(label => fuzzyMatches(label.name, name));
+        return labels && labels.some(label => includes(label.name, name));
       };
     },
 
@@ -101,7 +105,7 @@ function Search(store) {
 
         const { repository } = issue;
 
-        return fuzzyMatches(`${repository.owner.login}/${repository.name}`, name);
+        return includes(`${repository.owner.login}/${repository.name}`, name);
       };
     },
 
