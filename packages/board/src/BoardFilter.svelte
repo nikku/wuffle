@@ -253,17 +253,22 @@
           value
         } = categoryOption;
 
-        if (name.toLowerCase().startsWith(search)) {
+        if (name.toLowerCase().includes(search)) {
+
+          const idx = name.indexOf(search);
 
           const hint = {
             name: name,
             parts: [
               {
-                text: name.substring(0, search.length),
+                text: name.substring(0, idx)
+              },
+              {
+                text: name.substring(idx, idx + search.length),
                 matched: true
               },
               {
-                text: name.substring(search.length)
+                text: name.substring(idx + search.length)
               }
             ],
             apply: (currentValue) => {
