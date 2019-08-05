@@ -2,10 +2,13 @@
   import {
     isOpenOrMerged,
     isPull,
-    hasModifier,
-    hasShiftModifier,
     noDuplicates
   } from './util';
+
+  import {
+    isApplyFilterClick,
+    isAddFilterClick
+  } from './shortcuts';
 
   import Tag from './components/Tag.svelte';
   import PullRequestIcon from './components/PullRequestIcon.svelte';
@@ -69,13 +72,13 @@
 
     return function(event) {
 
-      if (clickThrough && !hasModifier(event)) {
+      if (clickThrough && !isApplyFilterClick(event)) {
         return;
       }
 
       event.preventDefault();
 
-      onSelect(qualifier, value, hasShiftModifier(event));
+      onSelect(qualifier, value, isAddFilterClick(event));
     };
   }
 </script>

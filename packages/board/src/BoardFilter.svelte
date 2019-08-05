@@ -94,6 +94,10 @@
   } from './components';
 
   import {
+    isFindShortcut
+  } from './shortcuts';
+
+  import {
     debounce
   } from './util';
 
@@ -374,20 +378,9 @@
     return target === input;
   }
 
-  function isFind(event) {
-
-    const {
-      ctrlKey,
-      metaKey,
-      key
-    } = event;
-
-    return (ctrlKey || metaKey) && key === 'f';
-  }
-
   function handleGlobalKey(event) {
 
-    if (isFind(event)) {
+    if (isFindShortcut(event)) {
       event.preventDefault();
 
       if (!isInputTarget(event)) {

@@ -50,14 +50,6 @@ export {
 } from 'min-dash';
 
 
-export function hasModifier(event) {
-  return event.shiftKey || event.altKey;
-}
-
-export function hasShiftModifier(event) {
-  return event.shiftKey;
-}
-
 export function noDuplicates(keyFn) {
 
   const found = {};

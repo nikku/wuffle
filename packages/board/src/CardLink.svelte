@@ -3,9 +3,9 @@
   import LinkIcon from './components/LinkIcon.svelte';
 
   import {
-    hasModifier,
-    hasShiftModifier
-  } from './util';
+    isApplyFilterClick,
+    isAddFilterClick
+  } from './shortcuts';
 
   export let item;
 
@@ -45,13 +45,13 @@
 
     return function(event) {
 
-      if (!hasModifier(event)) {
+      if (!isApplyFilterClick(event)) {
         return;
       }
 
       event.preventDefault();
 
-      onSelect(qualifier, value, hasShiftModifier(event));
+      onSelect(qualifier, value, isAddFilterClick(event));
     };
   }
 </script>
