@@ -2,9 +2,9 @@
 
   @import "variables";
 
-  .board-filter {
+  @import './InputPrefixed';
 
-    position: relative;
+  .board-filter {
 
     &.expanded {
       width: 500px;
@@ -12,71 +12,6 @@
     }
 
     width: 300px;
-  }
-
-  .input-prefixed {
-
-    .prefix {
-      position: absolute;
-      line-height: 1.5;
-      vertical-align: middle;
-      display: inline-block;
-      left: 0;
-      top: 1px;
-      padding: 0.375rem 0.75rem;
-      height: calc(1.5em + 0.75rem + 2px);
-    }
-
-    input {
-      padding-left: 33px;
-      width: 100%;
-    }
-
-  }
-
-  .help {
-
-    border-radius: 4px;
-    margin: 6px 0 0;
-    text-align: left;
-    height: auto;
-    position: relative;
-    background: transparent;
-    border: none;
-    z-index: 999;
-    max-width: 600px;
-    min-width: 500px;
-
-    width: 100%;
-    min-width: 0!important;
-    max-width: none!important;
-    padding: .75rem 0!important;
-    background-color: #fff;
-    background-clip: padding-box;
-    border: 1px solid rgba(0,0,0,.1);
-    box-shadow: 0 0.5rem 1rem rgba(0,0,0,.175);
-
-    position: absolute;
-    top: 100%;
-    z-index: 100;
-    left: 0px;
-    right: auto;
-    display: block;
-
-    .category {
-      color: $primary;
-      font-weight: bold;
-      padding: 0 .8rem;
-    }
-
-    .note {
-      padding: 0 .8rem;
-      color: $gray-600;
-
-      span {
-        font-style: italic;
-      }
-    }
   }
 
   .icon {
@@ -416,33 +351,37 @@
       on:focus={ () => focussed = true }
       on:blur={ () => focussed = false }
     />
-  </div>
 
-  {#if value && match}
-    <div class="help">
-      {#each match.categories as category, idx}
-        {#if idx > 0}
-        <hr />
-        {/if}
+    {#if value && match}
+      <div class="help">
+        {#each match.categories as category, idx}
+          {#if idx > 0}
+          <hr />
+          {/if}
 
-        <div class="category">{ category.name }</div>
+          <div class="category">{ category.name }</div>
 
-        <HintList
-          hints={ category.values }
-          selectedHint={ selectedHint }
-          onHover={ hint => mouseSelectedHint = hint }
-          onBlur={ () => mouseSelectedHint = null }
-          onSelect={ applyHint }
-          maxElements= { 7 }
-        />
+          <HintList
+            hints={ category.values }
+            selectedHint={ selectedHint }
+            onHover={ hint => mouseSelectedHint = hint }
+            onBlur={ () => mouseSelectedHint = null }
+            onSelect={ applyHint }
+            maxElements= { 7 }
+          />
 
-      {/each}
-    </div>
-  {:else if focussed && !value}
-    <div class="help">
-      <div class="note">
-        Filter cards by title and description or refine your search with operators such as <span>milestone</span>, <span>repo</span>, <span>assignee</span>, <span>label</span> and <span>is</span>.
+        {/each}
       </div>
-    </div>
-  {/if}
+    {:else if focussed && !value}
+      <div class="help">
+        <p class="note">
+          Filter cards by title and description.
+        </p>
+
+        <p class="note">
+          Refine your search with operators: <em>milestone</em>, <em>repo</em>, <em>assignee</em>, <em>label</em> and <em>is</em>.
+        </p>
+      </div>
+    {/if}
+  </div>
 </div>

@@ -1,0 +1,84 @@
+@import "variables";
+
+.input-prefixed {
+
+  position: relative;
+  width: 100%;
+
+  .prefix {
+    position: absolute;
+    line-height: 1.5;
+    vertical-align: middle;
+    display: inline-block;
+    left: 0;
+    top: 1px;
+    padding: 0.375rem 0.75rem;
+    height: calc(1.5em + 0.75rem + 2px);
+  }
+
+  input {
+    padding-left: 30px;
+    width: 100%;
+  }
+
+  &.input-prefixed-lg {
+
+    .prefix {
+      height: calc(1.5em + 1rem + 2px);
+      padding: 0.5rem 1rem;
+      font-size: 1.25rem;
+      line-height: 1.5;
+    }
+
+    input {
+      padding-left: 36px;
+    }
+  }
+
+  .help {
+    border-radius: 4px;
+    margin: 0;
+    text-align: left;
+    height: auto;
+    position: relative;
+    background: transparent;
+    border: none;
+    z-index: 999;
+    width: 100%;
+    min-width: 0!important;
+    max-width: none!important;
+    padding: .6em 0;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid rgba(0,0,0,.1);
+    box-shadow: 0 0.1rem 1rem rgba(0,0,0,.075);
+
+    position: absolute;
+    top: 100%;
+    z-index: 100;
+    left: 0px;
+    right: auto;
+    display: block;
+
+    .category {
+      color: $primary;
+      font-weight: bold;
+      padding: 0 .8rem;
+    }
+
+    .note {
+      padding: 0 .8rem;
+      color: $gray-600;
+      margin: 0;
+
+      em {
+        font-style: italic;
+      }
+    }
+
+    .note + .note {
+      margin-top: 5px;
+    }
+
+  }
+}
