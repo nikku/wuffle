@@ -9,9 +9,15 @@
 
   import Card from './Card.svelte';
 
+  import CreateIssue from './CreateIssue.svelte';
+
   import Api from './Api';
 
   import Dragula from 'dragula';
+
+  import {
+    isNewIssueShortcut
+  } from './shortcuts';
 
   import {
     Id,
@@ -59,6 +65,8 @@
   let cursor = null;
 
   let accessNotification = false;
+
+  let showCreate = false;
 
   let renderCountByColumn = {};
 
@@ -689,6 +697,31 @@
     }, 5);
   }
 
+  function openCreateIssue() {
+    showCreate = true;
+  }
+
+  function closeCreateIssue() {
+    showCreate = false;
+  }
+
+  function createIssue(owner, repo) {
+    closeCreateIssue();
+
+    window.open(
+      `https://github.com/${owner}/${repo}/issues/new/choose`,
+      '_blank'
+    );
+  }
+
+  function handleGlobalKey(event) {
+
+    if (isNewIssueShortcut(event)) {
+      openCreateIssue();
+
+      event.preventDefault();
+    }
+  }
 </script>
 
 <style lang="scss">
@@ -701,13 +734,10 @@
   }
 
   .vertical-divider {
-    position: relative;
-    top: -0.06em;
     display: inline-block;
     width: 1px;
     height: 0.9em;
     margin: 0 8px;
-    vertical-align: middle;
 
     background: $gray-300;
   }
@@ -742,11 +772,20 @@
   {/if}
 </svelte:head>
 
+<svelte:window on:keydown={ handleGlobalKey } />
+
 <div class="taskboard">
 
   <Loader shown={ loading }>
     <img src={ loaderImage } width="64" alt="Loading" />
   </Loader>
+
+  <CreateIssue
+    repositories={ filterOptions['repo'] }
+    onCreate={ createIssue }
+    open={ showCreate }
+    onClose={ closeCreateIssue }
+  />
 
   {#if error}
     <div class="taskboard-error">
@@ -799,16 +838,21 @@
     </button>
 
     <div class="collapse navbar-collapse" id={navId}>
-      <ul class="navbar-nav mr-auto">
-      </ul>
+      <div class="navbar-nav mr-auto">
 
-      <form class="form-inline my-2 my-lg-0" on:submit={ (e) => e.preventDefault() }>
+        <form class="form-inline mx-2 my-2 my-sm-0" on:submit|preventDefault={ openCreateIssue }>
+          <button class="btn btn-secondary btn-sm" type="submit">
+            <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 16 16"><path fill="currentColor" fill-rule="evenodd" d="M7.75 2a.75.75 0 01.75.75V7h4.25a.75.75 0 110 1.5H8.5v4.25a.75.75 0 11-1.5 0V8.5H2.75a.75.75 0 010-1.5H7V2.75A.75.75 0 017.75 2z"></path></svg>
+          </button>
+        </form>
+
+      </div>
+
+      <form class="form-inline my-2 mx-2 my-lg-0" on:submit|preventDefault={ () => {} }>
         <BoardFilter value={ filter } completionOptions={ filterOptions } onChange={ filterChanged } />
       </form>
 
-      <div class="vertical-divider"></div>
-
-      <div class="taskboard-header-login">
+      <div class="taskboard-header-login ml-2">
         {#if user}
           <a href="/wuffle/logout" aria-label="Logout">
             <Avatar title={ `Logout ${user.login}` } rounded>
