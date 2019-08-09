@@ -66,7 +66,10 @@
 
   $: repositoryName = `${repository.owner.login}/${repository.name}`;
 
-  $: cardUrl = `https://github.com/${ repositoryName }/issues/${ number }`;
+  $: repoUrl = `https://github.com/${ repositoryName }`;
+
+  $: milestoneUrl = milestone && `${repoUrl}/milestone/${milestone.number}`;
+  $: cardUrl = `${repoUrl}/issues/${ number }`;
 
   function handleSelection(qualifier, value, clickThrough=true) {
 
@@ -216,7 +219,8 @@
         <Tag
           class="tag milestone"
           name={ milestone.title }
-          onClick={ onSelect && handleSelection('milestone', milestone.title, false) }
+          href={ milestoneUrl }
+          onClick={ onSelect && handleSelection('milestone', milestone.title, !!milestoneUrl) }
         />
       {/if}
 
