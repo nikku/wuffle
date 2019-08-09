@@ -22,6 +22,15 @@ export function isFindShortcut(event) {
   return event.key === 'f';
 }
 
+export function isNewIssueShortcut(event) {
+
+  if (!isGlobal(event) || hasModifier(event)) {
+    return false;
+  }
+
+  return event.key === 'n';
+}
+
 export function isApplyFilterClick(event) {
 
   const {
