@@ -1,18 +1,17 @@
-const { preExit } = require('../util');
-
 const S3 = require('aws-sdk/clients/s3');
+
 
 /**
  * This component restores a store dump on startup and periodically
  * persists the store to disc.
  *
- * @param  {Application} app
- * @param  {Object} config
+ * @param  {Logger} logger
  * @param  {Store} store
+ * @param  {Events} events
  */
-module.exports = async (app, config, store) => {
+function DumpStoreS3(logger, store, events) {
 
-  const log = app.log.child({
+  const log = logger.child({
     name: 'wuffle:dump-store-s3'
   });
 
@@ -99,18 +98,33 @@ module.exports = async (app, config, store) => {
   }
 
 
-  // dump every five minutes
-  const dumpInterval = 1000 * 60 * 5;
+  // five minutes
+  const DUMP_INTERVAL = 1000 * 60 * 5;
 
-  setInterval(dumpStore, dumpInterval);
+  let interval;
 
-  // dump on exit
-  preExit(function() {
-    log.info('pre-exit dump');
+  events.once('wuffle.start', function() {
+
+    interval = setInterval(dumpStore, DUMP_INTERVAL);
+
+    return restoreStore();
+  });
+
+  events.once('wuffle.pre-exit', function() {
+
+    if (interval) {
+      clearInterval(interval);
+    }
 
     return dumpStore();
   });
 
-  // restore, initally
-  return restoreStore();
-};
+
+  // api //////////////////
+
+  this.restoreStore = restoreStore;
+  this.dumpStore = dumpStore;
+
+}
+
+module.exports = DumpStoreS3;

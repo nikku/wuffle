@@ -1,16 +1,14 @@
 const {
   parseSearch
-} = require('../util');
+} = require('../../util');
 
 
 /**
  * This app allows you to create a search filter from a given term.
  *
- * @param {Application} app
- * @param {Object} config
  * @param {Store} store
  */
-module.exports = async (app, config, store) => {
+function Search(store) {
 
   function filterNoop(issue) {
     return true;
@@ -193,7 +191,10 @@ module.exports = async (app, config, store) => {
   }
 
 
-  // public API ///////////////////////
+  // api ///////////////////////
 
-  app.getSearchFilter = getSearchFilter;
-};
+  this.getSearchFilter = getSearchFilter;
+
+}
+
+module.exports = Search;

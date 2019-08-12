@@ -1,6 +1,6 @@
 {
   "name": "wuffle-app",
-  "version": "0.16.0",
+  "version": "0.17.0",
   "private": true,
   "description": "The wuffle board back-end",
   "author": {
@@ -27,6 +27,7 @@
     "auto-test": "npm test -- --watch"
   },
   "dependencies": {
+    "async-didi": "^0.2.1",
     "aws-sdk": "^2.480.0",
     "body-parser": "^1.18.3",
     "compression": "^1.7.4",

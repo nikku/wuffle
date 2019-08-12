@@ -3,21 +3,21 @@ const mkdirp = require('mkdirp');
 const path = require('path');
 const fs = require('fs');
 
+
 /**
  * This component adds the #onActive method to subscribe to events
  * for explicitly activated repositories only.
  *
- * @param {Application} app
- * @param {Object} config
- * @param {Store} store
+ * @param {Logger} logger
+ * @param {WebhookEvents} webhookEvents
  */
-module.exports = function(app, config, store) {
+module.exports = function(logger, webhookEvents) {
 
   if (process.env.NODE_ENV !== 'development') {
     return;
   }
 
-  const log = app.log.child({
+  const log = logger.child({
     name: 'wuffle:log-events'
   });
 
@@ -62,7 +62,7 @@ module.exports = function(app, config, store) {
 
   // behavior //////////////////////
 
-  app.on('*', async context => {
+  webhookEvents.on('*', async context => {
     const {
       event,
       payload

@@ -1,6 +1,6 @@
 const {
   Cache
-} = require('../util');
+} = require('../../util');
 
 // 10 minutes
 const TTL = 1000 * 60 * 10;
@@ -10,13 +10,13 @@ const TTL = 1000 * 60 * 10;
  * This component provides the functionality to filter
  * issues based on user views.
  *
- * @param {Application} app
- * @param {Object} config
- * @param {Store} store
+ * @param {Logger} logger
+ * @param {GitHubClient} githubClient
+ * @param {Events} events
  */
-module.exports = async (app, config, store) => {
+function UserAccess(logger, githubClient, events) {
 
-  const log = app.log.child({
+  const log = logger.child({
     name: 'wuffle:user-access'
   });
 
@@ -71,7 +71,7 @@ module.exports = async (app, config, store) => {
 
     log.info({ token }, 'creating read filter');
 
-    return app.userAuth(token)
+    return githubClient.getUserScoped(token)
       .then(github => {
         return github.paginate(
           github.repos.list.endpoint.merge({
@@ -106,7 +106,7 @@ module.exports = async (app, config, store) => {
       owner
     } = repoAndOwner;
 
-    return app.orgAuth(owner)
+    return githubClient.getOrgScoped(owner)
       .then(github => {
         return github.repos.getCollaboratorPermissionLevel({
           repo,
@@ -132,21 +132,25 @@ module.exports = async (app, config, store) => {
 
   // api ////////////////////
 
-  app.getReadFilter = getReadFilter;
+  this.getReadFilter = getReadFilter;
 
-  app.canWrite = canWrite;
+  this.canWrite = canWrite;
 
 
   // behavior ///////////////
 
   if (process.env.NODE_ENV !== 'test') {
 
-    setInterval(() => {
-      cache.evict();
-    }, 1000 * 10);
+    events.once('wuffle.start', function() {
+      setInterval(() => {
+        cache.evict();
+      }, 1000 * 10);
+    });
   }
 
-};
+}
+
+module.exports = UserAccess;
 
 
 // helpers //////////////

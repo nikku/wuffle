@@ -6,11 +6,21 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 ___Note:__ Yet to be released changes appear here._
 
+## 0.17.0
+
+* `FEAT(background-sync)`: ignore archived repositories
+* `FEAT(apps/dump-store)`: allow usage of local dump store outside dev mode
+* `CHORE`: [di-ify](https://github.com/nikku/async-didi) app core
+
+### Breaking Changes
+
+* We restructured internals and made apps expose their own APIs. Things changed.
+
 ## 0.16.0
 
 * `FEAT`: connect all repositories connected to GitHub app
 
-### Breaking Change
+### Breaking Changes
 
 * `config.repositories` is now obsolete
 * The board does not default to a repository for its name, configure a board name via `config.name`

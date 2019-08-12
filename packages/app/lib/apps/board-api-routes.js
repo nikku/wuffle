@@ -12,13 +12,24 @@ const {
 /**
  * This component provides the board API routes.
  *
- * @param {Application} app
  * @param {Object} config
  * @param {Store} store
+ * @param {Router} router
+ * @param {Logger} logger
+ * @param {GitHubClient} githubClient
+ * @param {AuthRoutes} authRoutes
+ * @param {GithubIssues} githubIssues
+ * @param {Search} search
  */
-module.exports = async (app, config, store) => {
+module.exports = async (
+  config, store,
+  router, logger,
+  githubClient, authRoutes,
+  userAccess, githubIssues,
+  search
+) => {
 
-  const log = app.log.child({
+  const log = logger.child({
     name: 'wuffle:board-api-routes'
   });
 
@@ -29,19 +40,19 @@ module.exports = async (app, config, store) => {
   // endpoints ///////////////////
 
   function getIssueSearchFilter(req) {
-    const search = req.query.s;
+    const s = req.query.s;
 
-    if (!search) {
+    if (!s) {
       return null;
     }
 
-    return app.getSearchFilter(search);
+    return search.getSearchFilter(s);
   }
 
   function getIssueReadFilter(req) {
-    const token = app.getGitHubToken(req);
+    const token = authRoutes.getGitHubToken(req);
 
-    return app.getReadFilter(token);
+    return userAccess.getReadFilter(token);
   }
 
   function filterBoardItems(req, items) {
@@ -140,15 +151,15 @@ module.exports = async (app, config, store) => {
     // to pick up the update (and react to it)
 
     return Promise.all([
-      app.moveIssue(context, issue, column),
-      app.moveReferencedIssues(context, issue, column)
+      githubIssues.moveIssue(context, issue, column),
+      githubIssues.moveReferencedIssues(context, issue, column)
     ]);
 
   }
 
   // public endpoints ////////
 
-  app.router.get('/wuffle/board/cards', ...middlewares, (req, res) => {
+  router.get('/wuffle/board/cards', ...middlewares, (req, res) => {
 
     const items = store.getBoard();
     const cursor = store.getUpdateCursor();
@@ -167,7 +178,7 @@ module.exports = async (app, config, store) => {
   });
 
 
-  app.router.get('/wuffle/board', ...middlewares, (req, res) => {
+  router.get('/wuffle/board', ...middlewares, (req, res) => {
 
     const {
       columns,
@@ -186,7 +197,7 @@ module.exports = async (app, config, store) => {
   });
 
 
-  app.router.get('/wuffle/board/updates', ...middlewares, (req, res) => {
+  router.get('/wuffle/board/updates', ...middlewares, (req, res) => {
     const cursor = req.query.cursor;
 
     const updates = cursor ? store.getUpdates(cursor) : [];
@@ -203,9 +214,9 @@ module.exports = async (app, config, store) => {
   });
 
 
-  app.router.post('/wuffle/board/issues/move', ...middlewares, bodyParser, async (req, res) => {
+  router.post('/wuffle/board/issues/move', ...middlewares, bodyParser, async (req, res) => {
 
-    const login = app.getGitHubLogin(req);
+    const login = authRoutes.getGitHubLogin(req);
 
     if (!login) {
       return res.status(401).json({});
@@ -222,15 +233,15 @@ module.exports = async (app, config, store) => {
 
     const repo = repoAndOwner(issue);
 
-    const canWrite = await app.canWrite(login, repo);
+    const canWrite = await userAccess.canWrite(login, repo);
 
     if (!canWrite) {
       return res.status(403).json({});
     }
 
-    const token = app.getGitHubToken(req);
+    const token = authRoutes.getGitHubToken(req);
 
-    const github = await app.userAuth(token);
+    const github = await githubClient.getUserScoped(token);
 
     const context = {
       github,

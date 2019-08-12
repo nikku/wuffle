@@ -26,25 +26,14 @@ const RequiredEvents = [
  * This component validates and exposes
  * installations of the GitHub app.
  *
- * @param {Application} app
- * @param {Object} config
- * @param {Store} store
+ * @param {Logger} logger
+ * @param {GithubClient} githubClient
  */
-module.exports = function(app, config, store) {
+function GithubApp(logger, githubClient) {
 
-  const log = app.log.child({
-    name: 'wuffle:installations'
+  const log = logger.child({
+    name: 'wuffle:github-app'
   });
-
-  /*
-  app.on([
-    'installation',
-    'installation_repositories'
-  ], async ({ payload }) => {
-
-    console.log('installation update', payload);
-  });
-  */
 
   function isRequiredLevel(requested, actual) {
     return PermissionLevels[requested] <= PermissionLevels[actual || 'none'];
@@ -100,7 +89,7 @@ module.exports = function(app, config, store) {
 
   async function fetchInstallations() {
 
-    const github = await app.auth();
+    const github = await githubClient.getAppScoped();
 
     return github.paginate(
       github.apps.listInstallations.endpoint.merge({ per_page: 100 }),
@@ -109,9 +98,9 @@ module.exports = function(app, config, store) {
   }
 
 
-  // API ////////////
+  // api ///////////////////
 
-  app.getInstallations = function() {
+  this.getInstallations = function() {
     return fetchInstallations().then(installations => {
 
       validateInstallations(installations);
@@ -120,4 +109,6 @@ module.exports = function(app, config, store) {
     });
   };
 
-};
+}
+
+module.exports = GithubApp;

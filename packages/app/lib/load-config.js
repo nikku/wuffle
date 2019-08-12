@@ -24,8 +24,7 @@ module.exports = function loadConfig(log) {
   }
 
   return {
-    columns: defaultColumns,
-    repositories: []
+    columns: defaultColumns
   };
 
 };

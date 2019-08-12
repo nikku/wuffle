@@ -1,16 +1,21 @@
+const { AsyncInjector } = require('async-didi');
+
+const { preExit } = require('./util');
+
 const apps = [
   require('./apps/log-events'),
+  require('./apps/webhook-events'),
   require('./apps/route-compression'),
   require('./apps/route-https'),
   (
     process.env.S3_BUCKET
-      ? require('./apps/dump-store-s3')
-      : require('./apps/dump-store')
+      ? require('./apps/dump-store/s3')
+      : require('./apps/dump-store/local')
   ),
-  require('./apps/on-active'),
-  require('./apps/installations'),
-  require('./apps/org-auth'),
-  require('./apps/user-auth'),
+  require('./apps/github-app'),
+  require('./apps/github-issues'),
+  require('./apps/github-client'),
+  require('./apps/security-context'),
   require('./apps/events-sync'),
   require('./apps/user-access'),
   require('./apps/search'),
@@ -25,6 +30,8 @@ const loadConfig = require('./load-config');
 
 const Store = require('./store');
 
+const PromiseEvents = require('promise-events');
+
 const Columns = require('./columns');
 
 
@@ -32,32 +39,66 @@ module.exports = async app => {
 
   // intialize ///////////////////
 
-  const log = app.log.child({
+  const logger = app.log;
+  const router = app.router;
+
+  const log = logger.child({
     name: 'wuffle'
   });
 
   const config = loadConfig(log);
 
-  const columns = new Columns(config.columns);
+  const events = new PromiseEvents();
 
-  const storeLog = app.log.child({
-    name: 'wuffle:store'
+  // load child apps //////////////
+
+  const modules = apps.map(app => {
+
+    if (typeof app === 'function') {
+      return {
+        __init__: [ app ]
+      };
+    }
+
+    return app;
   });
 
-  const store = new Store(columns, storeLog);
+  const coreModule = {
+    'app': [ 'value', app ],
+    'config': [ 'value', config ],
+    'router': [ 'value', router ],
+    'logger': [ 'value', logger ],
+    'columns': [ 'type', Columns ],
+    'store': [ 'type', Store ],
+    'events': [ 'value', events ]
+  };
 
+  const injector = new AsyncInjector([
+    coreModule,
+    ...modules
+  ]);
 
-  // public API ////////////////////
+  // initialize modules ////////////
 
-  app.store = store;
+  for (const module of modules) {
 
+    const init = module.__init__ || [];
 
-  // load child apps ///////////////
+    for (const component of init) {
+      await injector[typeof component === 'function' ? 'invoke' : 'get'](component);
+    }
 
-  for (const appFn of apps) {
-    await appFn(app, config, store);
   }
 
-  log.info('wuffle started');
+  await events.emit('wuffle.start');
+
+  log.info('started');
+
+  preExit(function() {
+
+    log.info('pre-exit');
+
+    return events.emit('wuffle.pre-exit');
+  });
 
 };

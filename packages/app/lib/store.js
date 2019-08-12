@@ -16,8 +16,11 @@ const { Status } = require('./status');
 
 class Store {
 
-  constructor(columns, log) {
-    this.log = log;
+  constructor(columns, logger) {
+    this.log = logger.child({
+      name: 'wuffle:store'
+    });
+
     this.columns = columns;
 
     this.issues = [];

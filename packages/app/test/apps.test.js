@@ -1,10 +1,12 @@
 const { expect } = require('chai');
 
+const {
+  bootstrap
+} = require('./helpers');
+
+const GithubIssues = require('../lib/apps/github-issues');
+
 const nock = require('nock');
-
-const SyncApp = require('..');
-
-const { Probot } = require('probot');
 
 
 function disableConnect() {
@@ -22,16 +24,19 @@ describe('apps', () => {
 
   after(enableConnect);
 
-  let app, probot;
 
-  beforeEach(() => {
-    probot = new Probot({});
+  describe('githubIssues', function() {
 
-    app = probot.load(SyncApp);
-  });
+    let app, githubIssues;
 
+    beforeEach(async function() {
+      app = await bootstrap({
+        modules: [ GithubIssues ]
+      });
 
-  describe('automatic-dev-flow', function() {
+      githubIssues = await app.get('githubIssues');
+    });
+
 
     describe('state update', function() {
 
@@ -48,7 +53,7 @@ describe('apps', () => {
         };
 
         // when
-        const update = app.getStateUpdate(issue, 'Done');
+        const update = githubIssues.getStateUpdate(issue, 'Done');
 
         // then
         expect(update).to.eql({
@@ -71,7 +76,7 @@ describe('apps', () => {
         };
 
         // when
-        const update = app.getStateUpdate(issue, 'Inbox');
+        const update = githubIssues.getStateUpdate(issue, 'Inbox');
 
         // then
         expect(update).to.eql({});
@@ -95,7 +100,7 @@ describe('apps', () => {
         };
 
         // when
-        const update = app.getStateUpdate(issue, 'Done');
+        const update = githubIssues.getStateUpdate(issue, 'Done');
 
         // then
         expect(update).to.eql({
@@ -122,7 +127,7 @@ describe('apps', () => {
         };
 
         // when
-        const update = app.getStateUpdate(issue, 'Inbox');
+        const update = githubIssues.getStateUpdate(issue, 'Inbox');
 
         // then
         expect(update).to.eql({
@@ -151,7 +156,7 @@ describe('apps', () => {
         };
 
         // when
-        const update = app.getStateUpdate(issue, 'Done');
+        const update = githubIssues.getStateUpdate(issue, 'Done');
 
         // then
         expect(update).to.eql({
@@ -173,7 +178,7 @@ describe('apps', () => {
         };
 
         // when
-        const update = app.getAssigneeUpdate(issue, 'mike');
+        const update = githubIssues.getAssigneeUpdate(issue, 'mike');
 
         // then
         expect(update).to.eql({
@@ -193,7 +198,7 @@ describe('apps', () => {
         };
 
         // when
-        const update = app.getAssigneeUpdate(issue, null);
+        const update = githubIssues.getAssigneeUpdate(issue, null);
 
         // then
         expect(update).to.eql({});
@@ -212,7 +217,7 @@ describe('apps', () => {
         };
 
         // when
-        const update = app.getAssigneeUpdate(issue, 'mike');
+        const update = githubIssues.getAssigneeUpdate(issue, 'mike');
 
         // then
         expect(update).to.eql({
@@ -237,17 +242,12 @@ describe('apps', () => {
         };
 
         // when
-        const update = app.getAssigneeUpdate(issue, 'walt');
+        const update = githubIssues.getAssigneeUpdate(issue, 'walt');
 
         // then
         expect(update).to.eql({ });
 
       });
-
-    });
-
-
-    it('should move issue', function() {
 
     });
 

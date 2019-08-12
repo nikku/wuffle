@@ -3,25 +3,19 @@ const path = require('path');
 
 const mkdirp = require('mkdirp');
 
-const { preExit } = require('../util');
-
 
 /**
  * This component restores a store dump on startup and periodically
  * persists the store to disc.
  *
- * @param  {Application} app
- * @param  {Object} config
+ * @param  {Logger} logger
  * @param  {Store} store
+ * @param  {Events} events
  */
-module.exports = async (app, config, store) => {
+function DumpStoreLocal(logger, store, events) {
 
-  if (process.env.NODE_ENV !== 'development') {
-    return;
-  }
-
-  const log = app.log.child({
-    name: 'wuffle:dump-store'
+  const log = logger.child({
+    name: 'wuffle:dump-store-local'
   });
 
   const storeLocation = 'tmp/storedump.json';
@@ -93,19 +87,37 @@ module.exports = async (app, config, store) => {
     });
   }
 
+  const DUMP_INTERVAL = process.env.NODE_ENV === 'development'
+    // 30 seconds
+    ? 1000 * 30
+    // five minutes
+    : 1000 * 60 * 5;
 
-  // dump every 30 seconds
-  const dumpInterval = 1000 * 30;
 
-  setInterval(dumpStore, dumpInterval);
+  let interval;
 
-  // dump on exit
-  preExit(function() {
-    log.info('pre-exit dump');
+  events.once('wuffle.start', function() {
+
+    interval = setInterval(dumpStore, DUMP_INTERVAL);
+
+    return restoreStore();
+  });
+
+  events.once('wuffle.pre-exit', function() {
+
+    if (interval) {
+      clearInterval(interval);
+    }
 
     return dumpStore();
   });
 
-  // restore, initally
-  return restoreStore();
-};
+
+  // api //////////////////
+
+  this.restoreStore = restoreStore;
+  this.dumpStore = dumpStore;
+
+}
+
+module.exports = DumpStoreLocal;

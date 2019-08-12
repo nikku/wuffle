@@ -1,17 +1,21 @@
 const {
   filterIssue,
   filterPull
-} = require('../filters');
+} = require('../../filters');
 
 
 /**
  * This component performs a periodic background sync of a project.
  *
- * @param  {Application} app
- * @param  {Object} config
- * @param  {Store} store
+ * @param {Logger} logger
+ * @param {Object} config
+ * @param {Store} store
+ * @param {GitHubClient} githubClient
+ * @param {GithubApp} githubApp
+ * @param {WebhookEvents} webhookEvents
+ * @param {Events} events
  */
-module.exports = async (app, config, store) => {
+function BackgroundSync(logger, config, store, githubClient, githubApp, events) {
 
   // 30 days
   const syncLookback = 1000 * 60 * 60 * 24 * 30;
@@ -19,7 +23,7 @@ module.exports = async (app, config, store) => {
   // 60 days
   const removalLookback = 1000 * 60 * 60 * 24 * 60;
 
-  const log = app.log.child({
+  const log = logger.child({
     name: 'wuffle:background-sync'
   });
 
@@ -35,10 +39,19 @@ We automatically synchronize all repositories you granted us access to via the G
   }
 
 
+  function getSyncSince() {
+    return Date.now() - syncLookback;
+  }
+
+  function getRemoveBefore() {
+    return Date.now() - removalLookback;
+  }
+
+
   async function getStatuses(pull_request, repository) {
     let ref = pull_request.head.sha;
     const [ owner, repo ] = repository.full_name.split('/');
-    return app.orgAuth(owner).then(github => {
+    return githubClient.getOrgScoped(owner).then(github => {
       return github.repos.getCombinedStatusForRef({
         owner,
         repo,
@@ -46,6 +59,7 @@ We automatically synchronize all repositories you granted us access to via the G
       });
     }).then(res => res.data);
   }
+
 
   async function applyUpdate(update) {
 
@@ -72,6 +86,7 @@ We automatically synchronize all repositories you granted us access to via the G
     return combinedStatusesForIssues.state !== 'pending'?
       store.insertOrUpdateCombinedStatus(combinedStatusesForIssues): {};
   }
+
   function syncPull(pull_request, repository) {
     return applyUpdate(filterPull(pull_request, repository));
   }
@@ -89,7 +104,7 @@ We automatically synchronize all repositories you granted us access to via the G
     log.debug({ installation: owner }, 'sync start');
 
     try {
-      const github = await app.orgAuth(owner);
+      const github = await githubClient.getOrgScoped(owner);
 
       const repositories = await github.paginate(
         github.apps.listRepos.endpoint.merge({ per_page: 100 }),
@@ -199,8 +214,8 @@ We automatically synchronize all repositories you granted us access to via the G
             }
           }
 
-        for (const pull_request of [ ...open_pull_requests, ...closed_pull_requests ]) {
-            await syncStatus(getStatuses(pull_request, repositoryName));
+          for (const pull_request of [ ...open_pull_requests, ...closed_pull_requests ]) {
+            await syncStatus(getStatuses(pull_request, repository));
 
             try {
               const {
@@ -304,7 +319,7 @@ We automatically synchronize all repositories you granted us access to via the G
     }, {});
 
     // synchronize existing issues
-    const foundIssues = await syncInstallations(installations, Date.now() - syncLookback);
+    const foundIssues = await syncInstallations(installations, getSyncSince());
 
     // check for all missing issues, these will
     // be automatically expired once they reach a
@@ -312,7 +327,7 @@ We automatically synchronize all repositories you granted us access to via the G
 
     const missingIssues = Object.keys(knownIssues).filter(k => !(k in foundIssues)).map(k => knownIssues[k]);
 
-    const expiredIssues = await checkExpiration(missingIssues, Date.now() - removalLookback);
+    const expiredIssues = await checkExpiration(missingIssues, getRemoveBefore());
 
     log.info(
       { t: Date.now() - now },
@@ -328,7 +343,7 @@ We automatically synchronize all repositories you granted us access to via the G
 
     try {
 
-      const installations = await app.getInstallations();
+      const installations = await githubApp.getInstallations();
 
       await doSync(installations);
 
@@ -350,7 +365,6 @@ We automatically synchronize all repositories you granted us access to via the G
   // five seconds
   const checkInterval = 5000;
 
-
   async function checkSync() {
 
     const now = Date.now();
@@ -364,20 +378,28 @@ We automatically synchronize all repositories you granted us access to via the G
       store.lastSync = now;
     }
 
-    setTimeout(checkSync, checkInterval);
+    checkTimeout = setTimeout(checkSync, checkInterval);
   }
 
   // api ///////////////////
 
-  app.backgroundSync = backgroundSync;
+  this.backgroundSync = backgroundSync;
 
 
-  // behavior ///////////////
+  // life-cycle ////////////
 
-  if (config.backgroundSync !== false && process.env.NODE_ENV !== 'test') {
+  let checkTimeout;
 
-    // start synchronization check
-    setTimeout(checkSync, checkInterval);
-  }
+  events.once('wuffle.start', function() {
+    checkTimeout = setTimeout(checkSync, checkInterval);
+  });
 
-};
+  events.once('wuffle.pre-exit', function() {
+    if (checkTimeout) {
+      clearTimeout(checkTimeout);
+    }
+  });
+
+}
+
+module.exports = BackgroundSync;
