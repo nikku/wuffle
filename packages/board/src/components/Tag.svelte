@@ -20,17 +20,30 @@
   export let className = '';
 
   export let onClick;
+  export let href = null;
 
   $: inverted = color && isLight(color);
 </script>
 
-<span
-  class:inverted={ inverted }
-  class="tag { className }"
-  class:clickable={ onClick }
-  style="background-color: { color }"
-  on:click={ onClick }
->{ name }</span>
+{#if href}
+  <a
+    href={ href }
+    target="_blank"
+    rel="noopener noreferrer"
+    class:inverted={ inverted }
+    class="tag { className }"
+    style="background-color: { color }"
+    on:click={ onClick }
+  >{ name }</a>
+{:else}
+  <span
+    class:inverted={ inverted }
+    class="tag { className }"
+    class:clickable={ onClick }
+    style="background-color: { color }"
+    on:click={ onClick }
+  >{ name }</span>
+{/if}
 
 <style lang="scss">
   .tag {
@@ -46,18 +59,19 @@
 
     line-height: 20px;
     white-space: nowrap;
-    cursor: default;
 
     color: white;
     background: #fafafa;
     border-radius: 4px;
 
+    text-decoration: none;
+
     &.inverted {
       color: #333;
     }
+  }
 
-    &.clickable {
-      cursor: pointer;
-    }
+  :not(a.tag, .tag.clickable) {
+    cursor: default;
   }
 </style>

@@ -6,6 +6,42 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 ___Note:__ Yet to be released changes appear here._
 
+## 0.21.0
+
+* `FEAT(app)`: reduce re-ordering noise on the board by card order, if possible ([`62bea58d`](https://github.com/nikku/wuffle/commit/62bea58d447fcab6a5e64479e768f22828051c32)
+* `FEAT(app)`: do not move referenced issues via board ([`260d1e8a`](https://github.com/nikku/wuffle/commit/260d1e8a1077eaacf195a6b880fb870bd11f95c8))
+* `FEAT(board)`: provide card link titles
+* `FEAT(board)`: make card link icons and PR / epic icons clickable
+* `FEAT(board)`: show blocking links first in list
+* `FEAT(board)`: make title read-only
+* `FEAT(board)`: visualize open required by / closes issues as standard link types
+* `FIX(app)`: only move issues to top that move to new column
+
+## 0.20.0
+
+* `FEAT(board)`: make click on issue numbers open the issue on GitHub as the default interaction again ([#35](https://github.com/nikku/wuffle/issues/35))
+* `FEAT(board)`: make filtering by issue reference, tag or milestone available as `SHIFT` / `CTRL` + click
+* `FEAT(board)`: make consecutive click on reference, tag or milestone toggle the relevant filter
+* `FEAT(board)`: escape card dragging on `ESC` key
+
+## 0.19.1
+
+* `DOCS`: add troubleshooting document
+* `DOCS`: document column to state mappings
+
+## 0.19.0
+
+* `FEAT(app)`: handle PRs from external like new issues ([`8e0919d5`](https://github.com/nikku/wuffle/commit/8e0919d5358d1642bde2c08f138b4d1385bc1745))
+* `FEAT(app)`: allow alternative column names and explicit state mappings ([`c2575b32`](https://github.com/nikku/wuffle/commit/c2575b3246195106a7c7a95c919cc2315c39a6fc))
+* `FEAT(app)`: validate board configuration ([#39](https://github.com/nikku/wuffle/issues/39))
+* `FEAT(app)`: crash on run failure ([`2d2ac864`](https://github.com/nikku/wuffle/commit/2d2ac864c31822546a7de7b25c3a375119a32048))
+
+## 0.18.0
+
+* `FEAT(app)`: recognize list of linked issues with the same type
+* `DOCS`: document login callback url
+* `FIX(auth-routes)`: gracefully handle missing cached data in auth callback
+
 ## 0.17.0
 
 * `FEAT(background-sync)`: ignore archived repositories

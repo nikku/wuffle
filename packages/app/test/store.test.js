@@ -346,8 +346,8 @@ describe('store', function() {
 
         if (last) {
 
-          const lastOrder = store.getOrder(last.id);
-          const currentOrder = store.getOrder(current.id);
+          const lastOrder = store.getIssueOrder(last.id);
+          const currentOrder = store.getIssueOrder(current.id);
 
           if (lastOrder > currentOrder) {
             throw new Error(
@@ -537,6 +537,43 @@ describe('store', function() {
 
       // then
       expectOrder(store, [ issue_B, issue_C, issue_A ]);
+    });
+
+
+    it('should keep unliked order without column change', async function() {
+
+      // given
+      const store = createStore();
+
+      // when
+      const issue_A = await store.updateIssue(createIssue({
+        state: 'closed'
+      }));
+
+      const issue_B = await store.updateIssue(createIssue({
+        state: 'closed'
+      }));
+
+      const issue_C = await store.updateIssue(createIssue({
+        state: 'closed'
+      }));
+
+      const issue_D = await store.updateIssue(createIssue({
+        state: 'open'
+      }));
+
+      // when
+      const updated_issue_D = await store.updateIssueOrder(issue_D, issue_A.id, issue_B.id, 'Done');
+
+      const final_issue_D = await store.updateIssue({
+        ...issue_D,
+        state: 'closed'
+      });
+
+      // then
+      expect(final_issue_D.order).to.eql(updated_issue_D.order);
+
+      expectOrder(store, [ issue_C, issue_B, issue_D, issue_A ]);
     });
 
   });

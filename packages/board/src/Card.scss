@@ -54,6 +54,8 @@
   font-weight: bold;
   margin-right: 6px;
 
+  display: flex;
+  align-items: center;
   text-decoration: none;
 }
 
@@ -68,7 +70,10 @@
 
 .title {
   font-size: 1.1em;
-  margin: -2px -2px 5px -2px;
+  margin: 0 0 9px 0;
+  min-height: 30px;
+  line-height: 1.2em;
+  color: $gray-700;
 }
 
 .title textarea {

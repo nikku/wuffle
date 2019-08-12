@@ -2,6 +2,8 @@ const {
   AsyncInjector
 } = require('async-didi');
 
+const Columns = require('../../lib/columns');
+
 function FakeLogger() {
 
   this.log = function() {};
@@ -29,7 +31,8 @@ const fakeConfig = {
 
 const fakeModule = {
   logger: [ 'type', FakeLogger ],
-  config: [ 'value', fakeConfig ]
+  config: [ 'value', fakeConfig ],
+  columns: [ 'type', Columns ]
 };
 
 async function bootstrap(options) {

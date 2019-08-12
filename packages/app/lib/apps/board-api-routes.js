@@ -20,13 +20,14 @@ const {
  * @param {AuthRoutes} authRoutes
  * @param {GithubIssues} githubIssues
  * @param {Search} search
+ * @param {Columns} columns
  */
 module.exports = async (
   config, store,
   router, logger,
   githubClient, authRoutes,
   userAccess, githubIssues,
-  search
+  search, columns
 ) => {
 
   const log = logger.child({
@@ -133,26 +134,19 @@ module.exports = async (
 
   }
 
-  function moveIssue(context, issue, params) {
-
-    const {
-      id
-    } = issue;
+  function moveIssue(context, issue, column, position) {
 
     const {
       before,
-      after,
-      column
-    } = params;
-
-    store.updateOrder(id, before, after, column);
+      after
+    } = position;
 
     // we move the issue via GitHub and rely on the automatic-dev-flow
     // to pick up the update (and react to it)
 
     return Promise.all([
-      githubIssues.moveIssue(context, issue, column),
-      githubIssues.moveReferencedIssues(context, issue, column)
+      store.updateIssueOrder(issue, before, after, column.name),
+      githubIssues.moveIssue(context, issue, column)
     ]);
 
   }
@@ -226,10 +220,22 @@ module.exports = async (
 
     const {
       id,
-      ...params
+      column: columnName,
+      before,
+      after
     } = body;
 
     const issue = store.getIssueById(id);
+
+    if (!issue) {
+      return res.status(404).json({});
+    }
+
+    const column = columns.getByName(columnName);
+
+    if (!column) {
+      return res.status(404).json({});
+    }
 
     const repo = repoAndOwner(issue);
 
@@ -254,7 +260,7 @@ module.exports = async (
     };
 
     return (
-      moveIssue(context, issue, params)
+      moveIssue(context, issue, column, { before, after })
         .then(() => {
           res.type('json').json({});
         })

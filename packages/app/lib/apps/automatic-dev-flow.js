@@ -1,6 +1,7 @@
-const IN_PROGRESS = 'In Progress';
-const NEEDS_REVIEW = 'Needs Review';
-const DONE = 'Done';
+const DONE = 'DONE';
+const EXTERNAL_CONTRIBUTION = 'EXTERNAL_CONTRIBUTION';
+const IN_PROGRESS = 'IN_PROGRESS';
+const IN_REVIEW = 'IN_REVIEW';
 
 
 /**
@@ -10,15 +11,9 @@ const DONE = 'Done';
  *
  * @param {WebhookEvents} webhookEvents
  * @param {GithubIssues} githubIssues
- * @param {Object} config
+ * @param {Columns} columns
  */
-module.exports = function(webhookEvents, githubIssues, config) {
-
-  const columns = config.columns;
-
-  function getCurrentColumns(issue) {
-    return columns.filter(c => issue.labels.some(l => l.name === c.label));
-  }
+module.exports = function(webhookEvents, githubIssues, columns) {
 
   webhookEvents.on([
     'issues.closed',
@@ -30,7 +25,9 @@ module.exports = function(webhookEvents, githubIssues, config) {
       issue
     } = context.payload;
 
-    await githubIssues.moveIssue(context, issue || pull_request, DONE);
+    const column = columns.getByState(DONE);
+
+    await githubIssues.moveIssue(context, issue || pull_request, column);
   });
 
   webhookEvents.on('pull_request.ready_for_review', async (context) => {
@@ -39,9 +36,13 @@ module.exports = function(webhookEvents, githubIssues, config) {
       pull_request
     } = context.payload;
 
+    const state = isExternal(pull_request) ? EXTERNAL_CONTRIBUTION : IN_REVIEW;
+
+    const column = columns.getByState(state);
+
     await Promise.all([
-      githubIssues.moveIssue(context, pull_request, NEEDS_REVIEW),
-      githubIssues.moveReferencedIssues(context, pull_request, NEEDS_REVIEW)
+      githubIssues.moveIssue(context, pull_request, column),
+      githubIssues.moveReferencedIssues(context, pull_request, column)
     ]);
   });
 
@@ -54,11 +55,16 @@ module.exports = function(webhookEvents, githubIssues, config) {
       pull_request
     } = context.payload;
 
-    const newState = isDraft(pull_request) ? IN_PROGRESS : NEEDS_REVIEW;
+    const newState =
+      isExternal(pull_request) ? EXTERNAL_CONTRIBUTION : (
+        isDraft(pull_request) ? IN_PROGRESS : IN_REVIEW
+      );
+
+    const column = columns.getByState(newState);
 
     await Promise.all([
-      githubIssues.moveIssue(context, pull_request, newState),
-      githubIssues.moveReferencedIssues(context, pull_request, newState)
+      githubIssues.moveIssue(context, pull_request, column),
+      githubIssues.moveReferencedIssues(context, pull_request, column)
     ]);
   });
 
@@ -68,13 +74,9 @@ module.exports = function(webhookEvents, githubIssues, config) {
       pull_request
     } = context.payload;
 
-    const columns = getCurrentColumns(pull_request);
+    const column = columns.getIssueColumn(pull_request);
 
-    // move issue to reflect PR lazy reference
-
-    if (columns.length) {
-      await githubIssues.moveReferencedIssues(context, pull_request, columns[0].name);
-    }
+    await githubIssues.moveReferencedIssues(context, pull_request, column);
   });
 
   webhookEvents.on('create', async (context) => {
@@ -100,7 +102,9 @@ module.exports = function(webhookEvents, githubIssues, config) {
 
     const issue_number = match[1];
 
-    return githubIssues.findAndMoveIssue(context, issue_number, IN_PROGRESS, assignee);
+    const column = columns.getByState(IN_PROGRESS);
+
+    return githubIssues.findAndMoveIssue(context, issue_number, column, assignee);
   });
 
 };
@@ -115,4 +119,15 @@ function isDraft(pull_request) {
   } = pull_request;
 
   return draft || /wip([^a-z]+|$)/i.test(title);
+}
+
+
+function isExternal(pull_request) {
+
+  const {
+    base,
+    head
+  } = pull_request;
+
+  return base.repo.id !== head.repo.id;
 }

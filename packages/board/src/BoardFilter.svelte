@@ -2,6 +2,8 @@
 
   @import "variables";
 
+  @import './InputPrefixed';
+
   .board-filter {
 
     &.expanded {
@@ -10,105 +12,10 @@
     }
 
     width: 300px;
-
-    transition: width;
   }
 
-  .input-prefixed {
-
-    position: relative;
-
-    .prefix {
-      position: absolute;
-      line-height: 1.5;
-      vertical-align: middle;
-      display: inline-block;
-      left: 0;
-      top: 1px;
-      padding: 0.375rem 0.75rem;
-      height: calc(1.5em + 0.75rem + 2px);
-    }
-
-    input {
-      padding-left: 33px;
-      width: 100%;
-    }
-
-    .help {
-
-      border-radius: 4px;
-      margin: 6px 0 0;
-      text-align: left;
-      height: auto;
-      position: relative;
-      background: transparent;
-      border: none;
-      z-index: 999;
-      max-width: 600px;
-      min-width: 500px;
-
-      width: 100%;
-      min-width: 0!important;
-      max-width: none!important;
-      padding: .75rem 0!important;
-      background-color: #fff;
-      background-clip: padding-box;
-      border: 1px solid rgba(0,0,0,.1);
-      box-shadow: 0 0.5rem 1rem rgba(0,0,0,.175);
-
-      position: absolute;
-      top: 100%;
-      z-index: 100;
-      left: 0px;
-      right: auto;
-      display: block;
-
-      .category {
-        color: $primary;
-        font-weight: bold;
-        padding: 0 .8rem;
-      }
-
-      ul {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-      }
-
-      li {
-        padding: 0 .8rem;
-        line-height: 2em;
-
-        &:not(.text) {
-          &:hover,
-          &.active {
-            background: scale-color($primary, $alpha: -90%);
-          }
-        }
-
-        &.text {
-          color: $gray-600;
-        }
-      }
-
-      .note {
-        padding: 0 .8rem;
-        color: $gray-600;
-
-        span {
-          font-style: italic;
-        }
-      }
-
-      .matched {
-        background: scale-color($primary, $alpha: -80%);
-        color: darken($primary, 10%);
-      }
-    }
-
-    .icon {
-      color: $gray-300;
-    }
+  .icon {
+    color: $gray-300;
   }
 </style>
 
@@ -116,7 +23,14 @@
 <script>
   import { Id } from './util';
 
-  import { Icon } from './components';
+  import {
+    Icon,
+    HintList
+  } from './components';
+
+  import {
+    isFindShortcut
+  } from './shortcuts';
 
   import {
     debounce
@@ -130,8 +44,6 @@
   export let completionOptions = {};
 
   export let onChange;
-
-  const maxElements = 7;
 
   let staticValues = {
     is: [
@@ -253,17 +165,22 @@
           value
         } = categoryOption;
 
-        if (name.toLowerCase().startsWith(search)) {
+        if (name.toLowerCase().includes(search)) {
+
+          const idx = name.indexOf(search);
 
           const hint = {
             name: name,
             parts: [
               {
-                text: name.substring(0, search.length),
+                text: name.substring(0, idx)
+              },
+              {
+                text: name.substring(idx, idx + search.length),
                 matched: true
               },
               {
-                text: name.substring(search.length)
+                text: name.substring(idx + search.length)
               }
             ],
             apply: (currentValue) => {
@@ -396,20 +313,9 @@
     return target === input;
   }
 
-  function isFind(event) {
-
-    const {
-      ctrlKey,
-      metaKey,
-      key
-    } = event;
-
-    return (ctrlKey || metaKey) && key === 'f';
-  }
-
   function handleGlobalKey(event) {
 
-    if (isFind(event)) {
+    if (isFindShortcut(event)) {
       event.preventDefault();
 
       if (!isInputTarget(event)) {
@@ -421,60 +327,61 @@
 
 <svelte:window on:keydown={ handleGlobalKey } />
 
-<div class="input-prefixed board-filter { className } { expanded && 'expanded' }">
-  <label class="prefix" for={searchId}>
-    <Icon class="icon">
-      <SearchIcon />
-    </Icon>
-  </label>
+<div class="board-filter { className } { expanded && 'expanded' }">
+  <div class="input-prefixed">
 
-  <input
-    class="form-control"
-    type="search"
-    placeholder="Filter board"
-    id={searchId}
-    autocomplete="off"
-    spellcheck="false"
-    aria-label="Filter"
-    bind:this={ input }
-    bind:value={ value }
-    on:input={ handleInput }
-    on:keydown={ handleInputKey }
-    on:focus={ () => focussed = true }
-    on:blur={ () => focussed = false }
-  />
+    <label class="prefix" for={searchId}>
+      <Icon class="icon">
+        <SearchIcon />
+      </Icon>
+    </label>
 
-  {#if value && match}
-    <div class="help">
-      {#each match.categories as category, idx}
-        {#if idx > 0}
-        <hr />
-        {/if}
+    <input
+      class="form-control"
+      type="search"
+      placeholder="Filter board"
+      id={searchId}
+      autocomplete="off"
+      spellcheck="false"
+      aria-label="Filter"
+      bind:this={ input }
+      bind:value={ value }
+      on:input={ handleInput }
+      on:keydown={ handleInputKey }
+      on:focus={ () => focussed = true }
+      on:blur={ () => focussed = false }
+    />
 
-        <div class="category">{ category.name }</div>
-        <ul>
-          {#each category.values as value, idx}
-            {#if idx < maxElements || (selectedHint && selectedHint.name === value.name) }
-              <li
-                class:active={ selectedHint && selectedHint.name === value.name }
-                on:mouseover={ () => mouseSelectedHint = value }
-                on:mouseout={ () => mouseSelectedHint = null }
-                on:mousedown={ (event) => { event.preventDefault(); applyHint(mouseSelectedHint); } }
-              >{#each value.parts as part}<span class:matched={ part.matched }>{ part.text }</span>{/each}</li>
-            {/if}
-          {/each}
-
-          {#if category.values.length > maxElements}
-            <li class="text">...</li>
+    {#if value && match}
+      <div class="help">
+        {#each match.categories as category, idx}
+          {#if idx > 0}
+          <hr />
           {/if}
-        </ul>
-      {/each}
-    </div>
-  {:else if focussed && !value}
-    <div class="help">
-      <div class="note">
-        Filter cards by title and description or refine your search with operators such as <span>milestone</span>, <span>repo</span>, <span>assignee</span>, <span>label</span> and <span>is</span>.
+
+          <div class="category">{ category.name }</div>
+
+          <HintList
+            hints={ category.values }
+            selectedHint={ selectedHint }
+            onHover={ hint => mouseSelectedHint = hint }
+            onBlur={ () => mouseSelectedHint = null }
+            onSelect={ applyHint }
+            maxElements= { 7 }
+          />
+
+        {/each}
       </div>
-    </div>
-  {/if}
+    {:else if focussed && !value}
+      <div class="help">
+        <p class="note">
+          Filter cards by title and description.
+        </p>
+
+        <p class="note">
+          Refine your search with operators: <em>milestone</em>, <em>repo</em>, <em>assignee</em>, <em>label</em> and <em>is</em>.
+        </p>
+      </div>
+    {/if}
+  </div>
 </div>

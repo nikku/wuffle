@@ -1,11 +1,14 @@
 <script>
   import {
-    autoresize,
     isOpenOrMerged,
     isPull,
-    hasModifier,
     noDuplicates
   } from './util';
+
+  import {
+    isApplyFilterClick,
+    isAddFilterClick
+  } from './shortcuts';
 
   import Tag from './components/Tag.svelte';
   import Status from './components/Status.svelte';
@@ -15,11 +18,12 @@
   import CardLink from './CardLink.svelte';
 
   const linkOrder = {
-    'PARENT_OF': 0,
-    'CHILD_OF': 1,
-    'REQUIRED_BY': 2,
-    'DEPENDS_ON': 3,
-    'LINKED_TO': 4
+    'DEPENDS_ON': 1,
+    'CLOSED_BY': 2,
+    'PARENT_OF': 3,
+    'REQUIRED_BY': 4,
+    'LINKED_TO': 5,
+    'CHILD_OF': 6
   };
 
   export let item;
@@ -65,19 +69,22 @@
 
   $: repositoryName = `${repository.owner.login}/${repository.name}`;
 
-  $: cardUrl = `https://github.com/${ repositoryName }/issues/${ number }`;
+  $: repoUrl = `https://github.com/${ repositoryName }`;
 
-  function handleSelection(qualifier, value) {
+  $: milestoneUrl = milestone && `${repoUrl}/milestone/${milestone.number}`;
+  $: cardUrl = `${repoUrl}/issues/${ number }`;
+
+  function handleSelection(qualifier, value, clickThrough=true) {
 
     return function(event) {
 
-      if (hasModifier(event)) {
+      if (clickThrough && !isApplyFilterClick(event)) {
         return;
       }
 
       event.preventDefault();
 
-      onSelect(qualifier, value);
+      onSelect(qualifier, value, isAddFilterClick(event));
     };
   }
 </script>
@@ -156,21 +163,24 @@
 <div class="board-card-container { className }">
   <div class="board-card">
     <div class="header">
-      {#if children.length}
-        <EpicIcon item={ item } linkType="PARENT_OF" />
-      {/if}
-
-      {#if pull_request}
-        <PullRequestIcon item={ item } />
-      {/if}
-
       <a href={ cardUrl }
          target="_blank"
          rel="noopener noreferrer"
          class="issue-number"
          title="{ repositoryName }#{ number }"
          on:click={ handleSelection('ref', item.key) }
-      >{ number }</a>
+      >
+
+        {#if children.length}
+          <EpicIcon item={ item } linkType="PARENT_OF" />
+        {/if}
+
+        {#if pull_request}
+          <PullRequestIcon item={ item } />
+        {/if}
+
+        { number }
+      </a>
 
       <span class="repository" title={ repositoryName }>{ repositoryName }</span>
 
@@ -189,7 +199,7 @@
       </span>
     </div>
     <div class="title">
-      <textarea use:autoresize>{ title }</textarea>
+      { title }
     </div>
     {#if children.length}
       <div
@@ -212,7 +222,8 @@
         <Tag
           class="tag milestone"
           name={ milestone.title }
-          onClick={ onSelect && handleSelection('milestone', milestone.title) }
+          href={ milestoneUrl }
+          onClick={ onSelect && handleSelection('milestone', milestone.title, !!milestoneUrl) }
         />
       {/if}
 
@@ -221,7 +232,7 @@
           class="tag label"
           color="#{ color }"
           name={ name }
-          onClick={ onSelect && handleSelection('label', name) }
+          onClick={ onSelect && handleSelection('label', name, false) }
         />
       {/each}
 

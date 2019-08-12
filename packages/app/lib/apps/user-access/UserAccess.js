@@ -82,6 +82,11 @@ function UserAccess(logger, githubClient, events) {
       }).then(repositories => {
         const repositoryNames = repositories.map(fullName);
 
+        log.debug({
+          token,
+          repositories: repositoryNames
+        }, 'creating member filter');
+
         return createMemberFilter(repositoryNames);
       });
   }
@@ -93,7 +98,7 @@ function UserAccess(logger, githubClient, events) {
     }
 
     return cache.get(token, createReadFilter).catch(err => {
-      log.warn('failed to retrieve token-based access filter, defaulting to public read', err);
+      log.warn({ token }, 'failed to retrieve token-based access filter, defaulting to public read', err);
 
       return filterPublic;
     });

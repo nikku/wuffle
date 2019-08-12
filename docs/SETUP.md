@@ -6,6 +6,7 @@ Learn how to setup, configure and run your own [Wuffle board](https://wuffle.dev
 | :--- |
 | [Create GitHub App](#create-github-app) |
 | [Configure GitHub App](#configure-github-app) |
+| [Install GitHub App](#configure-github-app) |
 | [Configure Board](#configure-board) |
 | [Run Board](#run-board) |
 
@@ -39,7 +40,14 @@ Create a `packages/app/.env` file with the required configuration variables as p
 
 ## Configure GitHub App
 
-Go to your GitHub app page on `https://github.com/apps/YOUR_APP_NAME` and install the app for all desired repositories and organizations. This sets up the required change notifications and write permissions to keep the board in sync with GitHub issues.
+The board requires your visitors to login via GitHub if the would like to perform board operations or move cards around. 
+
+To enable the login flow point the `User authorization callback URL` property on your GitHub App settings page to `$BASE_URL/wuffle/login/callback`.
+
+
+## Install GitHub App
+
+Go to your GitHub app user page on `https://github.com/apps/YOUR_APP_NAME` and install the app for all desired repositories and organizations. This sets up the required change notifications and write permissions to keep the board in sync with GitHub issues.
 
 
 ## Configure Board
@@ -61,6 +69,32 @@ module.exports = {
 ```
 
 Make sure that you [enabled your app](#configure-github-app) for all repositories that you would like to connect to the board.
+
+
+### Mapping Special Columns
+
+The board requires you to map a number of special columns in order to know, how to react to PR opening, issue closing and so on. The following table shows the states and their mapping to the default column names used above:
+
+| State | Default Column |
+| :--- | :--- |
+| `DEFAULT` / `EXTERNAL_CONTRIBUTION` | Inbox |
+| `IN_PROGRESS` | In Progress |
+| `IN_REVIEW` | Needs Review |
+| `DONE` | Done |
+
+If you would like to use custom-named columns, attach their special state via the `states` property:
+
+```js
+module.exports = {
+  name: 'My Wuffle Board',
+  columns: [
+    { name: 'New', label: null, states: [ 'DEFAULT', 'EXTERNAL_CONTRIBUTION' ] },
+    { name: 'Doing it', label: 'doing it', states: [ 'IN_PROGRESS' ] },
+    { name: 'Review', label: 'review', states: [ 'IN_REVIEW' ] },
+    { name: 'Finished', label: null, closed: true, states: [ 'DONE' ] }
+  ]
+};
+```
 
 
 ## Run Board
@@ -94,4 +128,4 @@ docker run -p 3000:3000 \
 
 ---
 
-See also: [Configuration](./CONFIG.md)
+See also: [Configuration](./CONFIG.md), [Troubleshooting](./TROUBLESHOOTING.md)

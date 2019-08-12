@@ -274,6 +274,8 @@ We automatically synchronize all repositories you granted us access to via the G
 
   async function checkExpiration(issues, expiryTime) {
 
+    let now = Date.now();
+
     let expired = {};
 
     log.debug('expiration check start');
@@ -302,7 +304,7 @@ We automatically synchronize all repositories you granted us access to via the G
       }
     }
 
-    log.debug('expiration check start');
+    log.debug({ t: Date.now() - now }, 'expiration check done');
 
     return expired;
   }

@@ -5,31 +5,78 @@ const Columns = require('../lib/columns');
 
 describe('columns', function() {
 
-  const config = [
-    { name: 'Inbox', label: null },
-    { name: 'Backlog', label: 'backlog' },
-    { name: 'Ready', label: 'ready' },
-    { name: 'In Progress', label: 'in progress' },
-    { name: 'Needs Review', label: 'needs review' },
-    { name: 'Done', label: null, closed: true },
-    { name: 'Some Column', label: 'special label', closed: true }
-  ];
+  describe('validation', function() {
 
-  const columns = new Columns(config);
+    describe('should reject invalid config', function() {
+
+      function expectError(columns, message) {
+        expect(() => {
+          new Columns(columns);
+        }).to.throw(message);
+      }
+
+      it('missing DEFAULT column', function() {
+        expectError([
+          { name: 'In Progress', label: 'in progress' },
+          { name: 'Needs Review', label: 'needs review' },
+          { name: 'Done', label: null, closed: true }
+        ], 'no column mapped to state DEFAULT or called Inbox');
+      });
+
+      it('missing IN_PROGRESS column', function() {
+        expectError([
+          { name: 'Inbox', label: null },
+          { name: 'Needs Review', label: 'needs review' },
+          { name: 'Done', label: null, closed: true }
+        ], 'no column mapped to state IN_PROGRESS or called In Progress');
+      });
 
 
-  describe('issue mapping', function() {
+      it('missing IN_REVIEW column', function() {
+        expectError([
+          { name: 'Inbox', label: null },
+          { name: 'In Progress', label: 'in progress' },
+          { name: 'Done', label: null, closed: true }
+        ], 'no column mapped to state IN_REVIEW or called Needs Review');
+      });
 
-    it('should map Inbox', function() {
 
-      expectColumn({
+      it('missing DONE column', function() {
+        expectError([
+          { name: 'Inbox', label: null },
+          { name: 'In Progress', label: 'in progress' },
+          { name: 'Needs Review', label: 'needs review' }
+        ], 'no column mapped to state DONE or called Done');
+      });
+
+    });
+
+  });
+
+
+  describe('should map issue', function() {
+
+    const columns = new Columns([
+      { name: 'Inbox', label: null },
+      { name: 'Backlog', label: 'backlog' },
+      { name: 'Ready', label: 'ready' },
+      { name: 'In Progress', label: 'in progress' },
+      { name: 'Needs Review', label: 'needs review' },
+      { name: 'Done', label: null, closed: true },
+      { name: 'Some Column', label: 'post-done', closed: true }
+    ]);
+
+
+    it('open, no column label', function() {
+
+      expectIssueColumn({
         labels: [
           { name: 'bug' }
         ],
         state: 'open'
       }, 'Inbox');
 
-      expectColumn({
+      expectIssueColumn({
         labels: [],
         state: 'open'
       }, 'Inbox');
@@ -37,9 +84,9 @@ describe('columns', function() {
     });
 
 
-    it('should map Needs Review', function() {
+    it('open, column label <needs review>', function() {
 
-      expectColumn({
+      expectIssueColumn({
         labels: [
           { name: 'bug' },
           { name: 'needs review' }
@@ -50,9 +97,9 @@ describe('columns', function() {
     });
 
 
-    it('should map Backlog', function() {
+    it('open, column label <backlog>', function() {
 
-      expectColumn({
+      expectIssueColumn({
         labels: [
           { name: 'enhancement' },
           { name: 'backlog' }
@@ -63,9 +110,9 @@ describe('columns', function() {
     });
 
 
-    it('should map Done', function() {
+    it('closed', function() {
 
-      expectColumn({
+      expectIssueColumn({
         labels: [
           { name: 'enhancement' },
           { name: 'backlog' }
@@ -73,7 +120,7 @@ describe('columns', function() {
         state: 'closed'
       }, 'Done');
 
-      expectColumn({
+      expectIssueColumn({
         labels: [],
         state: 'closed'
       }, 'Done');
@@ -81,26 +128,114 @@ describe('columns', function() {
     });
 
 
-    it('should map Some Column', function() {
+    it('closed, colum label <post-done>', function() {
 
-      expectColumn({
+      expectIssueColumn({
         labels: [
-          { name: 'special label' }
+          { name: 'post-done' }
         ],
         state: 'closed'
       }, 'Some Column');
 
     });
 
+
+    // helpers ////////////////////
+
+    function expectIssueColumn(issue, expectedColumn) {
+
+      const column = columns.getIssueColumn(issue);
+
+      expect(column.name).to.eql(expectedColumn);
+    }
+
   });
 
 
-  // helpers ///////////////////
+  describe('state mapping', function() {
 
-  function expectColumn(issue, expectColumn) {
+    describe('should map by name', function() {
 
-    const column = columns.getForIssue(issue);
+      const columns = new Columns([
+        { name: 'Inbox', label: null },
+        { name: 'In Progress', label: 'in progress' },
+        { name: 'Needs Review', label: 'needs review' },
+        { name: 'Done', label: null, closed: true }
+      ]);
 
-    expect(column).to.eql(expectColumn);
-  }
+
+      it('<Inbox> to DEFAULT + EXTERNAL_CONTRIBUTION', function() {
+        expectStateColumn('DEFAULT', 'Inbox');
+        expectStateColumn('EXTERNAL_CONTRIBUTION', 'Inbox');
+      });
+
+
+      it('<Needs Review> to IN_REVIEW', function() {
+        expectStateColumn('IN_REVIEW', 'Needs Review');
+      });
+
+
+      it('<Done> to DONE', function() {
+        expectStateColumn('DONE', 'Done');
+      });
+
+
+      // helpers ////////////////////
+
+      function expectStateColumn(state, expectedColumn) {
+
+        const column = columns.getByState(state);
+
+        expect(column).to.exist;
+        expect(column.name).to.eql(expectedColumn);
+      }
+
+    });
+
+
+    describe('should map explicit', function() {
+
+      const columns = new Columns([
+        { name: 'Default', label: null, states: [ 'DEFAULT' ] },
+        { name: 'External Contribution', label: null, states: [ 'EXTERNAL_CONTRIBUTION' ] },
+        { name: 'Doing', label: 'in progress', states: [ 'IN_PROGRESS' ] },
+        { name: 'Reviewing', label: 'needs review', states: [ 'IN_REVIEW' ] },
+        { name: 'Closed', label: null, closed: true, states: [ 'DONE' ] }
+      ]);
+
+
+      it('<Default> to DEFAULT', function() {
+        expectStateColumn('DEFAULT', 'Default');
+      });
+
+
+      it('<External Contribution> to EXTERNAL_CONTRIBUTION', function() {
+        expectStateColumn('EXTERNAL_CONTRIBUTION', 'External Contribution');
+      });
+
+
+      it('<Reviewing> to IN_REVIEW', function() {
+        expectStateColumn('IN_REVIEW', 'Reviewing');
+      });
+
+
+      it('<Closed> to DONE', function() {
+        expectStateColumn('DONE', 'Closed');
+      });
+
+
+      // helpers ////////////////////
+
+      function expectStateColumn(state, expectedColumn) {
+
+        const column = columns.getByState(state);
+
+        expect(column).to.exist;
+        expect(column.name).to.eql(expectedColumn);
+      }
+
+    });
+
+  });
+
 });

@@ -8,13 +8,11 @@ const {
 } = linkTypes;
 
 
-function GithubIssues(logger, config) {
+function GithubIssues(logger, config, columns) {
 
   const log = logger.child({
     name: 'wuffle:github-issues'
   });
-
-  const columns = config.columns;
 
 
   function getAssigneeUpdate(issue, newAssignee) {
@@ -38,11 +36,9 @@ function GithubIssues(logger, config) {
 
   }
 
-  function getStateUpdate(issue, newState) {
+  function getStateUpdate(issue, newColumn) {
 
     let update = {};
-
-    const newColumn = columns.find(c => c.name === newState);
 
     const issueState = newColumn.closed ? 'closed' : 'open';
 
@@ -59,7 +55,7 @@ function GithubIssues(logger, config) {
 
     const labelsToAdd = (!newLabel || issueLabels.includes(newLabel)) ? [] : [ newLabel ];
 
-    const labelsToRemove = columns.map(c => c.label).filter(
+    const labelsToRemove = columns.getAll().map(c => c.label).filter(
       label => label && label !== newLabel && issueLabels.includes(label)
     );
 
@@ -90,12 +86,12 @@ function GithubIssues(logger, config) {
       });
   }
 
-  function findAndMoveIssue(context, number, newState, newAssignee) {
+  function findAndMoveIssue(context, number, newColumn, newAssignee) {
     return findIssue(context, number)
-      .then((issue) => issue && moveIssue(context, issue, newState, newAssignee));
+      .then((issue) => issue && moveIssue(context, issue, newColumn, newAssignee));
   }
 
-  async function moveReferencedIssues(context, issue, newState, newAssignee) {
+  async function moveReferencedIssues(context, issue, newColumn, newAssignee) {
 
     // TODO(nikku): do that lazily, i.e. react to PR label changes?
     // would slower the movement but support manual moving-issue with PR
@@ -126,11 +122,11 @@ function GithubIssues(logger, config) {
         number
       } = link;
 
-      return findAndMoveIssue(context, number, newState, newAssignee);
+      return findAndMoveIssue(context, number, newColumn, newAssignee);
     }));
   }
 
-  function moveIssue(context, issue, newState, newAssignee) {
+  function moveIssue(context, issue, newColumn, newAssignee) {
 
     const {
       number: issue_number
@@ -138,7 +134,7 @@ function GithubIssues(logger, config) {
 
     const update = {
       ...getAssigneeUpdate(issue, newAssignee),
-      ...getStateUpdate(issue, newState)
+      ...getStateUpdate(issue, newColumn)
     };
 
     if (!hasKeys(update)) {

@@ -25,6 +25,7 @@ class Store {
 
     this.issues = [];
     this.issueOrder = {};
+    this.issueColumn = {};
 
     this.updates = new Updates();
     this.links = new Links();
@@ -37,8 +38,8 @@ class Store {
     this.boardCache = null;
   }
 
-  getIssueColumn(issue) {
-    return this.columns.getForIssue(issue);
+  computeIssueColumn(issue) {
+    return this.columns.getIssueColumn(issue);
   }
 
   async updateStatus(status) {
@@ -107,7 +108,7 @@ class Store {
       links
     } = this.updateLinks(issue);
 
-    const column = newColumn || this.getIssueColumn(issue);
+    const column = newColumn || this.computeIssueColumn(issue).name;
 
     // automatically compute desired order unless
     // the order is provided by the user
@@ -115,8 +116,8 @@ class Store {
     // this ensures the board is automatically pre-sorted
     // as links are being created and removed on GitHub
     const order = newOrder || this.computeLinkedOrder(
-      issue, column,
-      this.getOrder(id),
+      issue,
+      column,
       links
     );
 
@@ -144,13 +145,29 @@ class Store {
     return issue;
   }
 
-  async updateOrder(issue, before, after, column) {
-    const order = this.computeOrder(before, after);
+  updateIssueOrder(issue, before, after, newColumn) {
 
-    await this.updateIssue(this.getIssueById(issue), column, order);
+    const {
+      id,
+      key
+    } = issue;
+
+    const newOrder = this.computeOrder(before, after, this.getIssueOrder(id));
+
+    this.log.debug({
+      issue: key,
+      newOrder,
+      newColumn
+    }, 'update issue order');
+
+    return this.updateIssue(issue, newColumn, newOrder);
   }
 
-  computeLinkedOrder(issue, column, order, links) {
+  computeLinkedOrder(issue, column, links) {
+
+    const {
+      id
+    } = issue;
 
     const beforeTypes = {
       REQUIRED_BY: 1,
@@ -189,18 +206,21 @@ class Store {
       }
     }
 
+    const currentOrder = this.getIssueOrder(id);
+    const currentColumn = this.getIssueColumn(id);
+
     if (!before && !after) {
 
       // keep order if issue stays within column
-      if (column === issue.column) {
-        return order;
+      if (column === currentColumn) {
+        return currentOrder;
       }
 
       // insert on top of column
       before = this.issues[0];
     }
 
-    return this.computeOrder(before && before.id, after && after.id);
+    return this.computeOrder(before && before.id, after && after.id, currentOrder);
   }
 
   updateLinks(issue) {
@@ -294,11 +314,13 @@ class Store {
       id,
       key,
       order,
+      column,
       labels
     } = issue;
 
-    // update order
-    this.setOrder(id, order);
+    // update column and order
+    this.setIssueOrder(id, order);
+    this.setIssueColumn(id, column);
 
     // attach column label meta-data
     issue = {
@@ -411,6 +433,8 @@ class Store {
     if (issue.pull_request) {
       this.statuses.removeStatusBySha(issue.head.sha);
     }
+    delete this.issueOrder[id];
+    delete this.issueColumn[id];
 
     this.boardCache = null;
 
@@ -439,32 +463,52 @@ class Store {
     return this.issues;
   }
 
-  computeOrder(beforeId, afterId) {
+  computeOrder(beforeId, afterId, currentOrder) {
 
     const beforeOrder = beforeId && this.issueOrder[beforeId];
     const afterOrder = afterId && this.issueOrder[afterId];
 
     if (beforeOrder && afterOrder) {
-      return (beforeOrder + afterOrder) / 2;
+      return (
+        typeof currentOrder === 'number' && currentOrder < beforeOrder && currentOrder > afterOrder
+          ? currentOrder
+          : (beforeOrder + afterOrder) / 2
+      );
     }
 
     if (beforeOrder) {
-      return beforeOrder - 99999.89912;
+      return (
+        typeof currentOrder === 'number' && currentOrder < beforeOrder
+          ? currentOrder
+          : beforeOrder - 99999.89912
+      );
     }
 
     if (afterOrder) {
-      return afterOrder + 99999.89912;
+      return (
+        typeof currentOrder === 'number' && currentOrder > afterOrder
+          ? currentOrder
+          : afterOrder + 99999.89912
+      );
     }
 
     // a good start :)
     return 779999.89912;
   }
 
-  setOrder(issueId, order) {
+  setIssueColumn(issueId, column) {
+    this.issueColumn[String(issueId)] = column;
+  }
+
+  getIssueColumn(issueId) {
+    return this.issueColumn[String(issueId)];
+  }
+
+  setIssueOrder(issueId, order) {
     this.issueOrder[String(issueId)] = order;
   }
 
-  getOrder(issueId) {
+  getIssueOrder(issueId) {
     return this.issueOrder[String(issueId)];
   }
 
@@ -509,16 +553,18 @@ class Store {
       issues,
       lastSync,
       issueOrder,
-      links,
-      statuses
+      statuses,
+      issueColumn,
+      links
     } = this;
 
     return JSON.stringify({
       issues,
       lastSync,
       issueOrder,
-      links: links.asJSON(),
-      statuses: statuses.asJSON()
+      statuses: statuses.asJSON(),
+      issueColumn,
+      links: links.asJSON()
     });
   }
 
@@ -531,13 +577,15 @@ class Store {
       issues,
       lastSync,
       issueOrder,
-      links,
-      statuses
+      statuses,
+      issueColumn,
+      links
     } = JSON.parse(json);
 
     this.issues = issues || [];
     this.lastSync = lastSync;
     this.issueOrder = issueOrder || {};
+    this.issueColumn = issueColumn || {};
 
     if (links) {
       this.links.loadJSON(links);
