@@ -100,6 +100,7 @@
     const poll = localStore.get(POLL_KEY, true);
 
     const teardownHooks = [
+  
       // poll for issue updates every three seconds
       poll && periodic(pollUpdates, 1000 * 3),
 

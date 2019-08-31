@@ -1,5 +1,7 @@
 <script>
   function isLight(color) {
+    /* eslint no-bitwise: "off" */
+
     color = +('0x' + color.slice(1).replace(color.length < 5 && /./g, '$&$&'));
 
     const r = color >> 16,
