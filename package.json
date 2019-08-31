@@ -22,7 +22,7 @@
     "postinstall": "NODE_ENV=development lerna bootstrap"
   },
   "devDependencies": {
-    "lerna": "^3.14.1",
+    "lerna": "^3.16.4",
     "npm-run-all": "^4.1.5"
   },
   "engines": {
