@@ -85,6 +85,7 @@ async function validate() {
     try {
       new Columns(config.columns);
     } catch (err) {
+
       // always an error, regardless of PROD / DEV
       return error(err.message);
     }

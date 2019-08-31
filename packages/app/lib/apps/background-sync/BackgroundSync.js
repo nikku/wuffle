@@ -337,8 +337,10 @@ We automatically synchronize all repositories you granted us access to via the G
 
   const syncInterval = (
     process.env.NODE_ENV === 'development'
+
       // one minute
       ? 1000 * 60
+
       // one hour
       : 1000 * 60 * 60
   );

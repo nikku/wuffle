@@ -326,6 +326,7 @@ class Store {
     const currentIdx = issues.findIndex(issue => issue.id === id);
 
     if (currentIdx !== -1) {
+
       // remove existing issue
       issues.splice(currentIdx, 1);
     }
@@ -398,6 +399,7 @@ class Store {
 
     this.updates.add(id, {
       type: 'remove',
+
       // dummy placeholder for removed issues
       issue: {
         id,

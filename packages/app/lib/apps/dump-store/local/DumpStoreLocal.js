@@ -88,8 +88,10 @@ function DumpStoreLocal(logger, store, events) {
   }
 
   const DUMP_INTERVAL = process.env.NODE_ENV === 'development'
+
     // 30 seconds
     ? 1000 * 30
+
     // five minutes
     : 1000 * 60 * 5;
 

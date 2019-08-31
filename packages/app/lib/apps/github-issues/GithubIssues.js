@@ -79,6 +79,7 @@ function GithubIssues(logger, config, columns) {
     return context.github.issues.get(params)
       .then(response => response.data)
       .catch(error => {
+
         // gracefully handle not found
         log.error(params, 'not found');
 
