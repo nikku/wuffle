@@ -6,6 +6,13 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 ___Note:__ Yet to be released changes appear here._
 
+## 0.22.0
+
+* `FEAT(search)`: include login/org in repository search
+* `FEAT(search)`: use includes to filter labels and repositories
+* `FEAT(board)`: deep link milestone to GitHub
+* `FIX(board)`: correct icon sizes displaying wrong in Firefox ([#48](https://github.com/nikku/wuffle/pull/48))
+
 ## 0.21.0
 
 * `FEAT(app)`: reduce re-ordering noise on the board by card order, if possible ([`62bea58d`](https://github.com/nikku/wuffle/commit/62bea58d447fcab6a5e64479e768f22828051c32)
