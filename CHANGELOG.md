@@ -15,7 +15,7 @@ ___Note:__ Yet to be released changes appear here._
 
 ## 0.21.0
 
-* `FEAT(app)`: reduce re-ordering noise on the board by card order, if possible ([`62bea58d`](https://github.com/nikku/wuffle/commit/62bea58d447fcab6a5e64479e768f22828051c32)
+* `FEAT(app)`: reduce re-ordering noise on the board by card order, if possible ([`62bea58d`](https://github.com/nikku/wuffle/commit/62bea58d447fcab6a5e64479e768f22828051c32))
 * `FEAT(app)`: do not move referenced issues via board ([`260d1e8a`](https://github.com/nikku/wuffle/commit/260d1e8a1077eaacf195a6b880fb870bd11f95c8))
 * `FEAT(board)`: provide card link titles
 * `FEAT(board)`: make card link icons and PR / epic icons clickable
