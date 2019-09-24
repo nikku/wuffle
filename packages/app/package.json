@@ -33,17 +33,17 @@
     "compression": "^1.7.4",
     "exit-hook2": "^1.0.8",
     "express-session": "^1.16.2",
-    "min-dash": "^3.5.1",
-    "probot": "^9.3.2"
+    "min-dash": "^3.5.2",
+    "probot": "^9.5.0"
   },
   "devDependencies": {
     "chai": "^4.2.0",
-    "eslint": "^6.3.0",
+    "eslint": "^6.4.0",
     "eslint-plugin-bpmn-io": "^0.10.0",
     "mkdirp": "^0.5.1",
     "mocha": "^6.2.0",
     "nock": "^10.0.0",
-    "nodemon": "^1.19.1",
+    "nodemon": "^1.19.2",
     "npm-run-all": "^4.1.5",
     "smee-client": "^1.1.0"
   },
