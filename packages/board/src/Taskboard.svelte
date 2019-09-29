@@ -706,14 +706,20 @@
     {#each columns as column }
       <div class="taskboard-column" class:collapsed={ collapsed[column.name] }>
         <div class="taskboard-column-header">
-          <button class="taskboard-column-collapse btn btn-link" on:click={ (e) => e.preventDefault() || toggleCollapse(column) }>
+          <button
+            class="taskboard-column-collapse btn btn-link"
+            title="{ collapsed[column.name] ? 'Expand' : 'Collapse' } column"
+            on:click={ (e) => e.preventDefault() || toggleCollapse(column) }
+          >
             {#if collapsed[column.name] }
               <svg viewBox="64 64 896 896" height="1em" aria-hidden="true" fill="currentColor"><path d="M602 548c0 4 4 8 8 8h186v74c0 6 7 9 11 6l150-120c3-3 3-8 0-11L807 386c-4-4-11-1-11 5v75H609c-4 0-7 3-7 7zM68 514l149 122c4 3 11 0 11-6v-76h186c4 0 8-2 8-6v-77c0-4-4-7-8-7H228v-75c0-6-7-9-11-5L68 503c-4 3-4 8 0 11z"/></svg>
             {:else}
               <svg viewBox="64 64 896 896" height="1em" aria-hidden="true" fill="currentColor"><path d="M605 515l149 122c5 3 12 0 12-6v-76h186c4 0 7-2 7-6v-77c0-4-3-7-7-7H766v-75c0-6-7-9-12-5L605 504c-4 3-4 8 0 11zM65 547c0 4 3 8 7 8h186v74c0 6 7 9 12 6l149-120c4-3 4-8 0-11L270 385c-5-4-12-1-12 5v75H72c-4 0-7 3-7 7z"/></svg>
             {/if}
           </button>
-          { column.name }
+          <span class="taskboard-column-name">
+            { column.name }
+          </span>
           <span class="taskboard-column-issue-count">
             { (shownItems[column.name] || []).length }
           </span>
