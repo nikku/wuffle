@@ -24,7 +24,7 @@
 
   border-radius: 2px;
   margin: 3px;
-  background: #ebebeb;
+  background: #ebecf0;
 
   &.collapsed {
     line-height: 2em;
@@ -79,6 +79,10 @@
   .taskboard-column-issue-count {
     padding: 5px 0;
   }
+}
+
+.taskboard-column-name {
+  color: #424657;
 }
 
 .taskboard-column-issue-count {
