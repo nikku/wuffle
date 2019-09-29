@@ -328,7 +328,7 @@
 <svelte:window on:keydown={ handleGlobalKey } />
 
 <div class="board-filter { className } { expanded && 'expanded' }">
-  <div class="input-prefixed">
+  <div class="input-prefixed" class:focussed={ focussed }>
 
     <label class="prefix" for={searchId}>
       <Icon class="icon">
