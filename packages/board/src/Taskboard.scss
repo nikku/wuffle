@@ -23,9 +23,8 @@
   flex-shrink: 0;
 
   border-radius: 2px;
-  border: solid 1px #EEE;
   margin: 3px;
-  background: rgb(235, 236, 240);
+  background: #ebebeb;
 
   &.collapsed {
     line-height: 2em;
@@ -50,7 +49,7 @@
 }
 
 .taskboard-column-collapse {
-  color: $gray-600;
+  color: $gray-500;
   float: left;
   padding: 0 12px;
   line-height: 2.4em;
@@ -58,11 +57,15 @@
   font-size: 1.2rem;
 }
 
+.taskboard-column-collapse:hover {
+  color: $gray-700;
+}
+
 .taskboard-column.collapsed {
 
   .taskboard-column-collapse {
     float: right;
-    padding: 4px 12px;
+    padding: 3px 12px;
     margin: -7px 0 0 0;
   }
 
@@ -81,7 +84,7 @@
 .taskboard-column-issue-count {
   color: $primary;
   display: inline-block;
-  padding: 0 5px;
+  padding: 0 .25em;
 }
 
 

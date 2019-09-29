@@ -100,7 +100,7 @@
     const poll = localStore.get(POLL_KEY, true);
 
     const teardownHooks = [
-  
+
       // poll for issue updates every three seconds
       poll && periodic(pollUpdates, 1000 * 3),
 
@@ -708,11 +708,9 @@
         <div class="taskboard-column-header">
           <button class="taskboard-column-collapse btn btn-link" on:click={ (e) => e.preventDefault() || toggleCollapse(column) }>
             {#if collapsed[column.name] }
-              <svg viewBox="64 64 896 896" height="1em" fill="currentColor" aria-hidden="true" focusable="false" style="transform: rotate(45deg);"><path d="M855 160.1l-189.2 23.5c-6.6.8-9.3 8.8-4.7 13.5l54.7 54.7-153.5 153.5a8.03 8.03 0 0 0 0 11.3l45.1 45.1c3.1 3.1 8.2 3.1 11.3 0l153.6-153.6 54.7 54.7a7.94 7.94 0 0 0 13.5-4.7L863.9 169a7.9 7.9 0 0 0-8.9-8.9zM416.6 562.3a8.03 8.03 0 0 0-11.3 0L251.8 715.9l-54.7-54.7a7.94 7.94 0 0 0-13.5 4.7L160.1 855c-.6 5.2 3.7 9.5 8.9 8.9l189.2-23.5c6.6-.8 9.3-8.8 4.7-13.5l-54.7-54.7 153.6-153.6c3.1-3.1 3.1-8.2 0-11.3l-45.2-45z"></path></svg>
+              <svg viewBox="64 64 896 896" height="1em" aria-hidden="true" fill="currentColor"><path d="M602 548c0 4 4 8 8 8h186v74c0 6 7 9 11 6l150-120c3-3 3-8 0-11L807 386c-4-4-11-1-11 5v75H609c-4 0-7 3-7 7zM68 514l149 122c4 3 11 0 11-6v-76h186c4 0 8-2 8-6v-77c0-4-4-7-8-7H228v-75c0-6-7-9-11-5L68 503c-4 3-4 8 0 11z"/></svg>
             {:else}
-              <svg viewBox="64 64 896 896" height="1em" fill="currentColor" aria-hidden="true" focusable="false" style="transform: rotate(45deg);">
-                <path d="M881.7 187.4l-45.1-45.1a8.03 8.03 0 0 0-11.3 0L667.8 299.9l-54.7-54.7a7.94 7.94 0 0 0-13.5 4.7L576.1 439c-.6 5.2 3.7 9.5 8.9 8.9l189.2-23.5c6.6-.8 9.3-8.8 4.7-13.5l-54.7-54.7 157.6-157.6c3-3 3-8.1-.1-11.2zM439 576.1l-189.2 23.5c-6.6.8-9.3 8.9-4.7 13.5l54.7 54.7-157.5 157.5a8.03 8.03 0 0 0 0 11.3l45.1 45.1c3.1 3.1 8.2 3.1 11.3 0l157.6-157.6 54.7 54.7a7.94 7.94 0 0 0 13.5-4.7L447.9 585a7.9 7.9 0 0 0-8.9-8.9z"></path>
-              </svg>
+              <svg viewBox="64 64 896 896" height="1em" aria-hidden="true" fill="currentColor"><path d="M605 515l149 122c5 3 12 0 12-6v-76h186c4 0 7-2 7-6v-77c0-4-3-7-7-7H766v-75c0-6-7-9-12-5L605 504c-4 3-4 8 0 11zM65 547c0 4 3 8 7 8h186v74c0 6 7 9 12 6l149-120c4-3 4-8 0-11L270 385c-5-4-12-1-12 5v75H72c-4 0-7 3-7 7z"/></svg>
             {/if}
           </button>
           { column.name }
