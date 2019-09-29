@@ -124,6 +124,17 @@
     vertical-align: unset;
   }
 
+  .icon-shadow {
+    position: absolute;
+    display: block;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    box-shadow: inset 0 0 2px 0 rgba(0, 0, 0, .1);
+    border-radius: 2px;
+  }
+
   &.reviewer:before {
     content: '';
     display: block;

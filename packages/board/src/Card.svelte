@@ -185,12 +185,14 @@
         {#each assignees as assignee}
           <span class="assignee" title="{ assignee.login } assigned">
             <img src="{ assignee.avatar_url }&s=40" alt="{ assignee.login } avatar" />
+            <div class="icon-shadow"></div>
           </span>
         {/each}
 
         {#each requested_reviewers as reviewer}
           <span class="assignee reviewer" title="{ reviewer.login } requested for review">
             <img src="{ reviewer.avatar_url }&s=40" alt="{ reviewer.login } avatar" />
+            <div class="icon-shadow"></div>
           </span>
         {/each}
       </span>
