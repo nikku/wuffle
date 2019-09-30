@@ -659,7 +659,7 @@
   <a class="powered-by-logo" href="https://wuffle.dev"
      target="_blank"
      rel="noopener noreferrer"
-     title="This task board is powered by Wuffle">
+     title="Powered by Wuffle">
     <img src={ wuffleLogo } width="20" height="20" alt="Wuffle logo" class="logo">
   </a>
 
