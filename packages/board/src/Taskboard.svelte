@@ -630,7 +630,7 @@
 
 <svelte:head>
   {#if !loading}
-  <title>{ name } on Wuffle</title>
+  <title>{ name } · Wuffle Board</title>
   {/if}
 </svelte:head>
 
@@ -659,7 +659,7 @@
   <a class="powered-by-logo" href="https://wuffle.dev"
      target="_blank"
      rel="noopener noreferrer"
-     title="Powered by Wuffle">
+     title="Powered by Wuffle Board">
     <img src={ wuffleLogo } width="20" height="20" alt="Wuffle logo" class="logo">
   </a>
 
