@@ -67,12 +67,34 @@ We automatically synchronize all repositories you granted us access to via the G
     return { id };
   }
 
-  function syncPull(pull_request, repository) {
-    return applyUpdate(filterPull(pull_request, repository));
+  async function syncPull(pull_request, repository) {
+
+    pull_request = filterPull(pull_request, repository);
+
+    try {
+      await events.emit('backgroundSync.syncPull', { pull_request });
+    } catch (error) {
+      log.warn({
+        pull_request: pull_request.key
+      }, 'failed synchronizing additional updates', error);
+    }
+
+    return applyUpdate(pull_request);
   }
 
-  function syncIssue(issue, repository) {
-    return applyUpdate(filterIssue(issue, repository));
+  async function syncIssue(issue, repository) {
+
+    issue = filterIssue(issue, repository);
+
+    try {
+      await events.emit('backgroundSync.syncIssue', { issue });
+    } catch (error) {
+      log.warn({
+        issue: issue.key
+      }, 'failed synchronizing additional updates', error);
+    }
+
+    return applyUpdate(issue);
   }
 
   async function syncInstallation(installation, since) {
