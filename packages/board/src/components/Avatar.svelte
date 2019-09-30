@@ -3,7 +3,7 @@
   export let title = '';
 </script>
 
-<style>
+<style lang="scss">
   .avatar {
     position: relative;
     display: inline-block;
@@ -18,11 +18,27 @@
     line-height: 32px;
   }
 
+  .avatar-shadow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    box-shadow: inset 0 0 2px 0 rgba(0,0,0,.1);
+  }
+
   .avatar-rounded {
     border-radius: 50%;
+
+    .avatar-shadow {
+      border-radius: 50%;
+    }
   }
 </style>
 
 <span class="avatar" title={ title } class:avatar-rounded={ rounded }>
   <slot></slot>
+
+  <div class="avatar-shadow"></div>
 </span>
