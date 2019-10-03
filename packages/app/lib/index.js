@@ -30,7 +30,7 @@ const loadConfig = require('./load-config');
 
 const Store = require('./store');
 
-const PromiseEvents = require('promise-events');
+const AsyncEvents = require('./events');
 
 const Columns = require('./columns');
 
@@ -52,7 +52,7 @@ module.exports = function(app) {
 
     const config = loadConfig(log);
 
-    const events = new PromiseEvents();
+    const events = new AsyncEvents();
 
     // load child apps //////////////
 
