@@ -18,17 +18,7 @@ module.exports = function(webhookEvents, store) {
 
   webhookEvents.on([
     'issues.opened',
-    'issues.reopened'
-  ], async ({ payload }) => {
-    const {
-      issue,
-      repository
-    } = payload;
-
-    return store.updateIssue(filterIssue(issue, repository));
-  });
-
-  webhookEvents.on([
+    'issues.reopened',
     'issues.labeled',
     'issues.unlabeled',
     'issues.assigned',
@@ -36,6 +26,7 @@ module.exports = function(webhookEvents, store) {
     'issues.edited',
     'issues.closed'
   ], async ({ payload }) => {
+
     const {
       issue,
       repository
@@ -77,17 +68,7 @@ module.exports = function(webhookEvents, store) {
 
   webhookEvents.on([
     'pull_request.opened',
-    'pull_request.reopened'
-  ], async ({ payload }) => {
-    const {
-      pull_request,
-      repository
-    } = payload;
-
-    return store.updateIssue(filterPull(pull_request, repository));
-  });
-
-  webhookEvents.on([
+    'pull_request.reopened',
     'pull_request.labeled',
     'pull_request.unlabeled',
     'pull_request.edited',
@@ -98,6 +79,7 @@ module.exports = function(webhookEvents, store) {
     'pull_request.review_requested',
     'pull_request.review_request_removed'
   ], async ({ payload }) => {
+
     const {
       pull_request,
       repository
