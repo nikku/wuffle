@@ -2,8 +2,9 @@ const {
   expect
 } = require('chai');
 
-const Store = require('../lib/store');
 const Columns = require('../lib/columns');
+const Events = require('../lib/events');
+const Store = require('../lib/store');
 
 const {
   getKey
@@ -54,7 +55,7 @@ describe('store', function() {
 
       // when
       const updatedIssue = await store.updateIssue({
-        ...newIssue,
+        id: newIssue.id,
         title: 'BAR',
         body: 'BLUB',
         labels: [
@@ -80,6 +81,132 @@ describe('store', function() {
 
       expect(column).to.eql('Backlog');
       expect(order).to.exist;
+    });
+
+  });
+
+
+  describe('issue bulk update', function() {
+
+    let store;
+
+    let issue_1, issue_2, issue_no_milestone;
+
+    beforeEach(async function() {
+      store = createStore();
+
+      issue_1 = await store.updateIssue(createIssue({
+        milestone: {
+          id: 1,
+          name: 'foo'
+        }
+      }));
+
+      issue_2 = await store.updateIssue(createIssue({
+        milestone: {
+          id: 1,
+          name: 'foo'
+        }
+      }));
+
+      issue_no_milestone = await store.updateIssue(createIssue());
+    });
+
+
+    it('should update by selector', async function() {
+
+      // when
+      const updatedIssues = await store.updateIssues(issue => {
+        if (issue.milestone && issue.milestone.id === 1) {
+          return {
+            milestone: null
+          };
+        }
+      });
+
+      // then
+      expect(updatedIssues).to.have.length(2);
+
+      expect(store.updates.getSince()).to.have.length(3);
+
+      for (const issue of updatedIssues) {
+        expect(issue.id).not.to.eql(issue_no_milestone.id);
+
+        expect(issue.milestone).not.to.exist;
+      }
+    });
+
+
+    it('should update explicit', async function() {
+
+      // when
+      const updatedIssues = await Promise.all([
+        store.updateIssue({
+          id: issue_1.id,
+          milestone: {
+            id: 1,
+            name: 'foo'
+          }
+        }),
+        store.updateIssue({
+          id: issue_no_milestone.id,
+          milestone: {
+            id: 1,
+            name: 'foo'
+          }
+        })
+      ]);
+
+      // then
+      expect(updatedIssues).to.have.length(2);
+
+      expect(store.updates.getSince()).to.have.length(3);
+
+      for (const issue of updatedIssues) {
+        expect(issue.id).not.to.eql(issue_2.id);
+
+        expect(issue.milestone).to.exist;
+      }
+    });
+
+  });
+
+
+  describe('issue bulk insert', function() {
+
+    it('should order last to first', async function() {
+
+      // given
+      const store = createStore();
+
+      // when
+      const issues = await Promise.all([
+        store.updateIssue(createIssue()),
+        store.updateIssue(createIssue()),
+        store.updateIssue(createIssue())
+      ]);
+
+      // then
+      expectOrder(store, [ issues[2], issues[1], issues[0] ]);
+    });
+
+
+    it('should insert before existing', async function() {
+
+      // given
+      const store = createStore();
+
+      const issue = await store.updateIssue(createIssue());
+
+      // when
+      const issues = await Promise.all([
+        store.updateIssue(createIssue()),
+        store.updateIssue(createIssue()),
+        store.updateIssue(createIssue())
+      ]);
+
+      // then
+      expectOrder(store, [ issues[2], issues[1], issues[0], issue ]);
     });
 
   });
@@ -206,13 +333,13 @@ describe('store', function() {
 
       expect(updates).to.have.length(3);
 
-      const links = store.getIssueLinks(issue);
+      const issue_links = store.getIssueLinks(issue);
 
-      expect(links).to.have.length(2);
+      expect(issue_links).to.have.length(2);
 
-      const links_1 = store.getIssueLinks(issue_1);
+      const issue_1_links = store.getIssueLinks(issue_1);
 
-      expect(links_1).to.have.length(1);
+      expect(issue_1_links).to.have.length(1);
     });
 
 
@@ -243,6 +370,34 @@ describe('store', function() {
 
       expect(links).to.be.empty;
       expect(linkedLinks).to.be.empty;
+    });
+
+
+    it('should update multiple', async function() {
+
+      // given
+      const store = createStore();
+
+      const issue_1 = await store.updateIssue(createIssue({
+        title: 'Closes #5'
+      }));
+
+      const issue_2 = await store.updateIssue(createIssue({
+        number: 5
+      }));
+
+      // when
+      await Promise.all([
+        store.updateIssue(issue_1),
+        store.updateIssue(issue_2)
+      ]);
+
+      // then
+      const links = store.getIssueLinks(issue_1);
+      const linkedLinks = store.getIssueLinks(issue_2);
+
+      expect(links).to.have.length(1);
+      expect(linkedLinks).to.have.length(1);
     });
 
 
@@ -336,28 +491,6 @@ describe('store', function() {
 
 
   describe('ordering', function() {
-
-    function expectOrder(store, issues) {
-
-      for (const i in issues) {
-
-        const last = issues[i - 1];
-        const current = issues[i];
-
-        if (last) {
-
-          const lastOrder = store.getIssueOrder(last.id);
-          const currentOrder = store.getIssueOrder(current.id);
-
-          if (lastOrder > currentOrder) {
-            throw new Error(
-              `expected order [ "${last.title}", "${current.title}" ], found inverse`
-            );
-          }
-        }
-      }
-    }
-
 
     it('should add new issue to front', async function() {
 
@@ -540,7 +673,7 @@ describe('store', function() {
     });
 
 
-    it('should keep unliked order without column change', async function() {
+    it('should keep unlinked order without column change', async function() {
 
       // given
       const store = createStore();
@@ -566,7 +699,7 @@ describe('store', function() {
       const updated_issue_D = await store.updateIssueOrder(issue_D, issue_A.id, issue_B.id, 'Done');
 
       const final_issue_D = await store.updateIssue({
-        ...issue_D,
+        id: issue_D.id,
         state: 'closed'
       });
 
@@ -592,6 +725,8 @@ function createStore(columnConfig) {
     debug: () => {}
   };
 
+  const events = new Events();
+
   const logger = {
     child(name) {
       return log;
@@ -609,7 +744,7 @@ function createStore(columnConfig) {
 
   const columns = new Columns(columnConfig || defaultColumnConfig);
 
-  return new Store(columns, logger);
+  return new Store(columns, logger, events);
 }
 
 
@@ -617,14 +752,14 @@ const createIssue = (function() {
 
   let counter = 0;
 
-  return function createIssue(config) {
+  return function createIssue(config = {}) {
 
     const number = counter++;
 
     const defaultConfig = {
       id: `i-${number}`,
       number,
-      title: 'test title',
+      title: `test title - ${number}`,
       body: 'empty body',
       labels: [],
       milestone: null,
@@ -647,3 +782,25 @@ const createIssue = (function() {
     };
   };
 })();
+
+
+function expectOrder(store, issues) {
+
+  for (const i in issues) {
+
+    const last = issues[i - 1];
+    const current = issues[i];
+
+    if (last) {
+
+      const lastOrder = store.getIssueOrder(last.id);
+      const currentOrder = store.getIssueOrder(current.id);
+
+      if (lastOrder >= currentOrder) {
+        throw new Error(
+          `expected order [ "${last.title}", "${current.title}" ], found inverse`
+        );
+      }
+    }
+  }
+}

@@ -2,6 +2,8 @@ const {
   groupBy
 } = require('min-dash');
 
+const pDefer = require('p-defer');
+
 const {
   issueIdent
 } = require('./util');
@@ -15,124 +17,336 @@ const { Links } = require('./links');
 
 class Store {
 
-  constructor(columns, logger) {
+  constructor(columns, logger, events) {
     this.log = logger.child({
       name: 'wuffle:store'
     });
 
     this.columns = columns;
+    this.events = events;
 
     this.issues = [];
-    this.issueOrder = {};
-    this.issueColumn = {};
+    this.issuesByKey = {};
+    this.issuesById = {};
 
     this.updates = new Updates();
     this.links = new Links();
 
-    this.issuesByKey = {};
-    this.issuesById = {};
-
     this.linkedCache = {};
     this.boardCache = null;
-  }
 
-  computeIssueColumn(issue) {
-    return this.columns.getIssueColumn(issue);
-  }
+    this.updateContext = null;
+    this.queuedUpdates = [];
 
-  async updateIssue(issue, newColumn, newOrder) {
 
-    const t = Date.now();
+    this.on('updateIssue', async event => {
 
-    const {
-      id,
-      key,
-      repository
-    } = issue;
+      const {
+        updatedIssue,
+        update
+      } = event;
 
-    if (!id) {
-      throw new Error('{ id } required');
-    }
+      // ensure we always update the column
+      // whenever an issue is being touched
+      if (!update.column) {
+        updatedIssue.column = this.columns.getIssueColumn(updatedIssue).name;
+      }
 
-    if (!key) {
-      throw new Error('{ key } required');
-    }
+      // attach a flag to column labels
+      if (update.labels) {
+        updatedIssue.labels = updatedIssue.labels.map(label => {
 
-    if (!repository) {
-      throw new Error('{ repository } required');
-    }
+          if (this.columns.isColumnLabel(label.name)) {
+            return {
+              ...label,
+              column_label: true
+            };
+          }
 
-    const ident = issueIdent(issue);
-
-    this.log.debug({
-      issue: ident,
-      newColumn,
-      newOrder
-    }, 'issue update');
-
-    const {
-      touchedIssues,
-      links
-    } = this.updateLinks(issue);
-
-    const column = newColumn || this.computeIssueColumn(issue).name;
-
-    // automatically compute desired order unless
-    // the order is provided by the user
-    //
-    // this ensures the board is automatically pre-sorted
-    // as links are being created and removed on GitHub
-    const order = newOrder || this.computeLinkedOrder(
-      issue,
-      column,
-      links
-    );
-
-    issue = this.insertOrUpdateIssue({
-      ...issue,
-      order,
-      column
+          return label;
+        });
+      }
     });
 
-    const updatedIssues = [ ...touchedIssues, issue ];
+    this.on('issuesUpdated', 1500, async event => {
 
-    for (const issue of updatedIssues) {
-      this.updates.add(issue.id, {
-        type: 'update',
-        issue: {
-          ...issue,
-          links: this.getIssueLinks(issue)
+      const {
+        context
+      } = event;
+
+      for (const update of context.getUpdates()) {
+
+        const issue = context.getIssueById(update.id);
+
+        const links = this.createLinks(context, issue);
+
+        context.setLinks(issue, links);
+      }
+    });
+
+    this.on('issuesUpdated', 1250, async event => {
+
+      const {
+        context
+      } = event;
+
+      let firstIssue = this.issues[0];
+
+      for (const update of context.getUpdates()) {
+
+        const {
+          id,
+          order
+        } = update;
+
+        if (order) {
+          continue;
         }
-      });
-    }
 
-    this.log.info({ issue: ident, column, order, t: Date.now() - t }, 'issue updated');
+        const issue = context.getIssueById(id);
 
-    return issue;
+        const newLinks = context.getLinks(issue);
+
+        const inverseLinks = this.links.getInverse(id);
+
+        const links = {
+          ...newLinks,
+          ...inverseLinks
+        };
+
+        issue.order = this.getSemanticIssueOrder(issue, links, firstIssue);
+
+        if (!firstIssue || firstIssue.order > issue.order) {
+          firstIssue = issue;
+        }
+      }
+    });
+
+    this.on('issuesUpdated', 750, async event => {
+
+      const {
+        context
+      } = event;
+
+      // flush issues and links to persistent storage
+
+      for (const update of context.getUpdates()) {
+
+        const issue = context.getIssueById(update.id);
+
+        this._flushIssue(context, issue);
+      }
+    });
+
+    this.on('issuesUpdated', 500, async event => {
+
+      const {
+        context
+      } = event;
+
+      // flush issues and links to persistent storage
+
+      for (const update of context.getUpdates()) {
+
+        const issue = this.getIssueById(update.id);
+
+        const newLinks = context.getLinks(issue);
+
+        this._flushLinks(context, issue, newLinks);
+      }
+    });
+
+    this.on('issuesUpdated', 250, async event => {
+
+      const {
+        context
+      } = event;
+
+      // publish updates for changed issues
+
+      for (const issue of context.getTouchedIssues()) {
+
+        this.updates.add(issue.id, {
+          type: 'update',
+          issue: {
+            ...issue,
+            links: this.getIssueLinks(issue)
+          }
+        });
+
+      }
+
+      // ensure board is re-computed on next request
+
+      this.boardCache = null;
+    });
+
   }
 
-  updateIssueOrder(issue, before, after, newColumn) {
-
-    const {
-      id,
-      key
-    } = issue;
-
-    const newOrder = this.computeOrder(before, after, this.getIssueOrder(id));
-
-    this.log.debug({
-      issue: key,
-      newOrder,
-      newColumn
-    }, 'update issue order');
-
-    return this.updateIssue(issue, newColumn, newOrder);
-  }
-
-  computeLinkedOrder(issue, column, links) {
+  queueUpdate(update) {
 
     const {
       id
+    } = update;
+
+    if (!id) {
+      throw new Error('<id> required');
+    }
+
+    const t = Date.now();
+
+    this.queuedUpdates.push({
+      update,
+      t: Date.now()
+    });
+
+    this.log.debug({ id: id }, 'update queued');
+
+    return this.triggerUpdates().then(() => {
+
+      this.log.debug({
+        id: id,
+        t: Date.now() - t
+      }, 'update processed');
+
+      return this.getIssueById(id);
+    });
+  }
+
+  triggerUpdates() {
+
+    if (!this.updateContext) {
+      const context = this.updateContext = new UpdateContext(this);
+
+      let error;
+
+      this.processUpdates(context).catch(_error => {
+        error = _error;
+      }).finally(() => {
+        this.updateContext = null;
+
+        if (error) {
+          context.reject(error);
+        } else {
+          context.resolve();
+        }
+      });
+
+    }
+
+    return this.updateContext.promise;
+  }
+
+  async processUpdates(context) {
+    const t = Date.now();
+
+    const processed = [];
+
+    while (this.queuedUpdates.length) {
+      const {
+        t,
+        deferred,
+        update
+      } = this.queuedUpdates.shift();
+
+      await this.processUpdate(context, update);
+
+      processed.push({
+        t,
+        deferred,
+        update
+      });
+    }
+
+    await this.emit('issuesUpdated', {
+      context
+    });
+
+    this.log.info({
+      t: Date.now() - t
+    }, 'updates processed');
+  }
+
+  /**
+   * Update a set of issues in a batch.
+   *
+   * @param {Function} iteratorFn
+   *
+   * @return {Array<Object>} updated issues
+   */
+  updateIssues(iteratorFn) {
+
+    const pendingUpdates = this.issues.map(issue => {
+      const update = iteratorFn(issue);
+
+      if (update) {
+        return {
+          id: issue.id,
+          ...update
+        };
+      }
+    }).filter(update => update);
+
+    const updatePromises = pendingUpdates.map((update) => {
+      return this.queueUpdate(update);
+    });
+
+    return Promise.all(updatePromises);
+  }
+
+  updateIssue(update) {
+    return this.queueUpdate(update);
+  }
+
+  async processUpdate(context, update) {
+
+    const {
+      id
+    } = update;
+
+    if (!id) {
+      throw new Error('<id> required');
+    }
+
+    const existingIssue = this.getIssueById(id) || {};
+
+    const updatedIssue = {
+      ...existingIssue,
+      ...update
+    };
+
+    if (!updatedIssue.key) {
+      throw new Error('<key> required');
+    }
+
+    if (!updatedIssue.repository) {
+      throw new Error('<repository> required');
+    }
+
+    const ident = issueIdent(updatedIssue);
+
+    this.log.debug({
+      issue: ident
+    }, 'process update');
+
+    context.addUpdate(update);
+    context.addTouchedIssue(updatedIssue);
+
+    await this.emit('updateIssue', {
+      context,
+      existingIssue,
+      update,
+      updatedIssue
+    });
+
+    return updatedIssue;
+  }
+
+  getSemanticIssueOrder(issue, links, firstIssue) {
+
+    const {
+      id,
+      column
     } = issue;
 
     const beforeTypes = {
@@ -178,18 +392,18 @@ class Store {
     if (!before && !after) {
 
       // keep order if issue stays within column
-      if (column === currentColumn) {
+      if (column === currentColumn && typeof currentOrder === 'number') {
         return currentOrder;
       }
 
-      // insert on top of column
-      before = this.issues[0];
+      // insert before other issues
+      before = firstIssue;
     }
 
-    return this.computeOrder(before && before.id, after && after.id, currentOrder);
+    return this._computeOrder(before && before.order, after && after.order, currentOrder);
   }
 
-  updateLinks(issue) {
+  createLinks(context, issue) {
 
     const { id } = issue;
 
@@ -198,11 +412,7 @@ class Store {
       owner: issue.repository.owner.login
     };
 
-    const removedLinks = this.links.removeBySource(id);
-
-    const inverseLinks = this.links.getBySource(id);
-
-    const createdLinks = findLinks(issue).reduce((map, link) => {
+    return findLinks(issue).reduce((map, link) => {
 
       // add repository meta-data, if missing
       link = {
@@ -217,104 +427,75 @@ class Store {
         type: linkType
       } = link;
 
-      const key = `${owner}/${repo}#${number}`;
+      const linkedKey = `${owner}/${repo}#${number}`;
 
-      const linkedIssue = this.getIssueByKey(key);
+      const linkedIssue = context.getIssueByKey(linkedKey);
 
       if (linkedIssue) {
 
-        const { id: linkedId } = linkedIssue;
+        const { id: targetId } = linkedIssue;
 
-        const { key, link } = this.links.addLink(id, linkedId, linkType);
+        const link = this.links.createLink(id, targetId, linkType);
 
-        map[key] = link;
+        map[link.key] = link;
       }
 
       return map;
     }, {});
-
-    const newLinks = {
-      ...inverseLinks,
-      ...createdLinks
-    };
-
-    const allLinks = {
-      ...newLinks,
-      ...removedLinks
-    };
-
-    const touchedIssues = Object.keys(allLinks).reduce((issues, linkId) => {
-
-      const { targetId } = allLinks[linkId];
-
-      const linkedIssue = this.getIssueById(targetId);
-
-      if (!linkedIssue) {
-        return issues;
-      }
-
-      issues.push(linkedIssue);
-
-      return issues;
-    }, []);
-
-    if (touchedIssues.length) {
-      touchedIssues.forEach(changed => {
-        delete this.linkedCache[changed.id];
-      });
-
-      delete this.linkedCache[id];
-    }
-
-    this.boardCache = null;
-
-    return {
-      touchedIssues,
-      links: newLinks
-    };
   }
 
-  insertOrUpdateIssue(issue) {
+  _flushLinks(context, issue, newLinks) {
+
+    const {
+      id,
+      key
+    } = issue;
+
+    const removedLinks = this.links.removeBySource(id);
+
+    const inverseLinks = this.links.getInverse(id);
+
+    for (const link of Object.values(newLinks)) {
+      this.links.addLink(link);
+    }
+
+    delete this.linkedCache[id];
+
+    const allLinks = {
+      ...removedLinks,
+      ...inverseLinks,
+      ...newLinks
+    };
+
+    Object.values(allLinks).forEach(link => {
+
+      const id = link.targetId;
+
+      delete this.linkedCache[id];
+
+      const issue = this.getIssueById(id);
+
+      context.addTouchedIssue(issue);
+    });
+
+    this.log.debug({
+      issue: key
+    }, 'links flushed');
+  }
+
+  _flushIssue(context, issue) {
 
     const {
       id,
       key,
       order,
-      column,
-      labels
+      column
     } = issue;
-
-    // update column and order
-    this.setIssueOrder(id, order);
-    this.setIssueColumn(id, column);
-
-    // attach column label meta-data
-    issue = {
-      ...issue,
-      labels: labels.map(label => {
-
-        if (this.columns.isColumnLabel(label.name)) {
-          return {
-            ...label,
-            column_label: true
-          };
-        }
-
-        return label;
-      })
-    };
 
     const existingIssue = this.issuesById[id];
 
     if (existingIssue) {
       delete this.issuesByKey[existingIssue.key];
-
-      // merge issue with existing data as we may receive a update
-      // (i.e. issue data for a pull request) only
-      issue = {
-        ...existingIssue,
-        ...issue
-      };
     }
 
     this.issuesById[id] = issue;
@@ -339,7 +520,11 @@ class Store {
       issues.push(issue);
     }
 
-    return issue;
+    this.log.info({
+      issue: key,
+      order,
+      column
+    }, 'issue updated');
   }
 
   getIssueLinks(issue) {
@@ -384,9 +569,6 @@ class Store {
     delete this.issuesByKey[key];
     delete this.linkedCache[id];
 
-    delete this.issueOrder[id];
-    delete this.issueColumn[id];
-
     this.boardCache = null;
 
     this.issues = this.issues.filter(issue => issue.id !== id);
@@ -414,10 +596,26 @@ class Store {
     return this.issues;
   }
 
-  computeOrder(beforeId, afterId, currentOrder) {
+  updateIssueOrder(issue, before, after, column) {
 
-    const beforeOrder = beforeId && this.issueOrder[beforeId];
-    const afterOrder = afterId && this.issueOrder[afterId];
+    const {
+      id
+    } = issue;
+
+    const order = this._computeOrder(
+      before && this.getIssueOrder(before),
+      after && this.getIssueOrder(after),
+      this.getIssueOrder(id)
+    );
+
+    return this.updateIssue({
+      id,
+      column,
+      order
+    });
+  }
+
+  _computeOrder(beforeOrder, afterOrder, currentOrder) {
 
     if (beforeOrder && afterOrder) {
       return (
@@ -431,7 +629,7 @@ class Store {
       return (
         typeof currentOrder === 'number' && currentOrder < beforeOrder
           ? currentOrder
-          : beforeOrder - 99999.89912
+          : beforeOrder - 78567.92142
       );
     }
 
@@ -439,28 +637,24 @@ class Store {
       return (
         typeof currentOrder === 'number' && currentOrder > afterOrder
           ? currentOrder
-          : afterOrder + 99999.89912
+          : afterOrder + 78567.12345
       );
     }
 
     // a good start :)
-    return 779999.89912;
-  }
-
-  setIssueColumn(issueId, column) {
-    this.issueColumn[String(issueId)] = column;
+    return 709876.54321;
   }
 
   getIssueColumn(issueId) {
-    return this.issueColumn[String(issueId)];
-  }
+    const issue = this.getIssueById(issueId);
 
-  setIssueOrder(issueId, order) {
-    this.issueOrder[String(issueId)] = order;
+    return issue && issue.column;
   }
 
   getIssueOrder(issueId) {
-    return this.issueOrder[String(issueId)];
+    const issue = this.getIssueById(issueId);
+
+    return issue && issue.order;
   }
 
   getIssueById(id) {
@@ -493,6 +687,18 @@ class Store {
     return this.updates.getSince(cursor);
   }
 
+  on(event, ...otherArgs) {
+    return this.events.on(`store.${event}`, ...otherArgs);
+  }
+
+  once(event, ...otherArgs) {
+    return this.events.once(`store.${event}`, ...otherArgs);
+  }
+
+  emit(event, ...otherArgs) {
+    return this.events.emit(`store.${event}`, ...otherArgs);
+  }
+
   /**
    * Serialize data to JSON so that it can
    * later be loaded via #loadJSON.
@@ -502,16 +708,12 @@ class Store {
     const {
       issues,
       lastSync,
-      issueOrder,
-      issueColumn,
       links
     } = this;
 
     return JSON.stringify({
       issues,
       lastSync,
-      issueOrder,
-      issueColumn,
       links: links.asJSON()
     });
   }
@@ -524,15 +726,11 @@ class Store {
     const {
       issues,
       lastSync,
-      issueOrder,
-      issueColumn,
       links
     } = JSON.parse(json);
 
     this.issues = issues || [];
     this.lastSync = lastSync;
-    this.issueOrder = issueOrder || {};
-    this.issueColumn = issueColumn || {};
 
     if (links) {
       this.links.loadJSON(links);
@@ -549,6 +747,69 @@ class Store {
 
       return map;
     }, {});
+  }
+
+}
+
+
+class UpdateContext {
+
+  constructor(store) {
+    const {
+      resolve,
+      reject,
+      promise
+    } = pDefer();
+
+    this.store = store;
+
+    this.updates = [];
+    this.links = {};
+
+    this.issuesById = {};
+    this.issuesByKey = {};
+
+    this.resolve = resolve;
+    this.reject = reject;
+    this.promise = promise;
+  }
+
+  addTouchedIssue(issue) {
+    const {
+      id,
+      key
+    } = issue;
+
+    this.issuesById[id] = issue;
+    this.issuesByKey[key] = issue;
+  }
+
+  addUpdate(update) {
+    this.updates.push(update);
+  }
+
+  getTouchedIssues() {
+    return Object.values(this.issuesById);
+  }
+
+  getIssueById(id) {
+    return this.issuesById[id] || this.store.getIssueById(id);
+  }
+
+  getIssueByKey(key) {
+    return this.issuesByKey[key] || this.store.getIssueByKey(key);
+  }
+
+  getUpdates() {
+    return this.updates;
+  }
+
+  setLinks(issue, links) {
+    this.links[issue.id] = links;
+  }
+
+  getLinks(issue) {
+    return this.links[issue.id] || {};
   }
 
 }

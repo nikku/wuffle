@@ -34,6 +34,7 @@
     "exit-hook2": "^1.0.8",
     "express-session": "^1.16.2",
     "min-dash": "^3.5.2",
+    "p-defer": "^3.0.0",
     "probot": "^9.5.0"
   },
   "devDependencies": {
