@@ -130,19 +130,21 @@ module.exports = async (
 
   }
 
-  function moveIssue(context, issue, column, position) {
+  async function moveIssue(context, issue, columnDefinition, position) {
+
+    // we move the issue via GitHub and rely on the automatic-dev-flow
+    // to pick up the update (and react to it)
 
     const {
       before,
       after
     } = position;
 
-    // we move the issue via GitHub and rely on the automatic-dev-flow
-    // to pick up the update (and react to it)
+    const column = columnDefinition.name;
 
     return Promise.all([
-      store.updateIssueOrder(issue, before, after, column.name),
-      githubIssues.moveIssue(context, issue, column)
+      store.updateIssueOrder(issue, before, after, column),
+      githubIssues.moveIssue(context, issue, columnDefinition)
     ]);
 
   }
@@ -221,7 +223,7 @@ module.exports = async (
       after
     } = body;
 
-    const issue = store.getIssueById(id);
+    const issue = await store.getIssueById(id);
 
     if (!issue) {
       return res.status(404).json({});
