@@ -1,6 +1,7 @@
 <script>
   import {
-    isOpenOrMerged,
+    isOpen,
+    isMerged,
     isPull,
     noDuplicates
   } from './util';
@@ -57,7 +58,11 @@
   $: completedChildren = children.filter(l => l.target.state === 'closed');
 
   $: prLinks = links.filter(
-    link => isPull(link.target) && isOpenOrMerged(link.target)
+    link => isPull(link.target) && (
+      isOpen(link.target) || (
+        isMerged(link.target) && link.type === 'CLOSED_BY'
+      )
+    )
   ).filter(noDuplicates(link => link.target.id));
 
   $: assignees = item.assignees;
