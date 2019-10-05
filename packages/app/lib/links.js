@@ -34,46 +34,63 @@ class Links {
     this.inverseLinks = (data && data.inverseLinks) || {};
   }
 
-  /**
-   * Establish a link between source and target with the given type.
-   *
-   * @param {Number} sourceId
-   * @param {Number} targetId
-   * @param {string} linkType
-   */
-  addLink(sourceId, targetId, linkType) {
-
-    if (!LinkTypes[linkType]) {
-      throw new Error(`unrecognized link type <${linkType}>`);
-    }
+  createLink(sourceId, targetId, linkType) {
 
     const key = `${targetId}-${linkType}`;
 
-    const links = this.links[sourceId] = (this.links[sourceId] || {});
-
     const link = {
+      key,
+      sourceId,
       targetId,
       type: linkType
     };
 
-    links[key] = link;
+    return link;
+  }
 
-    const inverseLinkType = InverseLinkTypes[linkType];
+  /**
+   * Establish a link between source and target with the given type.
+   *
+   * @param {Object} link
+   */
+  addLink(link) {
+
+    const {
+      sourceId,
+      targetId,
+      type
+    } = link;
+
+    if (!LinkTypes[type]) {
+      throw new Error(`unrecognized link type <${type}>`);
+    }
+
+    const links = this.links[sourceId] = (this.links[sourceId] || {});
+
+    const key = `${targetId}-${type}`;
+
+    links[key] = {
+      key,
+      sourceId,
+      targetId,
+      type
+    };
+
+    const inverseLinkType = InverseLinkTypes[type];
 
     if (inverseLinkType) {
 
       const inverseLinks = this.inverseLinks[targetId] = (this.inverseLinks[targetId] || {});
 
-      inverseLinks[`${sourceId}-${inverseLinkType}`] = {
+      const inverseKey = `${sourceId}-${inverseLinkType}`;
+
+      inverseLinks[inverseKey] = {
+        key: inverseKey,
+        sourceId: targetId,
         targetId: sourceId,
         type: inverseLinkType
       };
     }
-
-    return {
-      key,
-      link
-    };
   }
 
   /**
@@ -84,14 +101,22 @@ class Links {
    * @return {Array<Object>} links
    */
   getBySource(sourceId) {
-    const links = this.links[sourceId] || {};
+    const links = this.getDirect(sourceId);
 
-    const inverseLinks = this.inverseLinks[sourceId] || {};
+    const inverseLinks = this.getInverse(sourceId);
 
     return {
       ...links,
       ...inverseLinks
     };
+  }
+
+  getDirect(sourceId) {
+    return this.links[sourceId] || {};
+  }
+
+  getInverse(sourceId) {
+    return this.inverseLinks[sourceId] || {};
   }
 
   /**

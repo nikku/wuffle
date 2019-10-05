@@ -13,16 +13,44 @@ describe('links', function() {
     // given
     const links = new Links();
 
+    const link = links.createLink(1, 2, LinkTypes.CLOSES);
+
     // when
-    const {
-      key,
-      link
-    } = links.addLink(1, 2, LinkTypes.CLOSES);
+    links.addLink(link);
 
     // then
-    expect(key).to.eql(`2-${LinkTypes.CLOSES}`);
+    expect(links.getDirect(1)).to.eql({
+      [ `2-${LinkTypes.CLOSES}` ]: {
+        key: `2-${LinkTypes.CLOSES}`,
+        sourceId: 1,
+        targetId: 2,
+        type: LinkTypes.CLOSES
+      }
+    });
 
+    expect(links.getInverse(2)).to.eql({
+      [ `1-${LinkTypes.CLOSED_BY}` ]: {
+        key: `1-${LinkTypes.CLOSED_BY}`,
+        sourceId: 2,
+        targetId: 1,
+        type: LinkTypes.CLOSED_BY
+      }
+    });
+  });
+
+
+  it('should create link', function() {
+
+    // given
+    const links = new Links();
+
+    // when
+    const link = links.createLink(1, 2, LinkTypes.CLOSES);
+
+    // then
     expect(link).to.eql({
+      key: `2-${LinkTypes.CLOSES}`,
+      sourceId: 1,
       targetId: 2,
       type: LinkTypes.CLOSES
     });
@@ -35,16 +63,16 @@ describe('links', function() {
     // given
     const links = new Links();
 
-    links.addLink(1, 2, LinkTypes.CLOSES);
-    links.addLink(1, 3, LinkTypes.LINKED_TO);
-    links.addLink(1, 4, LinkTypes.DEPENDS_ON);
-    links.addLink(1, 5, LinkTypes.CHILD_OF);
+    links.addLink(links.createLink(1, 2, LinkTypes.CLOSES));
+    links.addLink(links.createLink(1, 3, LinkTypes.LINKED_TO));
+    links.addLink(links.createLink(1, 4, LinkTypes.DEPENDS_ON));
+    links.addLink(links.createLink(1, 5, LinkTypes.CHILD_OF));
 
     // when
     const issueLinks = links.getBySource(1);
 
     // then
-    expect(issueLinks).to.eql({
+    expectLinked(issueLinks, {
       '2-CLOSES': { targetId: 2, type: LinkTypes.CLOSES },
       '3-LINKED_TO': { targetId: 3, type: LinkTypes.LINKED_TO },
       '4-DEPENDS_ON': { targetId: 4, type: LinkTypes.DEPENDS_ON },
@@ -59,16 +87,16 @@ describe('links', function() {
     // given
     const links = new Links();
 
-    links.addLink(2, 1, LinkTypes.CLOSES);
-    links.addLink(3, 1, LinkTypes.LINKED_TO);
-    links.addLink(4, 1, LinkTypes.DEPENDS_ON);
-    links.addLink(5, 1, LinkTypes.CHILD_OF);
+    links.addLink(links.createLink(2, 1, LinkTypes.CLOSES));
+    links.addLink(links.createLink(3, 1, LinkTypes.LINKED_TO));
+    links.addLink(links.createLink(4, 1, LinkTypes.DEPENDS_ON));
+    links.addLink(links.createLink(5, 1, LinkTypes.CHILD_OF));
 
     // when
     const issueLinks = links.getBySource(1);
 
     // then
-    expect(issueLinks).to.eql({
+    expectLinked(issueLinks, {
       '2-CLOSED_BY': { targetId: 2, type: LinkTypes.CLOSED_BY },
       '3-LINKED_BY': { targetId: 3, type: LinkTypes.LINKED_BY },
       '4-REQUIRED_BY': { targetId: 4, type: LinkTypes.REQUIRED_BY },
@@ -83,10 +111,10 @@ describe('links', function() {
     // given
     const links = new Links();
 
-    links.addLink(1, 2, LinkTypes.CLOSES);
-    links.addLink(1, 3, LinkTypes.LINKED_TO);
-    links.addLink(4, 1, LinkTypes.DEPENDS_ON);
-    links.addLink(5, 1, LinkTypes.CHILD_OF);
+    links.addLink(links.createLink(1, 2, LinkTypes.CLOSES));
+    links.addLink(links.createLink(1, 3, LinkTypes.LINKED_TO));
+    links.addLink(links.createLink(4, 1, LinkTypes.DEPENDS_ON));
+    links.addLink(links.createLink(5, 1, LinkTypes.CHILD_OF));
 
     // when
     const removed = links.removeBySource(1);
@@ -96,7 +124,7 @@ describe('links', function() {
     // then
     expect(removed).to.have.keys([ '2-CLOSES', '3-LINKED_TO' ]);
 
-    expect(issueLinks).to.eql({
+    expectLinked(issueLinks, {
       '4-REQUIRED_BY': { targetId: 4, type: LinkTypes.REQUIRED_BY },
       '5-PARENT_OF': { targetId: 5, type: LinkTypes.PARENT_OF }
     });
@@ -109,10 +137,10 @@ describe('links', function() {
     // given
     const links = new Links();
 
-    links.addLink(1, 2, LinkTypes.CLOSES);
-    links.addLink(1, 3, LinkTypes.LINKED_TO);
-    links.addLink(4, 1, LinkTypes.DEPENDS_ON);
-    links.addLink(5, 1, LinkTypes.CHILD_OF);
+    links.addLink(links.createLink(1, 2, LinkTypes.CLOSES));
+    links.addLink(links.createLink(1, 3, LinkTypes.LINKED_TO));
+    links.addLink(links.createLink(4, 1, LinkTypes.DEPENDS_ON));
+    links.addLink(links.createLink(5, 1, LinkTypes.CHILD_OF));
 
     links.removeBySource(4);
     links.removeBySource(5);
@@ -121,7 +149,7 @@ describe('links', function() {
     const issueLinks = links.getBySource(1);
 
     // then
-    expect(issueLinks).to.eql({
+    expectLinked(issueLinks, {
       '2-CLOSES': { targetId: 2, type: LinkTypes.CLOSES },
       '3-LINKED_TO': { targetId: 3, type: LinkTypes.LINKED_TO }
     });
@@ -134,8 +162,8 @@ describe('links', function() {
     // given
     const links = new Links();
 
-    links.addLink(1, 2, LinkTypes.CLOSES);
-    links.addLink(1, 3, LinkTypes.LINKED_TO);
+    links.addLink(links.createLink(1, 2, LinkTypes.CLOSES));
+    links.addLink(links.createLink(1, 3, LinkTypes.LINKED_TO));
 
     // when
     const data = links.asJSON();
@@ -147,10 +175,33 @@ describe('links', function() {
     const issueLinks = clonedLinks.getBySource(1);
 
     // then
-    expect(issueLinks).to.eql({
+    expectLinked(issueLinks, {
       '2-CLOSES': { targetId: 2, type: LinkTypes.CLOSES },
       '3-LINKED_TO': { targetId: 3, type: LinkTypes.LINKED_TO }
     });
   });
 
 });
+
+
+function expectLinked(actualLinks, expectedLinks) {
+
+  const strippedLinks = Object.entries(actualLinks).reduce((links, entry) => {
+
+    const [ key, value ] = entry;
+
+    const {
+      targetId,
+      type
+    } = value;
+
+    links[key] = {
+      targetId,
+      type
+    };
+
+    return links;
+  }, {});
+
+  expect(strippedLinks).to.eql(expectedLinks);
+}
