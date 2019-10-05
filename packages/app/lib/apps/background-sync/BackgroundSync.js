@@ -209,9 +209,7 @@ We automatically synchronize all repositories you granted us access to via the G
               foundIssues[id] = true;
             } catch (error) {
               log.debug({
-                owner,
-                repo,
-                issue: issue.number
+                issue: `${owner}/${repo}#${issue.number}`
               }, 'sync failed', error);
             }
           }
@@ -227,21 +225,17 @@ We automatically synchronize all repositories you granted us access to via the G
               foundIssues[id] = true;
             } catch (error) {
               log.debug({
-                owner,
-                repo,
-                pr: pull_request.number
+                pull_request: `${owner}/${repo}#${pull_request.number}`
               }, 'sync failed', error);
             }
           }
 
           log.debug({
-            owner,
-            repo
+            repo: `${owner}/${repo}`
           }, 'sync completed');
         } catch (error) {
           log.warn({
-            owner,
-            repo
+            repo: `${owner}/${repo}`
           }, 'sync failed', error);
         }
 
@@ -312,10 +306,10 @@ We automatically synchronize all repositories you granted us access to via the G
 
   async function doSync(installations) {
 
-    const now = Date.now();
+    const t = Date.now();
 
     // get issues, keyed by id
-    const knownIssues = store.getIssues().reduce((byId, issue) => {
+    const knownIssues = await store.getIssues().reduce((byId, issue) => {
       byId[issue.id] = issue;
 
       return byId;
@@ -333,7 +327,7 @@ We automatically synchronize all repositories you granted us access to via the G
     const expiredIssues = await checkExpiration(missingIssues, getRemoveBefore());
 
     log.info(
-      { t: Date.now() - now },
+      { t: Date.now() - t },
       'synched %s, expired %s issues',
       Object.keys(foundIssues).length,
       Object.keys(expiredIssues).length
