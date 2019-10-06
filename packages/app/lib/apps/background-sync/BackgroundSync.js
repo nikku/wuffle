@@ -264,20 +264,12 @@ We automatically synchronize all repositories you granted us access to via the G
 
     const t = Date.now();
 
-    // get issues, keyed by id
-    const knownIssues = await store.getIssues().reduce((byId, issue) => {
-      byId[issue.id] = issue;
+    // search existing issues
 
-      return byId;
-    }, {});
-
-    const t1 = Date.now();
-
-    // synchronize existing issues
     const foundIssues = await fetchUpdates(installations, getSyncSince());
 
     log.debug(
-      { t: Date.now() - t1 },
+      { t: Date.now() - t },
       'found %s issues',
       Object.keys(foundIssues).length
     );
@@ -286,8 +278,25 @@ We automatically synchronize all repositories you granted us access to via the G
 
     const t2 = Date.now();
 
-    // process updates
+    // update changed issues
+
     await Promise.all(pendingUpdates.map(update => store.updateIssue(update)));
+
+    // emit background sync event for all found issues
+
+    for (const issueId of Object.keys(foundIssues)) {
+      const issue = await store.getIssueById(issueId);
+
+      if (!issue) {
+        continue;
+      }
+
+      events.emit('backgroundSync.sync', {
+        issue
+      }).catch(err => {
+        log.error('additional sync failed', err);
+      });
+    }
 
     log.debug(
       { t: Date.now() - t2 },
@@ -298,7 +307,16 @@ We automatically synchronize all repositories you granted us access to via the G
     // be automatically expired once they reach a
     // certain life-span without activity
 
-    const missingIssues = Object.keys(knownIssues).filter(k => !(k in foundIssues)).map(k => knownIssues[k]);
+    const knownIssues = await store.getIssues().reduce((byId, issue) => {
+      byId[issue.id] = issue;
+
+      return byId;
+    }, {});
+
+    const missingIssues =
+      Object.keys(knownIssues)
+        .filter(k => !(k in foundIssues))
+        .map(k => knownIssues[k]);
 
     const expiredIssues = await checkExpiration(missingIssues, getRemoveBefore());
 
