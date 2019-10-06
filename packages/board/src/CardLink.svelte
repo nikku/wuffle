@@ -15,6 +15,8 @@
 
   export let onSelect;
 
+  export let hovered;
+
   export let type;
 
   $: id = item.id;
@@ -80,7 +82,11 @@
   }
 </style>
 
-<div class="card-link">
+<div class="card-link"
+  class:hovered={ hovered }
+  on:mouseenter={ () => hovered = true }
+  on:mouseleave={ () => hovered = false }
+>
   <div class="header">
     <a href={ cardUrl }
        target="_blank"

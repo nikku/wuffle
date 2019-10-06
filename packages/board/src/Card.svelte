@@ -36,6 +36,8 @@
 
   let showChildren = false;
 
+  let hovered = false;
+
   $: id = item.id;
   $: number = item.number;
   $: title = item.title;
@@ -161,7 +163,11 @@
 </style>
 
 <div class="board-card-container { className }">
-  <div class="board-card">
+  <div class="board-card"
+    class:hovered={ hovered }
+    on:mouseenter={ () => hovered = true }
+    on:mouseleave={ () => hovered = false }
+  >
     <div class="header">
       <a href={ cardUrl }
          target="_blank"
