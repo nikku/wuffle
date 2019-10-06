@@ -23,7 +23,8 @@ const apps = [
   require('./apps/automatic-dev-flow'),
   require('./apps/auth-routes'),
   require('./apps/board-api-routes'),
-  require('./apps/board-routes')
+  require('./apps/board-routes'),
+  require('./apps/reviews')
 ];
 
 const loadConfig = require('./load-config');

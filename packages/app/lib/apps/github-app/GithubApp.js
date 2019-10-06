@@ -18,6 +18,7 @@ const RequiredEvents = [
   'label',
   'milestone',
   'pull_request',
+  'pull_request_review',
   'repository'
 ];
 
