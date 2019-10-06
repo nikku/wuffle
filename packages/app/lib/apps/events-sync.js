@@ -108,4 +108,33 @@ module.exports = function(webhookEvents, store) {
     });
   });
 
+  // labels ///////////////////////
+
+  webhookEvents.on([
+    'label.edited'
+  ], async ({ payload }) => {
+
+    const {
+      label
+    } = payload;
+
+    await store.updateIssues(issue => {
+
+      const issueLabels = issue.labels || [];
+
+      const existingIndex = issueLabels.findIndex(l => l.id === label.id);
+
+      if (existingIndex !== -1) {
+
+        return {
+          labels: [
+            ...issueLabels.slice(0, existingIndex),
+            label,
+            issueLabels.slice(existingIndex + 1)
+          ]
+        };
+      }
+    });
+  });
+
 };
