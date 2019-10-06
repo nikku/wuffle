@@ -138,7 +138,8 @@ function Search(store) {
       return function filterReviewer(issue) {
 
         const {
-          requested_reviewers
+          requested_reviewers,
+          reviews
         } = issue;
 
         // issues do not have reviewers
@@ -146,7 +147,11 @@ function Search(store) {
           return false;
         }
 
-        return requested_reviewers.some(reviewer => fuzzyMatches(reviewer.login, name));
+        return (
+          requested_reviewers.some(reviewer => fuzzyMatches(reviewer.login, name))
+        ) || (
+          (reviews || []).some(review => fuzzyMatches(review.user.login, name))
+        );
       };
     }
   };
