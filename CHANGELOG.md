@@ -6,6 +6,20 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 ___Note:__ Yet to be released changes appear here._
 
+## 0.23.0
+
+* `FEAT(app)`: integrate reviews ([#22](https://github.com/nikku/wuffle/issues/22))
+* `FEAT(app)`: pick up milestone edits ([#46](https://github.com/nikku/wuffle/issues/46))
+* `FEAT(app)`: pick up label edits
+* `FEAT(app)`: allow partial issue updates
+* `FEAT(background-sync)`: add ability to hook up external behaviors
+* `FEAT(background-sync)`: batch update issues ([`1958c9d3`](https://github.com/nikku/wuffle/commit/1958c9d3e8a968d93f0779d99210be7ab1538069))
+* `FEAT(board)`: hide merged, non-closing PRs from cards ([`06794aa5`](https://github.com/nikku/wuffle/commit/06794aa54c745d85518473b5c1541c63512c7c57))
+* `FEAT(board)`: add numerous UI hints
+* `FEAT(board)`: improve assignee display
+* `FEAT(board)`: slightly adjust board styles, making it more pleasent to look at
+* `FEAT(store)`: serialize store updates ([`a5bdcbe5`](https://github.com/nikku/wuffle/commit/a5bdcbe5927b2e35fdd95d38463399ac5e32eea3))
+
 ## 0.22.0
 
 * `FEAT(search)`: include login/org in repository search
