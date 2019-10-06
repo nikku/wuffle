@@ -15,6 +15,8 @@
   import PullRequestIcon from './components/PullRequestIcon.svelte';
   import EpicIcon from './components/EpicIcon.svelte';
 
+  import CollaboratorLinks from './CollaboratorLinks.svelte';
+
   import CardLink from './CardLink.svelte';
 
   const linkOrder = {
@@ -64,10 +66,6 @@
       )
     )
   ).filter(noDuplicates(link => link.target.id));
-
-  $: assignees = item.assignees;
-
-  $: requested_reviewers = item.requested_reviewers || [];
 
   $: repositoryName = `${repository.owner.login}/${repository.name}`;
 
@@ -187,19 +185,7 @@
       <span class="repository" title={ repositoryName }>{ repositoryName }</span>
 
       <span class="collaborator-links">
-        {#each assignees as assignee}
-          <span class="assignee" title="{ assignee.login } assigned">
-            <img src="{ assignee.avatar_url }&s=40" alt="{ assignee.login } avatar" />
-            <div class="icon-shadow"></div>
-          </span>
-        {/each}
-
-        {#each requested_reviewers as reviewer}
-          <span class="assignee reviewer" title="{ reviewer.login } requested for review">
-            <img src="{ reviewer.avatar_url }&s=40" alt="{ reviewer.login } avatar" />
-            <div class="icon-shadow"></div>
-          </span>
-        {/each}
+        <CollaboratorLinks item={ item } />
       </span>
     </div>
     <div class="title">

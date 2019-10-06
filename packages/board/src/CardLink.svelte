@@ -2,6 +2,8 @@
   import PullRequestIcon from './components/PullRequestIcon.svelte';
   import LinkIcon from './components/LinkIcon.svelte';
 
+  import CollaboratorLinks from './CollaboratorLinks.svelte';
+
   import {
     isApplyFilterClick,
     isAddFilterClick
@@ -69,8 +71,8 @@
     flex: 1;
   }
 
-  .card-link .assignee {
-    height: 16px;
+  :global(.card-link) .assignee {
+    height: 16px !important;
   }
 
   :global(.card-link) .epic {
@@ -121,19 +123,7 @@
     <span class="short-title" title={ title }>{ title }</span>
 
     <span class="collaborator-links">
-      {#each assignees as assignee}
-        <span class="assignee" title="{ assignee.login } assigned">
-          <img src="{ assignee.avatar_url }&s=40" alt="{ assignee.login } avatar" />
-          <div class="icon-shadow"></div>
-        </span>
-      {/each}
-
-      {#each requested_reviewers as reviewer}
-        <span class="assignee reviewer" title="{ reviewer.login } requested for review">
-          <img src="{ reviewer.avatar_url }&s=40" alt="{ reviewer.login } avatar" />
-          <div class="icon-shadow"></div>
-        </span>
-      {/each}
+      <CollaboratorLinks item={ item } />
     </span>
   </div>
 </div>
