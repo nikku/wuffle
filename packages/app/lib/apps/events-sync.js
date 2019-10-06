@@ -88,4 +88,24 @@ module.exports = function(webhookEvents, store) {
     return store.updateIssue(filterPull(pull_request, repository));
   });
 
+  // milestones /////////////////////
+
+  webhookEvents.on([
+    'milestone.edited'
+  ], async ({ payload }) => {
+
+    const {
+      milestone
+    } = payload;
+
+    await store.updateIssues(issue => {
+
+      if (issue.milestone && issue.milestone.id === milestone.id) {
+        return {
+          milestone
+        };
+      }
+    });
+  });
+
 };
