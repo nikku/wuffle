@@ -1,6 +1,5 @@
 const {
-  filterIssue,
-  filterPull
+  filterIssueOrPull
 } = require('../../filters');
 
 
@@ -47,41 +46,13 @@ We automatically synchronize all repositories you granted us access to via the G
     return Date.now() - removalLookback;
   }
 
-  async function applyUpdate(update) {
-
-    const {
-      id,
-      key
-    } = update;
-
-    const existing = store.getIssueById(id);
-
-    if (!existing || existing.updated_at !== update.updated_at) {
-      try {
-        await store.updateIssue(update);
-      } catch (error) {
-        log.error({ issue: key }, 'update failed', error);
-      }
-    }
-
-    return { id };
-  }
-
-  function syncPull(pull_request, repository) {
-    return applyUpdate(filterPull(pull_request, repository));
-  }
-
-  function syncIssue(issue, repository) {
-    return applyUpdate(filterIssue(issue, repository));
-  }
-
-  async function syncInstallation(installation, since) {
+  async function fetchInstallationIssues(installation, since) {
 
     const foundIssues = {};
 
     const owner = installation.account.login;
 
-    log.debug({ installation: owner }, 'sync start');
+    log.debug({ installation: owner }, 'processing');
 
     try {
       const github = await githubClient.getOrgScoped(owner);
@@ -111,7 +82,7 @@ We automatically synchronize all repositories you granted us access to via the G
           log.debug({
             owner,
             repo
-          }, 'sync start');
+          }, 'processing');
 
           const params = {
             sort: 'updated',
@@ -176,65 +147,72 @@ We automatically synchronize all repositories you granted us access to via the G
             )
           ]);
 
-          for (const issue of [ ...open_issues, ...closed_issues ]) {
+          for (const issueOrPull of [
+            ...open_issues,
+            ...closed_issues,
+            ...open_pull_requests,
+            ...closed_pull_requests
+          ]) {
+
+            const type = 'issue_url' in issueOrPull ? 'pull_request' : 'issue';
 
             try {
+
+              const update = filterIssueOrPull(issueOrPull, repository);
+
               const {
                 id
-              } = await syncIssue(issue, repository);
+              } = update;
 
-              // mark as found
-              foundIssues[id] = true;
+              const existingIssue = await store.getIssueById(id);
+
+              if (existingIssue && existingIssue.updated_at >= update.updated_at) {
+                foundIssues[id] = null;
+
+                log.debug({
+                  [type]: `${owner}/${repo}#${issueOrPull.number}`
+                }, 'skipping, as up-to-date');
+              } else {
+                foundIssues[id] = update;
+
+                log.debug({
+                  [type]: `${owner}/${repo}#${issueOrPull.number}`
+                }, 'scheduled for update');
+              }
             } catch (error) {
-              log.debug({
-                issue: `${owner}/${repo}#${issue.number}`
-              }, 'sync failed', error);
-            }
-          }
-
-          for (const pull_request of [ ...open_pull_requests, ...closed_pull_requests ]) {
-
-            try {
-              const {
-                id
-              } = await syncPull(pull_request, repository);
-
-              // mark as found
-              foundIssues[id] = true;
-            } catch (error) {
-              log.debug({
-                pull_request: `${owner}/${repo}#${pull_request.number}`
+              log.warn({
+                [type]: `${owner}/${repo}#${issueOrPull.number}`
               }, 'sync failed', error);
             }
           }
 
           log.debug({
             repo: `${owner}/${repo}`
-          }, 'sync completed');
+          }, 'processed');
         } catch (error) {
           log.warn({
             repo: `${owner}/${repo}`
-          }, 'sync failed', error);
+          }, 'processing failed', error);
         }
 
       } // end --- for (const repository of repositories)
 
-      log.debug({ installation: owner }, 'sync completed');
+      log.debug({ installation: owner }, 'processed');
     } catch (error) {
-      log.warn({ installation: owner }, 'sync failed', error);
+      log.warn({ installation: owner }, 'processing failed', error);
     }
 
     return foundIssues;
   }
 
-  async function syncInstallations(installations, since) {
+  async function fetchUpdates(installations, since) {
 
     let foundIssues = {};
 
     // sync issues
     for (const installation of installations) {
 
-      const installationIssues = await syncInstallation(installation, since);
+      const installationIssues = await fetchInstallationIssues(installation, since);
 
       foundIssues = {
         ...foundIssues,
@@ -293,8 +271,28 @@ We automatically synchronize all repositories you granted us access to via the G
       return byId;
     }, {});
 
+    const t1 = Date.now();
+
     // synchronize existing issues
-    const foundIssues = await syncInstallations(installations, getSyncSince());
+    const foundIssues = await fetchUpdates(installations, getSyncSince());
+
+    log.debug(
+      { t: Date.now() - t1 },
+      'found %s issues',
+      Object.keys(foundIssues).length
+    );
+
+    const pendingUpdates = Object.values(foundIssues).filter(update => update);
+
+    const t2 = Date.now();
+
+    // process updates
+    await Promise.all(pendingUpdates.map(update => store.updateIssue(update)));
+
+    log.debug(
+      { t: Date.now() - t2 },
+      'applied updates'
+    );
 
     // check for all missing issues, these will
     // be automatically expired once they reach a
@@ -306,8 +304,8 @@ We automatically synchronize all repositories you granted us access to via the G
 
     log.info(
       { t: Date.now() - t },
-      'synched %s, expired %s issues',
-      Object.keys(foundIssues).length,
+      'updated %s, expired %s issues',
+      pendingUpdates.length,
       Object.keys(expiredIssues).length
     );
   }
