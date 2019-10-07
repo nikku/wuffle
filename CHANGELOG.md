@@ -6,6 +6,11 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 ___Note:__ Yet to be released changes appear here._
 
+## 0.24.1
+
+* `CHORE`: add more a11y hints
+* `FIX`: correctly handle dismissed reviews
+
 ## 0.24.0
 
 * `FIX(board)`: ensure long card titles do not kill card layout
