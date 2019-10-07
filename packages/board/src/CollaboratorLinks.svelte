@@ -34,7 +34,8 @@
   const stateToVerb = {
     changes_requested: 'requested changes',
     approved: 'approved',
-    commented: 'commented'
+    commented: 'commented',
+    dismissed: 'dismissed his review'
   };
 
 </script>
@@ -135,7 +136,7 @@
     class="assignee reviewer"
     class:approved={ review.state === 'approved' }
     class:requested-changes={ review.state === 'changes_requested' }
-    class:commented={ review.state === 'commented' }
+    class:commented={ review.state === 'commented' || review.state === 'dismissed' }
     title="{ review.user.login } { stateToVerb[review.state] }"
     href={ `${repoUrl}/pull/${number}#pullrequestreview-${review.id}` }
     target="_blank"

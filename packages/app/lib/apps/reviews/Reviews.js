@@ -84,7 +84,7 @@ module.exports = function Reviews(webhookEvents, events, githubClient, store) {
       ];
     }
 
-    if (action === 'edited') {
+    if (action === 'edited' || action === 'dismissed') {
 
       const index = reviews.findIndex(r => r.id === review.id);
 
@@ -100,10 +100,6 @@ module.exports = function Reviews(webhookEvents, events, githubClient, store) {
           review
         ];
       }
-    }
-
-    if (action === 'dismissed') {
-      reviews = reviews.filter(r => r.id !== review.id);
     }
 
     await store.updateIssue({
