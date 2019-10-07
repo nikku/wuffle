@@ -6,6 +6,12 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 ___Note:__ Yet to be released changes appear here._
 
+## 0.24.0
+
+* `FIX(board)`: ensure long card titles do not kill card layout
+* `FEAT(board)`: give card links full prominence
+* `FEAT(board)`: show assignees collapsed and expand them as needed
+
 ## 0.23.0
 
 * `FEAT(app)`: integrate reviews ([#22](https://github.com/nikku/wuffle/issues/22))
