@@ -1,6 +1,6 @@
 {
   "name": "wuffle-app",
-  "version": "0.24.0",
+  "version": "0.24.1",
   "private": true,
   "description": "The wuffle board back-end",
   "author": {
