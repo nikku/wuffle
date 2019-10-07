@@ -15,7 +15,7 @@
 
   export let onSelect;
 
-  export let hovered;
+  export let hovered = false;
 
   export let type;
 
