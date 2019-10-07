@@ -651,7 +651,7 @@
       {#if accessNotification === 'forbidden'}
         It seems like you do not have write access to the underlying GitHub repository.
       {:else}
-        Please <a href="/wuffle/login">login via GitHub</a> to interact with cards.
+        Please <a href="/wuffle/login" aria-label="Login via GitHub">login via GitHub</a> to interact with cards.
       {/if}
     </Notification>
   {/if}
@@ -685,13 +685,13 @@
 
       <div class="taskboard-header-login">
         {#if user}
-          <a href="/wuffle/logout">
+          <a href="/wuffle/logout" aria-label="Logout">
             <Avatar title={ `Logout ${user.login}` } rounded>
               <img src="{ user.avatar_url }&s=40" style="max-width: 100%" alt="Logged in user avatar" />
             </Avatar>
           </a>
         {:else}
-          <a href="/wuffle/login">
+          <a href="/wuffle/login" aria-label="Login with GitHub">
             <Avatar title="Login with GitHub" rounded>
               <svg height="1.3em" fill="currentColor" viewBox="0 0 12 16" version="1.1" aria-hidden="true"><path fill-rule="evenodd" d="M12 14.002a.998.998 0 0 1-.998.998H1.001A1 1 0 0 1 0 13.999V13c0-2.633 4-4 4-4s.229-.409 0-1c-.841-.62-.944-1.59-1-4 .173-2.413 1.867-3 3-3s2.827.586 3 3c-.056 2.41-.159 3.38-1 4-.229.59 0 1 0 1s4 1.367 4 4v1.002z"></path></svg>
             </Avatar>
@@ -701,7 +701,7 @@
     </div>
   </nav>
 
-  <div class="taskboard-board">
+  <main class="taskboard-board">
 
     {#each columns as column }
       <div class="taskboard-column" class:collapsed={ collapsed[column.name] }>
@@ -748,5 +748,5 @@
       </div>
     {/each}
 
-  </div>
+  </main>
 </div>
