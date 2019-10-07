@@ -65,16 +65,12 @@
 
   .card-link {
     border-top: solid 1px #F0F0F0;
-    margin-top: 1px;
-    padding-top: 1px;
+    margin-top: 2px;
+    padding-top: 2px;
   }
 
   .card-link .short-title {
     flex: 1;
-  }
-
-  :global(.card-link) .assignee {
-    height: 16px !important;
   }
 
   :global(.card-link) .epic {

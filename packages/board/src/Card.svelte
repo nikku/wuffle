@@ -117,6 +117,7 @@
 
     :global(.card-link):first-child {
       border-top: none;
+      margin-top: 1px;
     }
   }
 
