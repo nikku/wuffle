@@ -1,6 +1,6 @@
 {
   "name": "wuffle-board",
-  "version": "0.24.1",
+  "version": "0.24.2",
   "private": true,
   "devDependencies": {
     "bootstrap": "^4.3.1",
