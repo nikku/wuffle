@@ -6,9 +6,13 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 ___Note:__ Yet to be released changes appear here._
 
+## 0.24.2
+
+* `CHORE(board)`: reduce amount of unused styles
+
 ## 0.24.1
 
-* `CHORE`: add more a11y hints
+* `CHORE(board)`: add more a11y hints
 * `FIX`: correctly handle dismissed reviews
 
 ## 0.24.0
