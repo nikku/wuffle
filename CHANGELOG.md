@@ -8,7 +8,9 @@ ___Note:__ Yet to be released changes appear here._
 
 ## 0.25.0
 
+* `FEAT`: publish as `wuffle` to npm
 * `FEAT`: validate presence of compiled board assets
+* `FEAT(app)`: log working directory when starting
 * `CHORE`: compile board assets to app
 
 ## 0.24.2
