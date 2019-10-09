@@ -19,7 +19,11 @@
   "keywords": [
     "probot",
     "github",
-    "probot-app"
+    "probot-app",
+    "github issues",
+    "task board",
+    "kanban board",
+    "project management"
   ],
   "scripts": {
     "dev": "nodemon",
