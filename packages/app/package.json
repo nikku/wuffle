@@ -1,11 +1,14 @@
 {
-  "name": "wuffle-app",
+  "name": "wuffle",
   "version": "0.24.1",
   "private": true,
   "description": "The wuffle board back-end",
   "author": {
     "name": "Nico Rehwaldt",
     "url": "https://github.com/nikku"
+  },
+  "bin": {
+    "wuffle-board": "./bin/run.js"
   },
   "license": "MIT",
   "homepage": "https://github.com/nikku/wuffle",
