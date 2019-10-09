@@ -20,6 +20,7 @@
     "auto-test": "NODE_ENV=test run-s auto-test:*",
     "start": "cd packages/app && npm run start",
     "postinstall": "NODE_ENV=development lerna bootstrap",
+    "prerelease": "npm run all",
     "release": "lerna publish"
   },
   "devDependencies": {
