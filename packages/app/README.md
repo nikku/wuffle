@@ -1,6 +1,6 @@
 # Wuffle
 
-The [Wuffle](https://github.com/nikku/wuffle) multi-repository task board application.
+A multi-repository task board for [GitHub issues](https://guides.github.com/features/issues/).
 
 <p>
   <a target="_blank" rel="noopener noreferrer" href="https://github.com/nikku/wuffle">
@@ -11,13 +11,13 @@ The [Wuffle](https://github.com/nikku/wuffle) multi-repository task board applic
 
 ## Usage
 
-To download and start your own [Wuffle Board](https://github.com/nikku/wuffle), execute:
+To start your own [Wuffle Board](https://github.com/nikku/wuffle), execute:
 
 ```
 npx wuffle
 ```
 
-Checkout the [project documentation](https://github.com/nikku/wuffle) for features and setup instructions.
+Checkout the [project documentation](https://github.com/nikku/wuffle) for an in-depth feature break down and setup instructions.
 
 
 ## License
