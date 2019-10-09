@@ -8,7 +8,7 @@
     "url": "https://github.com/nikku"
   },
   "bin": {
-    "wuffle-board": "./bin/run.js"
+    "wuffle": "./bin/run.js"
   },
   "license": "MIT",
   "homepage": "https://github.com/nikku/wuffle",
