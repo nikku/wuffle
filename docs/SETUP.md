@@ -105,10 +105,12 @@ If you started your app in development mode the board should reload automaticall
 
 ### Run in Production
 
+You can run `npm run all` in order to prepare wuffle in production mode. If you don't, it will be executed via `npm start`.
+
 You can pass the environment variables stored in your `.env` directly when starting the app:
 
 ```
-NODE_ENV=production APP_ID=YOUR_APP_ID cd packages/app && node bin/run.js
+NODE_ENV=production APP_ID=YOUR_APP_ID npm start
 ```
 
 Read through our [configuration section](./CONFIG.md) to learn about all available configuration options.
