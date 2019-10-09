@@ -13,7 +13,9 @@ const fs = require('fs');
  */
 module.exports = function(logger, webhookEvents) {
 
-  if (process.env.NODE_ENV !== 'development') {
+  if (
+    !(process.env.NODE_ENV === 'development' || process.env.LOG_WEBHOOK_EVENTS)
+  ) {
     return;
   }
 
