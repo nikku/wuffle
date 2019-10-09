@@ -19,7 +19,8 @@
     "auto-test:app": "cd packages/app && npm run auto-test",
     "auto-test": "NODE_ENV=test run-s auto-test:*",
     "start": "cd packages/app && npm run start",
-    "postinstall": "NODE_ENV=development lerna bootstrap"
+    "postinstall": "NODE_ENV=development lerna bootstrap",
+    "release": "lerna publish"
   },
   "devDependencies": {
     "lerna": "^3.16.4",
