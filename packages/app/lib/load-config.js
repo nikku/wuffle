@@ -1,3 +1,5 @@
+const path = require('path');
+
 const defaultColumns = [
   { name: 'Inbox', label: null },
   { name: 'Backlog', label: 'backlog' },
@@ -18,7 +20,7 @@ module.exports = function loadConfig(log) {
   }
 
   try {
-    return require('../wuffle.config.js');
+    return require(path.resolve('wuffle.config.js'));
   } catch (error) {
     log.error('failed to load config from wuffle.config.js', error);
   }

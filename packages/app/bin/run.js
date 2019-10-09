@@ -127,7 +127,7 @@ async function validate() {
 
     if (!config) {
       try {
-        config = require('../wuffle.config.js');
+        config = require(path.resolve('wuffle.config.js'));
       } catch (err) {
         return problem('Board not configured via env.BOARD_CONFIG or wuffle.config.js');
       }
