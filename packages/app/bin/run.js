@@ -2,6 +2,9 @@
 
 require('dotenv').config();
 
+const fs = require('fs');
+const path = require('path');
+
 const { Probot } = require('probot');
 
 const { logger } = require('probot/lib/logger');
@@ -42,6 +45,7 @@ async function validate() {
     checkEnv('SESSION_SECRET', IS_PROD),
     checkEnv('BASE_URL', IS_PROD),
     checkConfig(),
+    checkBoardAssets(),
     checkBaseUrl()
   ].flat().filter(problem => problem);
 
@@ -98,6 +102,13 @@ async function validate() {
       checkConfigColumns(config)
     ];
 
+  }
+
+  function checkBoardAssets() {
+
+    if (!fs.existsSync(path.join(__dirname, '../public/index.html'))) {
+      return error('board assets not found, please compile them via npm run build');
+    }
   }
 
   function checkConfig() {
