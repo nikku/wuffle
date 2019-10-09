@@ -180,7 +180,7 @@ async function validate() {
 
 async function start() {
 
-  log.info(`Starting Wuffle v${version}`);
+  log.info('Starting Wuffle');
 
   const app = require('../');
 
@@ -199,6 +199,9 @@ Wuffle started on ${url}
 }
 
 async function run() {
+
+  log.info(`Attempting to run Wuffle v${version} in ${process.cwd()}`);
+
   await validate();
   await start();
   await open();
