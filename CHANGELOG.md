@@ -6,6 +6,11 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 ___Note:__ Yet to be released changes appear here._
 
+## 0.25.0
+
+* `FEAT`: validate presence of compiled board assets
+* `CHORE`: compile board assets to app
+
 ## 0.24.2
 
 * `CHORE(board)`: reduce amount of unused styles
