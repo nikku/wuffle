@@ -12,6 +12,7 @@ ___Note:__ Yet to be released changes appear here._
 * `FEAT`: validate presence of compiled board assets
 * `FEAT(app)`: log working directory when starting
 * `CHORE`: compile board assets to app
+* `CHORE(app)`: resolve `wuffle.config.js` in working directory
 
 ## 0.24.2
 
