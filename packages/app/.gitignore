@@ -4,6 +4,7 @@ npm-debug.log
 wuffle.config.js
 wuffle.config.*.js
 !wuffle.config.example.js
+public
 *.pem
 .env
 coverage

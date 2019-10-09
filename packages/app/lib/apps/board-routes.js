@@ -10,7 +10,7 @@ const path = require('path');
  */
 module.exports = async (router) => {
 
-  const staticDirectory = path.join(__dirname, '..', '..', '..', 'board', 'public');
+  const staticDirectory = path.join(__dirname, '..', '..', 'public');
 
   router.get('/', (req, res, next) => {
     res.redirect('/board');

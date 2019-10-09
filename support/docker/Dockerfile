@@ -17,7 +17,6 @@ WORKDIR /prod-build
 
 # copy production assets
 COPY --from=builder /build/packages/app ./packages/app
-COPY --from=builder /build/packages/board/public ./packages/board/public
 
 # install production dependencies
 RUN (cd packages/app && npm prune --production)
