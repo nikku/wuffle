@@ -5,13 +5,15 @@ const PermissionLevels = {
 };
 
 const RequiredPermissions = {
-  issues: 'write',
-  pull_requests: 'write',
+  checks: 'read',
   contents: 'read',
-  metadata: 'read'
+  issues: 'write',
+  metadata: 'read',
+  pull_requests: 'write'
 };
 
 const RequiredEvents = [
+  'check_run',
   'create',
   'issues',
   'issue_comment',
