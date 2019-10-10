@@ -7,6 +7,10 @@ class Cache {
     this.entries = {};
   }
 
+  remove(key) {
+    delete this.entries[key];
+  }
+
   evict() {
 
     const {
@@ -25,7 +29,7 @@ class Cache {
       const entry = entries[key];
 
       if (now - entry.created > ttl) {
-        delete entries[key];
+        this.remove(key);
       }
     });
 
