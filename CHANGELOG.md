@@ -6,6 +6,10 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 ___Note:__ Yet to be released changes appear here._
 
+## 0.25.1
+
+* `DOCS`: align app with project documentation
+
 ## 0.25.0
 
 * `FEAT`: publish as `wuffle` to npm
