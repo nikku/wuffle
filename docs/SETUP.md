@@ -98,6 +98,8 @@ module.exports = {
 };
 ```
 
+Column mappings enable [automatic card movement](./AUTOMATIC_CARD_MOVEMENT.md) across the board, as you develop.
+
 
 ## Run Board
 
