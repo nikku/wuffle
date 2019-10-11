@@ -1,5 +1,18 @@
-# Automatic Dev Flow
+# Automatic Card Movement
 
-This document describes how Wuffle supports you by moving issues from Inbox to Done automatically, as you develop.
+We keep the board in sync with your development activities by moving cards from __Inbox__ to __Done__ automatically, as you develop. This document describes how we do it.
 
 ![Automatic development flow in action](./devflow.gif)
+
+## Supported Actions
+
+The following tabel summerizes triggers and card movements these cause on the board.
+
+| Trigger | Action |
+| :--- | :--- |
+| Branch with `{issueNumber}-some-description` created | Issue moves to `IN_PROGRESS` column and is assigned to branch author |
+| Draft PR referencing issue created | Issue moves to `IN_PROGRESS` column |
+| PR is marked as ready-for-review | PR and linked issue move to `IN_REVIEW` column |
+| Non-draft PR is created | PR and linked issue move to `IN_REVIEW` column |
+| PR is merged | PR and linked issue move to `DONE` column |
+| PR is closed unmerged | PR moves to `DONE` column, linked issue stays where it is |
