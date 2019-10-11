@@ -4,9 +4,10 @@ We keep the board in sync with your development activities by moving cards from 
 
 ![Automatic development flow in action](./devflow.gif)
 
+
 ## Supported Actions
 
-The following tabel summerizes triggers and card movements these cause on the board.
+The following table summarizes triggers and the card movements those cause.
 
 | Trigger | Action |
 | :--- | :--- |
