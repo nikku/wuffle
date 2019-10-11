@@ -13,6 +13,8 @@
   z-index: 1;
   padding: 4px 8px;
 
+  overflow: hidden;
+
   .header {
     margin-bottom: 7px;
   }
@@ -20,6 +22,7 @@
 
 .board-card-links {
   margin-top: 2px;
+  overflow: hidden;
 }
 
 .header {

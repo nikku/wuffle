@@ -3,6 +3,7 @@
   import LinkIcon from './components/LinkIcon.svelte';
 
   import CollaboratorLinks from './CollaboratorLinks.svelte';
+  import CardStatus from './CardStatus.svelte';
 
   import {
     isApplyFilterClick,
@@ -128,4 +129,6 @@
       <CollaboratorLinks item={ item } />
     </span>
   </div>
+
+  <CardStatus item={ item } />
 </div>

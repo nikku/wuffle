@@ -15,6 +15,7 @@
   import PullRequestIcon from './components/PullRequestIcon.svelte';
   import EpicIcon from './components/EpicIcon.svelte';
 
+  import CardStatus from './CardStatus.svelte';
   import CollaboratorLinks from './CollaboratorLinks.svelte';
 
   import CardLink from './CardLink.svelte';
@@ -250,6 +251,7 @@
       </div>
     {/if}
 
+    <CardStatus item={ item } />
   </div>
 
   {#if prLinks.length}
