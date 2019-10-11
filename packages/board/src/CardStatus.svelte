@@ -17,8 +17,11 @@
   @import "variables";
 
   @mixin colored-scale($color) {
-    background: $color;
-    box-shadow: 0 1px 2px 0px adjust-color($color, $alpha: -0.7);
+
+    $actualColor: scale-color($color, $saturation: -20%, $lightness: +10%);
+
+    background-color: $actualColor;
+    box-shadow: 0 1px 2px 0px scale-color($actualColor, $alpha: -70%);
   }
 
   .card-status {
@@ -34,7 +37,7 @@
   .state {
     flex: 1;
 
-    background: $gray-500;
+    background-color: $gray-500;
 
     > span {
       display: none;
