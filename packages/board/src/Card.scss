@@ -13,16 +13,27 @@
   z-index: 1;
   padding: 4px 8px;
 
-  overflow: hidden;
-
   .header {
     margin-bottom: 7px;
   }
 }
 
+:global(.board-card-links.attached) .card-link:last-child,
+:global(.board-card) {
+  > .card-status {
+    .state:last-child {
+      border-bottom-right-radius: 4px;
+    }
+
+    .state:first-child {
+      border-bottom-left-radius: 4px;
+    }
+  }
+}
+
+
 .board-card-links {
   margin-top: 2px;
-  overflow: hidden;
 }
 
 .header {

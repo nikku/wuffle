@@ -16,6 +16,11 @@
 
   @import "variables";
 
+  @mixin colored-scale($color) {
+    background: $color;
+    box-shadow: 0 1px 2px 0px adjust-color($color, $alpha: -0.7);
+  }
+
   .card-status {
     display: flex;
     flex-direction: row;
@@ -53,11 +58,11 @@
     }
 
     &.success {
-      background: $background-green;
+      @include colored-scale($background-green);
     }
 
     &.failure {
-      background: $background-red;
+      @include colored-scale($background-red);
     }
   }
 
