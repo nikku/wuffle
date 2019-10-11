@@ -36,14 +36,14 @@
   $: cardUrl = `https://github.com/${ repositoryName }/issues/${ number }`;
 
   $: linkTitle = ({
-    CHILD_OF: 'Part of',
-    DEPENDS_ON: 'Depends on',
-    PARENT_OF: 'Depends on',
-    CLOSED_BY: 'Closed by',
-    REQUIRED_BY: 'Required by',
-    CLOSES: 'Closes',
-    LINKED_TO: 'Related to',
-    LINKED_BY: 'Related to'
+    CHILD_OF: 'Parent of',
+    DEPENDS_ON: 'Required by',
+    PARENT_OF: 'Child of',
+    CLOSED_BY: 'Closes',
+    REQUIRED_BY: 'Depends on',
+    CLOSES: 'Closed by',
+    LINKED_TO: 'Linked to',
+    LINKED_BY: 'Linked to'
   })[type] || type;
 
   function handleSelection(qualifier, value) {
@@ -90,7 +90,7 @@
        rel="noopener noreferrer"
        class="issue-number"
        on:click={ onSelect && handleSelection('ref', item.key) }
-       title="{ linkTitle } { repositoryName }#{ number }"
+       title="{ repositoryName }#{ number } · { linkTitle } this issue"
      >
       {#if pull_request}
         <PullRequestIcon item={ item } />
