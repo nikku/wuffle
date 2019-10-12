@@ -24,6 +24,7 @@
   } from './util';
 
   import loaderImage from './logo-gray.svg';
+  import errorImage from './error.svg';
 
   import wuffleLogo from './logo-gray.svg';
 
@@ -164,7 +165,7 @@
     }
 
     if (currentFilter.trim() !== filter.trim()) {
-      fetchCards(filter);
+      fetchCards(filter).catch(err => console.warn('failed to fetch updated cards', err));
     }
   }
 
@@ -195,7 +196,7 @@
   function loginCheck() {
     return api.getLoggedInUser().then(newUser => {
       user = newUser;
-    });
+    }).catch(err => console.warn('login check failed', err));
   }
 
   function fetchBoard() {
@@ -324,7 +325,7 @@
       items = _items;
       itemsById = _itemsById;
       cursor = _cursor;
-    });
+    }).catch(err => console.warn('update poll failed', err));
   }
 
   function applyUpdates(updates, items, itemsById) {
@@ -641,8 +642,15 @@
   </Loader>
 
   {#if error}
-    <div class="error">
-      We encountered problems to display the board.
+    <div class="taskboard-error">
+
+      <img src={ errorImage } width="92" alt="An error occured" />
+
+      <p>We could not load this Wuffle Board.</p>
+
+      <button class="btn btn-primary" on:click={ () => window.location.reload() }>
+        Reload Page
+      </button>
     </div>
   {/if}
 
