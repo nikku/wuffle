@@ -16,19 +16,24 @@
 
   @import "variables";
 
+  $color-success: $success;
+  $color-failure: $danger;
+
+  /*
+  $color-success: #77da8e;
+  $color-failure: #da8077;
+  */
+
   @mixin colored-scale($color) {
-
-    $actualColor: scale-color($color, $saturation: -20%, $lightness: +10%);
-
-    background-color: $actualColor;
-    box-shadow: 0 1px 2px 0px scale-color($actualColor, $alpha: -70%);
+    background-color: scale-color($color, $lightness: +40%);
+    box-shadow: 0 1px 2px 0px scale-color($color, $saturation: -20%, $alpha: -70%);
   }
 
   .card-status {
     display: flex;
     flex-direction: row;
     align-items: stretch;
-    height: 4px;
+    height: 3px;
 
     width: auto;
     margin: 3px -8px -4px;
@@ -61,11 +66,11 @@
     }
 
     &.success {
-      @include colored-scale($background-green);
+      @include colored-scale($color-success);
     }
 
     &.failure {
-      @include colored-scale($background-red);
+      @include colored-scale($color-failure);
     }
   }
 
@@ -87,7 +92,6 @@
         class="state"
         class:success={ check_run.conclusion === 'success' || check_run.status === 'in_progress' }
         class:failure={ check_run.conclusion === 'failure' }
-        class:action_required={ check_run.conclusion === 'action_required' }
         class:striped={ check_run.status === 'in_progress' || check_run.status === 'queued' }
         target="_blank"
         rel="noopener noreferrer"
