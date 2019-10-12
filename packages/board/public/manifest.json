@@ -1,0 +1,20 @@
+{
+  "short_name": "Wuffle",
+  "name": "Wuffle Board",
+  "icons": [
+    {
+      "src": "/board/logo-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/board/logo-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "/board",
+  "background_color": "#37ACC8",
+  "display": "standalone",
+  "theme_color": "#37ACC8"
+}
