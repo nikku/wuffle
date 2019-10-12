@@ -3,6 +3,7 @@ import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
 import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
+import { string } from 'rollup-plugin-string';
 
 import url from 'rollup-plugin-url';
 import { sass } from 'svelte-preprocess-sass';
@@ -94,60 +95,76 @@ ${content}`;
 
 const production = !process.env.ROLLUP_WATCH;
 
-export default {
-  input: 'src/main.js',
-  output: {
-    sourcemap: true,
-    format: 'iife',
-    name: 'app',
-    file: distDirectory + '/bundle.js'
+export default [
+  {
+    input: 'src/main.js',
+    output: {
+      sourcemap: true,
+      format: 'iife',
+      name: 'app',
+      file: distDirectory + '/bundle.js'
+    },
+    plugins: [
+      url({
+        fileName: '[dirname][filename][extname]',
+        publicPath: '/board/'
+      }),
+      svelte({
+
+        // enable run-time checks during development
+        dev: !production,
+        immutable: true,
+
+        // we'll extract any component CSS out into
+        // a separate file — better for performance
+        css: css => {
+          css.write(distDirectory + '/bundle.css');
+        },
+        preprocess: {
+          style: sass({
+            includePaths: [
+              'src/style',
+              'node_modules'
+            ]
+          }, { name: 'scss' }),
+          script: scriptProcessor([
+            classProcessor(),
+            emitProcessor()
+          ])
+        }
+      }),
+
+      resolve(),
+      commonjs(),
+
+      // live reload in development mode
+      !production && livereload(distDirectory),
+
+      // minify in production
+      production && terser()
+    ],
+    watch: {
+      clearScreen: false
+    }
   },
-  plugins: [
-    url({
-      limit: 3 * 1024
-    }),
-    svelte({
+  {
+    input: 'src/service-worker.js',
+    output: {
+      sourcemap: true,
+      format: 'iife',
+      name: 'serviceWorker',
+      file: distDirectory + '/service-worker.js'
+    },
+    plugins: [
+      resolve(),
+      commonjs(),
 
-      // enable run-time checks when not in production
-      dev: !production,
-      immutable: true,
+      string({
+        include: '**/*.svg'
+      }),
 
-      // we'll extract any component CSS out into
-      // a separate file — better for performance
-      css: css => {
-        css.write(distDirectory + '/bundle.css');
-      },
-      preprocess: {
-        style: sass({
-          includePaths: [
-            'src/style',
-            'node_modules'
-          ]
-        }, { name: 'scss' }),
-        script: scriptProcessor([
-          classProcessor(),
-          emitProcessor()
-        ])
-      }
-    }),
-
-    // If you have external dependencies installed from
-    // npm, you'll most likely need these plugins. In
-    // some cases you'll need additional configuration —
-    // consult the documentation for details:
-    // https://github.com/rollup/rollup-plugin-commonjs
-    resolve(),
-    commonjs(),
-
-    // Watch the `public` directory and refresh the
-    // browser on changes when not in production
-    !production && livereload(distDirectory),
-
-    // If we're building for production (npm run build
-    // instead of npm run dev), minify
-    production && terser()
-  ],
-  watch: {
-    clearScreen: false
+      // minify in production
+      production && terser()
+    ]
   }
-};
+];
