@@ -8,7 +8,8 @@
     failure: 'failed',
     success: 'succeeded',
     in_progress: 'in progress',
-    queued: 'queued'
+    queued: 'queued',
+    action_required: 'action required'
   };
 </script>
 
@@ -17,11 +18,13 @@
   @import "variables";
 
   $color-success: $success;
+  $color-action-required: $warning;
   $color-failure: $danger;
 
   /*
   $color-success: #77da8e;
   $color-failure: #da8077;
+  $color-action-required: #dac977;
   */
 
   @mixin colored-scale($color) {
@@ -72,6 +75,10 @@
     &.failure {
       @include colored-scale($color-failure);
     }
+
+    &.action-required {
+      @include colored-scale($color-action-required);
+    }
   }
 
   .state + .state {
@@ -92,6 +99,7 @@
         class="state"
         class:success={ check_run.conclusion === 'success' || check_run.status === 'in_progress' }
         class:failure={ check_run.conclusion === 'failure' }
+        class:action-required={ check_run.conclusion === 'action_required' }
         class:striped={ check_run.status === 'in_progress' || check_run.status === 'queued' }
         target="_blank"
         rel="noopener noreferrer"
