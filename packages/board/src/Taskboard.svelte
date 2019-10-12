@@ -23,9 +23,9 @@
     throttle
   } from './util';
 
-  import loaderImage from './loader.png';
+  import loaderImage from './logo-gray.svg';
 
-  import wuffleLogo from './wuffle.svg';
+  import wuffleLogo from './logo-gray.svg';
 
   import { onMount } from 'svelte';
 
