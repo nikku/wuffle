@@ -15,6 +15,7 @@ const apps = [
   require('./apps/github-app'),
   require('./apps/github-issues'),
   require('./apps/github-client'),
+  require('./apps/github-checks'),
   require('./apps/security-context'),
   require('./apps/events-sync'),
   require('./apps/user-access'),
@@ -24,8 +25,7 @@ const apps = [
   require('./apps/auth-routes'),
   require('./apps/board-api-routes'),
   require('./apps/board-routes'),
-  require('./apps/reviews'),
-  require('./apps/checks')
+  require('./apps/reviews')
 ];
 
 const loadConfig = require('./load-config');
