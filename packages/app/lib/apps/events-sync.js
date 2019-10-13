@@ -75,6 +75,7 @@ module.exports = function(webhookEvents, store) {
     'pull_request.ready_for_review',
     'pull_request.assigned',
     'pull_request.unassigned',
+    'pull_request.synchronize',
     'pull_request.closed',
     'pull_request.review_requested',
     'pull_request.review_request_removed'
