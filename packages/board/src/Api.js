@@ -57,10 +57,11 @@ function fetchJSON(url, options) {
     credentials: 'include'
   }).then(response => {
     const {
+      ok,
       status
     } = response;
 
-    if (status >= 400) {
+    if (!ok) {
       const error = new Error('HTTP ' + status);
 
       error.status = status;
