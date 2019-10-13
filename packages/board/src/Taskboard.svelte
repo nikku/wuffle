@@ -4,6 +4,7 @@
   import Avatar from './components/Avatar.svelte';
   import Loader from './components/Loader.svelte';
 
+  import Notifications from './components/Notifications.svelte';
   import Notification from './components/Notification.svelte';
 
   import Card from './Card.svelte';
@@ -51,7 +52,8 @@
 
   let loading = true;
   let updating = 0;
-  let error = false;
+  let error = null;
+  let warnings = [];
 
   let filter = parseSearchFilter();
   let user = null;
@@ -86,17 +88,88 @@
     return renderedItems;
   }, {});
 
-  onMount(() => {
+  function action(name, options = {}) {
 
-    Promise.all([
-      fetchCards(filter),
+    return fn => {
+
+      return fn()
+        .then(result => {
+          discardWarning(name);
+
+          return result;
+        })
+        .catch(err => {
+          handleWarning(name, err, options);
+        });
+    };
+  }
+
+  function handleWarning(action, error, options) {
+    console.warn('%s failed', action, error);
+
+    if (options.display === false) {
+      return;
+    }
+
+    const index = warnings.findIndex(w => w.action === action);
+
+    const warning = {
+      action,
+      error
+    };
+
+    if (index !== -1) {
+      warnings = [
+        ...warnings.slice(0, index),
+        warning,
+        ...warnings.slice(index + 1)
+      ];
+    } else {
+      warnings = [
+        ...warnings,
+        warning
+      ];
+    }
+  }
+
+  function discardWarnings() {
+    warnings = [];
+  }
+
+  function discardWarning(action) {
+    warnings = warnings.filter(w => w.action !== action);
+  }
+
+  function handleError(_error) {
+    console.error(_error);
+
+    error = _error;
+  }
+
+  function discardError() {
+    error = null;
+  }
+
+  function loadBoard() {
+    discardError();
+    discardWarnings();
+
+    loading = true;
+
+    return Promise.all([
+      fetchBoard(),
       loginCheck(),
-      fetchBoard()
-    ]).catch(() => {
-      error = true;
+      fetchCards(filter)
+    ]).then(_ => {
+      discardError();
+    }).catch(error => {
+      handleError(error);
     }).finally(() => {
       loading = false;
     });
+  }
+
+  function setupHooks() {
 
     const poll = localStore.get(POLL_KEY, true);
 
@@ -117,6 +190,11 @@
     ];
 
     return () => teardownHooks.forEach(fn => fn && fn());
+  }
+
+  onMount(() => {
+    loadBoard();
+    setupHooks();
   });
 
   function applyFilter(qualifier, value, add) {
@@ -165,7 +243,10 @@
     }
 
     if (currentFilter.trim() !== filter.trim()) {
-      fetchCards(filter).catch(err => console.warn('failed to fetch updated cards', err));
+
+      action('Fetching cards')(
+        () => fetchCards(filter)
+      );
     }
   }
 
@@ -194,9 +275,11 @@
   }
 
   function loginCheck() {
-    return api.getLoggedInUser().then(newUser => {
-      user = newUser;
-    }).catch(err => console.warn('login check failed', err));
+    return action('User login check')(
+      () => api.getLoggedInUser().then(newUser => {
+        user = newUser;
+      })
+    );
   }
 
   function fetchBoard() {
@@ -306,26 +389,28 @@
 
     const currentFilter = filter;
 
-    return api.listUpdates(currentFilter, cursor).then(updates => {
+    return action('Checking for updates', { display: false })(
+      () => api.listUpdates(currentFilter, cursor).then(updates => {
 
-      if (!updates.length) {
-        return;
-      }
+        if (!updates.length) {
+          return;
+        }
 
-      if (currentFilter !== filter) {
-        return;
-      }
+        if (currentFilter !== filter) {
+          return;
+        }
 
-      const {
-        items: _items,
-        itemsById: _itemsById,
-        cursor: _cursor
-      } = applyUpdates(updates, items, itemsById);
+        const {
+          items: _items,
+          itemsById: _itemsById,
+          cursor: _cursor
+        } = applyUpdates(updates, items, itemsById);
 
-      items = _items;
-      itemsById = _itemsById;
-      cursor = _cursor;
-    }).catch(err => console.warn('update poll failed', err));
+        items = _items;
+        itemsById = _itemsById;
+        cursor = _cursor;
+      })
+    );
   }
 
   function applyUpdates(updates, items, itemsById) {
@@ -644,25 +729,35 @@
   {#if error}
     <div class="taskboard-error">
 
-      <img src={ errorImage } width="92" alt="An error occured" />
+      <img src={ errorImage } width="128" alt="An error occured" />
 
-      <p>We could not load this Wuffle Board.</p>
+      <p>We could not load the board.</p>
 
-      <button class="btn btn-primary" on:click={ () => window.location.reload() }>
-        Reload Page
+      <button class="btn btn-primary" on:click={ () => loadBoard() }>
+        Retry
       </button>
     </div>
   {/if}
 
-  {#if accessNotification}
-    <Notification message="Failed to move card">
-      {#if accessNotification === 'forbidden'}
-        It seems like you do not have write access to the underlying GitHub repository.
-      {:else}
-        Please <a href="/wuffle/login" aria-label="Login via GitHub">login via GitHub</a> to interact with cards.
-      {/if}
-    </Notification>
-  {/if}
+  <Notifications>
+    {#if !error}
+      {#each warnings as warning}
+        <Notification type="warning" message="{ warning.action } failed">
+          Could not reach the board back-end.
+        </Notification>
+      {/each}
+    {/if}
+
+    {#if accessNotification}
+      <Notification type="error" message="Failed to move card">
+        {#if accessNotification === 'forbidden'}
+          It seems like you do not have write access to the underlying GitHub repository.
+        {:else}
+          Please <a href="/wuffle/login" aria-label="Login via GitHub">login via GitHub</a> to interact with cards.
+        {/if}
+      </Notification>
+    {/if}
+  </Notifications>
 
   <a class="powered-by-logo" href="https://wuffle.dev"
      target="_blank"
