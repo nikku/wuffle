@@ -6,6 +6,7 @@ function precache() {
   return caches.open(CACHE).then(function(cache) {
     return cache.addAll([
       '/board',
+      '/board/apple-touch-icon.png',
       '/board/bundle.css',
       '/board/bundle.css.map',
       '/board/bundle.js',
@@ -87,9 +88,11 @@ function fromCache(event, request) {
 }
 
 self.addEventListener('install', event => {
-  event.waitUntil(precache().then(() => {
-    return self.skipWaiting();
-  }));
+  event.waitUntil(
+    precache(event)
+  );
+
+  self.skipWaiting();
 });
 
 self.addEventListener('activate', function(event) {
