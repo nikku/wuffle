@@ -8,8 +8,6 @@ ___Note:__ Yet to be released changes appear here._
 
 ## 0.26.0
 
-_This release requires checks and statuses as well as the related event subscriptions to display the pull request status on the board._
-
 * `FEAT`: integrate pull request checks and statuses ([#41](https://github.com/nikku/wuffle/issues/41))
 * `FEAT(board)`: provide better link titles ([`77cf5b2d`](https://github.com/nikku/wuffle/commit/77cf5b2d2374005bb6d4532d596bcb48d0129cfc))
 * `FEAT(board)`: add limited offline support
@@ -18,6 +16,11 @@ _This release requires checks and statuses as well as the related event subscrip
 * `FEAT(board)`: make header responsive
 * `FIX(app)`: correct label update ([`3ff74c22`](https://github.com/nikku/wuffle/commit/3ff74c222f7547448f7913300fcfde2abfb9bf4d))
 * `FIX(app)`: update card on `pull_request.synchronize`, too
+
+### Breaking Changes
+
+* The app requires read access to checks and statuses as well as the connected event subscriptions in order to display pull request states ([#41](https://github.com/nikku/wuffle/issues/41)).
+
 
 ## 0.25.1
 
