@@ -99,23 +99,8 @@ module.exports = function GithubChecks(webhookEvents, events, githubClient, stor
 
       if (issueIds.indexOf(issue.id) !== -1) {
 
-        const checkRuns = issue.check_runs || [];
-
-        const existingIndex = checkRuns.findIndex(run => run.id === check_run.id);
-
-        const updatedRuns = existingIndex !== -1
-          ? [
-            ...checkRuns.slice(0, existingIndex),
-            check_run,
-            ...checkRuns.slice(existingIndex + 1)
-          ]
-          : [
-            ...checkRuns,
-            check_run
-          ];
-
         return {
-          check_runs: updatedRuns
+          check_runs: addOrUpdate(issue.check_runs || [], check_run)
         };
       }
     });
@@ -148,4 +133,19 @@ function filterCheckRun(check_suite) {
     name,
     status
   };
+}
+
+function addOrUpdate(check_runs, check_run) {
+  const index = check_runs.findIndex(run => run.id === check_run.id);
+
+  return index !== -1
+    ? [
+      ...check_runs.slice(0, index),
+      check_run,
+      ...check_runs.slice(index + 1)
+    ]
+    : [
+      ...check_runs,
+      check_run
+    ];
 }
