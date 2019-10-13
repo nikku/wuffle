@@ -1,9 +1,14 @@
 import Taskboard from './Taskboard.svelte';
 
+console.timeEnd('Wuffle#load');
+
+console.time('Taskboard#create');
+
 const taskboard = new Taskboard({
   target: document.body
 });
 
+console.timeEnd('Taskboard#create');
 
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
