@@ -9,7 +9,8 @@ const RequiredPermissions = {
   contents: 'read',
   issues: 'write',
   metadata: 'read',
-  pull_requests: 'write'
+  pull_requests: 'write',
+  statuses: 'read'
 };
 
 const RequiredEvents = [
@@ -21,7 +22,8 @@ const RequiredEvents = [
   'milestone',
   'pull_request',
   'pull_request_review',
-  'repository'
+  'repository',
+  'status'
 ];
 
 
