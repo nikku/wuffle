@@ -2,6 +2,8 @@
   import { fly } from 'svelte/transition';
 
   export let message;
+
+  export let type = 'info';
 </script>
 
 <style lang="scss">
@@ -12,29 +14,32 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    color: rgba(0, 0, 0, 0.65);
+    color: $gray-600;
     font-size: 14px;
     font-variant: tabular-nums;
     line-height: 1.5;
     list-style: none;
-    position: fixed;
-    z-index: 1010;
     width: 384px;
     max-width: calc(100vw - 32px);
-    margin-right: 24px;
-
-    border-left: solid 3px $danger;
-
-    top: 24px;
-    right: 0;
-
-    margin-bottom: 16px;
     padding: 16px 24px;
     overflow: hidden;
     line-height: 1.5;
     background: #fff;
     border-radius: 3px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border-left: solid 4px $info;
+
+    &.error {
+      border-left-color: $danger;
+    }
+
+    &.warning {
+      border-left-color: $warning;
+    }
+  }
+
+  .notification + .notification {
+    margin-top: 16px;
   }
 
   .heading {
@@ -45,7 +50,12 @@
   }
 </style>
 
-<div class="notification" transition:fly>
+<div
+  class="notification"
+  class:error={ type === 'error' }
+  class:warning={ type === 'warning' }
+  transition:fly
+>
   <div class="heading">{ message }</div>
   <div class="detail">
     <slot></slot>
