@@ -42,7 +42,7 @@ default_events:
 # - release
 - repository
 # - repository_import
-# - status
+- status
 # - team
 # - team_add
 # - watch
@@ -98,7 +98,7 @@ default_permissions:
 
   # Commit statuses.
   # https://developer.github.com/v3/apps/permissions/#permission-on-statuses
-  # statuses: read
+  statuses: read
 
   # Organization members and teams.
   # https://developer.github.com/v3/apps/permissions/#permission-on-members
