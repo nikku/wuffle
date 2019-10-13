@@ -3,8 +3,9 @@
   export let item;
 
   $: check_runs = item.check_runs || [];
+  $: statuses = item.statuses || [];
 
-  const resultMap = {
+  const check_run_result_map = {
     failure: 'failed',
     success: 'succeeded',
     in_progress: 'in progress',
@@ -91,7 +92,7 @@
   }
 </style>
 
-{#if check_runs.length}
+{#if check_runs.length || statuses.length}
   <div class="card-status">
 
     {#each check_runs as check_run}
@@ -103,9 +104,23 @@
         class:striped={ check_run.status === 'in_progress' || check_run.status === 'queued' }
         target="_blank"
         rel="noopener noreferrer"
-        title={ `${ check_run.name } ${resultMap[check_run.conclusion] || resultMap[check_run.status] }` }
+        title={ `${ check_run.name } — ${check_run_result_map[check_run.conclusion] || check_run_result_map[check_run.status] }` }
         href={ check_run.html_url }
-      ><span>{check_run.name} {resultMap[check_run.conclusion] || resultMap[check_run.status] }</span></a>
+      ><span>{check_run.name} — {check_run_result_map[check_run.conclusion] || check_run_result_map[check_run.status] }</span></a>
+    {/each}
+
+    {#each statuses as status}
+      <a
+        class="state"
+        class:success={ status.state === 'success' || status.state === 'pending' }
+        class:failure={ status.state === 'failure' }
+        class:action-required={ status.state === 'error' }
+        class:striped={ status.state === 'pending' }
+        target="_blank"
+        rel="noopener noreferrer"
+        title={ `${ status.context } — ${status.description}` }
+        href={ status.target_url }
+      ><span>{ status.context } — {status.description}</span></a>
     {/each}
   </div>
 {/if}
