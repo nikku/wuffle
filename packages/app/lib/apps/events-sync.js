@@ -130,7 +130,7 @@ module.exports = function(webhookEvents, store) {
           labels: [
             ...issueLabels.slice(0, existingIndex),
             label,
-            issueLabels.slice(existingIndex + 1)
+            ...issueLabels.slice(existingIndex + 1)
           ]
         };
       }
