@@ -3,23 +3,25 @@
 
     position: absolute;
     left: 50%;
-    top: 40%;
-    transform: translateX(-50%);
+    top: 50%;
+    transform: translate(-50%, -50%);
     text-align: center;
 
     z-index: 200;
 
-    opacity: 0.3;
-    transition: opacity 0.5s;
+    > .content {
+      opacity: 0.3;
+      transition: opacity 0.5s;
+    }
 
-    &.shown {
+    &.shown > .content {
       opacity: 1;
 
       animation: pulsate 1s infinite;
       animation-timing-function: ease-in-out;
     }
 
-    &:not(.shown) {
+    &:not(.shown) > .content {
       opacity: 0;
       pointer-events: none;
     }
@@ -50,5 +52,7 @@
 </script>
 
 <div class="loader { className }" class:shown={ shown }>
-  <slot></slot>
+  <div class="content">
+    <slot></slot>
+  </div>
 </div>
