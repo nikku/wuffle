@@ -23,7 +23,34 @@ function precache() {
 function cacheResponse(event, request, response) {
 
   return caches.open(CACHE).then(cache => {
-    cache.put(request, response);
+
+    if (!event.clientId) {
+      cache.put(request, response);
+
+      return;
+    }
+
+    /* global clients */
+    return clients.get(event.clientId).then(client => {
+
+      return cache.match(request).then(matchingResponse => {
+
+        if (matchingResponse) {
+
+          const oldEtag = matchingResponse.headers.get('ETag');
+          const newEtag = response.headers.get('ETag');
+
+          if (oldEtag !== newEtag) {
+            client.postMessage({
+              message: 'resource.changed',
+              url: request.url
+            });
+          }
+        }
+
+        cache.put(request, response);
+      });
+    });
   });
 }
 
