@@ -331,7 +331,7 @@
   <div class="input-prefixed" class:focussed={ focussed }>
 
     <label class="prefix" for={searchId}>
-      <Icon class="icon">
+      <Icon class="icon" name="search">
         <SearchIcon />
       </Icon>
     </label>
