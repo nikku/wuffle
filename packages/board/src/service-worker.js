@@ -20,16 +20,26 @@ function precache() {
   });
 }
 
-function fromNetwork(request) {
+function cacheResponse(event, request, response) {
+
   return caches.open(CACHE).then(cache => {
-    return fetch(request).then(response => {
+    cache.put(request, response);
+  });
+}
 
-      if (response.ok && response.status < 400) {
-        cache.put(request, response);
-      }
+function fromNetwork(event, request) {
 
-      return response;
-    });
+  return fetch(request).then(response => {
+
+    if (response && response.status === 200) {
+      const cachedResponse = response.clone();
+
+      event.waitUntil(
+        cacheResponse(event, request, cachedResponse)
+      );
+    }
+
+    return response;
   });
 }
 
@@ -41,7 +51,7 @@ function serveFallbackAvatar() {
   }));
 }
 
-function fromCache(request) {
+function fromCache(event, request) {
   return caches.open(CACHE).then(cache => {
     return cache.match(request).then(matching => {
       return matching || Promise.reject('not-in-cache');
@@ -69,17 +79,36 @@ self.addEventListener('fetch', function(event) {
 
   if (/^https:\/\/avatars[\d]+\.githubusercontent\.com/.test(url)) {
     event.respondWith(
-      fromCache(request).catch(() => fromNetwork(request)).catch(() => serveFallbackAvatar())
+      fromCache(event, request)
+        .catch(() => fromNetwork(event, request))
+        .catch(() => serveFallbackAvatar())
     );
 
     return;
   }
 
-  if (!/\/wuffle\/.*/.test(url)) {
-    const remoteFetch = fromNetwork(request);
+  if (/\/board\?.*$/.test(url)) {
+
+    const cachedRequest = new Request('/board');
+
+    const remoteFetch = fromNetwork(event, cachedRequest);
 
     event.respondWith(
-      fromCache(request).catch(() => remoteFetch)
+      fromCache(event, cachedRequest)
+        .catch(() => remoteFetch)
+    );
+
+    event.waitUntil(remoteFetch);
+
+    return;
+  }
+
+  if (!/\/wuffle\/.*/.test(url) || /\/wuffle\/board$/.test(url)) {
+    const remoteFetch = fromNetwork(event, request);
+
+    event.respondWith(
+      fromCache(event, request)
+        .catch(() => remoteFetch)
     );
 
     event.waitUntil(remoteFetch);
