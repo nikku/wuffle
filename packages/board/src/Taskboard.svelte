@@ -768,9 +768,9 @@
 
   <nav class="navbar navbar-expand navbar-light taskboard-header">
 
-    <a class="navbar-brand mb-0 h1" href="/">
+    <a class="navbar-brand mb-0 h1" href="/" aria-label={ name }>
       <img src="./logo.svg" width="20" height="20" alt="" class="logo">
-      { name }
+      <span class="brand-name">{ name }</span>
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#{navId}" aria-controls={navId} aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>

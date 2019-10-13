@@ -6,6 +6,25 @@
   flex-direction: column;
 }
 
+@media all and (max-width: 600px) {
+  :global(.board-filter) {
+    width: 100% !important;
+  }
+
+  .brand-name {
+    display: none;
+  }
+
+  :global(.navbar) .form-inline {
+    flex: 1 !important;
+  }
+
+  :global(.navbar) .logo {
+    width: 32px;
+    height: 32px;
+  }
+}
+
 .taskboard-error {
   position: absolute;
   top: 50%;
