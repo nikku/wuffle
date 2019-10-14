@@ -62,29 +62,34 @@ function DumpStoreLocal(logger, store, events) {
 
   // impl
 
-  function dumpStore() {
+  async function dumpStore() {
 
     let start = Date.now();
 
-    return upload(store.asJSON()).then(() => {
+    try {
+      const dump = await store.asJSON();
+
+      await upload(dump);
+
       log.info({ ...params, t: Date.now() - start }, 'dumped');
-    }).catch(err => {
+    } catch (err) {
       log.error({ ...params, t: Date.now() - start }, 'dump failed', err);
-    });
+    }
   }
 
-  function restoreStore() {
+  async function restoreStore() {
 
     let start = Date.now();
 
-    return download().then(dump => {
+    try {
+      const dump = await download();
 
-      store.loadJSON(dump);
+      await store.loadJSON(dump);
 
       log.info({ ...params, t: Date.now() - start }, 'restored');
-    }).catch(err => {
+    } catch (err) {
       log.warn({ ...params, t: Date.now() - start }, 'restore failed', err);
-    });
+    }
   }
 
   const DUMP_INTERVAL = process.env.NODE_ENV === 'development'

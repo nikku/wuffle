@@ -703,7 +703,7 @@ class Store {
    * Serialize data to JSON so that it can
    * later be loaded via #loadJSON.
    */
-  asJSON() {
+  async asJSON() {
 
     const {
       issues,
@@ -711,29 +711,35 @@ class Store {
       links
     } = this;
 
-    return JSON.stringify({
+    const data = {
       issues,
       lastSync,
-      links: links.asJSON()
-    });
+      links: await links.asJSON()
+    };
+
+    await this.emit('serialize', { data });
+
+    return JSON.stringify(data);
   }
 
   /**
    * Load a JSON object, previously serialized via Store#toJSON.
    */
-  loadJSON(json) {
+  async loadJSON(json) {
+
+    const data = JSON.parse(json);
 
     const {
       issues,
       lastSync,
       links
-    } = JSON.parse(json);
+    } = data;
 
     this.issues = issues || [];
     this.lastSync = lastSync;
 
     if (links) {
-      this.links.loadJSON(links);
+      await this.links.loadJSON(links);
     }
 
     this.issuesById = this.issues.reduce((map, issue) => {
@@ -747,6 +753,8 @@ class Store {
 
       return map;
     }, {});
+
+    await this.emit('restored', { data });
   }
 
 }
