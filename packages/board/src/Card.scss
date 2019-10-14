@@ -18,9 +18,16 @@
   }
 }
 
+:global(.card-link):not(:last-child) {
+  > .card-status {
+    margin-bottom: -2px !important;
+  }
+}
+
 :global(.board-card-links.attached) .card-link:last-child,
 :global(.board-card) {
   > .card-status {
+
     .state:last-child {
       border-bottom-right-radius: 4px;
     }
