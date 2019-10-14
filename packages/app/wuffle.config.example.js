@@ -15,6 +15,7 @@
  *  * closed     - if the column issues must be closed
  *  * sorting    - true if column cards should be sorted
  *                 incrementally based on links
+ *  * states     - a list of board states to map to this column
  *
  * The default column is the column that holds open issues without
  * any label constraints (Inbox in the example below).
