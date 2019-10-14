@@ -48,7 +48,8 @@ module.exports = function GithubChecks(webhookEvents, events, githubClient, stor
       } = await github.checks.listForRef({
         owner,
         repo,
-        ref: sha
+        ref: sha,
+        filter: 'latest'
       });
 
       return result.check_runs.map(filterCheckRun);
@@ -136,7 +137,7 @@ function filterCheckRun(check_suite) {
 }
 
 function addOrUpdate(check_runs, check_run) {
-  const index = check_runs.findIndex(run => run.id === check_run.id);
+  const index = check_runs.findIndex(run => run.name === check_run.name);
 
   return index !== -1
     ? [
