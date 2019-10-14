@@ -8,7 +8,7 @@ ___Note:__ Yet to be released changes appear here._
 
 ## 0.27.0
 
-* `FEAT`: reindex store on board configuration changes ([#69](https://github.com/nikku/wuffle/pull/69)[#49](https://github.com/nikku/wuffle/issues/49))
+* `FEAT`: reindex store on board configuration changes ([#69](https://github.com/nikku/wuffle/pull/69), [#49](https://github.com/nikku/wuffle/issues/49))
 * `FEAT`: allow to hook into store restore and serialize
 
 ## 0.26.1
