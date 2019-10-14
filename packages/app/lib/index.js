@@ -26,7 +26,8 @@ const apps = [
   require('./apps/auth-routes'),
   require('./apps/board-api-routes'),
   require('./apps/board-routes'),
-  require('./apps/reviews')
+  require('./apps/reviews'),
+  require('./apps/reindex-store')
 ];
 
 const loadConfig = require('./load-config');
