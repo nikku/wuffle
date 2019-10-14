@@ -16,6 +16,7 @@ const apps = [
   require('./apps/github-issues'),
   require('./apps/github-client'),
   require('./apps/github-checks'),
+  require('./apps/github-reviews'),
   require('./apps/github-statuses'),
   require('./apps/security-context'),
   require('./apps/events-sync'),
@@ -26,7 +27,6 @@ const apps = [
   require('./apps/auth-routes'),
   require('./apps/board-api-routes'),
   require('./apps/board-routes'),
-  require('./apps/reviews'),
   require('./apps/reindex-store')
 ];
 

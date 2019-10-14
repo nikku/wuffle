@@ -16,7 +16,7 @@ const {
  * @param {GithubClient} githubClient
  * @param {Store} store
  */
-module.exports = function Reviews(webhookEvents, events, githubClient, store) {
+module.exports = function GithubReviews(webhookEvents, events, githubClient, store) {
 
   // issues /////////////////////
 
