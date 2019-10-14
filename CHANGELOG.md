@@ -6,6 +6,10 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 ___Note:__ Yet to be released changes appear here._
 
+## 0.26.1
+
+* `FIX(app)`: deduplicate check runs by name ([#66](https://github.com/nikku/wuffle/pull/66))
+
 ## 0.26.0
 
 * `FEAT`: integrate pull request checks and statuses ([#41](https://github.com/nikku/wuffle/issues/41))
