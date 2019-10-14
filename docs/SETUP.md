@@ -101,6 +101,11 @@ module.exports = {
 Column mappings enable [automatic card movement](./AUTOMATIC_CARD_MOVEMENT.md) across the board, as you develop.
 
 
+### Issue Links and Automatic Sorting 
+
+Board columns can sorted automatically, based on [sematic issue links](./ISSUE_LINKS.md). Enable this feature for individual columns by marking them as `sorting`.
+
+
 ## Run Board
 
 If you started your app in development mode the board should reload automatically. If properly configured, background sync will pickup repositories, fetch issues from GitHub and populate your board.
