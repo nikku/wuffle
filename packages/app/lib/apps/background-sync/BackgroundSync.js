@@ -87,6 +87,7 @@ We automatically synchronize all repositories you granted us access to via the G
           const params = {
             sort: 'updated',
             direction: 'desc',
+            per_page: 100,
             owner,
             repo
           };
