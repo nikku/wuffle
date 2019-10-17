@@ -6,6 +6,14 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 ___Note:__ Yet to be released changes appear here._
 
+## 0.28.0
+
+* `FEAT`: recognize full list of GitHub closes keywords ([#73](https://github.com/nikku/wuffle/pull/73))
+* `FEAT`: recognize colon in issue links ([#73](https://github.com/nikku/wuffle/pull/73))
+* `CHORE`: feat with maximum page size during background sync to avoid hitting GitHub rate limits
+
+_Special thanks goes to [@mjcarroll](https://github.com/mjcarroll) for contributing [#73](https://github.com/nikku/wuffle/pull/73)._
+
 ## 0.27.0
 
 * `FEAT`: reindex store on board configuration changes ([#69](https://github.com/nikku/wuffle/pull/69), [#49](https://github.com/nikku/wuffle/issues/49))
