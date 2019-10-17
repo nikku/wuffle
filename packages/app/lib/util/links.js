@@ -6,8 +6,15 @@ const LINKED_TO = 'LINKED_TO';
 const CLOSES = 'CLOSES';
 
 const phrasesToTypes = {
+  'close': CLOSES,
   'closes': CLOSES,
+  'closed': CLOSES,
+  'fix': CLOSES,
   'fixes': CLOSES,
+  'fixed': CLOSES,
+  'resolve': CLOSES,
+  'resolves': CLOSES,
+  'resolved': CLOSES,
   'child of': CHILD_OF,
   'parent of': PARENT_OF,
   'depends on': DEPENDS_ON,
@@ -39,7 +46,7 @@ function findLinks(issue, types) {
 
   const namePart = '[a-z0-9-]+';
 
-  const typePart = '(closes|fixes|child of|parent of|depends on|needs|requires|required by|needed by|related to)\\s+';
+  const typePart = '(close|closes|closed|fix|fixes|fixed|resolve|resolves|resolved|child of|parent of|depends on|needs|requires|required by|needed by|related to)\\s+';
   const issueShortHandPart = `(?:(${namePart})\\/(${namePart}))?#(\\d+)`;
   const issueUrlPart = `https:\\/\\/github.com\\/(${namePart})\\/(${namePart})\\/(?:issues|pull)\\/(\\d+)`;
   const issuePart = `(?:${issueShortHandPart}|${issueUrlPart})`;
