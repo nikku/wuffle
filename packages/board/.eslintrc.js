@@ -7,6 +7,7 @@ module.exports = {
     "sourceType": "module"
   },
   "rules": {
+    "comma-dangle": [ "error", "never" ],
     "import/no-amd": "error",
     "import/no-webpack-loader-syntax": "error"
   },

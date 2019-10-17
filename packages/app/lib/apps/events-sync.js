@@ -39,7 +39,7 @@ module.exports = function(webhookEvents, store) {
   // fetch the related pull request
   webhookEvents.on([
     'issues.milestoned',
-    'issues.demilestoned',
+    'issues.demilestoned'
   ], async ({ payload }) => {
 
     const {

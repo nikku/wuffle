@@ -1,6 +1,6 @@
 export function isClosingLink(link) {
   const {
-    type,
+    type
   } = link;
 
   return type === 'CLOSES';

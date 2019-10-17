@@ -55,7 +55,7 @@ describe('util', function() {
         },
         {
           type: DEPENDS_ON, number: 5,
-          owner: 'foo', repo: 'bar',
+          owner: 'foo', repo: 'bar'
         },
         {
           type: DEPENDS_ON, number: 6,
