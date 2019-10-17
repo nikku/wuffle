@@ -112,14 +112,15 @@ describe('util', function() {
       ]);
     });
 
-
     it('should recognize closes', function() {
 
       // given
       const issue = createIssue(
         'FOO (closes #1)',
         'Fixes #2, closes #3' +
-        'closes foo/bar#5, ' +
+        'close foo/bar#5, ' +
+        'closes foo/bar#6, ' +
+        'closed foo/bar#7, ' +
         'closes https://github.com/foo/bar/issues/6\n' +
         'closes https://github.com/foo/bar/pull/1828\n' +
         'closes https://github.com/foo/bar/issues/new ' +
@@ -150,12 +151,105 @@ describe('util', function() {
           owner: 'foo', repo: 'bar'
         },
         {
+          type: CLOSES, number: 7,
+          owner: 'foo', repo: 'bar'
+        },
+        {
+          type: CLOSES, number: 6,
+          owner: 'foo', repo: 'bar'
+        },
+        {
           type: CLOSES, number: 1828,
           owner: 'foo', repo: 'bar'
         }
       ]);
     });
 
+    it('should recognize fixes', function() {
+
+      // given
+      const issue = createIssue(
+        'FOO (fixes #1)',
+        'Fix #2' +
+        'Fixes #3 ' +
+        'Fixed #4' +
+        'fixes https://github.com/foo/bar/issues/6\n' +
+        'fixes https://github.com/foo/bar/pull/1828\n' +
+        'fixes https://github.com/foo/bar/issues/new ' +
+        'fixes https://github.com/foo ' +
+        'fixes https://github.com/foo/bar'
+      );
+
+      // when
+      const links = findLinks(issue);
+
+      // then
+      expect(links).to.eql([
+        {
+          type: CLOSES, number: 1
+        },
+        {
+          type: CLOSES, number: 2
+        },
+        {
+          type: CLOSES, number: 3
+        },
+        {
+          type: CLOSES, number: 4
+        },
+        {
+          type: CLOSES, number: 6,
+          owner: 'foo', repo: 'bar'
+        },
+        {
+          type: CLOSES, number: 1828,
+          owner: 'foo', repo: 'bar'
+        }
+      ]);
+    });
+
+    it('should recognize resolves', function() {
+
+      // given
+      const issue = createIssue(
+        'FOO (resolves #1)',
+        'Resolve #2' +
+        'Resolves #3 ' +
+        'Resolved #4' +
+        'resolves https://github.com/foo/bar/issues/6\n' +
+        'resolves https://github.com/foo/bar/pull/1828\n' +
+        'resolves https://github.com/foo/bar/issues/new ' +
+        'resolves https://github.com/foo ' +
+        'resolves https://github.com/foo/bar'
+      );
+
+      // when
+      const links = findLinks(issue);
+
+      // then
+      expect(links).to.eql([
+        {
+          type: CLOSES, number: 1
+        },
+        {
+          type: CLOSES, number: 2
+        },
+        {
+          type: CLOSES, number: 3
+        },
+        {
+          type: CLOSES, number: 4
+        },
+        {
+          type: CLOSES, number: 6,
+          owner: 'foo', repo: 'bar'
+        },
+        {
+          type: CLOSES, number: 1828,
+          owner: 'foo', repo: 'bar'
+        }
+      ]);
+    });
 
     it('should recognize related to', function() {
 
