@@ -69,7 +69,7 @@ describe('util', function() {
         {
           type: DEPENDS_ON, number: 1828,
           owner: 'foo', repo: 'bar'
-        },
+        }
       ]);
     });
 
@@ -121,6 +121,7 @@ describe('util', function() {
         }
       ]);
     });
+
 
     it('should recognize closes', function() {
 
@@ -180,6 +181,7 @@ describe('util', function() {
       ]);
     });
 
+
     it('should recognize fixes', function() {
 
       // given
@@ -237,6 +239,7 @@ describe('util', function() {
         }
       ]);
     });
+
 
     it('should recognize resolves', function() {
 
@@ -296,6 +299,7 @@ describe('util', function() {
       ]);
     });
 
+
     it('should recognize related to', function() {
 
       // given
@@ -319,7 +323,7 @@ describe('util', function() {
         },
         {
           type: LINKED_TO, number: 3
-        },
+        }
       ]);
     });
 
@@ -354,7 +358,7 @@ describe('util', function() {
         },
         {
           type: CHILD_OF, number: 4
-        },
+        }
       ]);
     });
 
