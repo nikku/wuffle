@@ -29,7 +29,8 @@ describe('util', function() {
         'FOO (needs #1)',
         'Requires #2, needs #3, depends on #4, ' +
         'requires foo/bar#5, ' +
-        'requires https://github.com/foo/bar/issues/6\n' +
+        'requires: foo/bar#6, ' +
+        'requires https://github.com/foo/bar/issues/7\n' +
         'requires https://github.com/foo/bar/pull/1828\n' +
         'requires https://github.com/foo/bar/issues/new ' +
         'requires https://github.com/foo ' +
@@ -62,9 +63,13 @@ describe('util', function() {
           owner: 'foo', repo: 'bar'
         },
         {
+          type: DEPENDS_ON, number: 7,
+          owner: 'foo', repo: 'bar'
+        },
+        {
           type: DEPENDS_ON, number: 1828,
           owner: 'foo', repo: 'bar'
-        }
+        },
       ]);
     });
 
@@ -76,7 +81,8 @@ describe('util', function() {
         'FOO (required by #1)',
         'Required by #2, needed by #3 ' +
         'required by foo/bar#5, ' +
-        'required by https://github.com/foo/bar/issues/6\n' +
+        'required by: foo/bar#6, ' +
+        'required by https://github.com/foo/bar/issues/7\n' +
         'required by https://github.com/foo/bar/pull/1828\n' +
         'required by https://github.com/foo/bar/issues/new ' +
         'required by https://github.com/foo ' +
@@ -106,6 +112,10 @@ describe('util', function() {
           owner: 'foo', repo: 'bar'
         },
         {
+          type: REQUIRED_BY, number: 7,
+          owner: 'foo', repo: 'bar'
+        },
+        {
           type: REQUIRED_BY, number: 1828,
           owner: 'foo', repo: 'bar'
         }
@@ -121,7 +131,8 @@ describe('util', function() {
         'close foo/bar#5, ' +
         'closes foo/bar#6, ' +
         'closed foo/bar#7, ' +
-        'closes https://github.com/foo/bar/issues/6\n' +
+        'close: foo/bar#8, ' +
+        'closes https://github.com/foo/bar/issues/9\n' +
         'closes https://github.com/foo/bar/pull/1828\n' +
         'closes https://github.com/foo/bar/issues/new ' +
         'closes https://github.com/foo ' +
@@ -155,7 +166,11 @@ describe('util', function() {
           owner: 'foo', repo: 'bar'
         },
         {
-          type: CLOSES, number: 6,
+          type: CLOSES, number: 8,
+          owner: 'foo', repo: 'bar'
+        },
+        {
+          type: CLOSES, number: 9,
           owner: 'foo', repo: 'bar'
         },
         {
@@ -170,10 +185,12 @@ describe('util', function() {
       // given
       const issue = createIssue(
         'FOO (fixes #1)',
-        'Fix #2' +
-        'Fixes #3 ' +
-        'Fixed #4' +
-        'fixes https://github.com/foo/bar/issues/6\n' +
+        'Fixes #2, closes #3' +
+        'fix foo/bar#5, ' +
+        'fixes foo/bar#6, ' +
+        'fixed foo/bar#7, ' +
+        'fix: foo/bar#8, ' +
+        'fixes https://github.com/foo/bar/issues/9\n' +
         'fixes https://github.com/foo/bar/pull/1828\n' +
         'fixes https://github.com/foo/bar/issues/new ' +
         'fixes https://github.com/foo ' +
@@ -195,10 +212,23 @@ describe('util', function() {
           type: CLOSES, number: 3
         },
         {
-          type: CLOSES, number: 4
+          type: CLOSES, number: 5,
+          owner: 'foo', repo: 'bar'
         },
         {
           type: CLOSES, number: 6,
+          owner: 'foo', repo: 'bar'
+        },
+        {
+          type: CLOSES, number: 7,
+          owner: 'foo', repo: 'bar'
+        },
+        {
+          type: CLOSES, number: 8,
+          owner: 'foo', repo: 'bar'
+        },
+        {
+          type: CLOSES, number: 9,
           owner: 'foo', repo: 'bar'
         },
         {
@@ -213,10 +243,12 @@ describe('util', function() {
       // given
       const issue = createIssue(
         'FOO (resolves #1)',
-        'Resolve #2' +
-        'Resolves #3 ' +
-        'Resolved #4' +
-        'resolves https://github.com/foo/bar/issues/6\n' +
+        'resolves #2, resolves #3' +
+        'resolve foo/bar#5, ' +
+        'resolves foo/bar#6, ' +
+        'resolved foo/bar#7, ' +
+        'resolve: foo/bar#8, ' +
+        'resolves https://github.com/foo/bar/issues/9\n' +
         'resolves https://github.com/foo/bar/pull/1828\n' +
         'resolves https://github.com/foo/bar/issues/new ' +
         'resolves https://github.com/foo ' +
@@ -238,10 +270,23 @@ describe('util', function() {
           type: CLOSES, number: 3
         },
         {
-          type: CLOSES, number: 4
+          type: CLOSES, number: 5,
+          owner: 'foo', repo: 'bar'
         },
         {
           type: CLOSES, number: 6,
+          owner: 'foo', repo: 'bar'
+        },
+        {
+          type: CLOSES, number: 7,
+          owner: 'foo', repo: 'bar'
+        },
+        {
+          type: CLOSES, number: 8,
+          owner: 'foo', repo: 'bar'
+        },
+        {
+          type: CLOSES, number: 9,
           owner: 'foo', repo: 'bar'
         },
         {
@@ -256,7 +301,8 @@ describe('util', function() {
       // given
       const issue = createIssue(
         'FOO',
-        'Related to #2, related to https://github.com/foo/bar/pull/1828'
+        'Related to #2, related to https://github.com/foo/bar/pull/1828\n' +
+        'Related to: #3'
       );
 
       // when
@@ -270,7 +316,10 @@ describe('util', function() {
         {
           type: LINKED_TO, number: 1828,
           owner: 'foo', repo: 'bar'
-        }
+        },
+        {
+          type: LINKED_TO, number: 3
+        },
       ]);
     });
 
@@ -280,7 +329,9 @@ describe('util', function() {
       // given
       const issue = createIssue(
         'FOO (child of #1)',
-        'Parent of #2, parent of https://github.com/foo/bar/pull/1828'
+        'Parent of #2, parent of https://github.com/foo/bar/pull/1828\n ' +
+        'Parent of: #3' +
+        'Child of: #4'
       );
 
       // when
@@ -297,7 +348,13 @@ describe('util', function() {
         {
           type: PARENT_OF, number: 1828,
           owner: 'foo', repo: 'bar'
-        }
+        },
+        {
+          type: PARENT_OF, number: 3
+        },
+        {
+          type: CHILD_OF, number: 4
+        },
       ]);
     });
 
@@ -309,7 +366,8 @@ describe('util', function() {
         // given
         const issue = createIssue(
           'FOO',
-          'Closes #2, #5, https://github.com/foo/bar/issues/1828, #10'
+          'Closes #2, #5, https://github.com/foo/bar/issues/1828, #10\n ' +
+          'Closes: #3, #4, https://github.com/foo/bar/issues/1829, #11'
         );
 
         // when
@@ -329,6 +387,19 @@ describe('util', function() {
           },
           {
             type: CLOSES, number: 10
+          },
+          {
+            type: CLOSES, number: 3
+          },
+          {
+            type: CLOSES, number: 4
+          },
+          {
+            type: CLOSES, number: 1829,
+            owner: 'foo', repo: 'bar'
+          },
+          {
+            type: CLOSES, number: 11
           }
         ]);
       });
@@ -339,7 +410,8 @@ describe('util', function() {
         // given
         const issue = createIssue(
           'FOO',
-          'Closes #2  https://github.com/foo/bar/issues/1828 #10'
+          'Closes #2  https://github.com/foo/bar/issues/1828 #10\n' +
+          'Closes: #3  https://github.com/foo/bar/issues/1829 #11'
         );
 
         // when
@@ -356,6 +428,16 @@ describe('util', function() {
           },
           {
             type: CLOSES, number: 10
+          },
+          {
+            type: CLOSES, number: 3
+          },
+          {
+            type: CLOSES, number: 1829,
+            owner: 'foo', repo: 'bar'
+          },
+          {
+            type: CLOSES, number: 11
           }
         ]);
       });
@@ -366,7 +448,8 @@ describe('util', function() {
         // given
         const issue = createIssue(
           'FOO',
-          'Closes https://github.com/foo/bar/issues/1 and #5, and #10, and, #12'
+          'Closes https://github.com/foo/bar/issues/1 and #5, and #10, and, #12\n' +
+          'Closes: https://github.com/foo/bar/issues/101 and #105, and #110, and, #112'
         );
 
         // when
@@ -386,6 +469,19 @@ describe('util', function() {
           },
           {
             type: CLOSES, number: 12
+          },
+          {
+            type: CLOSES, number: 101,
+            owner: 'foo', repo: 'bar'
+          },
+          {
+            type: CLOSES, number: 105
+          },
+          {
+            type: CLOSES, number: 110
+          },
+          {
+            type: CLOSES, number: 112
           }
         ]);
       });
