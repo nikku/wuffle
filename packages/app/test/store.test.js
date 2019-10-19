@@ -83,6 +83,24 @@ describe('store', function() {
       expect(order).to.exist;
     });
 
+
+    it('should update, bumping updated_at', async function() {
+
+      // given
+      const store = createStore();
+
+      const newIssue = await store.updateIssue(createIssue());
+
+      // when
+      const updatedIssue = await store.updateIssue({
+        id: newIssue.id,
+        title: 'BAR'
+      });
+
+      // then
+      expect(new Date(updatedIssue.updated_at)).to.be.above(new Date(newIssue.updated_at));
+    });
+
   });
 
 
@@ -762,6 +780,7 @@ const createIssue = (function() {
       title: `test title - ${number}`,
       body: 'empty body',
       labels: [],
+      updated_at: '2019-10-19T18:54:17.533Z',
       milestone: null,
       pull_request: false,
       assignees: [],

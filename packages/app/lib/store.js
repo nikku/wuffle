@@ -301,7 +301,8 @@ class Store {
   async processUpdate(context, update) {
 
     const {
-      id
+      id,
+      updated_at
     } = update;
 
     if (!id) {
@@ -312,7 +313,8 @@ class Store {
 
     const updatedIssue = {
       ...existingIssue,
-      ...update
+      ...update,
+      updated_at: updated_at || new Date().toISOString()
     };
 
     if (!updatedIssue.key) {
