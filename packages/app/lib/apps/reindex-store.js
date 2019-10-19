@@ -1,3 +1,7 @@
+const {
+  version
+} = require('../../package');
+
 module.exports = function ReindexStore(logger, config, events, store) {
 
   const log = logger.child({
@@ -35,7 +39,6 @@ module.exports = function ReindexStore(logger, config, events, store) {
     }
   });
 
-
   events.on('store.serialize', async event => {
 
     const {
@@ -43,6 +46,7 @@ module.exports = function ReindexStore(logger, config, events, store) {
     } = event;
 
     data.configHash = configHash;
+    data.wuffleVersion = version;
   });
 
 };
