@@ -17,10 +17,24 @@ const {
 function BackgroundSync(logger, config, store, githubClient, githubApp, events) {
 
   // 30 days
-  const syncLookback = 1000 * 60 * 60 * 24 * 30;
+  const syncClosedLookback = (
+    parseInt(process.env.BACKGROUND_SYNC_SYNC_CLOSED_LOOKBACK, 10) ||
+    1000 * 60 * 60 * 24 * 30
+  );
+
+  // 4 hours
+  const syncClosedDetailsLookback = (
+    parseInt(process.env.BACKGROUND_SYNC_SYNC_CLOSED_DETAILS_LOOKBACK, 10) ||
+    1000 * 60 * 60 * 4
+  );
 
   // 60 days
-  const removalLookback = 1000 * 60 * 60 * 24 * 60;
+  const removeClosedLookback = (
+    parseInt(process.env.BACKGROUND_SYNC_REMOVE_CLOSED_LOOKBACK, 10) ||
+    1000 * 60 * 60 * 24 * 60
+  );
+
+  const syncClosedDetails = process.env.BACKGROUND_SYNC_SYNC_CLOSED_DETAILS !== 'false';
 
   const log = logger.child({
     name: 'wuffle:background-sync'
@@ -37,16 +51,29 @@ We automatically synchronize all repositories you granted us access to via the G
     );
   }
 
+  function shouldSyncDetails(issue, syncClosedSince) {
+    if (!issue.closed) {
+      return true;
+    }
 
-  function getSyncSince() {
-    return Date.now() - syncLookback;
+    return new Date(issue.updated_at).getTime() > syncClosedSince;
   }
 
-  function getRemoveBefore() {
-    return Date.now() - removalLookback;
+  function getSyncClosedSince() {
+    return Date.now() - syncClosedLookback;
   }
 
-  async function fetchInstallationIssues(installation, since) {
+  function getSyncClosedDetailsSince() {
+    const lookback = syncClosedDetails ? syncClosedDetailsLookback : 0;
+
+    return Date.now() - lookback;
+  }
+
+  function getRemoveClosedBefore() {
+    return Date.now() - removeClosedLookback;
+  }
+
+  async function fetchInstallationIssues(installation, syncClosedSince) {
 
     const foundIssues = {};
 
@@ -113,7 +140,7 @@ We automatically synchronize all repositories you granted us access to via the G
               github.issues.listForRepo.endpoint.merge({
                 ...params,
                 state: 'closed',
-                since: new Date(since).toISOString()
+                since: new Date(syncClosedSince).toISOString()
               }),
               (response) => response.data.filter(issue => !issue.pull_request)
             ),
@@ -137,7 +164,9 @@ We automatically synchronize all repositories you granted us access to via the G
 
                 const pulls = response.data;
 
-                const filtered = pulls.filter(pull => new Date(pull.updated_at).getTime() > since);
+                const filtered = pulls.filter(
+                  pull => new Date(pull.updated_at).getTime() > syncClosedSince
+                );
 
                 if (filtered.length !== pulls.length) {
                   done();
@@ -206,14 +235,14 @@ We automatically synchronize all repositories you granted us access to via the G
     return foundIssues;
   }
 
-  async function fetchUpdates(installations, since) {
+  async function fetchUpdates(installations, syncClosedSince) {
 
     let foundIssues = {};
 
     // sync issues
     for (const installation of installations) {
 
-      const installationIssues = await fetchInstallationIssues(installation, since);
+      const installationIssues = await fetchInstallationIssues(installation, syncClosedSince);
 
       foundIssues = {
         ...foundIssues,
@@ -267,7 +296,7 @@ We automatically synchronize all repositories you granted us access to via the G
 
     // search existing issues
 
-    const foundIssues = await fetchUpdates(installations, getSyncSince());
+    const foundIssues = await fetchUpdates(installations, getSyncClosedSince());
 
     log.debug(
       { t: Date.now() - t },
@@ -285,19 +314,7 @@ We automatically synchronize all repositories you granted us access to via the G
 
     // emit background sync event for all found issues
 
-    for (const issueId of Object.keys(foundIssues)) {
-      const issue = await store.getIssueById(issueId);
-
-      if (!issue) {
-        continue;
-      }
-
-      events.emit('backgroundSync.sync', {
-        issue
-      }).catch(err => {
-        log.error('additional sync failed', err);
-      });
-    }
+    await syncDetails(Object.keys(foundIssues), getSyncClosedDetailsSince());
 
     log.debug(
       { t: Date.now() - t2 },
@@ -308,7 +325,9 @@ We automatically synchronize all repositories you granted us access to via the G
     // be automatically expired once they reach a
     // certain life-span without activity
 
-    const knownIssues = await store.getIssues().reduce((byId, issue) => {
+    const allIssues = await store.getIssues();
+
+    const knownIssues = allIssues.reduce((byId, issue) => {
       byId[issue.id] = issue;
 
       return byId;
@@ -319,7 +338,7 @@ We automatically synchronize all repositories you granted us access to via the G
         .filter(k => !(k in foundIssues))
         .map(k => knownIssues[k]);
 
-    const expiredIssues = await checkExpiration(missingIssues, getRemoveBefore());
+    const expiredIssues = await checkExpiration(missingIssues, getRemoveClosedBefore());
 
     log.info(
       { t: Date.now() - t },
@@ -327,6 +346,27 @@ We automatically synchronize all repositories you granted us access to via the G
       pendingUpdates.length,
       Object.keys(expiredIssues).length
     );
+  }
+
+  async function syncDetails(issueIds, syncClosedSince) {
+
+    for (const id of issueIds) {
+      const issue = await store.getIssueById(id);
+
+      if (!issue) {
+        continue;
+      }
+
+      if (!shouldSyncDetails(issue, syncClosedSince)) {
+        continue;
+      }
+
+      events.emit('backgroundSync.sync', {
+        issue
+      }).catch(err => {
+        log.error('additional sync failed', err);
+      });
+    }
   }
 
   async function backgroundSync() {
@@ -347,13 +387,15 @@ We automatically synchronize all repositories you granted us access to via the G
   }
 
   const syncInterval = (
-    process.env.NODE_ENV === 'development'
+    parseInt(process.env.BACKGROUND_SYNC_SYNC_INTERVAL, 10) || (
+      process.env.NODE_ENV === 'development'
 
-      // one minute
-      ? 1000 * 60
+        // one minute
+        ? 1000 * 60
 
-      // one hour
-      : 1000 * 60 * 60
+        // one hour
+        : 1000 * 60 * 60
+    )
   );
 
   // five seconds
