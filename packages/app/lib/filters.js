@@ -28,6 +28,7 @@ function filterRepository(githubRepository) {
 
   const {
     id,
+    node_id,
     name,
     'private': isPrivate,
     owner
@@ -35,6 +36,7 @@ function filterRepository(githubRepository) {
 
   return {
     id,
+    node_id,
     name,
     'private': isPrivate,
     owner: filterUser(owner)
@@ -48,12 +50,14 @@ function filterUser(githubUser) {
 
   const {
     id,
+    node_id,
     login,
     avatar_url
   } = githubUser;
 
   return {
     id,
+    node_id,
     login,
     avatar_url
   };
@@ -66,12 +70,14 @@ function filterLabel(githubLabel) {
 
   const {
     id,
+    node_id,
     name,
     color
   } = githubLabel;
 
   return {
     id,
+    node_id,
     name,
     color
   };
@@ -103,6 +109,7 @@ function filterMilestone(githubMilestone) {
 
   const {
     id,
+    node_id,
     number,
     title,
     state
@@ -110,6 +117,7 @@ function filterMilestone(githubMilestone) {
 
   return {
     id,
+    node_id,
     number,
     title,
     state
@@ -122,6 +130,7 @@ module.exports.filterMilestone = filterMilestone;
 function filterPull(githubPull, githubRepository) {
 
   const {
+    node_id,
     url,
     number,
     state,
@@ -158,6 +167,7 @@ function filterPull(githubPull, githubRepository) {
 
   return {
     id,
+    pull_request_node_id: node_id,
     key,
     url,
     number,
@@ -197,6 +207,7 @@ module.exports.filterPull = filterPull;
 function filterIssue(githubIssue, githubRepository) {
 
   const {
+    node_id,
     number,
     state,
     title,
@@ -221,6 +232,7 @@ function filterIssue(githubIssue, githubRepository) {
 
   return {
     id,
+    issue_node_id: node_id,
     key,
     url,
     number,

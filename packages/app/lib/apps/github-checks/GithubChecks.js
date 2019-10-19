@@ -119,6 +119,7 @@ function filterCheckRun(check_suite) {
 
   const {
     id,
+    node_id,
     conclusion,
     head_sha,
     html_url,
@@ -128,6 +129,7 @@ function filterCheckRun(check_suite) {
 
   return {
     id,
+    node_id,
     conclusion,
     head_sha,
     html_url,

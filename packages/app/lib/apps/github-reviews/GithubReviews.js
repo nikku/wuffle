@@ -115,6 +115,7 @@ function filterReview(review) {
 
   const {
     id,
+    node_id,
     body,
     commit_id,
     submitted_at,
@@ -124,6 +125,7 @@ function filterReview(review) {
 
   return {
     id,
+    node_id,
     body,
     commit_id,
     submitted_at,

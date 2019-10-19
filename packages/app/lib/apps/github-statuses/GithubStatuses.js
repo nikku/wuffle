@@ -160,6 +160,7 @@ function filterStatus(status) {
 
   const {
     id,
+    node_id,
     context,
     description,
     sha,
@@ -171,6 +172,7 @@ function filterStatus(status) {
 
   return {
     id,
+    node_id,
     context,
     description,
     sha,
