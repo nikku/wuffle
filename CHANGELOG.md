@@ -6,6 +6,11 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 ___Note:__ Yet to be released changes appear here._
 
+## 0.29.0
+
+* `FEAT`: improve background synchronization of pull request details ([#70](https://github.com/nikku/wuffle/issues/70))
+* `FEAT`: make background synchronization configurable via environment variables
+
 ## 0.28.0
 
 * `FEAT`: recognize full list of GitHub closes keywords ([#73](https://github.com/nikku/wuffle/pull/73))
