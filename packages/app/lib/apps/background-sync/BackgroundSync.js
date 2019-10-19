@@ -28,6 +28,12 @@ function BackgroundSync(logger, config, store, githubClient, githubApp, events) 
     1000 * 60 * 60 * 4
   );
 
+  // 1 day
+  const syncOpenDetailsLookback = (
+    parseInt(process.env.BACKGROUND_SYNC_SYNC_OPEN_DETAILS_LOOKBACK, 10) ||
+    1000 * 60 * 60 * 24
+  );
+
   // 60 days
   const removeClosedLookback = (
     parseInt(process.env.BACKGROUND_SYNC_REMOVE_CLOSED_LOOKBACK, 10) ||
@@ -51,12 +57,15 @@ We automatically synchronize all repositories you granted us access to via the G
     );
   }
 
-  function shouldSyncDetails(issue, syncClosedSince) {
-    if (!issue.closed) {
-      return true;
-    }
+  function shouldSyncDetails(issue, syncClosedSince, syncOpenSince) {
 
-    return new Date(issue.updated_at).getTime() > syncClosedSince;
+    const updated_at = new Date(issue.updated_at).getTime();
+
+    if (issue.closed) {
+      return updated_at > syncClosedSince;
+    } else {
+      return updated_at > syncOpenSince;
+    }
   }
 
   function getSyncClosedSince() {
@@ -67,6 +76,10 @@ We automatically synchronize all repositories you granted us access to via the G
     const lookback = syncClosedDetails ? syncClosedDetailsLookback : 0;
 
     return Date.now() - lookback;
+  }
+
+  function getSyncOpenDetailsSince() {
+    return Date.now() - syncOpenDetailsLookback;
   }
 
   function getRemoveClosedBefore() {
@@ -314,7 +327,11 @@ We automatically synchronize all repositories you granted us access to via the G
 
     // emit background sync event for all found issues
 
-    await syncDetails(Object.keys(foundIssues), getSyncClosedDetailsSince());
+    await syncDetails(
+      Object.keys(foundIssues),
+      getSyncClosedDetailsSince(),
+      getSyncOpenDetailsSince()
+    );
 
     log.debug(
       { t: Date.now() - t2 },
@@ -348,7 +365,7 @@ We automatically synchronize all repositories you granted us access to via the G
     );
   }
 
-  async function syncDetails(issueIds, syncClosedSince) {
+  async function syncDetails(issueIds, syncClosedSince, syncOpenSince) {
 
     for (const id of issueIds) {
       const issue = await store.getIssueById(id);
@@ -357,7 +374,7 @@ We automatically synchronize all repositories you granted us access to via the G
         continue;
       }
 
-      if (!shouldSyncDetails(issue, syncClosedSince)) {
+      if (!shouldSyncDetails(issue, syncClosedSince, syncOpenSince)) {
         continue;
       }
 
