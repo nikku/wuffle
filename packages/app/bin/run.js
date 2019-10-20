@@ -5,7 +5,7 @@ require('dotenv').config();
 const fs = require('fs');
 const path = require('path');
 
-const { Probot } = require('probot');
+const { Probot } = require('../lib/probot');
 
 const { logger } = require('probot/lib/logger');
 const { wrapLogger } = require('probot/lib/wrap-logger');
