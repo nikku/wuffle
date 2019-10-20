@@ -98,7 +98,7 @@ function filterBase(githubBase) {
     ref,
     sha,
     user: filterUser(user),
-    repo: filterRepository(repo)
+    repo: repo ? filterRepository(repo) : null
   };
 }
 
