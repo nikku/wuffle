@@ -2,6 +2,9 @@ const {
   filterIssueOrPull
 } = require('../../filters');
 
+const {
+  issueIdent
+} = require('../../util');
 
 /**
  * This component performs a periodic background sync of a project.
@@ -223,7 +226,7 @@ We automatically synchronize all repositories you granted us access to via the G
                 }, 'scheduled for update');
               }
             } catch (error) {
-              log.warn({
+              log.error({
                 [type]: `${owner}/${repo}#${issueOrPull.number}`
               }, 'sync failed', error);
             }
@@ -233,7 +236,7 @@ We automatically synchronize all repositories you granted us access to via the G
             repo: `${owner}/${repo}`
           }, 'processed');
         } catch (error) {
-          log.warn({
+          log.error({
             repo: `${owner}/${repo}`
           }, 'processing failed', error);
         }
@@ -242,7 +245,7 @@ We automatically synchronize all repositories you granted us access to via the G
 
       log.debug({ installation: owner }, 'processed');
     } catch (error) {
-      log.warn({ installation: owner }, 'processing failed', error);
+      log.error({ installation: owner }, 'processing failed', error);
     }
 
     return foundIssues;
@@ -381,7 +384,7 @@ We automatically synchronize all repositories you granted us access to via the G
       events.emit('backgroundSync.sync', {
         issue
       }).catch(err => {
-        log.error('additional sync failed', err);
+        log.error({ issue: issueIdent(issue) }, 'details sync failed', err);
       });
     }
   }
@@ -398,7 +401,7 @@ We automatically synchronize all repositories you granted us access to via the G
 
       log.info('success');
     } catch (error) {
-      log.warn('error', error);
+      log.error('error', error);
     }
 
   }
