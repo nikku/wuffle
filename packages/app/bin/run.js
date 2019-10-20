@@ -78,6 +78,10 @@ async function validate() {
     if (!config.name) {
       return problem('missing config.name');
     }
+
+    if (config.allowedOrgs && !Array.isArray(config.allowedOrgs)) {
+      return problem('config.allowedOrgs must be String[]');
+    }
   }
 
   function checkConfigColumns(config) {

@@ -1,4 +1,4 @@
-function WebhookEvents(app) {
+function WebhookEvents(app, githubApp) {
 
   /**
    * Register a event lister for a single
@@ -8,7 +8,26 @@ function WebhookEvents(app) {
    * @param {Function} fn listener
    */
   function on(events, fn) {
-    app.on(events, fn);
+    app.on(events, async context => {
+
+      const {
+        payload
+      } = context;
+
+      const {
+        installation
+      } = payload;
+
+      if (installation) {
+        const enabled = await githubApp.isInstallationEnabled(installation);
+
+        if (!enabled) {
+          return;
+        }
+      }
+
+      return fn(context);
+    });
   }
 
   // api /////////////////

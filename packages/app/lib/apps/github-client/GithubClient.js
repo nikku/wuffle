@@ -4,7 +4,7 @@ const {
 } = require('probot/lib/github');
 
 
-function GitHubClient(app, webhookEvents, logger, injector) {
+function GitHubClient(app, webhookEvents, logger, githubApp) {
 
   const log = logger.child({
     name: 'wuffle:github-client'
@@ -14,64 +14,18 @@ function GitHubClient(app, webhookEvents, logger, injector) {
 
   let authByLogin = {};
 
-  let installationsByLogin = null;
-
 
   // reactivity ////////////////////
 
-  // TODO: nikku periodically expire installations / authByLogin
-
-  // https://developer.github.com/v3/activity/events/types/#installationevent
   webhookEvents.on('installation', () => {
-
-    log.debug('installations update, resetting cache');
-
-    // expire cached entries
-    installationsByLogin = null;
     authByLogin = {};
   });
 
 
   // functionality /////////////////
 
-  /**
-   * Return map of installations, grouped by org / login.
-   *
-   * @return {Promise<Object<String, Installation>>}
-   */
-  function getInstallationsByLogin() {
-
-    installationsByLogin = installationsByLogin || injector.get('githubApp').then(
-      githubApp => githubApp.getInstallations()
-    ).then(
-      installations => installations.reduce((byLogin, installation) => {
-        byLogin[installation.account.login] = installation;
-
-        return byLogin;
-      }, {})
-    );
-
-    return installationsByLogin;
-  }
-
-  function getInstallationByLogin(login) {
-    return getInstallationsByLogin().then(installationsByLogin => {
-      const installation = installationsByLogin[login];
-
-      if (!installation) {
-        throw new Error('not installed for ' + login);
-      }
-
-      return installation;
-    });
-  }
-
   function getInstallationScoped(id) {
     return app.auth(id);
-  }
-
-  function getAppScoped() {
-    return app.auth();
   }
 
   function getOrgScoped(login) {
@@ -85,7 +39,7 @@ function GitHubClient(app, webhookEvents, logger, injector) {
     log.info({ login }, 'fetching auth');
 
     auth = authByLogin[login] =
-      getInstallationByLogin(login)
+      githubApp.getInstallationByLogin(login)
         .then(
           installation => this.getInstallationScoped(installation.id),
           error => {
@@ -112,7 +66,7 @@ function GitHubClient(app, webhookEvents, logger, injector) {
 
   // api ////////////////////
 
-  this.getAppScoped = getAppScoped;
+  this.getAppScoped = githubApp.getAppScopedClient;
 
   this.getInstallationScoped = getInstallationScoped;
 
