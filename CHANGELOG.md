@@ -6,6 +6,10 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 ___Note:__ Yet to be released changes appear here._
 
+* `FEAT`: add ability to whitelist enabled organizations ([#75](https://github.com/nikku/wuffle/issues/75))
+* `CHORE`: add sentry support, [inherited from Probot](https://probot.github.io/docs/deployment/#error-tracking)
+* `FIX`: handle deleted forks in pull request filters ([`2b40281f`](https://github.com/nikku/wuffle/commit/2b40281f756e31e16ced2b4a644d0f20784c03d8))
+
 ## 0.29.0
 
 * `FEAT`: improve background synchronization of pull request details ([#70](https://github.com/nikku/wuffle/issues/70))
