@@ -401,7 +401,7 @@ We automatically synchronize all repositories you granted us access to via the G
 
       await doSync(installations);
 
-      log.info('success');
+      log.info('done');
     } catch (error) {
       log.error('error', error);
     }
