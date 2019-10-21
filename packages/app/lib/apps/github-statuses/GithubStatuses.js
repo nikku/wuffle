@@ -83,7 +83,7 @@ module.exports = function GithubStates(webhookEvents, events, githubClient, stor
 
     const statuses = await fetchStatuses(issue);
 
-    store.updateIssue({
+    await store.updateIssue({
       id,
       statuses
     });
