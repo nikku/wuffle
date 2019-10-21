@@ -103,7 +103,7 @@ function DumpStoreLocal(logger, store, events) {
 
   let interval;
 
-  events.once('wuffle.start', function() {
+  events.once('wuffle.start', 1500, function() {
 
     interval = setInterval(dumpStore, DUMP_INTERVAL);
 
