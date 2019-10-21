@@ -84,6 +84,34 @@ describe('store', function() {
     });
 
 
+    it('should update cumulative', async function() {
+
+      // given
+      const store = createStore();
+
+      const { id } = await store.updateIssue(createIssue());
+
+
+      // when
+      await Promise.all([
+        store.updateIssue({
+          id,
+          title: 'BAR'
+        }),
+        store.updateIssue({
+          id,
+          body: 'BLUB'
+        })
+      ]);
+
+      // then
+      const { title, body } = await store.getIssueById(id);
+
+      expect(title).to.eql('BAR');
+      expect(body).to.eql('BLUB');
+    });
+
+
     it('should update, bumping updated_at', async function() {
 
       // given

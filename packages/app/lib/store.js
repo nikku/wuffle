@@ -313,7 +313,7 @@ class Store {
       throw error;
     }
 
-    const existingIssue = this.getIssueById(id) || {};
+    const existingIssue = context.getIssueById(id) || {};
 
     const updatedIssue = {
       ...existingIssue,
