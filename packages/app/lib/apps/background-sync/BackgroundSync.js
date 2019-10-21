@@ -370,23 +370,25 @@ We automatically synchronize all repositories you granted us access to via the G
 
   async function syncDetails(issueIds, syncClosedSince, syncOpenSince) {
 
-    for (const id of issueIds) {
+    const jobs = issueIds.map(async id => {
       const issue = await store.getIssueById(id);
 
       if (!issue) {
-        continue;
+        return;
       }
 
       if (!shouldSyncDetails(issue, syncClosedSince, syncOpenSince)) {
-        continue;
+        return;
       }
 
-      events.emit('backgroundSync.sync', {
+      return events.emit('backgroundSync.sync', {
         issue
       }).catch(err => {
         log.error({ issue: issueIdent(issue) }, 'details sync failed', err);
       });
-    }
+    });
+
+    return Promise.all(jobs);
   }
 
   async function backgroundSync() {
