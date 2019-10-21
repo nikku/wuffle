@@ -74,7 +74,7 @@ module.exports = function GithubChecks(webhookEvents, events, githubClient, stor
 
     const checkRuns = await fetchCheckRuns(issue);
 
-    await store.updateIssue({
+    await store.queueUpdate({
       id,
       check_runs: checkRuns
     });
@@ -96,7 +96,7 @@ module.exports = function GithubChecks(webhookEvents, events, githubClient, stor
 
     const issueIds = _check_run.pull_requests.map(pr => `${ pr.base.repo.id }-${pr.number}`);
 
-    store.updateIssues(issue => {
+    await store.updateIssues(issue => {
 
       if (issueIds.indexOf(issue.id) !== -1) {
 

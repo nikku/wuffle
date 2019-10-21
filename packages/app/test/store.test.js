@@ -129,6 +129,26 @@ describe('store', function() {
       expect(new Date(updatedIssue.updated_at)).to.be.above(new Date(newIssue.updated_at));
     });
 
+
+    it('should queue change, keeping updated_at untouched', async function() {
+
+      // given
+      const store = createStore();
+
+      const newIssue = await store.updateIssue(createIssue({
+        updated_at: new Date().toISOString()
+      }));
+
+      // when
+      const updatedIssue = await store.queueUpdate({
+        id: newIssue.id,
+        title: 'BAR'
+      });
+
+      // then
+      expect(updatedIssue.updated_at).to.eql(newIssue.updated_at);
+    });
+
   });
 
 

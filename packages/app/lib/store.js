@@ -295,14 +295,21 @@ class Store {
   }
 
   updateIssue(update) {
-    return this.queueUpdate(update);
+
+    const {
+      updated_at
+    } = update;
+
+    return this.queueUpdate({
+      ...update,
+      updated_at: updated_at || new Date().toISOString()
+    });
   }
 
   async processUpdate(context, update) {
 
     const {
-      id,
-      updated_at
+      id
     } = update;
 
     if (!id) {
@@ -317,8 +324,7 @@ class Store {
 
     const updatedIssue = {
       ...existingIssue,
-      ...update,
-      updated_at: updated_at || new Date().toISOString()
+      ...update
     };
 
     if (!updatedIssue.key) {

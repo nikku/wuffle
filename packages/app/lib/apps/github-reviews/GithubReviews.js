@@ -49,7 +49,7 @@ module.exports = function GithubReviews(webhookEvents, events, githubClient, sto
       pull_number: issue.number
     });
 
-    await store.updateIssue({
+    await store.queueUpdate({
       id,
       reviews: reviews.map(filterReview)
     });

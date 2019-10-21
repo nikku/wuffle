@@ -83,7 +83,7 @@ module.exports = function GithubStates(webhookEvents, events, githubClient, stor
 
     const statuses = await fetchStatuses(issue);
 
-    await store.updateIssue({
+    await store.queueUpdate({
       id,
       statuses
     });
@@ -108,11 +108,10 @@ module.exports = function GithubStates(webhookEvents, events, githubClient, stor
 
     const statuses = await fetchStatuses(pull_request);
 
-    store.updateIssue({
+    await store.updateIssue({
       id,
       statuses
     });
-
   });
 
   webhookEvents.on([
@@ -127,7 +126,7 @@ module.exports = function GithubStates(webhookEvents, events, githubClient, stor
     // invalidate cached statuses
     await cache.remove(`${status_repository.id}/${status.sha}`);
 
-    store.updateIssues(issue => {
+    await store.updateIssues(issue => {
 
       const {
         head,
