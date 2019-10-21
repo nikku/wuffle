@@ -306,7 +306,11 @@ class Store {
     } = update;
 
     if (!id) {
-      throw new Error('<id> required');
+      const error = new Error('<id> required');
+
+      this.log.error('update processing failed', { update }, error);
+
+      throw error;
     }
 
     const existingIssue = this.getIssueById(id) || {};
@@ -318,11 +322,19 @@ class Store {
     };
 
     if (!updatedIssue.key) {
-      throw new Error('<key> required');
+      const error = new Error('<key> required');
+
+      this.log.error({ issue: id }, 'update processing failed', { update, existingIssue }, error);
+
+      throw error;
     }
 
     if (!updatedIssue.repository) {
-      throw new Error('<repository> required');
+      const error = new Error('<repository> required');
+
+      this.log.error({ issue: id }, 'update processing failed', { update, existingIssue }, error);
+
+      throw error;
     }
 
     const ident = issueIdent(updatedIssue);
