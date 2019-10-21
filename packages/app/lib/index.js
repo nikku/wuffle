@@ -12,6 +12,7 @@ const apps = [
       ? require('./apps/dump-store/s3')
       : require('./apps/dump-store/local')
   ),
+  require('./apps/events-sync'),
   require('./apps/github-app'),
   require('./apps/github-issues'),
   require('./apps/github-client'),
@@ -19,7 +20,6 @@ const apps = [
   require('./apps/github-reviews'),
   require('./apps/github-statuses'),
   require('./apps/security-context'),
-  require('./apps/events-sync'),
   require('./apps/user-access'),
   require('./apps/search'),
   require('./apps/background-sync'),
