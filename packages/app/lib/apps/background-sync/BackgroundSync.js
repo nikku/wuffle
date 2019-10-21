@@ -368,7 +368,7 @@ We automatically synchronize all repositories you granted us access to via the G
     );
   }
 
-  async function syncDetails(issueIds, syncClosedSince, syncOpenSince) {
+  function syncDetails(issueIds, syncClosedSince, syncOpenSince) {
 
     const jobs = issueIds.map(async id => {
       const issue = await store.getIssueById(id);
