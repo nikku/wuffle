@@ -17,6 +17,28 @@ Double check the webhook secret configured on the board and make sure it matches
 The board requires some special columns to exist by name or to be assigned to an issue state. [Read more about it](https://github.com/nikku/wuffle/blob/master/docs/SETUP.md#mapping-special-columns) and ensure you configure your board accordingly.
 
 
+### I would like to persist the boards logs
+
+You may record board logs to to a file via output redirection:
+
+```
+npm run dev > output.log
+```
+
+You may filter an existing output log for errors or warnings, respectively:
+
+```
+cat output.log | grep ERROR
+cat output.log | grep WARN
+```
+
+### I would like to monitor my application for errors in production
+
+You may use the [Sentry support](https://probot.github.io/docs/deployment/#error-tracking) built into Probot to capture application errors and warnings.
+
+Alternatively, capture and send the output as shown above.
+
+
 ---
 
 See also: [Setup](https://github.com/nikku/wuffle/blob/master/docs/SETUP.md)
