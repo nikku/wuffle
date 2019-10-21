@@ -431,9 +431,9 @@ We automatically synchronize all repositories you granted us access to via the G
 
     if (typeof lastSync === 'undefined' || now - lastSync > syncInterval) {
 
-      await backgroundSync();
-
       store.lastSync = now;
+
+      await backgroundSync();
     }
 
     checkTimeout = setTimeout(checkSync, checkInterval);
