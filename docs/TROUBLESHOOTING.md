@@ -17,9 +17,9 @@ Double check the webhook secret configured on the board and make sure it matches
 The board requires some special columns to exist by name or to be assigned to an issue state. [Read more about it](https://github.com/nikku/wuffle/blob/master/docs/SETUP.md#mapping-special-columns) and ensure you configure your board accordingly.
 
 ### Getting logs for issues
-Add the following to the `dev` step in `packages.json` 
+Add the following to generate logs as a file to help with troubleshooting
 ```
-    "dev": "NODE_ENV=development run-p dev:* -l  > output.log",
+   npm run dev > output.log",
 ```
 This will put the logs in a file that cna greatly help with troubleshooting your setup
 ---
