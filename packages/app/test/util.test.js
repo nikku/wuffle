@@ -122,6 +122,64 @@ describe('util', function() {
       ]);
     });
 
+    it('should recognize connects to', function() {
+
+      // given
+      const issue = createIssue(
+        'FOO (connects to #1)',
+        'Fixes #2, connected to #3' +
+        'connect to foo/bar#5, ' +
+        'connects to foo/bar#6, ' +
+        'connected to foo/bar#7, ' +
+        'connect to: foo/bar#8, ' +
+        'connect to https://github.com/foo/bar/issues/9\n' +
+        'connect to https://github.com/foo/bar/pull/1828\n' +
+        'connect to https://github.com/foo/bar/issues/new ' +
+        'connect to https://github.com/foo ' +
+        'connect to https://github.com/foo/bar'
+      );
+
+      // when
+      const links = findLinks(issue);
+
+      // then
+      expect(links).to.eql([
+        {
+          type: CHILD_OF, number: 1
+        },
+        {
+          type: CLOSES, number: 2
+        },
+        {
+          type: CHILD_OF, number: 3
+        },
+        {
+          type: CHILD_OF, number: 5,
+          owner: 'foo', repo: 'bar'
+        },
+        {
+          type: CHILD_OF, number: 6,
+          owner: 'foo', repo: 'bar'
+        },
+        {
+          type: CHILD_OF, number: 7,
+          owner: 'foo', repo: 'bar'
+        },
+        {
+          type: CHILD_OF, number: 8,
+          owner: 'foo', repo: 'bar'
+        },
+        {
+          type: CHILD_OF, number: 9,
+          owner: 'foo', repo: 'bar'
+        },
+        {
+          type: CHILD_OF, number: 1828,
+          owner: 'foo', repo: 'bar'
+        }
+      ]);
+    });
+
 
     it('should recognize closes', function() {
 
