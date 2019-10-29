@@ -3,6 +3,7 @@
   "description": "A task board for GitHub issues",
   "version": "0.3.0",
   "license": "MIT",
+  "private": true,
   "scripts": {
     "all": "run-s lint test build",
     "lint": "run-s lint:*",
