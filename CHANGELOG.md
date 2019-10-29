@@ -6,6 +6,9 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 ___Note:__ Yet to be released changes appear here._
 
+## 0.30.0
+
+* `FEAT`: support `connects` to create parent -> child relationship ([#78](https://github.com/nikku/wuffle/pull/78))
 * `FEAT`: add ability to whitelist enabled organizations ([#75](https://github.com/nikku/wuffle/issues/75))
 * `CHORE`: add sentry support, [inherited from Probot](https://probot.github.io/docs/deployment/#error-tracking)
 * `CHORE`: board update errors with context
