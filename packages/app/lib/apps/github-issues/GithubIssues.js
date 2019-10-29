@@ -81,7 +81,7 @@ function GithubIssues(logger, config, columns) {
       .catch(error => {
 
         // gracefully handle not found
-        log.warn(params, 'issue not found', error);
+        log.debug(params, 'issue not found', error);
 
         return null;
       });
