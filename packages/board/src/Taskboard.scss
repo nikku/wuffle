@@ -97,20 +97,30 @@
 .taskboard-column.collapsed {
 
   .taskboard-column-collapse {
-    float: right;
-    padding: 3px 12px;
-    margin: -7px 0 0 0;
+    float: unset;
+    padding: 0 12px;
+    margin: 0;
   }
 
   .taskboard-column-header {
-    transform: rotate(-180deg);
-    writing-mode: vertical-rl;
-    text-align: right;
+    display: flex;
+    flex-direction: column;
     flex: 1;
   }
 
+  .taskboard-column-name,
   .taskboard-column-issue-count {
-    padding: 5px 0;
+    transform: rotate(-180deg);
+    writing-mode: vertical-rl;
+  }
+
+  .taskboard-column-name {
+    order: 2;
+  }
+
+  .taskboard-column-issue-count {
+    padding: .5em 0;
+    order: 0;
   }
 }
 
