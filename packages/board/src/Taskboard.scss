@@ -54,7 +54,6 @@
   flex-direction: column;
   min-width: 250px;
   flex: 1;
-  flex-shrink: 0;
 
   border-radius: 2px;
   margin: 3px;
@@ -62,9 +61,9 @@
 
   &.collapsed {
     line-height: 2em;
-    min-width: auto;
+    min-width: 42px;
 
-    flex: 0 0 0%;
+    flex: 0;
   }
 }
 
