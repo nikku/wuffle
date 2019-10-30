@@ -179,9 +179,12 @@ module.exports = async (
 
     return res.type('json').json({
       columns: columns.map(c => {
-        const { name } = c;
+        const { name, collapsed } = c;
 
-        return { name };
+        return {
+          name,
+          collapsed: collapsed || false
+        };
       }),
       name: name || 'Wuffle Board'
     });

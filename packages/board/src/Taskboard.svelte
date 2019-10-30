@@ -43,13 +43,12 @@
   const navId = Id();
 
   let name = '';
-  let columns = {};
+  let columns = [];
   let items = {};
 
   let itemsById = {};
 
-  let collapsed = localStore.get(COLUMNS_COLLAPSED_KEY, {});
-
+  let localCollapsed = localStore.get(COLUMNS_COLLAPSED_KEY, {});
   let loading = true;
   let updating = 0;
   let error = null;
@@ -65,7 +64,18 @@
 
   let filterOptions = {};
 
-  $: localStore.set(COLUMNS_COLLAPSED_KEY, collapsed);
+  $: defaultCollapsed = columns.reduce((defaultCollapsed, column) => {
+    defaultCollapsed[column.name] = column.collapsed;
+
+    return defaultCollapsed;
+  }, {});
+
+  $: collapsed = {
+    ...defaultCollapsed,
+    ...localCollapsed
+  };
+
+  $: localStore.set(COLUMNS_COLLAPSED_KEY, localCollapsed);
 
   // shown items
   $: shownItems = Object.keys(items).reduce((shownItems, column) => {
@@ -626,8 +636,8 @@
 
   function toggleCollapse(column) {
 
-    collapsed = {
-      ...collapsed,
+    localCollapsed = {
+      ...localCollapsed,
       [column.name]: !collapsed[column.name]
     };
   }
