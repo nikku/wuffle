@@ -6,6 +6,12 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 ___Note:__ Yet to be released changes appear here._
 
+## 0.31.0
+
+* `FEAT`: be able to specify default column collapsed state
+* `FIX`: prevent collapsed columns from breaking layout
+* `FIX`: correct collapsed column layout in Firefox
+
 ## 0.30.0
 
 * `FEAT`: support `connects` to create parent -> child relationship ([#78](https://github.com/nikku/wuffle/pull/78))
