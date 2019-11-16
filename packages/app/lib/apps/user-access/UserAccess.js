@@ -3,7 +3,7 @@ const {
 } = require('../../util');
 
 // 30 minutes
-const TTL = 1000 * 60 * 10;
+const TTL = 1000 * 60 * 30;
 
 
 /**
