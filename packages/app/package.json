@@ -34,18 +34,18 @@
   },
   "dependencies": {
     "async-didi": "^0.2.1",
-    "aws-sdk": "^2.553.0",
+    "aws-sdk": "^2.573.0",
     "body-parser": "^1.19.0",
     "compression": "^1.7.4",
     "exit-hook2": "^1.0.8",
     "express-session": "^1.17.0",
     "min-dash": "^3.5.2",
     "p-defer": "^3.0.0",
-    "probot": "^9.5.3"
+    "probot": "^9.6.4"
   },
   "devDependencies": {
     "chai": "^4.2.0",
-    "eslint": "^6.5.1",
+    "eslint": "^6.6.0",
     "eslint-plugin-bpmn-io": "^0.10.0",
     "mkdirp": "^0.5.1",
     "mocha": "^6.2.2",
