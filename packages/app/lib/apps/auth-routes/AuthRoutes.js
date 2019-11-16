@@ -49,7 +49,6 @@ function AuthRoutes(logger, router, securityContext) {
     const params = new URLSearchParams();
     params.append('client_id', process.env.GITHUB_CLIENT_ID);
     params.append('state', state);
-    params.append('scope', 'public_repo,repo');
     params.append('redirect_uri', appUrl('/wuffle/login/callback'));
 
     return res.redirect(`https://github.com/login/oauth/authorize?${params.toString()}`);

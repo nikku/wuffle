@@ -2,7 +2,7 @@ const {
   Cache
 } = require('../../util');
 
-// 10 minutes
+// 30 minutes
 const TTL = 1000 * 60 * 10;
 
 
@@ -33,6 +33,36 @@ function UserAccess(logger, githubClient, events) {
     }
 
     return repository;
+  }
+
+  async function fetchUserRepositories(token) {
+
+    const github = await githubClient.getUserScoped(token);
+
+    const installations = await github.paginate(
+      github.apps.listInstallationsForAuthenticatedUser.endpoint.merge({}),
+      res => res.data
+    );
+
+    const repositoriesByInstallation = await Promise.all(installations.map(
+      installation => github.paginate(
+        github.apps.listInstallationReposForAuthenticatedUser.endpoint.merge({
+          installation_id: installation.id
+        }),
+        res => res.data
+      )
+    ));
+
+    return [].concat(...repositoriesByInstallation);
+  }
+
+  function getUserVisibleRepositoryNames(token) {
+
+    return cache.get(`user-repositories:${token}`, () => {
+      return fetchUserRepositories(token);
+    }).then(repositories => repositories.map(repo => {
+      return repo.full_name;
+    }));
   }
 
   /**
@@ -69,26 +99,24 @@ function UserAccess(logger, githubClient, events) {
 
   function createReadFilter(token) {
 
-    log.info({ token }, 'creating read filter');
+    const t = Date.now();
 
-    return githubClient.getUserScoped(token)
-      .then(github => {
-        return github.paginate(
-          github.repos.list.endpoint.merge({
-            visibility: 'private'
-          }),
-          res => res.data
-        );
-      }).then(repositories => {
-        const repositoryNames = repositories.map(fullName);
+    log.debug({ token }, 'creating read filter');
 
-        log.debug({
-          token,
-          repositories: repositoryNames
-        }, 'creating member filter');
+    return getUserVisibleRepositoryNames(token).then(repositoryNames => {
 
-        return createMemberFilter(repositoryNames);
-      });
+      log.debug({
+        token,
+        repositories: repositoryNames
+      }, 'creating member filter');
+
+      console.log(repositoryNames);
+
+      return createMemberFilter(repositoryNames);
+    }).finally(() => {
+      log.info({ token, t: Date.now() - t }, 'created read filter');
+    });
+
   }
 
   function getReadFilter(token) {
