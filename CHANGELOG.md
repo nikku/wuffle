@@ -6,6 +6,12 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 ___Note:__ Yet to be released changes appear here._
 
+## 0.32.0
+
+* `FEAT`: use app APIs to determine user repository access ([`579743a9`](https://github.com/nikku/wuffle/commit/579743a9002873a2a22f6116debfbcf335f5e7ed))
+* `FIX`: account for GitHub API changes breaking private repository display ([#80](https://github.com/nikku/wuffle/issues/80))
+* `CHORE`: bump dependency versions
+
 ## 0.31.0
 
 * `FEAT`: be able to specify default column collapsed state
