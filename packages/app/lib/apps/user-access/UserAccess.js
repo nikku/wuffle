@@ -110,8 +110,6 @@ function UserAccess(logger, githubClient, events) {
         repositories: repositoryNames
       }, 'creating member filter');
 
-      console.log(repositoryNames);
-
       return createMemberFilter(repositoryNames);
     }).finally(() => {
       log.info({ token, t: Date.now() - t }, 'created read filter');
