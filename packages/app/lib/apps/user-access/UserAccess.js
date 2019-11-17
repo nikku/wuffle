@@ -1,9 +1,7 @@
-const {
-  Cache
-} = require('../../util');
+const TreeCache = require('./TreeCache');
 
-// 30 minutes
-const TTL = 1000 * 60 * 30;
+// 9 days
+const TTL = 1000 * 60 * 60 * 24 * 9;
 
 
 /**
@@ -13,16 +11,17 @@ const TTL = 1000 * 60 * 30;
  * @param {Logger} logger
  * @param {GitHubClient} githubClient
  * @param {Events} events
+ * @param {WebhookEvents} webhookEvents
  */
-function UserAccess(logger, githubClient, events) {
+function UserAccess(logger, githubClient, events, webhookEvents) {
 
   const log = logger.child({
     name: 'wuffle:user-access'
   });
 
-  const cache = new Cache(TTL);
+  const cache = new TreeCache(TTL);
 
-  function getRepository(issue) {
+  function getIssueRepository(issue) {
     const {
       key,
       repository
@@ -35,32 +34,62 @@ function UserAccess(logger, githubClient, events) {
     return repository;
   }
 
-  async function fetchUserRepositories(token) {
+  async function fetchUserInstallations(user) {
 
-    const github = await githubClient.getUserScoped(token);
+    const github = await githubClient.getUserScoped(user);
 
-    const installations = await github.paginate(
+    return github.paginate(
       github.apps.listInstallationsForAuthenticatedUser.endpoint.merge({}),
       res => res.data
     );
+  }
 
-    const repositoriesByInstallation = await Promise.all(installations.map(
-      installation => github.paginate(
-        github.apps.listInstallationReposForAuthenticatedUser.endpoint.merge({
-          installation_id: installation.id
-        }),
-        res => res.data
-      )
-    ));
+  async function fetchUserRepositories(user) {
+    const installations = await getUserInstallations(user);
+
+    const repositoriesByInstallation = await Promise.all(
+      installations.map(installation => getUserRepositoriesForInstallation(user, installation))
+    );
 
     return [].concat(...repositoriesByInstallation);
   }
 
-  function getUserVisibleRepositoryNames(token) {
+  async function fetchUserRepositoriesForInstallation(user, installation) {
 
-    return cache.get(`user-repositories:${token}`, () => {
-      return fetchUserRepositories(token);
-    }).then(repositories => repositories.map(repo => {
+    const github = await githubClient.getUserScoped(user);
+
+    return await github.paginate(
+      github.apps.listInstallationReposForAuthenticatedUser.endpoint.merge({
+        installation_id: installation.id
+      }),
+      res => res.data
+    );
+  }
+
+  function getUserRepositoriesForInstallation(user, installation) {
+
+    return cache.get(`login=${user.login}:installation_repositories=${installation.id}`, () => {
+      return fetchUserRepositoriesForInstallation(user, installation);
+    });
+  }
+
+  function getUserInstallations(user) {
+
+    return cache.get(`login=${user.login}:installations`, () => {
+      return fetchUserInstallations(user);
+    });
+
+  }
+
+  function getUserRepositories(user) {
+
+    return cache.get(`login=${user.login}:repositories`, () => {
+      return fetchUserRepositories(user);
+    });
+  }
+
+  function getUserVisibleRepositoryNames(user) {
+    return getUserRepositories(user).then(repositories => repositories.map(repo => {
       return repo.full_name;
     }));
   }
@@ -69,7 +98,7 @@ function UserAccess(logger, githubClient, events) {
    * Show publicly accessible issues only.
    */
   function filterPublic(issue) {
-    return !getRepository(issue).private;
+    return !getIssueRepository(issue).private;
   }
 
   /**
@@ -91,7 +120,7 @@ function UserAccess(logger, githubClient, events) {
         return true;
       }
 
-      const repository = getRepository(issue);
+      const repository = getIssueRepository(issue);
 
       return fullName(repository) in repositoryMap;
     };
@@ -99,16 +128,15 @@ function UserAccess(logger, githubClient, events) {
 
   function createReadFilter(user) {
 
-    const t = Date.now();
-
     const {
-      login,
-      access_token
+      login
     } = user;
+
+    const t = Date.now();
 
     log.debug({ login }, 'creating read filter');
 
-    return getUserVisibleRepositoryNames(access_token).then(repositoryNames => {
+    return getUserVisibleRepositoryNames(user).then(repositoryNames => {
 
       log.debug({
         login,
@@ -132,8 +160,8 @@ function UserAccess(logger, githubClient, events) {
       login
     } = user;
 
-    return cache.get(`${login}:read-filter`, () => createReadFilter(user)).catch(err => {
-      log.warn({ login }, 'failed to retrieve token-based access filter, defaulting to public read', err);
+    return cache.get(`login=${login}:read_filter`, () => createReadFilter(user)).catch(err => {
+      log.warn({ login }, 'failed to create read filter, defaulting to public read', err);
 
       return filterPublic;
     });
@@ -188,9 +216,93 @@ function UserAccess(logger, githubClient, events) {
     events.once('wuffle.start', function() {
       setInterval(() => {
         cache.evict();
-      }, 1000 * 10);
+      }, 1000 * 60 * 15);
     });
   }
+
+
+  // https://developer.github.com/v3/activity/events/types/#githubappauthorizationevent
+
+  webhookEvents.on([
+    'github_app_authorization.revoked'
+  ], (context) => {
+
+    const {
+      sender: {
+        login
+      }
+    } = context.payload;
+
+    cache.invalidate(`login=${login}:*`);
+  });
+
+
+  // https://developer.github.com/v3/activity/events/types/#installationrepositoriesevent
+
+  webhookEvents.on([
+    'installation_repositories.added',
+    'installation_repositories.removed'
+  ], function(context) {
+
+    const {
+      installation: {
+        id: installation_id
+      }
+    } = context.payload;
+
+    const installationMatches = cache.match('login=*:installations');
+
+    for (const match of installationMatches) {
+
+      const {
+        match: [ login ],
+        value: installations
+      } = match;
+
+      const isInstallationMember = installations.find(
+        installation => installation.id === installation_id
+      );
+
+      if (isInstallationMember) {
+        cache.invalidate(`login=${login}:installation_repositories=${installation_id}`);
+        cache.invalidate(`login=${login}:repositories`);
+        cache.invalidate(`login=${login}:read_filter`);
+      }
+    }
+  });
+
+
+  // https://developer.github.com/v3/activity/events/types/#installationevent
+
+  webhookEvents.on([
+    'installation.created',
+    'installation.deleted'
+  ], function(context) {
+
+    cache.invalidate('login=*:installations');
+    cache.invalidate('login=*:installation_repositories=*');
+    cache.invalidate('login=*:repositories');
+    cache.invalidate('login=*:read_filter');
+  });
+
+
+  // https://developer.github.com/v3/activity/events/types/#memberevent
+
+  webhookEvents.on([
+    'member'
+  ], function(context) {
+
+    const {
+      member: {
+        login
+      }
+    } = context.payload;
+
+    cache.invalidate(`login=${login}:installations`);
+    cache.invalidate(`login=${login}:installation_repositories=*`);
+    cache.invalidate(`login=${login}:repositories`);
+    cache.invalidate(`login=${login}:read_filter`);
+  });
 
 }
 
