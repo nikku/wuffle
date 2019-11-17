@@ -41,7 +41,8 @@ function AuthRoutes(logger, router, securityContext) {
 
     const redirectTo = safeGetReferer(req, '/board');
 
-    req.session.login = {
+    req.session.loginFlow = {
+      t: Date.now(),
       redirectTo,
       state
     };
@@ -79,18 +80,27 @@ function AuthRoutes(logger, router, securityContext) {
       code
     } = req.query;
 
-    const login = req.session.login;
+    const {
+      loginFlow,
+      id: session_id
+    } = req.session;
 
-    if (!login) {
-      log.warn('missing login state');
+    const logContext = {
+      session_id
+    };
+
+    if (!loginFlow) {
+      log.warn(logContext, 'no active login flow');
 
       return res.redirect(safeGetReferer(req, '/'));
     }
 
-    if (state !== login.state) {
-      log.warn('state missmatch, aborting');
+    delete req.session.loginFlow;
 
-      return res.redirect(login.redirectTo);
+    if (state !== loginFlow.state) {
+      log.warn(logContext, 'state missmatch, aborting');
+
+      return res.redirect(loginFlow.redirectTo);
     }
 
     const params = new URLSearchParams();
@@ -100,7 +110,9 @@ function AuthRoutes(logger, router, securityContext) {
     params.append('client_secret', process.env.GITHUB_CLIENT_SECRET);
     params.append('redirect_uri', appUrl('/wuffle/login/callback'));
 
-    const githubAuth = await fetch('https://github.com/login/oauth/access_token', {
+    const {
+      access_token
+    } = await fetch('https://github.com/login/oauth/access_token', {
       headers: {
         'Accept': 'application/json'
       },
@@ -109,18 +121,29 @@ function AuthRoutes(logger, router, securityContext) {
     }).then(res => {
 
       if (res.status >= 400) {
-        throw new Error('FAILED');
+        throw new Error('failed to retrieve access_token');
       }
 
       return res.text();
     }).then(text => JSON.parse(text));
 
-    // remove login token
-    delete req.session.login;
+    const {
+      login,
+      avatar_url
+    } = await securityContext.getAuthenticatedUser(access_token);
 
-    req.session.githubAuth = githubAuth;
+    req.session.githubUser = {
+      access_token,
+      avatar_url,
+      login
+    };
 
-    res.redirect(login.redirectTo);
+    log.info({
+      login,
+      t: Date.now() - loginFlow.t
+    }, 'login successful');
+
+    res.redirect(loginFlow.redirectTo);
   });
 
 
@@ -133,52 +156,32 @@ function AuthRoutes(logger, router, securityContext) {
       session
     } = req;
 
-    const logContext = {
-      session_id: session.id
-    };
-
     const {
-      githubAuth,
-      githubProfile
+      githubUser
     } = session;
 
-    const token = githubAuth && githubAuth.access_token;
-
-    if (githubProfile) {
-      return res.type('json').json(githubProfile);
-    }
-
-    if (!token) {
+    if (!githubUser) {
       return res.type('json').json(null);
     }
 
-    try {
-      const user = await securityContext.getAuthenticatedUser(token);
+    const {
+      login,
+      avatar_url
+    } = githubUser;
 
-      log.info(logContext, 'fetched GitHub profile');
+    // TODO(nikku): check if GitHub access is still granted via SecuritiyContext#getAuthenticatedUser
+    return res.type('json').json({
+      login,
+      avatar_url
+    });
 
-      session.githubProfile = {
-        login: user.login,
-        avatar_url: user.avatar_url
-      };
-
-      return res.type('json').json(session.githubProfile);
-    } catch (error) {
-      log.warn(logContext, 'failed to retrieve GitHub profile', error);
-
-      return res.type('json').json(null);
-    }
   });
 
 
   // api ///////////////////////
 
-  this.getGitHubToken = function(req) {
-    return req.session && req.session.githubAuth && req.session.githubAuth.access_token;
-  };
-
-  this.getGitHubLogin = function(req) {
-    return req.session && req.session.githubProfile && req.session.githubProfile.login;
+  this.getGitHubUser = function(req) {
+    return req.session && req.session.githubUser;
   };
 
 }

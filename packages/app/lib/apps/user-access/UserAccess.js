@@ -97,40 +97,53 @@ function UserAccess(logger, githubClient, events) {
     };
   }
 
-  function createReadFilter(token) {
+  function createReadFilter(user) {
 
     const t = Date.now();
 
-    log.debug({ token }, 'creating read filter');
+    const {
+      login,
+      access_token
+    } = user;
 
-    return getUserVisibleRepositoryNames(token).then(repositoryNames => {
+    log.debug({ login }, 'creating read filter');
+
+    return getUserVisibleRepositoryNames(access_token).then(repositoryNames => {
 
       log.debug({
-        token,
+        login,
         repositories: repositoryNames
       }, 'creating member filter');
 
       return createMemberFilter(repositoryNames);
     }).finally(() => {
-      log.info({ token, t: Date.now() - t }, 'created read filter');
+      log.info({ login, t: Date.now() - t }, 'created read filter');
     });
 
   }
 
-  function getReadFilter(token) {
+  function getReadFilter(user) {
 
-    if (!token) {
+    if (!user) {
       return Promise.resolve(filterPublic);
     }
 
-    return cache.get(token, createReadFilter).catch(err => {
-      log.warn({ token }, 'failed to retrieve token-based access filter, defaulting to public read', err);
+    const {
+      login
+    } = user;
+
+    return cache.get(`${login}:read-filter`, () => createReadFilter(user)).catch(err => {
+      log.warn({ login }, 'failed to retrieve token-based access filter, defaulting to public read', err);
 
       return filterPublic;
     });
   }
 
-  function canWrite(username, repoAndOwner) {
+  function canWrite(user, repoAndOwner) {
+
+    const {
+      login
+    } = user;
 
     const {
       repo,
@@ -142,7 +155,7 @@ function UserAccess(logger, githubClient, events) {
         return github.repos.getCollaboratorPermissionLevel({
           repo,
           owner,
-          username
+          username: login
         });
       }).then(res => {
         const {
@@ -154,7 +167,7 @@ function UserAccess(logger, githubClient, events) {
           permission === 'admin'
         );
       }).catch(err => {
-        log.warn('failed to determine write status', { username, owner, repo }, err);
+        log.warn('failed to determine write status', { login, owner, repo }, err);
 
         return false;
       });

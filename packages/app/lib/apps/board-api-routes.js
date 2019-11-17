@@ -51,9 +51,9 @@ module.exports = async (
   }
 
   function getIssueReadFilter(req) {
-    const token = authRoutes.getGitHubToken(req);
+    const user = authRoutes.getGitHubUser(req);
 
-    return userAccess.getReadFilter(token);
+    return userAccess.getReadFilter(user);
   }
 
   function filterBoardItems(req, items) {
@@ -211,9 +211,9 @@ module.exports = async (
 
   router.post('/wuffle/board/issues/move', ...middlewares, bodyParser, async (req, res) => {
 
-    const login = authRoutes.getGitHubLogin(req);
+    const user = authRoutes.getGitHubUser(req);
 
-    if (!login) {
+    if (!user) {
       return res.status(401).json({});
     }
 
@@ -240,15 +240,13 @@ module.exports = async (
 
     const repo = repoAndOwner(issue);
 
-    const canWrite = await userAccess.canWrite(login, repo);
+    const canWrite = await userAccess.canWrite(user, repo);
 
     if (!canWrite) {
       return res.status(403).json({});
     }
 
-    const token = authRoutes.getGitHubToken(req);
-
-    const github = await githubClient.getUserScoped(token);
+    const github = await githubClient.getUserScoped(user);
 
     const context = {
       github,

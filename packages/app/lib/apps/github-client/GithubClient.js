@@ -51,12 +51,14 @@ function GitHubClient(app, webhookEvents, logger, githubApp) {
     return auth;
   }
 
-  function getUserScoped(token) {
+  function getUserScoped(user) {
+
+    const access_token = typeof user === 'string' ? user : user.access_token;
 
     return Promise.resolve(
       GitHubAPI({
         Octokit: ProbotOctokit,
-        auth: `token ${token}`,
+        auth: `token ${access_token}`,
         logger: logger.child({ name: 'github:user-auth' })
       })
     );
