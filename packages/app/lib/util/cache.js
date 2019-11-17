@@ -35,7 +35,7 @@ class Cache {
 
   }
 
-  get(key, defaultValue) {
+  async get(key, defaultValue) {
 
     const entry = this.entries[key];
 
@@ -45,7 +45,7 @@ class Cache {
 
     const value =
       typeof defaultValue === 'function'
-        ? defaultValue(key)
+        ? await defaultValue(key)
         : defaultValue;
 
     this.set(key, value);
