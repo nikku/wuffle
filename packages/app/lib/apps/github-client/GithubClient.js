@@ -3,12 +3,22 @@ const {
   ProbotOctokit
 } = require('probot/lib/github');
 
+const {
+  Cache
+} = require('../../util');
 
-function GitHubClient(app, webhookEvents, logger, githubApp) {
+
+// 15 minutes
+const TTL = 1000 * 60 * 15;
+
+
+function GitHubClient(app, webhookEvents, logger, githubApp, events) {
 
   const log = logger.child({
     name: 'wuffle:github-client'
   });
+
+  const cache = new Cache(TTL);
 
   // cached data ///////////////////
 
@@ -55,13 +65,13 @@ function GitHubClient(app, webhookEvents, logger, githubApp) {
 
     const access_token = typeof user === 'string' ? user : user.access_token;
 
-    return Promise.resolve(
-      GitHubAPI({
+    return cache.get(`user_scoped=${access_token}`, () => {
+      return GitHubAPI({
         Octokit: ProbotOctokit,
         auth: `token ${access_token}`,
         logger: logger.child({ name: 'github:user-auth' })
-      })
-    );
+      });
+    });
 
   }
 
@@ -75,6 +85,18 @@ function GitHubClient(app, webhookEvents, logger, githubApp) {
   this.getOrgScoped = getOrgScoped;
 
   this.getUserScoped = getUserScoped;
+
+
+  // behavior ////////////////
+
+  if (process.env.NODE_ENV !== 'test') {
+
+    events.once('wuffle.start', function() {
+      setInterval(() => {
+        cache.evict();
+      }, 1000 * 30);
+    });
+  }
 
 }
 
