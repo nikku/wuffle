@@ -8,6 +8,7 @@ ___Note:__ Yet to be released changes appear here._
 
 ## 0.32.0
 
+* `FEAT`: various performance improvements for logged in board access ([`2fe40483`](https://github.com/nikku/wuffle/commit/2fe404834c8b291335079c782dff1bbc7d2015f5), [`de5403da`](https://github.com/nikku/wuffle/commit/de5403da7eb7dc5dde71ded3add6f08e1ed7ff27))
 * `FEAT`: use app APIs to determine user repository access ([`579743a9`](https://github.com/nikku/wuffle/commit/579743a9002873a2a22f6116debfbcf335f5e7ed))
 * `FIX`: account for GitHub API changes breaking private repository display ([#80](https://github.com/nikku/wuffle/issues/80))
 * `CHORE`: bump dependency versions
