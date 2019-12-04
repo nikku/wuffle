@@ -1,15 +1,8 @@
 ---
 name: Bug report
-about: Create a report to help us fix an error
+about: Report a problem and help us fix it.
+labels: bug
 ---
-
-<!--
-
-Thanks for filing this bug report!
-
-Please take your time to provide the relevant context to your bug report. This helps us to process it and get it fixed, eventually.
-
--->
 
 
 __Describe the Bug__
@@ -19,11 +12,15 @@ __Describe the Bug__
 
 __Steps to Reproduce__
 
+<!-- Clear steps that allow us to reproduce the error. -->
+
 1. do this
 2. do that
+3. now this happens
 
 <!--
-If your bug is related to a life-cycle transition, please clearly state the state of affected issues / repositories _before_ the bug occurs.
+If your bug is related to a life-cycle transition, clearly state the
+state of affected issues / repositories _before_ the bug occurs.
 -->
 
 __Expected Behavior__
@@ -33,8 +30,6 @@ __Expected Behavior__
 
 __Environment__
 
-<!-- if applicable, please provide your environment -->
-
-- Browser: [e.g. Ms Edge, Chrome 69]
-- OS: [e.g. Windows 10]
-- Board Version: [e.g. 0.23.0]
+- Host (Browser/Node version), if applicable: [e.g. MS Edge 18, Chrome 69, Node 10 LTS]
+- OS: [e.g. Windows 7]
+- Board version: [e.g. 1.0.0]

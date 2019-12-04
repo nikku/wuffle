@@ -1,18 +1,11 @@
 ---
-name: Setup Problem
-about: File a setup related help request
+name: Setup problem
+about: File a installation/setup related help request.
+labels: question, installation
 ---
 
-<!--
 
-Thanks for filing your interest in trying out Wuffle
-
-Please take your time to provide the relevant context
-that allows us to understand your issue. 
-
--->
-
-__Please Acknowledge the following__
+__Please Acknowledge the Following__
 
 * [ ] I've followed the [setup and run instructions](https://github.com/nikku/wuffle/blob/master/docs/SETUP.md)
 
