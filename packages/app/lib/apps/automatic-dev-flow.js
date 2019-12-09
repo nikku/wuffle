@@ -1,3 +1,18 @@
+const {
+  linkTypes
+} = require('../util');
+
+const {
+  CLOSES
+} = linkTypes;
+
+const allButClosedLinkTypes = Object.keys(linkTypes).filter(linkType => {
+  return linkType !== CLOSES;
+}).reduce((filteredLinkTypes, linkType) => {
+  filteredLinkTypes[linkType] = linkTypes[linkType];
+  return filteredLinkTypes;
+}, {});
+
 const DONE = 'DONE';
 const EXTERNAL_CONTRIBUTION = 'EXTERNAL_CONTRIBUTION';
 const IN_PROGRESS = 'IN_PROGRESS';
@@ -27,7 +42,10 @@ module.exports = function(webhookEvents, githubIssues, columns) {
 
     const column = columns.getByState(DONE);
 
-    await githubIssues.moveIssue(context, issue || pull_request, column);
+    await Promise.all([
+      pull_request ? githubIssues.moveReferencedIssues(context, pull_request, IN_PROGRESS, undefined, allButClosedLinkTypes) : Promise.resolve(),
+      githubIssues.moveIssue(context, issue || pull_request, column)
+    ]);
   });
 
   webhookEvents.on('pull_request.ready_for_review', async (context) => {
