@@ -17,7 +17,6 @@
     Id,
     createLocalStore,
     createHistory,
-    isClosingLink,
     isOpenOrMerged,
     isPull,
     periodic,
@@ -63,6 +62,11 @@
   let renderCountByColumn = {};
 
   let filterOptions = {};
+
+  let linkInfoVisible = false;
+  let knowledgeText = 'Show Link Info';
+  let hideComplete = false;
+  let hideCompleteText = 'Hide Complete PRs';
 
   $: defaultCollapsed = columns.reduce((defaultCollapsed, column) => {
     defaultCollapsed[column.name] = column.collapsed;
@@ -642,14 +646,25 @@
     };
   }
 
-  function isClosingPull(item) {
-    return isPull(item) && isOpenOrMerged(item) && item.links.some(link => {
-      return isClosingLink(link) && itemsById[link.target.id];
-    });
-  }
+  // function isClosingPull(item) {
+  //   return isPull(item) && isOpenOrMerged(item) && item.links.some(link => {
+  //     return isClosingLink(link) && itemsById[link.target.id];
+  //   });
+  // }
 
   function isPRWithLinks(item) {
     return isPull(item) && isOpenOrMerged(item) && item.links.length > 0;
+  }
+
+ function toggleLinkInfoVisible() {
+      linkInfoVisible = !linkInfoVisible;
+      knowledgeText = linkInfoVisible ? 'Hide Link Info' : 'Show Link Info';
+    }
+
+  function toggleComplete() {
+    hideComplete = !hideComplete;
+    hideCompleteText = hideComplete ? 'Show Complete PRs' : 'Hide Complete PRs';
+
   }
 
   function checkRender(columnName) {
@@ -771,6 +786,14 @@
         {/if}
       </Notification>
     {/if}
+
+    {#if linkInfoVisible}
+      <Notification message="Linking Keywords" type="info">
+         - <b>'parent of'</b> Used in epic Issues to link to child issues<br>
+         - <b>'required by'</b> Used to show PR required by issue<br>
+         - <b>'depends on'</b> Used to show dependency between issues<br>
+      </Notification>
+    {/if}
   </Notifications>
 
   <a class="powered-by-logo" href="https://wuffle.dev"
@@ -786,6 +809,14 @@
       <img src="./logo.svg" width="20" height="20" alt="" class="logo">
       <span class="brand-name">{ name }</span>
     </a>
+
+    <!-- Trigger/Open The Modal -->
+    <button class="taskboard-button" id="knowledge" on:click={ toggleLinkInfoVisible } title="Click to toggle" >{ knowledgeText }</button>
+
+    <div class="divider"/>
+
+    <button class="taskboard-button" id="complete" on:click={ toggleComplete } title="Click to toggle" >{hideCompleteText}</button>
+
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#{navId}" aria-controls={navId} aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -857,6 +888,7 @@
                   <Card
                     item={item}
                     onSelect={ applyFilter }
+                    hideComplete={hideComplete}
                   />
                 </div>
               {/each}

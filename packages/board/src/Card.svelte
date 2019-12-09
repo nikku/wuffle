@@ -2,6 +2,7 @@
   import {
     isOpen,
     isMerged,
+    isOpenOrMerged,
     isPull,
     noDuplicates
   } from './util';
@@ -35,6 +36,8 @@
 
   export let onSelect;
 
+  export let hideComplete;
+
   let showChildren = false;
 
   let hovered = false;
@@ -46,6 +49,7 @@
   $: milestone = item.milestone;
   $: labels = item.labels.filter(l => !l.column_label);
   $: pull_request = item.pull_request;
+  $: complete = hideComplete;
 
   $: links = item.links || [];
 
@@ -63,11 +67,7 @@
   $: completedChildren = children.filter(l => l.target.state === 'closed');
 
   $: prLinks = links.filter(
-    link => isPull(link.target) && (
-      isOpen(link.target) || (
-        isMerged(link.target) && link.type === 'CLOSED_BY'
-      )
-    )
+    link => isPull(link.target) && isOpenOrMerged(link.target)
   ).filter(noDuplicates(link => link.target.id));
 
   $: repositoryName = `${repository.owner.login}/${repository.name}`;
@@ -257,7 +257,13 @@
   {#if prLinks.length}
     <div class="board-card-links attached">
       {#each prLinks as link}
-        <CardLink item={ link.target } type={ link.type } onSelect={ onSelect } />
+        {#if hideComplete }
+            {#if link.target.state==='open' }
+                <CardLink item={ link.target } type={ link.type } onSelect={ onSelect }/>
+            {/if}
+        {:else}
+            <CardLink item={ link.target } type={ link.type } onSelect={ onSelect }/>
+        {/if}
       {/each}
     </div>
   {/if}

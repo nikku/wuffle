@@ -54,6 +54,7 @@
   class="notification"
   class:error={ type === 'error' }
   class:warning={ type === 'warning' }
+  class:info={ type === 'info' }
   transition:fly
 >
   <div class="heading">{ message }</div>
