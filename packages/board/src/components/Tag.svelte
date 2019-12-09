@@ -62,6 +62,7 @@
     line-height: 20px;
     white-space: nowrap;
 
+    overflow: hidden;
     color: white;
     background: #fafafa;
     border-radius: 4px;
