@@ -1,15 +1,12 @@
 <script>
   import {
-    isOpen,
-    isMerged,
     isOpenOrMerged,
     isPull,
     noDuplicates
   } from './util';
 
   import {
-    isApplyFilterClick,
-    isAddFilterClick
+    hasModifier
   } from './shortcuts';
 
   import Tag from './components/Tag.svelte';
@@ -32,7 +29,7 @@
 
   export let item;
 
-  export let className = '';
+  export const className = '';
 
   export let onSelect;
 
@@ -77,17 +74,17 @@
   $: milestoneUrl = milestone && `${repoUrl}/milestone/${milestone.number}`;
   $: cardUrl = `${repoUrl}/issues/${ number }`;
 
-  function handleSelection(qualifier, value, clickThrough=true) {
+  function handleSelection(qualifier, value) {
 
     return function(event) {
 
-      if (clickThrough && !isApplyFilterClick(event)) {
+      if (hasModifier(event)) {
         return;
       }
 
       event.preventDefault();
 
-      onSelect(qualifier, value, isAddFilterClick(event));
+      onSelect(qualifier, value);
     };
   }
 </script>
@@ -171,24 +168,20 @@
     on:mouseleave={ () => hovered = false }
   >
     <div class="header">
-      <a href={ cardUrl }
+         {#if children.length}
+          <EpicIcon item={ item } linkType="PARENT_OF" onClick={ onSelect && handleSelection('ref', item.key) }/>
+        {/if}
+
+        {#if pull_request}
+          <PullRequestIcon item={ item } onClick={ onSelect && handleSelection('ref', item.key) }/>
+        {/if}
+     <a href={ cardUrl }
+
          target="_blank"
          rel="noopener noreferrer"
          class="issue-number"
          title="{ repositoryName }#{ number }"
-         on:click={ handleSelection('ref', item.key) }
-      >
-
-        {#if children.length}
-          <EpicIcon item={ item } linkType="PARENT_OF" />
-        {/if}
-
-        {#if pull_request}
-          <PullRequestIcon item={ item } />
-        {/if}
-
-        { number }
-      </a>
+      >{ number }</a>
 
       <span class="repository" title={ repositoryName }>{ repositoryName }</span>
 
@@ -230,7 +223,7 @@
           class="tag label"
           color="#{ color }"
           name={ name }
-          onClick={ onSelect && handleSelection('label', name, false) }
+          onClick={ onSelect && handleSelection('label', name) }
         />
       {/each}
 

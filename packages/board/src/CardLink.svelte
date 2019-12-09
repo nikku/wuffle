@@ -6,13 +6,12 @@
   import CardStatus from './CardStatus.svelte';
 
   import {
-    isApplyFilterClick,
-    isAddFilterClick
+    hasModifier
   } from './shortcuts';
 
   export let item;
 
-  export let className = '';
+  export const className = '';
 
   export let onSelect;
 
@@ -50,13 +49,13 @@
 
     return function(event) {
 
-      if (!isApplyFilterClick(event)) {
+      if (hasModifier(event)) {
         return;
       }
 
       event.preventDefault();
 
-      onSelect(qualifier, value, isAddFilterClick(event));
+      onSelect(qualifier, value);
     };
   }
 </script>
@@ -85,43 +84,41 @@
   on:mouseleave={ () => hovered = false }
 >
   <div class="header">
-    <a href={ cardUrl }
-       target="_blank"
-       rel="noopener noreferrer"
-       class="issue-number"
-       on:click={ onSelect && handleSelection('ref', item.key) }
-       title="{ repositoryName }#{ number } · { linkTitle } this issue"
-     >
-      {#if pull_request}
-        <PullRequestIcon item={ item } />
+        {#if pull_request}
+        <PullRequestIcon item={ item } onClick={ onSelect && handleSelection('ref', item.key) } />
       {:else}
         {#if type === 'PARENT_OF'}
-          <LinkIcon name="issue" state={ state } />
+          <LinkIcon name="issue" state={ state } onClick={ onSelect && handleSelection('ref', item.key) }/>
         {/if}
 
         {#if type === 'CHILD_OF'}
-          <LinkIcon name="epic" />
+          <LinkIcon name="epic" onClick={ onSelect && handleSelection('ref', item.key) }/>
         {/if}
 
         {#if type === 'DEPENDS_ON' || type === 'CLOSED_BY'}
-          <LinkIcon name="depends-on" state={ state } />
+          <LinkIcon name="depends-on" state={ state } onClick={ onSelect && handleSelection('ref', item.key) }/>
         {/if}
 
         {#if type === 'REQUIRED_BY' || type === 'CLOSES' }
           {#if state === 'open'}
-            <LinkIcon name="linked-to" />
+            <LinkIcon name="linked-to" onClick={ onSelect && handleSelection('ref', item.key) }/>
           {:else}
-            <LinkIcon name="issue" state={ state } />
+            <LinkIcon name="issue" state={ state } onClick={ onSelect && handleSelection('ref', item.key) }/>
           {/if}
         {/if}
 
         {#if type === 'LINKED_TO'}
-          <LinkIcon name="linked-to" />
+          <LinkIcon name="linked-to" onClick={ onSelect && handleSelection('ref', item.key) }/>
         {/if}
       {/if}
 
-      { number }
-    </a>
+  <a href={ cardUrl }
+       target="_blank"
+       rel="noopener noreferrer"
+       class="issue-number"
+       title="{ repositoryName }#{ number } · { linkTitle } this issue"
+     >{ number }</a>
+
 
     <span class="short-title" title={ title }>{ title }</span>
 
