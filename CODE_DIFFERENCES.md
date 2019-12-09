@@ -17,3 +17,6 @@
 - `ExpandIcon.svelte` - pass in onClick to filter issue by icon
 - `LinkIcon.svelte` - pass in onClick to filter issue by icon
 - `PullRequestIcon.svelte` - pass in onClick to filter issue by icon
+
+#### Hide overflow from long milestone names
+- 'Tag.svelte' - hide overflow from milestone labels
