@@ -1,4 +1,4 @@
-function hasModifier(event) {
+export function hasModifier(event) {
   const {
     ctrlKey,
     shiftKey,
