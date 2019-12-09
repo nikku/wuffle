@@ -656,10 +656,10 @@
     return isPull(item) && isOpenOrMerged(item) && item.links.length > 0;
   }
 
- function toggleLinkInfoVisible() {
-      linkInfoVisible = !linkInfoVisible;
-      knowledgeText = linkInfoVisible ? 'Hide Link Info' : 'Show Link Info';
-    }
+  function toggleLinkInfoVisible() {
+    linkInfoVisible = !linkInfoVisible;
+    knowledgeText = linkInfoVisible ? 'Hide Link Info' : 'Show Link Info';
+  }
 
   function toggleComplete() {
     hideComplete = !hideComplete;
@@ -889,7 +889,7 @@
                     item={item}
                     onSelect={ applyFilter }
                     hideComplete={hideComplete}
-                  />
+                 />
                 </div>
               {/each}
 

@@ -9,3 +9,11 @@
  - `Taskboard.scss` - Make the buttons fit the Wuffle colour scheme
  - `Notification.svelte` - Show the text boxes in the correct place
  - `Card.svelte` - Toggle Card Link if merged/closed PR
+ 
+#### Icons as filter and issue number as link
+- `Card.svelte` - Make the Icon do the search instead of the issue number
+- `CardLink.svelte` - Make the Icon do the search instead of the issue number
+- `EpicIcon.svelte` - pass in onClick to filter issue by icon
+- `ExpandIcon.svelte` - pass in onClick to filter issue by icon
+- `LinkIcon.svelte` - pass in onClick to filter issue by icon
+- `PullRequestIcon.svelte` - pass in onClick to filter issue by icon
