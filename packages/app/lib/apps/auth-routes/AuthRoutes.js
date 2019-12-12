@@ -32,6 +32,9 @@ function AuthRoutes(logger, router, securityContext) {
     name: 'wuffle:auth-flow'
   });
 
+  // five minutes
+  const CHECK_INTERVAL = 1000 * 60 * 5;
+
   /**
    * Trigger login via GitHub OAuth flow.
    */
@@ -133,6 +136,7 @@ function AuthRoutes(logger, router, securityContext) {
     } = await securityContext.getAuthenticatedUser(access_token);
 
     req.session.githubUser = {
+      last_checked: Date.now(),
       access_token,
       avatar_url,
       login
@@ -165,11 +169,26 @@ function AuthRoutes(logger, router, securityContext) {
     }
 
     const {
-      login,
-      avatar_url
+      last_checked,
+      access_token,
+      avatar_url,
+      login
     } = githubUser;
 
-    // TODO(nikku): check if GitHub access is still granted via SecuritiyContext#getAuthenticatedUser
+    if (last_checked + CHECK_INTERVAL < Date.now()) {
+      try {
+        await securityContext.getAuthenticatedUser(access_token);
+
+        githubUser.last_checked = Date.now();
+      } catch (err) {
+
+        // access is not granted anymore, clear current session
+        return req.session.destroy(function(err) {
+          return res.type('json').json(null);
+        });
+      }
+    }
+
     return res.type('json').json({
       login,
       avatar_url
