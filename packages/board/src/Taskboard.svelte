@@ -287,7 +287,12 @@
   function loginCheck() {
     return action('User login check')(
       () => api.getLoggedInUser().then(newUser => {
-        user = newUser;
+
+        if (user && !newUser) {
+          window.location.reload();
+        } else {
+          user = newUser;
+        }
       })
     );
   }
