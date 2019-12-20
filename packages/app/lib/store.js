@@ -665,6 +665,112 @@ class Store {
     return 709876.54321;
   }
 
+  async updateOrder(id, before, after) {
+    const issue = this.getIssueById(id);
+
+    issue.order = this.computeOrder(before.order, after);
+
+    await this.updateIssue(issue);
+  }
+
+  getBugLabelForIssue(issue) {
+    const {
+      labels
+    } = issue;
+    const bugLabel = labels.filter(l => l.name.startsWith('P')).map(a => a.name).toString();
+
+    return {
+      bugLabel,
+      ...issue
+    };
+  }
+
+  resetBugColumnOrder() {
+    let bugIssues = this.getIssues().filter(issue => issue.column === 'Bug');
+
+    let priorityBugIssues = [];
+    for (const bugIssue of bugIssues) {
+      const filteredPriorities = this.getBugLabelForIssue(bugIssue);
+      priorityBugIssues.push(filteredPriorities);
+    }
+    let sortedBugIssues = priorityBugIssues.sort(this.orderedBugList);
+    const {
+      before,
+      after
+    } = this.computeBugOrder(sortedBugIssues);
+
+    for (const issue of sortedBugIssues) {
+      this.updateOrder(issue.id, before, after);
+
+    }
+  }
+
+  orderedBugList(bugA, bugB) {
+    const bugLabelA = bugA.bugLabel.toUpperCase();
+    const bugLabelB = bugB.bugLabel.toUpperCase();
+
+    let comparison = 0;
+    if (bugLabelA > bugLabelB) {
+      comparison = 1;
+    } else if (bugLabelA < bugLabelB) {
+      comparison = -1;
+    }
+    return comparison;
+  }
+  computeOrder(beforeId, afterId) {
+
+    const beforeOrder = beforeId && this.issuesById[beforeId];
+    const afterOrder = afterId && this.issuesById[afterId];
+
+    if (beforeOrder && afterOrder) {
+      return (beforeOrder + afterOrder) / 2;
+    }
+
+    if (beforeOrder) {
+      return beforeOrder - 99999.89912;
+    }
+
+    if (afterOrder) {
+      return afterOrder + 99999.89912;
+    }
+
+    // a good start :)
+    return 779999.89912;
+  }
+  computeBugOrder(issues) {
+    const beforeTypes = {
+      P1: 1,
+      P2: 2,
+      P3: 3,
+      P4: 4
+    };
+
+    let before, after;
+
+    for (const bugIssue of issues) {
+
+      const {
+        bugLabel
+      } = bugIssue;
+
+      if (beforeTypes[bugLabel]) {
+        before = before && before.order < bugIssue.order ? before : bugIssue;
+        after = after && after.order > bugIssue.order ? after : bugIssue;
+      }
+    }
+
+    // insert on top of column
+    if (!before) {
+      before = this.issues[0];
+    }
+
+    // let newOrder = this.computeOrder(before && before.id, after && after.id);
+    return {
+      before,
+      after
+    };
+  }
+
   getIssueColumn(issueId) {
     const issue = this.getIssueById(issueId);
 

@@ -1,14 +1,12 @@
 const {
-  findLinks,
-  linkTypes
+  findLinks
 } = require('../../util');
 
-const {
-  CLOSES
-} = linkTypes;
+const DONE = 'DONE';
+const IN_PROGRESS = 'IN_PROGRESS';
+const IN_REVIEW = 'IN_REVIEW';
 
-
-function GithubIssues(logger, config, columns) {
+function GithubIssues(logger, config, columns, store) {
 
   const log = logger.child({
     name: 'wuffle:github-issues'
@@ -87,12 +85,12 @@ function GithubIssues(logger, config, columns) {
       });
   }
 
-  function findAndMoveIssue(context, number, newColumn, newAssignee) {
+  function findAndMoveIssue(context, number, newColumn, newAssignee, checkForOpenPrs) {
     return findIssue(context, number)
-      .then((issue) => issue && moveIssue(context, issue, newColumn, newAssignee));
+      .then((issue) => issue && moveIssue(context, issue, newColumn, newAssignee, checkForOpenPrs));
   }
 
-  async function moveReferencedIssues(context, issue, newColumn, newAssignee) {
+  async function moveReferencedIssues(context, issue, newColumn, newAssignee, linkTypes, checkForOpenPrs) {
 
     // TODO(nikku): do that lazily, i.e. react to PR label changes?
     // would slower the movement but support manual moving-issue with PR
@@ -102,7 +100,7 @@ function GithubIssues(logger, config, columns) {
       owner: issueOwner
     } = context.repo();
 
-    const links = findLinks(issue, CLOSES).filter(link => {
+    const links = findLinks(issue, linkTypes).filter(link => {
       const {
         repo,
         owner
@@ -123,19 +121,47 @@ function GithubIssues(logger, config, columns) {
         number
       } = link;
 
-      return findAndMoveIssue(context, number, newColumn, newAssignee);
+      return findAndMoveIssue(context, number, newColumn, newAssignee, checkForOpenPrs);
     }));
   }
+  function checkIssueForOpenLinkedPR(context, issue) {
+    const {
+      repository,
+    } = context.payload;
 
-  function moveIssue(context, issue, newColumn, newAssignee) {
+   const links = store.links.inverseLinks[repository.id + '-' + issue.number];
 
+    return Object.keys(links).map(linkKey => {
+
+      const link = links[linkKey];
+      const {
+        targetId
+      } = link;
+
+      let linkedIssue = store.getIssueById(targetId);
+      return linkedIssue.state === 'open' && linkedIssue.pull_request;
+
+    }).some(function(currentState) {
+      return currentState === true;
+    });
+  }
+
+  function moveIssue(context, issue, newColumn, newAssignee, checkForOpenPrs) {
+
+    if (checkForOpenPrs === undefined) {
+      checkForOpenPrs = false;
+    }
     const {
       number: issue_number
     } = issue;
 
+    let openLinkedPrs = checkForOpenPrs ? checkIssueForOpenLinkedPR(context, issue): false;
+
+    let keepIssueInCurrentColumn = (openLinkedPrs && (newColumn === columns.getByState(IN_PROGRESS)|| newColumn === columns.getByState(DONE)));
+
     const update = {
       ...getAssigneeUpdate(issue, newAssignee),
-      ...getStateUpdate(issue, newColumn)
+      ...getStateUpdate(issue, (keepIssueInCurrentColumn ? columns.getByState(IN_REVIEW) : newColumn))
     };
 
     if (!hasKeys(update)) {

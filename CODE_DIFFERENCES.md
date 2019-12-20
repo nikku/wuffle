@@ -20,3 +20,11 @@
 
 #### Hide overflow from long milestone names
 - 'Tag.svelte' - hide overflow from milestone labels
+
+#### Bug Column Sorting(sort bug column by priority(P1-P4))
+- `BackgroundSync.js` - only run when doing a background sync
+- `store.js` - Add bug priority sorting
+
+#### Move Issues to In Progress when PR closed only if no other open PRs
+- `automatic-dev-flow.js` - add check when pull request is closed
+- `GithubIssues.js` - move issue back to `in progress` if no open PRs but keep in `needs review` if issue has open PRs

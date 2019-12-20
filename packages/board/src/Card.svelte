@@ -2,12 +2,9 @@
   import {
     isOpenOrMerged,
     isPull,
+    hasModifier,
     noDuplicates
   } from './util';
-
-  import {
-    hasModifier
-  } from './shortcuts';
 
   import Tag from './components/Tag.svelte';
   import PullRequestIcon from './components/PullRequestIcon.svelte';
@@ -28,12 +25,11 @@
   };
 
   export let item;
+  export let hideComplete;
 
   export const className = '';
 
   export let onSelect;
-
-  export let hideComplete;
 
   let showChildren = false;
 

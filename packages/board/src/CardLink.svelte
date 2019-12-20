@@ -1,13 +1,13 @@
 <script>
+  import {
+    hasModifier
+  } from './util';
+
   import PullRequestIcon from './components/PullRequestIcon.svelte';
   import LinkIcon from './components/LinkIcon.svelte';
 
   import CollaboratorLinks from './CollaboratorLinks.svelte';
   import CardStatus from './CardStatus.svelte';
-
-  import {
-    hasModifier
-  } from './shortcuts';
 
   export let item;
 

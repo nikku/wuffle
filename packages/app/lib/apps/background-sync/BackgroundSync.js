@@ -242,6 +242,7 @@ We automatically synchronize all repositories you granted us access to via the G
         }
 
       } // end --- for (const repository of repositories)
+      store.resetBugColumnOrder();
 
       log.debug({ installation: owner }, 'processed');
     } catch (error) {
