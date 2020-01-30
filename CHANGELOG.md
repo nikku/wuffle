@@ -6,6 +6,11 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 ___Note:__ Yet to be released changes appear here._
 
+## 0.33.0
+
+* `FEAT`: log out user on wuffle once her GitHub access token expired
+* `FIX`: correctly handle invalid issue when updating store
+
 ## 0.32.0
 
 * `FEAT`: various performance improvements for logged in board access ([`2fe40483`](https://github.com/nikku/wuffle/commit/2fe404834c8b291335079c782dff1bbc7d2015f5), [`de5403da`](https://github.com/nikku/wuffle/commit/de5403da7eb7dc5dde71ded3add6f08e1ed7ff27))
