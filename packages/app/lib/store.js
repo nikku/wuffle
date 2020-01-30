@@ -495,7 +495,9 @@ class Store {
 
       const issue = this.getIssueById(id);
 
-      context.addTouchedIssue(issue);
+      if (issue) {
+        context.addTouchedIssue(issue);
+      }
     });
 
     this.log.debug({
