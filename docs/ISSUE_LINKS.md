@@ -22,7 +22,7 @@ The following links are recognized when found in an issues description:
 Based on established links the bord will attempt to sort issues automatically.
 Pre-sorted columns ensure that issues can be picked (or reviewed) from top.
 
-To enable this feature per column, [mark it as sorting](./SETUP/#configure-board).
+To enable this feature per column, [mark it as sorting](./SETUP.md/#configure-board).
 
 The following link types influence sorting:
 
