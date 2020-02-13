@@ -6,6 +6,11 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 ___Note:__ Yet to be released changes appear here._
 
+## 0.33.1
+
+* `FIX`: do not fail search on missing assignees
+* `CHORE`: make issue search fail safe
+
 ## 0.33.0
 
 * `FEAT`: log out user on wuffle once her GitHub access token expired
