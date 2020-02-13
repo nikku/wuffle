@@ -95,7 +95,7 @@ function Search(store) {
 
         const { labels } = issue;
 
-        return labels && labels.some(label => includes(label.name, name));
+        return (labels || []).some(label => includes(label.name, name));
       };
     },
 
@@ -129,7 +129,7 @@ function Search(store) {
           assignees
         } = issue;
 
-        return assignees.some(assignee => fuzzyMatches(assignee.login, name));
+        return (assignees || []).some(assignee => fuzzyMatches(assignee.login, name));
       };
     },
 
