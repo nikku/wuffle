@@ -2,13 +2,22 @@ const {
   parseSearch
 } = require('../../util');
 
+const {
+  issueIdent
+} = require('../../util');
+
 
 /**
  * This app allows you to create a search filter from a given term.
  *
+ * @param {Logger} logger
  * @param {Store} store
  */
-function Search(store) {
+function Search(logger, store) {
+
+  const log = logger.child({
+    name: 'wuffle:search'
+  });
 
   function filterNoop(issue) {
     return true;
@@ -196,7 +205,13 @@ function Search(store) {
     });
 
     return function(issue) {
-      return filterFns.every(fn => fn(issue));
+      try {
+        return filterFns.every(fn => fn(issue));
+      } catch (err) {
+        log.warn({ issue: issueIdent(issue) }, 'filter failed', err);
+
+        return false;
+      }
     };
   }
 
