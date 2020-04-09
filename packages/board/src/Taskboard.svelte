@@ -109,7 +109,7 @@
           return result;
         })
         .catch(err => {
-          handleWarning(name, err, options);
+          return handleWarning(name, err, options);
         });
     };
   }
@@ -118,7 +118,7 @@
     console.warn('%s failed', action, error);
 
     if (options.display === false) {
-      return;
+      throw error;
     }
 
     const index = warnings.findIndex(w => w.action === action);

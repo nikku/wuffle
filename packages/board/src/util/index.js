@@ -16,11 +16,35 @@ export function delay(fn, timeout) {
 
 export function periodic(fn, interval) {
 
-  const i = setInterval(fn, interval);
+  let canceled = false;
 
-  return function() {
-    clearInterval(i);
-  };
+  let timeout = interval;
+
+  let i;
+
+  function stop() {
+    canceled = true;
+
+    clearTimeout(i);
+  }
+
+  function run() {
+
+    Promise.resolve({}).then(() => fn()).then(
+      success => true,
+      err => false
+    ).then(success => {
+      timeout = success === false ? timeout * 1.5 : interval;
+
+      if (!canceled) {
+        i = setTimeout(run, timeout);
+      }
+    });
+  }
+
+  run();
+
+  return stop;
 }
 
 export {
