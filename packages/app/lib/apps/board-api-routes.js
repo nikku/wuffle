@@ -163,7 +163,7 @@ module.exports = async (
         cursor
       });
     }).catch(err => {
-      log.error('card filtering failed', err);
+      log.error('failed to retrieve cards', err);
 
       res.status(500).json({ error : true });
     });
@@ -198,13 +198,13 @@ module.exports = async (
     const updates = cursor ? store.getUpdates(cursor) : [];
 
     return (
-      filterUpdates(req, updates)
-        .then(filteredUpdates => res.type('json').json(filteredUpdates))
-        .catch(err => {
-          log.error('update filtering failed', { cursor, updates }, err);
+      filterUpdates(req, updates).then(filteredUpdates => {
+        res.type('json').json(filteredUpdates);
+      }).catch(err => {
+        log.error('failed to retrieve card updates', { cursor, updates }, err);
 
-          res.status(500).json({ error : true });
-        })
+        res.status(500).json({ error : true });
+      })
     );
   });
 
@@ -259,15 +259,13 @@ module.exports = async (
     };
 
     return (
-      moveIssue(context, issue, column, { before, after })
-        .then(() => {
-          res.type('json').json({});
-        })
-        .catch(err => {
-          log.error(err);
+      moveIssue(context, issue, column, { before, after }).then(() => {
+        res.type('json').json({});
+      }).catch(err => {
+        log.error('failed to move issue', err);
 
-          res.status(500).json({ error : true });
-        })
+        res.status(500).json({ error : true });
+      })
     );
 
   });
