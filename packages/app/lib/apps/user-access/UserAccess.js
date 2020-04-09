@@ -160,11 +160,7 @@ function UserAccess(logger, githubClient, events, webhookEvents) {
       login
     } = user;
 
-    return cache.get(`login=${login}:read_filter`, () => createReadFilter(user)).catch(err => {
-      log.warn({ login }, 'failed to create read filter, defaulting to public read', err);
-
-      return filterPublic;
-    });
+    return cache.get(`login=${login}:read_filter`, () => createReadFilter(user));
   }
 
   function canWrite(user, repoAndOwner) {
