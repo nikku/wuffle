@@ -30,6 +30,22 @@ module.exports = function(webhookEvents, githubIssues, columns) {
     await githubIssues.moveIssue(context, issue || pull_request, column);
   });
 
+  webhookEvents.on('pull_request.converted_to_draft', async (context) => {
+
+    const {
+      pull_request
+    } = context.payload;
+
+    const state = isExternal(pull_request) ? EXTERNAL_CONTRIBUTION : IN_PROGRESS;
+
+    const column = columns.getByState(state);
+
+    await Promise.all([
+      githubIssues.moveIssue(context, pull_request, column),
+      githubIssues.moveReferencedIssues(context, pull_request, column)
+    ]);
+  });
+
   webhookEvents.on('pull_request.ready_for_review', async (context) => {
 
     const {
