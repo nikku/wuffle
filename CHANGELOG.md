@@ -6,6 +6,12 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 ___Note:__ Yet to be released changes appear here._
 
+## 0.34.0
+
+* `FEAT`: support `convert_to_draft` webhook to move PR back to IN_PROGESS ([#86](https://github.com/nikku/wuffle/issues/86))
+* `CHORE`: propagate user-access read errors
+* `CHORE`: back-off periodic checks on error
+
 ## 0.33.1
 
 * `FIX`: do not fail search on missing assignees
