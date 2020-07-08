@@ -1,32 +1,32 @@
 module.exports = {
-  "extends": [
-    "plugin:bpmn-io/es6"
+  extends: [
+    'plugin:bpmn-io/es6'
   ],
-  "parserOptions": {
-    "ecmaVersion": 2019,
-    "sourceType": "module"
+  parserOptions: {
+    ecmaVersion: 2019,
+    sourceType: 'module'
   },
-  "rules": {
-    "comma-dangle": [ "error", "never" ],
-    "import/no-amd": "error",
-    "import/no-webpack-loader-syntax": "error"
+  rules: {
+    'comma-dangle': [ 'error', 'never' ],
+    'import/no-amd': 'error',
+    'import/no-webpack-loader-syntax': 'error'
   },
-  "plugins": [
-    "svelte3",
-    "import"
+  plugins: [
+    'svelte3',
+    'import'
   ],
-  "overrides": [
+  overrides: [
     {
-      "files": ["*.svelte"],
-      "processor": "svelte3/svelte3"
+      'files': ['*.svelte'],
+      'processor': 'svelte3/svelte3'
     }
   ],
-  "env": {
-    "browser": true,
-    "es6": true
+  env: {
+    browser: true,
+    es6: true
   },
-  "settings": {
-    "svelte3/ignore-styles": function(attrs) {
+  settings: {
+    'svelte3/ignore-styles': function(attrs) {
       return attrs.lang === 'scss';
     }
   }
