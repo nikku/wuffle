@@ -45,8 +45,8 @@
   },
   "devDependencies": {
     "chai": "^4.2.0",
-    "eslint": "^6.6.0",
-    "eslint-plugin-bpmn-io": "^0.10.0",
+    "eslint": "^7.4.0",
+    "eslint-plugin-bpmn-io": "^0.11.0",
     "mkdirp": "^0.5.1",
     "mocha": "^6.2.2",
     "nock": "^10.0.0",
