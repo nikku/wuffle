@@ -1,11 +1,13 @@
+import resolve from '@rollup/plugin-node-resolve';
+import commonjs from '@rollup/plugin-commonjs';
+import url from '@rollup/plugin-url';
+
 import svelte from 'rollup-plugin-svelte';
-import resolve from 'rollup-plugin-node-resolve';
-import commonjs from 'rollup-plugin-commonjs';
 import livereload from 'rollup-plugin-livereload';
+
 import { terser } from 'rollup-plugin-terser';
 import { string } from 'rollup-plugin-string';
 
-import url from 'rollup-plugin-url';
 import { sass } from 'svelte-preprocess-sass';
 
 const distDirectory = '../app/public';
