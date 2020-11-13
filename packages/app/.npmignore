@@ -6,3 +6,4 @@ wuffle.*.js
 .eslintignore
 .env
 .env.*
+tsconfig.json
