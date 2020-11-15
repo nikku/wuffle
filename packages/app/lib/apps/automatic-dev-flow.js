@@ -9,9 +9,9 @@ const IN_REVIEW = 'IN_REVIEW';
  * across the board, as long as the user adheres to a specified
  * dev flow.
  *
- * @param {WebhookEvents} webhookEvents
- * @param {GithubIssues} githubIssues
- * @param {Columns} columns
+ * @param {import('./webhook-events/WebhookEvents')} webhookEvents
+ * @param {import('./github-issues/GithubIssues')} githubIssues
+ * @param {import('../columns')} columns
  */
 module.exports = function(webhookEvents, githubIssues, columns) {
 
@@ -104,7 +104,7 @@ module.exports = function(webhookEvents, githubIssues, columns) {
       sender
     } = context.payload;
 
-    if (!ref_type === 'branch') {
+    if (ref_type !== 'branch') {
       return;
     }
 

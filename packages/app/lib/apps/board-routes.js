@@ -6,7 +6,7 @@ const path = require('path');
 /**
  * This component provides the publicly accessible board routes.
  *
- * @param {Router} router
+ * @param {import("express").Router} router
  */
 module.exports = async (router) => {
 

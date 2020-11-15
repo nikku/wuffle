@@ -11,10 +11,10 @@ const {
 /**
  * This component updates synchronizes GitHub statuses with pull requests.
  *
- * @param {WebhookEvents} webhookEvents
- * @param {Events} events
- * @param {GithubClient} githubClient
- * @param {Store} store
+ * @param {import('../webhook-events/WebhookEvents')} webhookEvents
+ * @param {import('../../events')} events
+ * @param {import('../github-client/GithubClient')} githubClient
+ * @param {import('../../store')} store
  */
 module.exports = function GithubStates(webhookEvents, events, githubClient, store) {
 

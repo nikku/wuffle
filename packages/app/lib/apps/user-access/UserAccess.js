@@ -8,10 +8,10 @@ const TTL = 1000 * 60 * 60 * 24 * 9;
  * This component provides the functionality to filter
  * issues based on user views.
  *
- * @param {Logger} logger
- * @param {GitHubClient} githubClient
- * @param {Events} events
- * @param {WebhookEvents} webhookEvents
+ * @param {import("../../types").Logger} logger
+ * @param {import("../github-client/GithubClient")} githubClient
+ * @param {import("../../events")} events
+ * @param {import("../webhook-events/WebhookEvents")} webhookEvents
  */
 function UserAccess(logger, githubClient, events, webhookEvents) {
 

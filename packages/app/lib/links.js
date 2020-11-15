@@ -1,17 +1,13 @@
-const LinkTypes = [
-  'CLOSES',
-  'CLOSED_BY',
-  'LINKED_TO',
-  'LINKED_BY',
-  'DEPENDS_ON',
-  'REQUIRED_BY',
-  'CHILD_OF',
-  'PARENT_OF'
-].reduce((map, el) => {
-  map[el] = el;
-
-  return map;
-}, {});
+const LinkTypes = {
+  CLOSES: 'CLOSES',
+  CLOSED_BY: 'CLOSED_BY',
+  LINKED_TO: 'LINKED_TO',
+  LINKED_BY: 'LINKED_BY',
+  DEPENDS_ON: 'DEPENDS_ON',
+  REQUIRED_BY: 'REQUIRED_BY',
+  CHILD_OF: 'CHILD_OF',
+  PARENT_OF: 'PARENT_OF'
+};
 
 const InverseLinkTypes = {
   CLOSES: LinkTypes.CLOSED_BY,
@@ -96,7 +92,7 @@ class Links {
   /**
    * Get all links that have the issue as the source.
    *
-   * @param {Number} sourceId
+   * @param {number} sourceId
    *
    * @return {Array<Object>} links
    */
@@ -122,7 +118,7 @@ class Links {
   /**
    * Remove primary links that have the issue as the source.
    *
-   * @param {Number} sourceId
+   * @param {number} sourceId
    *
    * @return {Object} removedLinks
    */

@@ -9,13 +9,12 @@ const {
 /**
  * This component performs a periodic background sync of a project.
  *
- * @param {Logger} logger
+ * @param {import("../../types").Logger} logger
  * @param {Object} config
- * @param {Store} store
- * @param {GitHubClient} githubClient
- * @param {GithubApp} githubApp
- * @param {WebhookEvents} webhookEvents
- * @param {Events} events
+ * @param {import("../../store")} store
+ * @param {import("../github-client/GithubClient")} githubClient
+ * @param {import("../github-app/GithubApp")} githubApp
+ * @param {import("../../events")} events
  */
 function BackgroundSync(logger, config, store, githubClient, githubApp, events) {
 
