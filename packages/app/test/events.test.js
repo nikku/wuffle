@@ -290,9 +290,9 @@ describe('Events', function() {
       // given
       Dog.prototype.bindListener = function() {
 
-        events.on('bark', function(event) {
+        events.on('bark', (event) => {
           return this.bark();
-        }, this);
+        });
       };
 
       var bobby = new Dog();
@@ -311,9 +311,9 @@ describe('Events', function() {
 
       // given
       Dog.prototype.bindListener = function(priority, msg) {
-        events.on('bark', priority, function(event) {
+        events.on('bark', (event) => {
           return this.bark(msg);
-        }, this);
+        }, priority);
       };
 
       var bobby = new Dog();
@@ -334,18 +334,15 @@ describe('Events', function() {
 
       // given
       Dog.prototype.bindListener = function(priority, msg) {
-        events.once('bark', priority, function(event) {
+        events.once('bark', (event) => {
           return this.bark(msg);
-        }, this);
+        }, priority);
       };
 
       var bobby = new Dog();
       var bull = new Dog();
 
-      events.once('bark', function(event) {
-        return this.bark('FOO');
-      }, bobby);
-
+      bobby.bindListener(500, 'FOO');
       bull.bindListener(1500, 'BOO');
 
       // when
@@ -366,9 +363,9 @@ describe('Events', function() {
       Dog.prototype.barks = [];
 
       Dog.prototype.bindListener = function() {
-        events.once('bark', function(event) {
+        events.once('bark', (event) => {
           this.barks.push('WOOF WOOF');
-        }, this);
+        });
       };
 
       var bobby = new Dog();
@@ -558,12 +555,10 @@ describe('Events', function() {
     it('should remove bound listener by callback', async function() {
 
       // given
-      var self = {};
-
       var listener1 = sinon.spy();
       var listener2 = sinon.spy();
 
-      events.on('foo', listener1, self);
+      events.on('foo', listener1);
       events.on('foo', listener2);
 
       // when
@@ -579,12 +574,10 @@ describe('Events', function() {
     it('should remove bound once listener by callback', async function() {
 
       // given
-      var self = {};
-
       var listener1 = sinon.spy();
       var listener2 = sinon.spy();
 
-      events.once('foo', listener1, self);
+      events.once('foo', listener1);
       events.on('foo', listener2);
 
       // when
@@ -642,7 +635,7 @@ describe('Events', function() {
       var listenerAdded = sinon.spy();
 
       var listenerOnce = sinon.spy(function() {
-        events.once('foo', 500, listenerAdded);
+        events.once('foo', listenerAdded, 500);
       });
 
       events.once('foo', listenerOnce);
@@ -670,7 +663,7 @@ describe('Events', function() {
       var listenerAdded = sinon.spy();
 
       var listenerOnce = sinon.spy(function() {
-        events.once('foo', 5000, listenerAdded);
+        events.once('foo', listenerAdded, 5000);
       });
 
       events.once('foo', listenerOnce);
@@ -835,9 +828,9 @@ describe('Events', function() {
     it('should.emit highes priority first', async function() {
 
       // setup
-      events.on('foo', 100, listener1);
-      events.on('foo', 500, listener2);
-      events.on('foo', 200, listener3);
+      events.on('foo', listener1, 100);
+      events.on('foo', listener2, 500);
+      events.on('foo', listener3, 200);
 
       // event.emitd with example data
       // to control the order of execution
@@ -851,9 +844,9 @@ describe('Events', function() {
     it('should.emit highest first (independent from registration order)', async function() {
 
       // setup
-      events.on('foo', 200, listener3);
-      events.on('foo', 100, listener1);
-      events.on('foo', 500, listener2);
+      events.on('foo', listener3, 200);
+      events.on('foo', listener1, 100);
+      events.on('foo', listener2, 500);
 
       // event.emitd with example data
       // to control the order of execution
@@ -867,9 +860,9 @@ describe('Events', function() {
     it('should.emit same priority in registration order', async function() {
 
       // setup
-      events.on('foo', 100, listener3);
-      events.on('foo', 100, listener2);
-      events.on('foo', 100, listener1);
+      events.on('foo', listener3, 100);
+      events.on('foo', listener2, 100);
+      events.on('foo', listener1, 100);
 
       // event.emitd with example data
       // to control the order of execution
@@ -881,9 +874,9 @@ describe('Events', function() {
     it('should stop propagation to lower priority handlers', async function() {
 
       // setup
-      events.on('foo', 200, listenerStopPropagation);
-      events.on('foo', 100, listener1);
-      events.on('foo', 500, listener2);
+      events.on('foo', listenerStopPropagation, 200);
+      events.on('foo', listener1, 100);
+      events.on('foo', listener2, 500);
 
       // event.emitd with example data
       // to control the order of execution
@@ -900,8 +893,8 @@ describe('Events', function() {
 
       // setup
       events.on('foo', listener3); // should use default of 1000
-      events.on('foo', 500, listener1);
-      events.on('foo', 5000, listener2);
+      events.on('foo', listener1, 500);
+      events.on('foo', listener2, 5000);
 
       // event.emitd with example data
       // to control the order of execution
