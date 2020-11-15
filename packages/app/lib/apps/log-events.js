@@ -8,8 +8,8 @@ const fs = require('fs');
  * This component adds the #onActive method to subscribe to events
  * for explicitly activated repositories only.
  *
- * @param {Logger} logger
- * @param {WebhookEvents} webhookEvents
+ * @param {import("../types").Logger} logger
+ * @param {import("./webhook-events/WebhookEvents")} webhookEvents
  */
 module.exports = function(logger, webhookEvents) {
 

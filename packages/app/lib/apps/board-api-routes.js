@@ -13,21 +13,21 @@ const {
  * This component provides the board API routes.
  *
  * @param {Object} config
- * @param {Store} store
- * @param {Router} router
- * @param {Logger} logger
- * @param {GitHubClient} githubClient
- * @param {AuthRoutes} authRoutes
- * @param {GithubIssues} githubIssues
- * @param {Search} search
- * @param {Columns} columns
+ * @param {import("../store")} store
+ * @param {import("../types").Router} router
+ * @param {import("../types").Logger} logger
+ * @param {import('./github-client/GithubClient')} githubClient
+ * @param {import('./auth-routes/AuthRoutes')} authRoutes
+ * @param {import('./github-issues/GithubIssues')} githubIssues
+ * @param {import('./search/Search')} search
+ * @param {import('../columns')} columns
  */
 module.exports = async (
-  config, store,
-  router, logger,
-  githubClient, authRoutes,
-  userAccess, githubIssues,
-  search, columns
+    config, store,
+    router, logger,
+    githubClient, authRoutes,
+    userAccess, githubIssues,
+    search, columns
 ) => {
 
   const log = logger.child({

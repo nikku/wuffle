@@ -1,6 +1,6 @@
 const { URLSearchParams } = require('url');
 
-const fetch = require('node-fetch');
+const fetch = require('node-fetch').default;
 
 const {
   withSession
@@ -10,6 +10,11 @@ const {
   randomString
 } = require('../../util');
 
+/**
+ * @typedef {import('../../types').Session} WuffleSession
+ * @typedef {import('express').Request} Request
+ * @typedef {import('../../types').GitHubUser} GitHubUser
+ */
 
 /**
  * This component implements login, logout and login_check routes for
@@ -18,9 +23,9 @@ const {
  * Under the hood, it uses GitHub's APIs to perform user authentication
  * via OAuth.
  *
- * @param {Logger} app
- * @param {Router} router
- * @param {SecurityContext} securityContext
+ * @param {import("../../types").Logger} logger
+ * @param {import("../../types").Router} router
+ * @param {import("../security-context/SecurityContext")} securityContext
  */
 function AuthRoutes(logger, router, securityContext) {
 
@@ -44,7 +49,9 @@ function AuthRoutes(logger, router, securityContext) {
 
     const redirectTo = safeGetReferer(req, '/board');
 
-    req.session.loginFlow = {
+    const session = /** @type {WuffleSession} */ (req.session);
+
+    session.loginFlow = {
       t: Date.now(),
       redirectTo,
       state
@@ -83,10 +90,12 @@ function AuthRoutes(logger, router, securityContext) {
       code
     } = req.query;
 
+    const session = /** @type {WuffleSession} */ (req.session);
+
     const {
       loginFlow,
       id: session_id
-    } = req.session;
+    } = session;
 
     const logContext = {
       session_id
@@ -98,7 +107,7 @@ function AuthRoutes(logger, router, securityContext) {
       return res.redirect(safeGetReferer(req, '/'));
     }
 
-    delete req.session.loginFlow;
+    delete session.loginFlow;
 
     if (state !== loginFlow.state) {
       log.warn(logContext, 'state missmatch, aborting');
@@ -107,8 +116,8 @@ function AuthRoutes(logger, router, securityContext) {
     }
 
     const params = new URLSearchParams();
-    params.append('code', code);
-    params.append('state', state);
+    params.append('code', /** @type {string} */ (code));
+    params.append('state', /** @type {string} */ (state));
     params.append('client_id', process.env.GITHUB_CLIENT_ID);
     params.append('client_secret', process.env.GITHUB_CLIENT_SECRET);
     params.append('redirect_uri', appUrl('/wuffle/login/callback'));
@@ -135,7 +144,7 @@ function AuthRoutes(logger, router, securityContext) {
       avatar_url
     } = await securityContext.getAuthenticatedUser(access_token);
 
-    req.session.githubUser = {
+    session.githubUser = {
       last_checked: Date.now(),
       access_token,
       avatar_url,
@@ -156,9 +165,7 @@ function AuthRoutes(logger, router, securityContext) {
    */
   router.get('/wuffle/login_check', ...middlewares, async (req, res) => {
 
-    const {
-      session
-    } = req;
+    const session = /** @type {WuffleSession} */ (req.session);
 
     const {
       githubUser
@@ -199,8 +206,16 @@ function AuthRoutes(logger, router, securityContext) {
 
   // api ///////////////////////
 
+  /**
+   * @param {Request} req
+   *
+   * @return {GitHubUser?}
+   */
   this.getGitHubUser = function(req) {
-    return req.session && req.session.githubUser;
+
+    const session = /** @type {WuffleSession} */ (req.session);
+
+    return session && session.githubUser;
   };
 
 }

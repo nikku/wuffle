@@ -26,15 +26,18 @@ const RequiredEvents = [
   'status'
 ];
 
+/**
+ * @typedef {import('@octokit/rest').AppsListInstallationsResponseItem} Installation
+ */
 
 /**
  * This component validates and exposes
  * installations of the GitHub app.
  *
- * @param {Config} config
- * @param {probot.Application} app
- * @param {Logger} logger
- * @param {GithubClient} githubClient
+ * @param {Object} config
+ * @param {import("../../types").ProbotApp} app
+ * @param {import("../../types").Logger} logger
+ * @param {import("../../types").Injector} injector
  */
 function GithubApp(config, app, logger, injector) {
 
@@ -98,7 +101,7 @@ function GithubApp(config, app, logger, injector) {
   /**
    * Get an installation for the given id.
    *
-   * @param {String} login
+   * @param {string} id
    *
    * @return {Promise<Installation?>}
    */
@@ -131,7 +134,7 @@ function GithubApp(config, app, logger, injector) {
    *
    * This method throws if an installation for the given login does not exist.
    *
-   * @param {String} login
+   * @param {string} login
    *
    * @return {Promise<Installation>}
    */
@@ -216,6 +219,11 @@ function GithubApp(config, app, logger, injector) {
     log.debug('validated installations');
   }
 
+  /**
+   * Fetch active installations.
+   *
+   * @return {Promise<Array<Installation>>} installations
+   */
   function fetchInstallations() {
     return getAppScopedClient().then(
       github => github.paginate(

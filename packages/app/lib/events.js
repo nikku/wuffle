@@ -1,9 +1,8 @@
 const {
-  isFunction,
   isArray,
   isNumber,
-  bind,
-  assign
+  assign,
+  isUndefined
 } = require('min-dash');
 
 var FN_REF = '__fn';
@@ -31,18 +30,15 @@ module.exports = Events;
  *
  * Returning anything but `undefined` from a listener will stop the listener propagation.
  *
- * @param {String|Array<String>} events
- * @param {Number} [priority=1000] the priority in which this listener is called, larger is higher
+ * @param {string|Array<string>} events
  * @param {Function} callback
- * @param {Object} [that] Pass context (`this`) to the callback
+ * @param {number} [priority=1000] the priority in which this listener is called, larger is higher
  */
-Events.prototype.on = function(events, priority, callback, that) {
+Events.prototype.on = function(events, callback, priority) {
 
   events = isArray(events) ? events : [ events ];
 
-  if (isFunction(priority)) {
-    that = callback;
-    callback = priority;
+  if (isUndefined(priority)) {
     priority = DEFAULT_PRIORITY;
   }
 
@@ -51,15 +47,6 @@ Events.prototype.on = function(events, priority, callback, that) {
   }
 
   var actualCallback = callback;
-
-  if (that) {
-    actualCallback = bind(callback, that);
-
-    // make sure we remember and are able to remove
-    // bound callbacks via {@link #off} using the original
-    // callback
-    actualCallback[FN_REF] = callback[FN_REF] || callback;
-  }
 
   events.forEach((e) => {
     this._addListener(e, {
@@ -74,25 +61,14 @@ Events.prototype.on = function(events, priority, callback, that) {
 /**
  * Register an event listener that is executed only once.
  *
- * @param {String} event the event name to register for
- * @param {Number} [priority=1000] the priority in which this listener is called, larger is higher
+ * @param {string} event the event name to register for
  * @param {Function} callback the callback to execute
- * @param {Object} [that] Pass context (`this`) to the callback
+ * @param {number} [priority=1000] the priority in which this listener is called, larger is higher
  */
-Events.prototype.once = function(event, priority, callback, that) {
-
-  if (isFunction(priority)) {
-    that = callback;
-    callback = priority;
-    priority = DEFAULT_PRIORITY;
-  }
-
-  if (!isNumber(priority)) {
-    throw new Error('priority must be a number');
-  }
+Events.prototype.once = function(event, callback, priority) {
 
   const wrappedCallback = () => {
-    var result = callback.apply(that, arguments);
+    var result = callback.apply(null, arguments);
 
     this.off(event, wrappedCallback);
 
@@ -104,7 +80,7 @@ Events.prototype.once = function(event, priority, callback, that) {
   // callback
   wrappedCallback[FN_REF] = callback;
 
-  this.on(event, priority, wrappedCallback);
+  this.on(event, wrappedCallback, priority);
 };
 
 
@@ -113,7 +89,7 @@ Events.prototype.once = function(event, priority, callback, that) {
  *
  * If no callback is given, all listeners for a given event name are being removed.
  *
- * @param {String|Array<String>} events
+ * @param {string|Array<string>} events
  * @param {Function} [callback]
  */
 Events.prototype.off = function(events, callback) {
@@ -166,14 +142,14 @@ Events.prototype.createEvent = function(data) {
  *
  * events.emit({ type: 'foo' }, 'I am bar!');
  *
- * @param {String} [name] the optional event name
- * @param {Object} [event] the event object
- * @param {...Object} additional arguments to be passed to the callback functions
+ * @param {string|{ type: string }} [type] the optional event name
+ * @param {Object} [data] the event object
+ * @param {...Object} additionalArgs to be passed to the callback functions
  *
- * @return {Boolean} the events return value, if specified or false if the
- *                   default action was prevented by listeners
+ * @return {Promise<boolean>} the events return value, if specified or false if the
+ *                            default action was prevented by listeners
  */
-Events.prototype.emit = async function(type, data) {
+Events.prototype.emit = async function(type, data, ...additionalArgs) {
 
   var event,
       firstListener,
@@ -315,7 +291,7 @@ Events.prototype._invokeListener = async function(event, args, listener) {
  *    * before: [ 1500, 1500, 1000, 1000 ]
  *    * after: [ 1500, 1500, (new=1300), 1000, 1000, (new=1000) ]
  *
- * @param {String} event
+ * @param {string} event
  * @param {Object} listener { priority, callback }
  */
 Events.prototype._addListener = function(event, newListener) {
@@ -424,7 +400,7 @@ InternalEvent.prototype.init = function(data) {
  * @param {Function} fn
  * @param {Array<Object>} args
  *
- * @return {Any}
+ * @return {any}
  */
 function invokeFunction(fn, args) {
   return fn(...args);

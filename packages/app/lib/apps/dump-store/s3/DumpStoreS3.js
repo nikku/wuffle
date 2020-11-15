@@ -5,9 +5,9 @@ const S3 = require('aws-sdk/clients/s3');
  * This component restores a store dump on startup and periodically
  * persists the store to disc.
  *
- * @param  {Logger} logger
- * @param  {Store} store
- * @param  {Events} events
+ * @param  {import("../../../types").Logger} logger
+ * @param  {import("../../../store")} store
+ * @param  {import("../../../events")} events
  */
 function DumpStoreS3(logger, store, events) {
 
@@ -108,12 +108,12 @@ function DumpStoreS3(logger, store, events) {
 
   let interval;
 
-  events.once('wuffle.start', 1500, function() {
+  events.once('wuffle.start', function() {
 
     interval = setInterval(dumpStore, DUMP_INTERVAL);
 
     return restoreStore();
-  });
+  }, 1500);
 
   events.once('wuffle.pre-exit', function() {
 

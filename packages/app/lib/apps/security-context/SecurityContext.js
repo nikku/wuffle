@@ -3,7 +3,7 @@ function SecurityContext(githubClient) {
   /**
    * Get authenticated user by token.
    *
-   * @param {String} token
+   * @param {string} token
    *
    * @return Promise<User>
    */

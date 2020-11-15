@@ -68,7 +68,7 @@ class Store {
       }
     });
 
-    this.on('issuesUpdated', 1500, async event => {
+    this.on('issuesUpdated', async event => {
 
       const {
         context
@@ -82,9 +82,9 @@ class Store {
 
         context.setLinks(issue, links);
       }
-    });
+    }, 1500);
 
-    this.on('issuesUpdated', 1250, async event => {
+    this.on('issuesUpdated', async event => {
 
       const {
         context
@@ -120,9 +120,9 @@ class Store {
           firstIssue = issue;
         }
       }
-    });
+    }, 1250);
 
-    this.on('issuesUpdated', 750, async event => {
+    this.on('issuesUpdated', async event => {
 
       const {
         context
@@ -136,9 +136,9 @@ class Store {
 
         this._flushIssue(context, issue);
       }
-    });
+    }, 750);
 
-    this.on('issuesUpdated', 500, async event => {
+    this.on('issuesUpdated', async event => {
 
       const {
         context
@@ -154,9 +154,9 @@ class Store {
 
         this._flushLinks(context, issue, newLinks);
       }
-    });
+    }, 500);
 
-    this.on('issuesUpdated', 250, async event => {
+    this.on('issuesUpdated', async event => {
 
       const {
         context
@@ -179,7 +179,7 @@ class Store {
       // ensure board is re-computed on next request
 
       this.boardCache = null;
-    });
+    }, 250);
 
   }
 
@@ -272,7 +272,7 @@ class Store {
    *
    * @param {Function} iteratorFn
    *
-   * @return {Array<Object>} updated issues
+   * @return {Promise<Array<Object>>} updated issues
    */
   updateIssues(iteratorFn) {
 
@@ -709,16 +709,48 @@ class Store {
     return this.updates.getSince(cursor);
   }
 
-  on(event, ...otherArgs) {
-    return this.events.on(`store.${event}`, ...otherArgs);
+  /**
+   * Register a store event listener
+   *
+   * The callback will be invoked with `event, ...additionalArguments`
+   * that have been passed to {@link Events#emit}.
+   *
+   * Returning false from a listener will prevent the events default action
+   * (if any is specified). To stop an event from being processed further in
+   * other listeners execute {@link Event#stopPropagation}.
+   *
+   * Returning anything but `undefined` from a listener will stop the listener propagation.
+   *
+   * @param {string} event
+   * @param {Function} callback
+   * @param {number} [priority=1000] the priority in which this listener is called, larger is higher
+   */
+  on(event, callback, priority) {
+    return this.events.on(`store.${event}`, callback, priority);
   }
 
-  once(event, ...otherArgs) {
-    return this.events.once(`store.${event}`, ...otherArgs);
+  /**
+   * Register a store event listener that is executed only once.
+   *
+   * @param {string} event the event name to register for
+   * @param {Function} callback the callback to execute
+   * @param {number} [priority=1000] the priority in which this listener is called, larger is higher
+   */
+  once(event, callback, priority) {
+    return this.events.once(`store.${event}`, callback, priority);
   }
 
-  emit(event, ...otherArgs) {
-    return this.events.emit(`store.${event}`, ...otherArgs);
+  /**
+   * Emits a store event
+   *
+   * @param {string} [event] the optional event name
+   * @param {Object} [data] the event object
+   *
+   * @return {Promise<boolean>} the events return value, if specified or false if the
+   *                            default action was prevented by listeners
+   */
+  emit(event, data) {
+    return this.events.emit(`store.${event}`, data);
   }
 
   /**

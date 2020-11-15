@@ -1,6 +1,6 @@
 const {
   version
-} = require('../../package');
+} = require('../../package.json');
 
 module.exports = function ReindexStore(logger, config, events, store) {
 

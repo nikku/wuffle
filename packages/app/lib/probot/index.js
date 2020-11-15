@@ -18,8 +18,8 @@ const CustomProbot = {
 
     const options = {
       cert: findPrivateKey(process.env.PRIVATE_KEY_PATH) || undefined,
-      id: process.env.APP_ID,
-      port: process.env.PORT || 3000,
+      id: parseInt(process.env.APP_ID, 10),
+      port: parseInt(process.env.PORT || '3000', 10),
       secret: process.env.WEBHOOK_SECRET,
       webhookPath: process.env.WEBHOOK_PATH,
       webhookProxy: process.env.WEBHOOK_PROXY_URL

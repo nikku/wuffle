@@ -90,7 +90,7 @@ module.exports = function(app) {
 
     for (const module of modules) {
 
-      const init = module.__init__ || [];
+      const init = /** @type {import('./types').DidiModule} */ (module).__init__ || [];
 
       for (const component of init) {
         await injector[typeof component === 'function' ? 'invoke' : 'get'](component);

@@ -9,10 +9,10 @@ const {
 /**
  * This component updates the stored issues based on GitHub events.
  *
- * @param {WebhookEvents} webhookEvents
- * @param {Store} store
+ * @param {import("./webhook-events/WebhookEvents")} webhookEvents
+ * @param {import("../store")} store
  */
-module.exports = function(webhookEvents, store) {
+module.exports = function EventsSync(webhookEvents, store) {
 
   // issues /////////////////////
 
@@ -136,6 +136,48 @@ module.exports = function(webhookEvents, store) {
         };
       }
     });
+  });
+
+
+  // TODO(nikku): label.removed (?)
+
+  // repository ///////////////////////
+
+  // https://docs.github.com/en/free-pro-team@latest/developers/webhooks-and-events/webhook-events-and-payloads#repository
+
+  webhookEvents.on([
+    'repository.renamed',
+    'repository.transferred'
+  ], async ({ payload }) => {
+
+    // rename issues in repository
+
+  });
+
+
+  // issue_comment ///////////////////////
+
+  // https://docs.github.com/en/free-pro-team@latest/developers/webhooks-and-events/webhook-events-and-payloads#issue_comment
+
+  webhookEvents.on([
+    'issue_comment.created',
+    'issue_comment.edited'
+  ], async ({ payload }) => {
+
+    // necro bump issue
+  });
+
+
+  // issues ///////////////////////////////
+
+  // https://docs.github.com/en/free-pro-team@latest/developers/webhooks-and-events/webhook-events-and-payloads#issues
+
+  webhookEvents.on([
+    'issues.transferred'
+  ], async ({ payload }) => {
+
+    // rename issue reference, update issue links
+    // _if_ transferred org is on the board, otherwise delete issue
   });
 
 };
