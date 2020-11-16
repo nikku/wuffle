@@ -5,7 +5,8 @@ const {
 const {
   findLinks,
   linkTypes,
-  parseSearch
+  parseSearch,
+  parseTemporalFilter
 } = require('../lib/util');
 
 const {
@@ -733,6 +734,88 @@ describe('util', function() {
         { qualifier: 'is', value: 'open_bar', negated: false }
       ]);
 
+    });
+
+
+    it('should parse temporal filter in value', function() {
+
+      // when
+      const search = parseSearch([
+        'created:<2020-09-14',
+        'updated:>=2020-09-14'
+      ].join(' '));
+
+      // then
+      expect(search).to.eql([
+        { qualifier: 'created', value: '<2020-09-14', negated: false },
+        { qualifier: 'updated', value: '>=2020-09-14', negated: false }
+      ]);
+    });
+
+  });
+
+
+  describe('parseTemporalFilter', function() {
+
+    it('should parse greater than', function() {
+
+      // when
+      const filter = parseTemporalFilter('>2020-09-15');
+
+      // then
+      expect(filter).to.eql({
+        date: 1600128000000,
+        qualifier: '>'
+      });
+    });
+
+
+    it('should parse greater than or equal', function() {
+
+      // when
+      const filter = parseTemporalFilter('>=2020-09-15');
+
+      // then
+      expect(filter).to.eql({
+        date: 1600128000000,
+        qualifier: '>='
+      });
+    });
+
+
+    it('should parse smaller than', function() {
+
+      // when
+      const filter = parseTemporalFilter('<2020-09-15');
+
+      // then
+      expect(filter).to.eql({
+        date: 1600128000000,
+        qualifier: '<'
+      });
+    });
+
+
+    it('should parse smaller than or equal', function() {
+
+      // when
+      const filter = parseTemporalFilter('<=2020-09-15');
+
+      // then
+      expect(filter).to.eql({
+        date: 1600128000000,
+        qualifier: '<='
+      });
+    });
+
+
+    it('should ignore invalid', function() {
+
+      // when
+      const filter = parseTemporalFilter('<=2020-15');
+
+      // then
+      expect(filter).not.to.exist;
     });
 
   });

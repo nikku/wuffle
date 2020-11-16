@@ -1,7 +1,37 @@
 
+function parseTemporalFilter(str) {
+
+  const regexp = /^(>|>=|<|<=)?(\d{4}-\d{1,2}-\d{1,2})$/;
+
+  const match = regexp.exec(str);
+
+  if (!match) {
+    return null;
+  }
+
+  const [
+    _, // eslint-disable-line
+    qualifier,
+    dateString
+  ] = match;
+
+  const date = Date.parse(dateString);
+
+  if (isNaN(date)) {
+    return null;
+  }
+
+  return {
+    qualifier,
+    date
+  };
+}
+
+module.exports.parseTemporalFilter = parseTemporalFilter;
+
 function parseSearch(str) {
 
-  const regexp = /(?:([\w#/&]+)|"([\w#/&\s-.]+)"|([-!]?)([\w]+):(?:([\w#/&-.]+)|"([\w-#/&:. ]+)")?)(?:\s|$)/g;
+  const regexp = /(?:([\w#/&]+)|"([\w#/&\s-.]+)"|([-!]?)([\w]+):(?:([\w-#/&<>=.]+)|"([\w-#/&:. ]+)")?)(?:\s|$)/g;
 
   const terms = [];
 
