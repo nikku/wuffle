@@ -628,6 +628,7 @@ describe('util', function() {
         '"FOO BAR"',
         'milestone:12asd',
         'milestone:',
+        'author:walt',
         'label:"in progress"',
         'ref:foo/bar#80'
       ].join(' ');
@@ -644,6 +645,7 @@ describe('util', function() {
         { qualifier: 'text', value: 'FOO BAR' },
         { qualifier: 'milestone', value: '12asd', negated: false },
         { qualifier: 'milestone', value: undefined, negated: false },
+        { qualifier: 'author', value: 'walt', negated: false },
         { qualifier: 'label', value: 'in progress', negated: false },
         { qualifier: 'ref', value: 'foo/bar#80', negated: false }
       ]);
