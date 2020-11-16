@@ -1,5 +1,6 @@
 const {
-  parseSearch
+  parseSearch,
+  parseTemporalFilter
 } = require('../../util');
 
 const {
@@ -174,8 +175,54 @@ function Search(logger, store) {
           (reviews || []).some(review => fuzzyMatches(review.user.login, name))
         );
       };
-    }
+    },
+
+    created: temporalFilter(function(matchTemporal) {
+      return function filterCreated(issue) {
+        return matchTemporal(issue.created_at);
+      };
+    }),
+
+    updated: temporalFilter(function(matchTemporal) {
+      return function filterCreated(issue) {
+        return matchTemporal(issue.updated_at);
+      };
+    })
   };
+
+  function temporalFilter(fn) {
+
+    return function filterTemporal(value) {
+
+      const filter = parseTemporalFilter(value);
+
+      // ignore invalid temporal filters
+      if (!filter) {
+        return filterNoop;
+      }
+
+      const {
+        date,
+        qualifier
+      } = filter;
+
+      const dateString = new Date(date).toISOString();
+
+      const matchTemporal = (otherDateString) => {
+
+        switch (qualifier) {
+        case '>': return otherDateString > dateString;
+        case '>=': return otherDateString >= dateString;
+        case '<': return otherDateString < dateString;
+        case '<=': return otherDateString <= dateString;
+
+        default: return true;
+        }
+      };
+
+      return fn(matchTemporal);
+    };
+  }
 
   /**
    * Retrieve a filter function from the given search string.
