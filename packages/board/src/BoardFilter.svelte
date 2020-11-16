@@ -95,6 +95,7 @@
         'involves',
         'created',
         'updated',
+        'involves',
         'is'
       ].map(name => {
         return {
@@ -393,7 +394,7 @@
         </p>
 
         <p class="note">
-          Refine your search with operators: <em>milestone</em>, <em>repo</em>, <em>assignee</em>, <em>label</em> and <em>is</em>.
+          Refine your search with operators: <em>created</em>, <em>updated</em>, <em>milestone</em>, <em>repo</em>, <em>assignee</em>, <em>label</em> and <em>is</em>.
         </p>
       </div>
     {/if}
