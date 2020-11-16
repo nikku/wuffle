@@ -9,7 +9,8 @@ const {
 } = require('./links');
 
 const {
-  parseSearch
+  parseSearch,
+  parseTemporalFilter
 } = require('./search');
 
 const preExit = require('./pre-exit');
@@ -36,6 +37,7 @@ module.exports.findLinks = findLinks;
 module.exports.linkTypes = linkTypes;
 
 module.exports.parseSearch = parseSearch;
+module.exports.parseTemporalFilter = parseTemporalFilter;
 
 module.exports.repoAndOwner = repoAndOwner;
 
