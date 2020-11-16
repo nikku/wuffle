@@ -765,7 +765,7 @@
     {#if !error}
       {#each warnings as warning}
         <Notification type="warning" message="{ warning.action } failed">
-          Could not reach the board back-end.
+          Could not reach the board back-end. <a href>Reload board.</a>
         </Notification>
       {/each}
     {/if}
