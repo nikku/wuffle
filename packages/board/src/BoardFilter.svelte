@@ -78,6 +78,7 @@
       options: [
         'label',
         'assignee',
+        'author',
         'repo',
         'reviewer',
         'milestone',
