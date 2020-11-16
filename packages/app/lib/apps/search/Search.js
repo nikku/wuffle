@@ -177,6 +177,17 @@ function Search(logger, store) {
       };
     },
 
+    involves: function involvesFilter(name) {
+
+      return function filterInvolves(issue) {
+        return (
+          filters.assignee(name)(issue) ||
+          filters.author(name)(issue) ||
+          filters.reviewer(name)(issue)
+        );
+      };
+    },
+
     created: temporalFilter(function(matchTemporal) {
       return function filterCreated(issue) {
         return matchTemporal(issue.created_at);
