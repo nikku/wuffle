@@ -55,6 +55,16 @@
       'pull'
     ].map(name => {
       return { name, value: `${name} ` };
+    }),
+    created: [
+      [ 'today', Date.now() ],
+      [ 'last week', Date.now() - 1000 * 60 * 60 * 24 * 7 ],
+      [ 'last month', Date.now() - 1000 * 60 * 60 * 24 * 7 * 30 ]
+    ].map(([ name, value ]) => {
+
+      const date = new Date(value);
+
+      return { name, value: `>=${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()} ` };
     })
   };
 
@@ -82,6 +92,8 @@
         'repo',
         'reviewer',
         'milestone',
+        'created',
+        'updated',
         'is'
       ].map(name => {
         return {
