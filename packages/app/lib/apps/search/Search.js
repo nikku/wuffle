@@ -130,6 +130,18 @@ function Search(logger, store) {
       };
     },
 
+    author: function authorFilter(name) {
+
+      return function filterAuthor(issue) {
+
+        const {
+          user
+        } = issue;
+
+        return user && fuzzyMatches(user.login, name);
+      };
+    },
+
     assignee: function assigneeFilter(name) {
 
       return function filterAssignee(issue) {
