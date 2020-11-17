@@ -92,7 +92,6 @@
         'repo',
         'reviewer',
         'milestone',
-        'involves',
         'created',
         'updated',
         'involves',
