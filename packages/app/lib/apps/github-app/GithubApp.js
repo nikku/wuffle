@@ -27,7 +27,7 @@ const RequiredEvents = [
 ];
 
 /**
- * @typedef {import('@octokit/rest').AppsListInstallationsResponseItem} Installation
+ * @typedef {import('@octokit/rest').Octokit.AppsListInstallationsResponseItem} Installation
  */
 
 /**

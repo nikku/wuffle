@@ -44,7 +44,7 @@
     "express-session": "^1.17.1",
     "min-dash": "^3.5.2",
     "p-defer": "^3.0.0",
-    "probot": "~9.6.4"
+    "probot": "^9.15.1"
   },
   "devDependencies": {
     "@types/express-session": "^1.17.2",
