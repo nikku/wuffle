@@ -95,6 +95,10 @@ function Search(logger, store) {
         return function filterPull(issue) {
           return issue.pull_request;
         };
+      case 'milestoned':
+        return function filterMilestoned(issue) {
+          return !!issue.milestone;
+        };
       default:
         return filterNoop;
       }
