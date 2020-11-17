@@ -7,6 +7,11 @@ const {
   issueIdent
 } = require('../../util');
 
+function isInternalError(error) {
+  return 'status' in error && error.status === 500;
+}
+
+
 /**
  * This component performs a periodic background sync of a project.
  *
@@ -244,6 +249,10 @@ We automatically synchronize all repositories you granted us access to via the G
           log.error({
             repo: `${owner}/${repo}`
           }, 'processing failed', error);
+
+          if (isInternalError(error)) {
+            throw error;
+          }
         }
 
       } // end --- for (const repository of repositories)
@@ -251,6 +260,10 @@ We automatically synchronize all repositories you granted us access to via the G
       log.debug({ installation: owner }, 'processed');
     } catch (error) {
       log.error({ installation: owner }, 'processing failed', error);
+
+      if (isInternalError(error)) {
+        throw error;
+      }
     }
 
     return {
@@ -432,14 +445,13 @@ We automatically synchronize all repositories you granted us access to via the G
     log.info('start');
 
     try {
-
       const installations = await githubApp.getInstallations();
 
       await doSync(installations);
 
       log.info('done');
     } catch (error) {
-      log.error('error', error);
+      log.error('failed', error);
     }
 
   }
