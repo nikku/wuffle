@@ -1,5 +1,6 @@
 const {
-  filterIssueOrPull
+  filterIssueOrPull,
+  filterRepository
 } = require('../../filters');
 
 const {
@@ -88,9 +89,11 @@ We automatically synchronize all repositories you granted us access to via the G
     return Date.now() - removeClosedLookback;
   }
 
-  async function fetchInstallationIssues(installation, syncClosedSince) {
+  async function fetchInstallationEntities(installation, syncClosedSince) {
 
     const foundIssues = {};
+
+    const foundRepositories = {};
 
     const owner = installation.account.login;
 
@@ -108,6 +111,9 @@ We automatically synchronize all repositories you granted us access to via the G
 
         const owner = repository.owner.login;
         const repo = repository.name;
+
+        // log found repository
+        foundRepositories[repository.id] = filterRepository(repository);
 
         // we ignore archived repositories
         if (repository.archived) {
@@ -247,32 +253,44 @@ We automatically synchronize all repositories you granted us access to via the G
       log.error({ installation: owner }, 'processing failed', error);
     }
 
-    return foundIssues;
+    return {
+      issues: foundIssues,
+      repositories: foundRepositories
+    };
   }
 
-  async function fetchUpdates(installations, syncClosedSince) {
+  async function fetchEntities(installations, syncClosedSince) {
 
     let foundIssues = {};
+    let foundRepositories = {};
 
     // sync issues
     for (const installation of installations) {
 
-      const installationIssues = await fetchInstallationIssues(installation, syncClosedSince);
+      const installationEntities = await fetchInstallationEntities(installation, syncClosedSince);
 
       foundIssues = {
         ...foundIssues,
-        ...installationIssues
+        ...installationEntities.issues
+      };
+
+      foundRepositories = {
+        ...foundRepositories,
+        ...installationEntities.repositories
       };
     }
 
-    return foundIssues;
+    return {
+      issues: foundIssues,
+      repositories: foundRepositories
+    };
   }
 
-  async function checkExpiration(issues, expiryTime) {
+  async function checkCleanup(issues, repositories, expiryTime) {
 
     let now = Date.now();
 
-    let expired = {};
+    let removedIssues = {};
 
     log.debug('expiration check start');
 
@@ -284,25 +302,40 @@ We automatically synchronize all repositories you granted us access to via the G
         updated_at
       } = issue;
 
+      let expired = false;
+      let removed = false;
+
+      if (!repositories[issue.repository.id]) {
+        log.debug({ issue: key }, 'repository removed');
+
+        removed = true;
+      }
+
       const updatedTime = new Date(updated_at).getTime();
 
       if (updatedTime < expiryTime) {
+        log.debug({ issue: key }, 'issue expired');
 
-        try {
-          log.debug({ issue: key }, 'cleaning up');
+        expired = true;
+      }
 
-          await store.removeIssueById(id);
+      if (!expired && !removed) {
+        continue;
+      }
 
-          expired[id] = issue;
-        } catch (err) {
-          log.error({ issue: key }, 'cleanup failed', err);
-        }
+      try {
+        log.debug({ issue: key }, 'cleaning up');
+        await store.removeIssueById(id);
+
+        removedIssues[id] = issue;
+      } catch (err) {
+        log.error({ issue: key }, 'cleanup failed', err);
       }
     }
 
     log.debug({ t: Date.now() - now }, 'expiration check done');
 
-    return expired;
+    return removedIssues;
   }
 
   async function doSync(installations) {
@@ -311,12 +344,16 @@ We automatically synchronize all repositories you granted us access to via the G
 
     // search existing issues
 
-    const foundIssues = await fetchUpdates(installations, getSyncClosedSince());
+    const {
+      issues: foundIssues,
+      repositories: foundRepositories
+    } = await fetchEntities(installations, getSyncClosedSince());
 
     log.debug(
       { t: Date.now() - t },
-      'found %s issues',
-      Object.keys(foundIssues).length
+      'found %s issues in %s repositories',
+      Object.keys(foundIssues).length,
+      Object.keys(foundRepositories).length
     );
 
     const pendingUpdates = Object.values(foundIssues).filter(update => update);
@@ -357,13 +394,13 @@ We automatically synchronize all repositories you granted us access to via the G
         .filter(k => !(k in foundIssues))
         .map(k => knownIssues[k]);
 
-    const expiredIssues = await checkExpiration(missingIssues, getRemoveClosedBefore());
+    const removedIssues = await checkCleanup(missingIssues, foundRepositories, getRemoveClosedBefore());
 
     log.info(
       { t: Date.now() - t },
-      'updated %s, expired %s issues',
+      'updated %s, removed %s issues',
       pendingUpdates.length,
-      Object.keys(expiredIssues).length
+      Object.keys(removedIssues).length
     );
   }
 
