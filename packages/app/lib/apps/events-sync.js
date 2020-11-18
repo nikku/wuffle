@@ -138,8 +138,31 @@ module.exports = function EventsSync(webhookEvents, store) {
     });
   });
 
+  webhookEvents.on([
+    'label.deleted'
+  ], async ({ payload }) => {
 
-  // TODO(nikku): label.removed (?)
+    const {
+      label
+    } = payload;
+
+    await store.updateIssues(issue => {
+
+      const issueLabels = issue.labels || [];
+
+      const existingIndex = issueLabels.findIndex(l => l.id === label.id);
+
+      if (existingIndex !== -1) {
+
+        return {
+          labels: [
+            ...issueLabels.slice(0, existingIndex),
+            ...issueLabels.slice(existingIndex + 1)
+          ]
+        };
+      }
+    });
+  });
 
   // repository ///////////////////////
 
