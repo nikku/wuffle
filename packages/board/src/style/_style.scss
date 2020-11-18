@@ -9,17 +9,26 @@ body {
   padding: 0;
 }
 
-::-webkit-scrollbar {
+/* Chrome/Edge/Safari scrollbar styling */
+
+*::-webkit-scrollbar {
   width: 10px;
 }
 
-::-webkit-scrollbar-track {
+*::-webkit-scrollbar-track {
   box-shadow: none;
-  background: #F1F1F1;
+  background: rgba(200, 200, 200, .2);
   margin: 1px;
 }
 
-::-webkit-scrollbar-thumb {
+*::-webkit-scrollbar-thumb {
   border-radius: 4px;
-  background-color: rgba(0,0,0,0.2);
+  background-color: rgba(0, 0, 0, .2);
+}
+
+/** Firefox scroll bar styling */
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, .2) transparent;
 }
