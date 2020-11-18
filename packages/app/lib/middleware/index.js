@@ -2,14 +2,16 @@ const {
   randomString
 } = require('../util');
 
+const SEVEN_DAYS = 1000 * 60 * 60 * 24 * 7;
 
 module.exports.withSession = require('express-session')({
   secret: process.env.SESSION_SECRET || randomString(),
   resave: false,
   saveUninitialized: true,
   cookie: {
-    maxAge: 1000 * 60 * 60 * 24 * 7,
-    sameSite: false
+    maxAge: SEVEN_DAYS,
+    sameSite: true,
+    secure: !!process.env.FORCE_HTTPS
   }
 });
 
