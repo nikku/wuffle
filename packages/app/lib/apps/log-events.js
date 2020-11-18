@@ -13,9 +13,7 @@ const fs = require('fs');
  */
 module.exports = function(logger, webhookEvents) {
 
-  if (
-    !(process.env.NODE_ENV === 'development' || process.env.LOG_WEBHOOK_EVENTS)
-  ) {
+  if (process.env.NODE_ENV !== 'development' && !process.env.LOG_WEBHOOK_EVENTS) {
     return;
   }
 
@@ -27,6 +25,7 @@ module.exports = function(logger, webhookEvents) {
 
   let counter = 0;
 
+  log.info('dumping webhook events to %s', path.resolve(eventsDir));
 
   function write(event, payload) {
 
@@ -71,7 +70,7 @@ module.exports = function(logger, webhookEvents) {
     } = context;
 
     write(event, payload).catch(err => {
-      log.error('failed to record event', err);
+      log.error('failed to log event', err);
     });
   });
 
