@@ -31,6 +31,7 @@
   <a
     href={ href }
     target="_blank"
+    title={ name }
     rel="noopener noreferrer"
     class:inverted={ inverted }
     class="tag { className }"
@@ -44,6 +45,7 @@
     class:clickable={ onClick }
     style="background-color: { color }"
     on:click={ onClick }
+    title={ name }
   >{ name }</span>
 {/if}
 
@@ -61,6 +63,9 @@
 
     line-height: 20px;
     white-space: nowrap;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
 
     color: white;
     background: #fafafa;
