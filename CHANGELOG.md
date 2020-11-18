@@ -6,6 +6,22 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 ___Note:__ Yet to be released changes appear here._
 
+## 0.35.0
+
+* `FEAT(events-sync)`: support repository renaming ([#102](https://github.com/nikku/wuffle/issues/102))
+* `FEAT(events-sync)`: support issue transfer ([#92](https://github.com/nikku/wuffle/issues/92))
+* `FEAT(search)`: add `is:milestoned` filter ([`f6798cf3`](https://github.com/nikku/wuffle/commit/f6798cf39b31272d3474f29a1bc028e5d8003b01))
+* `FEAT(search)`: add `involves` filter ([#100](https://github.com/nikku/wuffle/issues/100))
+* `FEAT(search)`: add `created` and `updated` filters ([#98](https://github.com/nikku/wuffle/issues/98))
+* `FEAT(search)`: add `author` filter ([#97](https://github.com/nikku/wuffle/issues/97))
+* `FEAT(app)`: harden session cookie ([`b16639b5`](https://github.com/nikku/wuffle/commit/b16639b560af0d49b3b6c17af293e12700dbc1f8))
+* `FIX(background-sync)`: improve handling of removed repositories ([#101](https://github.com/nikku/wuffle/pull/101), [#93](https://github.com/nikku/wuffle/issues/93), [#90](https://github.com/nikku/wuffle/issues/90))
+* `CHORE(app)`: introduce type linting and cleanup `events` API ([#96](https://github.com/nikku/wuffle/issues/96))
+
+### Breaking Changes
+
+* The API of the `events` service changed. For all APIs that take a priority the priority is now the optional, last argument.
+
 ## 0.34.0
 
 * `FEAT`: support `convert_to_draft` webhook to move PR back to IN_PROGESS ([#86](https://github.com/nikku/wuffle/issues/86))
