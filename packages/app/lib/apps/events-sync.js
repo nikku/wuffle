@@ -11,8 +11,13 @@ const {
  *
  * @param {import("./webhook-events/WebhookEvents")} webhookEvents
  * @param {import("../store")} store
+ * @param {import("../types").Logger} logger
  */
-module.exports = function EventsSync(webhookEvents, store) {
+module.exports = function EventsSync(webhookEvents, store, logger) {
+
+  const log = logger.child({
+    name: 'wuffle:user-access'
+  });
 
   // issues /////////////////////
 
@@ -195,12 +200,49 @@ module.exports = function EventsSync(webhookEvents, store) {
 
   // https://docs.github.com/en/free-pro-team@latest/developers/webhooks-and-events/webhook-events-and-payloads#issues
 
+  // issue transfer is mapped to the following GitHub events
+  //
+  // -> issues.opened (new issue is being opened by GitHub)
+  // -> issues.transferred (old issue was deleted by GitHub)
+  //
+  // Labels are not taken over during the transfer, thus we cannot retain
+  // the column mapping. We do, however retain the order.
+  //
   webhookEvents.on([
     'issues.transferred'
   ], async ({ payload }) => {
 
-    // rename issue reference, update issue links
-    // _if_ transferred org is on the board, otherwise delete issue
+    const {
+      issue,
+      repository,
+      changes
+    } = payload;
+
+    const {
+      new_issue: newIssue,
+      new_repository: newRepository
+    } = changes;
+
+    const storedIssue = store.getIssueById(getIdentifier(issue, repository));
+
+    if (!storedIssue) {
+      log.warn({ issue: issue.id }, 'stored original issue not found');
+
+      return;
+    }
+
+    const newStoredIssue = store.getIssueById(getIdentifier(newIssue, newRepository));
+
+    if (newStoredIssue) {
+      await store.updateIssue({
+        id: newStoredIssue.id,
+        order: storedIssue.order
+      });
+    } else {
+      log.warn({ issue: newIssue.id }, 'stored transferred issue not found');
+    }
+
+    return store.removeIssueById(storedIssue.id);
   });
 
 };
