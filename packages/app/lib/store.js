@@ -294,6 +294,11 @@ class Store {
     return Promise.all(updatePromises);
   }
 
+  /**
+   * Update issue, tagging it as updated.
+   *
+   * @return {Promise<Object>} promise to updated issue
+   */
   updateIssue(update) {
 
     const {
@@ -309,7 +314,8 @@ class Store {
   async processUpdate(context, update) {
 
     const {
-      id
+      id,
+      updated_at
     } = update;
 
     if (!id) {
@@ -318,6 +324,10 @@ class Store {
       this.log.error('update processing failed', { update }, error);
 
       throw error;
+    }
+
+    if (updated_at) {
+      this.log.debug({ issue: id }, 'bumping updated_at', new Date(updated_at));
     }
 
     const existingIssue = context.getIssueById(id) || {};
