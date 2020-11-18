@@ -2,7 +2,9 @@ const {
   filterIssue,
   filterPull,
   filterIssueOrPull,
-  getIdentifier
+  filterRepository,
+  getIdentifier,
+  getKey
 } = require('../filters');
 
 
@@ -174,7 +176,25 @@ module.exports = function EventsSync(webhookEvents, store, logger) {
   // https://docs.github.com/en/free-pro-team@latest/developers/webhooks-and-events/webhook-events-and-payloads#repository
 
   webhookEvents.on([
-    'repository.renamed',
+    'repository.renamed'
+  ], async ({ payload }) => {
+
+    const {
+      repository
+    } = payload;
+
+    await store.updateIssues(issue => {
+
+      if (issue.repository.id === repository.id) {
+        return {
+          key: getKey(issue, repository),
+          repository: filterRepository(repository)
+        };
+      }
+    });
+  });
+
+  webhookEvents.on([
     'repository.transferred'
   ], async ({ payload }) => {
 
