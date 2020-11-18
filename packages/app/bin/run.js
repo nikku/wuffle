@@ -188,7 +188,11 @@ async function start() {
 
   const app = require('../');
 
-  await Probot.run(app);
+  const probot = await Probot.run(app);
+
+  if (process.env.TRUST_PROXY) {
+    probot.server.set('trust proxy', true);
+  }
 }
 
 async function open() {

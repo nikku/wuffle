@@ -21,6 +21,7 @@ Several aspects of the board application are configured via environment variable
 | `SESSION_SECRET` | :ballot_box_with_check: | Session secret for encrypting app cookies |
 | `FORCE_HTTPS` | | Whether to enforce HTTPS on all routes |
 | `BOARD_CONFIG` | | JSON encoded board configuration `**` |
+| `TRUST_PROXY` | | Whether to trust the proxy settings provided via an `X-Forwarded-*` header |
 
 `*` This must match the webhook URL that you configured for your GitHub app.
 
