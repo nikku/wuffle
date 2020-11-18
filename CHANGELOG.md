@@ -6,6 +6,12 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 ___Note:__ Yet to be released changes appear here._
 
+## 0.35.1
+
+* `FIX`: prevent long milestone labels from overflowing card
+* `FIX`: relax secure cookie setting
+* `CHORE`: allow to configure `TRUST_PROXY` to enable secure cookies
+
 ## 0.35.0
 
 * `FEAT(events-sync)`: support repository renaming ([#102](https://github.com/nikku/wuffle/issues/102))
