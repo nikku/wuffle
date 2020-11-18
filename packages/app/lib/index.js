@@ -39,6 +39,12 @@ const AsyncEvents = require('./events');
 const Columns = require('./columns');
 
 
+/**
+ *
+ * @param  {import('probot').Application} app
+ *
+ * @return {Promise<any>}
+ */
 module.exports = function(app) {
 
   const logger = app.log;
