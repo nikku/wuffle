@@ -11,7 +11,7 @@ module.exports.withSession = require('express-session')({
   cookie: {
     maxAge: SEVEN_DAYS,
     sameSite: true,
-    secure: !!process.env.FORCE_HTTPS
+    secure: 'auto'
   }
 });
 
