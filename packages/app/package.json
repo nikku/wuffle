@@ -1,6 +1,6 @@
 {
   "name": "wuffle",
-  "version": "0.35.0",
+  "version": "0.35.1",
   "description": "The wuffle board back-end",
   "author": {
     "name": "Nico Rehwaldt",
