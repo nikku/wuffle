@@ -8,92 +8,9 @@ import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
 import { string } from 'rollup-plugin-string';
 
-import { sass } from 'svelte-preprocess-sass';
+const svelteConfig = require('./svelte.config');
 
 const distDirectory = '../app/public';
-
-function scriptProcessor(processors) {
-
-  return function(options) {
-
-    const {
-      content,
-      ...rest
-    } = options;
-
-    const code = processors.reduce((content, processor) => {
-      return processor({
-        content,
-        ...rest
-      }).code;
-    }, content);
-
-    return {
-      code
-    };
-  };
-}
-
-function classProcessor() {
-
-  function process(content) {
-    return (
-      content
-        .replace(
-          /export let className([;\n= ]{1})/g,
-          'export { className as class }; let className$1'
-        )
-    );
-  }
-
-  return function(options) {
-
-    const {
-      content
-    } = options;
-
-    const code = process(content);
-
-    return {
-      code
-    };
-  };
-}
-
-
-function emitProcessor() {
-
-  function process(content) {
-
-    if (/\$\$emit\(/.test(content)) {
-
-      content = `
-import { createEventDispatcher } from 'svelte';
-
-const __dispatch = createEventDispatcher();
-
-${content}`;
-
-      content = content.replace(/\$\$emit\(/g, '__dispatch(');
-    }
-
-    return content;
-  }
-
-  return function(options) {
-
-    const {
-      content
-    } = options;
-
-    const code = process(content);
-
-    return {
-      code
-    };
-  };
-}
-
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -122,18 +39,8 @@ export default [
         css: css => {
           css.write('bundle.css');
         },
-        preprocess: {
-          style: sass({
-            includePaths: [
-              'src/style',
-              'node_modules'
-            ]
-          }, { name: 'scss' }),
-          script: scriptProcessor([
-            classProcessor(),
-            emitProcessor()
-          ])
-        }
+
+        preprocess: svelteConfig.preprocess
       }),
 
       resolve(),
