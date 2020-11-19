@@ -48,7 +48,7 @@
   let temporalPresets = [
     [ 'today', Date.now() ],
     [ 'last week', Date.now() - 1000 * 60 * 60 * 24 * 7 ],
-    [ 'last month', Date.now() - 1000 * 60 * 60 * 24 * 7 * 30 ]
+    [ 'last month', Date.now() - 1000 * 60 * 60 * 24 * 30 ]
   ].map(([ name, value ]) => {
 
     const date = new Date(value);
