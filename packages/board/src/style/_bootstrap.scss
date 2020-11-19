@@ -21,7 +21,7 @@
 // @import "bootstrap/scss/button-group";
 // @import "bootstrap/scss/input-group";
 // @import "bootstrap/scss/custom-forms";
-@import "bootstrap/scss/nav";
+// @import "bootstrap/scss/nav";
 @import "bootstrap/scss/navbar";
 // @import "bootstrap/scss/card";
 // @import "bootstrap/scss/breadcrumb";
@@ -30,7 +30,7 @@
 // @import "bootstrap/scss/jumbotron";
 // @import "bootstrap/scss/alert";
 // @import "bootstrap/scss/progress";
-@import "bootstrap/scss/media";
+// @import "bootstrap/scss/media";
 // @import "bootstrap/scss/list-group";
 @import "bootstrap/scss/close";
 // @import "bootstrap/scss/toasts";
@@ -38,9 +38,13 @@
 // @import "bootstrap/scss/tooltip";
 // @import "bootstrap/scss/popover";
 // @import "bootstrap/scss/carousel";
-@import "bootstrap/scss/spinners";
-@import "bootstrap/scss/utilities";
-@import "bootstrap/scss/print";
+// @import "bootstrap/scss/spinners";
+// @import "bootstrap/scss/utilities";
+@import "bootstrap/scss/utilities/_screenreaders";
+// @import "bootstrap/scss/utilities/_sizing";
+@import "bootstrap/scss/utilities/_spacing";
+// @import "bootstrap/scss/print";
+
 
 // theme customizations
 
