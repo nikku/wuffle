@@ -6,6 +6,10 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 ___Note:__ Yet to be released changes appear here._
 
+## 0.35.2
+
+* `FIX`: correct _last month_ temporal filter completion
+
 ## 0.35.1
 
 * `FIX`: prevent long milestone labels from overflowing card
