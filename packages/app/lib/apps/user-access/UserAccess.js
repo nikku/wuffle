@@ -62,7 +62,7 @@ function UserAccess(logger, githubClient, events, webhookEvents) {
       github.apps.listInstallationReposForAuthenticatedUser.endpoint.merge({
         installation_id: installation.id
       }),
-      res => res.data
+      res => res.data.repositories || res.data
     );
   }
 
