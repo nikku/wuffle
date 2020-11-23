@@ -6,6 +6,10 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 ___Note:__ Yet to be released changes appear here._
 
+## 0.35.3
+
+* `FIX`: correct fetching of authenticated user repositories
+
 ## 0.35.2
 
 * `FIX`: correct _last month_ temporal filter completion
