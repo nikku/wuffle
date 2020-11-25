@@ -496,6 +496,11 @@ We automatically synchronize all repositories you granted us access to via the G
 
   let checkTimeout;
 
+  if (process.env.DISABLE_BACKGROUND_SYNC) {
+    log.warn('periodic sync disabled via configuration');
+    return;
+  }
+
   events.once('wuffle.start', function() {
     checkTimeout = setTimeout(checkSync, checkInterval);
   });
