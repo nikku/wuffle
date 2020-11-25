@@ -7,7 +7,7 @@ const SEVEN_DAYS = 1000 * 60 * 60 * 24 * 7;
 module.exports.withSession = require('express-session')({
   secret: process.env.SESSION_SECRET || randomString(),
   resave: false,
-  saveUninitialized: true,
+  saveUninitialized: false,
   cookie: {
     maxAge: SEVEN_DAYS,
     sameSite: 'lax',
