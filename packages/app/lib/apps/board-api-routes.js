@@ -18,6 +18,7 @@ const {
  * @param {import("../types").Logger} logger
  * @param {import('./github-client/GithubClient')} githubClient
  * @param {import('./auth-routes/AuthRoutes')} authRoutes
+ * @param {import('./user-access/UserAccess')} userAccess
  * @param {import('./github-issues/GithubIssues')} githubIssues
  * @param {import('./search/Search')} search
  * @param {import('../columns')} columns
