@@ -51,6 +51,12 @@ function AuthRoutes(logger, router, securityContext) {
 
     const session = /** @type {WuffleSession} */ (req.session);
 
+    const logContext = {
+      session_id: session.id
+    };
+
+    log.debug(logContext, 'redirecting to GitHub');
+
     session.loginFlow = {
       t: Date.now(),
       redirectTo,
@@ -72,6 +78,12 @@ function AuthRoutes(logger, router, securityContext) {
   router.get('/wuffle/logout', ...middlewares, (req, res) => {
 
     const redirectTo = safeGetReferer(req, '/board');
+
+    const {
+      id: session_id
+    } = /** @type WuffleSession */ (req.session);
+
+    log.debug({ session_id }, 'logging out');
 
     return req.session.destroy(function(err) {
       return res.redirect(redirectTo);
@@ -100,6 +112,8 @@ function AuthRoutes(logger, router, securityContext) {
     const logContext = {
       session_id
     };
+
+    log.debug(logContext, 'return from GitHub');
 
     if (!loginFlow) {
       log.warn(logContext, 'no active login flow');
@@ -139,6 +153,8 @@ function AuthRoutes(logger, router, securityContext) {
       return res.text();
     }).then(text => JSON.parse(text));
 
+    log.debug(logContext, 'fetched access token');
+
     const {
       login,
       avatar_url
@@ -152,6 +168,7 @@ function AuthRoutes(logger, router, securityContext) {
     };
 
     log.info({
+      ...logContext,
       login,
       t: Date.now() - loginFlow.t
     }, 'login successful');
@@ -168,6 +185,7 @@ function AuthRoutes(logger, router, securityContext) {
     const session = /** @type {WuffleSession} */ (req.session);
 
     const {
+      id: session_id,
       githubUser
     } = session;
 
@@ -182,12 +200,25 @@ function AuthRoutes(logger, router, securityContext) {
       login
     } = githubUser;
 
+    const logContext = {
+      session_id,
+      login
+    };
+
     if (last_checked + CHECK_INTERVAL < Date.now()) {
       try {
+
+        log.debug(logContext, 'checking GitHub authentication');
+
         await securityContext.getAuthenticatedUser(access_token);
 
         githubUser.last_checked = Date.now();
-      } catch (err) {
+      } catch (error) {
+
+        log.debug({
+          ...logContext,
+          error
+        }, 'failed to check GitHub authentication');
 
         // access is not granted anymore, clear current session
         return req.session.destroy(function(err) {
