@@ -10,7 +10,7 @@ module.exports.withSession = require('express-session')({
   saveUninitialized: true,
   cookie: {
     maxAge: SEVEN_DAYS,
-    sameSite: true,
+    sameSite: 'lax',
     secure: 'auto'
   }
 });
