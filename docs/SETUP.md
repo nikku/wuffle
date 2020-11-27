@@ -10,7 +10,7 @@ Learn how to setup, configure and run your own [Wuffle board](https://wuffle.dev
 | [Configure Board](#configure-board) |
 | [Run Board](#run-board) |
 
-If you accounter problems while setting up your Wuffle instance, please [file a help request](https://github.com/nikku/wuffle/issues/new?template=SETUP_PROBLEM.md).
+If you accounter problems while setting up your Wuffle instance, please [file a help request](https://github.com/nikku/wuffle/issues/new?labels=question%2C+installation&template=SETUP_PROBLEM.md).
 
 
 ## Create GitHub App
