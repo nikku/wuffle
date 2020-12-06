@@ -6,6 +6,10 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 ___Note:__ Yet to be released changes appear here._
 
+## 0.35.5
+
+* `CHORE`: patch bump dependency versions
+
 ## 0.35.4
 
 * `FIX`: correct login session not being established during initial app login
