@@ -1,7 +1,7 @@
-name: ci
+name: CI
 on: [ push, pull_request ]
 jobs:
-  build:
+  Build:
     runs-on: ubuntu-latest
 
     steps:
