@@ -22,7 +22,8 @@
     "start": "cd packages/app && npm run start",
     "postinstall": "NODE_ENV=development lerna bootstrap",
     "prerelease": "npm run all",
-    "release": "lerna publish"
+    "release": "lerna publish",
+    "af": "npm audit fix && (cd packages/app && npm audit fix) && (cd packages/board && npm audit fix)"
   },
   "devDependencies": {
     "lerna": "^3.22.1",
