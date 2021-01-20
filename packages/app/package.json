@@ -40,10 +40,10 @@
     "aws-sdk": "^2.786.0",
     "body-parser": "^1.19.0",
     "compression": "^1.7.4",
-    "exit-hook2": "^1.0.8",
     "express-session": "^1.17.1",
     "min-dash": "^3.5.2",
     "p-defer": "^3.0.0",
+    "prexit": "0.0.5",
     "probot": "^9.15.1"
   },
   "devDependencies": {

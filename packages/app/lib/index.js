@@ -108,11 +108,13 @@ module.exports = function(app) {
 
     log.info('started');
 
-    preExit(function() {
+    preExit(async () => {
 
       log.info('pre-exit');
 
-      return events.emit('wuffle.pre-exit');
+      await events.emit('wuffle.pre-exit');
+
+      log.info('closed');
     });
   }
 

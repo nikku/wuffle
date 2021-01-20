@@ -13,7 +13,7 @@ const {
   parseTemporalFilter
 } = require('./search');
 
-const preExit = require('./pre-exit');
+const preExit = require('prexit');
 
 const {
   repoAndOwner,
