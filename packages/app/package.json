@@ -37,7 +37,7 @@
   },
   "dependencies": {
     "async-didi": "^0.2.1",
-    "aws-sdk": "^2.786.0",
+    "aws-sdk": "^2.831.0",
     "body-parser": "^1.19.0",
     "compression": "^1.7.4",
     "express-session": "^1.17.1",
