@@ -1,7 +1,7 @@
 const mkdirp = require('mkdirp');
 
 const path = require('path');
-const fs = require('fs');
+const fs = require('fs').promises;
 
 
 /**
@@ -37,27 +37,11 @@ module.exports = function(logger, webhookEvents) {
 
     const data = JSON.stringify({ event, payload }, null, '  ');
 
-    return new Promise((resolve, reject) => {
+    return mkdirp(eventsDir).then(() => {
+      const fileName = path.join(eventsDir, `${Date.now()}-${counter++}-${name}.json`);
 
-      mkdirp(eventsDir, function(err) {
-
-        if (err) {
-          reject(err);
-        } else {
-
-          const fileName = path.join(eventsDir, `${Date.now()}-${counter++}-${name}.json`);
-
-          fs.writeFile(fileName, data, 'utf8', function(err) {
-            if (err) {
-              reject(err);
-            } else {
-              resolve();
-            }
-          });
-        }
-      });
+      return fs.writeFile(fileName, data, 'utf8');
     });
-
   }
 
 
