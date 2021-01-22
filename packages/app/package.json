@@ -50,7 +50,7 @@
     "@types/express-session": "^1.17.3",
     "@types/node-fetch": "^2.5.8",
     "chai": "^4.2.0",
-    "eslint": "^7.12.1",
+    "eslint": "^7.18.0",
     "eslint-plugin-bpmn-io": "^0.11.0",
     "mkdirp": "^0.5.1",
     "mocha": "^8.2.1",
