@@ -1,4 +1,4 @@
-const fs = require('fs');
+const fs = require('fs').promises;
 const path = require('path');
 
 const mkdirp = require('mkdirp');
@@ -26,37 +26,13 @@ function DumpStoreLocal(logger, store, events) {
   // io helpers
 
   function upload(dump) {
-
-    return new Promise((resolve, reject) => {
-      mkdirp(path.dirname(storeLocation), function(err) {
-
-        if (err) {
-          reject(err);
-        } else {
-          fs.writeFile(storeLocation, dump, 'utf8', function(err) {
-            if (err) {
-              reject(err);
-            } else {
-              resolve();
-            }
-          });
-        }
-      });
-    });
+    return mkdirp(path.dirname(storeLocation)).then(
+      () => fs.writeFile(storeLocation, dump, 'utf8')
+    );
   }
 
   function download() {
-
-    return new Promise((resolve, reject) => {
-      fs.readFile(storeLocation, 'utf8', function(err, contents) {
-
-        if (err) {
-          reject(err);
-        } else {
-          resolve(contents);
-        }
-      });
-    });
+    return fs.readFile(storeLocation, 'utf8');
   }
 
 
