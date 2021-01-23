@@ -6,27 +6,30 @@ Several aspects of [wuffle](https://wuffle.dev) are configured via environment v
 
 | Parameter | Required? | Description |
 | :--- | :---: |:--- |
-| `APP_ID` | :ballot_box_with_check: | Your GitHub app ID |
-| `GITHUB_CLIENT_ID` | :ballot_box_with_check: | Your GitHub app client id |
-| `GITHUB_CLIENT_SECRET` | :ballot_box_with_check: | Your GitHub client secret |
-| `WEBHOOK_SECRET` | :ballot_box_with_check: | Your GitHub webhook secret |
+| `APP_ID` | :ballot_box_with_check: | Your GitHub app ID `*` |
+| `GITHUB_CLIENT_ID` | :ballot_box_with_check: | Your GitHub app client id `*` |
+| `GITHUB_CLIENT_SECRET` | :ballot_box_with_check: | Your GitHub client secret `*` |
+| `PRIVATE_KEY` | :ballot_box_with_check: | Your GitHub app private key `*` |
+| `WEBHOOK_SECRET` | :ballot_box_with_check: | Your GitHub webhook secret `*` |
+
+`*` Generated during first time setup if you start the app in development mode.
 
 
 ### Back-End
 
 | Parameter | Required? | Description |
 | :--- | :---: |:--- |
-| `BASE_URL` | :ballot_box_with_check: | Base URL of your board `*` |
-| `BOARD_CONFIG` | | JSON encoded board configuration `**` |
+| `BASE_URL` | :ballot_box_with_check: | Base URL of your board `**` |
+| `BOARD_CONFIG` | | JSON encoded board configuration `***` |
 | `FORCE_HTTPS` | | Whether to enforce HTTPS on all routes |
 | `HOST` | | The host name to bind to |
 | `PORT` | | The port to bind to |
 | `SESSION_SECRET` | :ballot_box_with_check: | Session secret for encrypting app cookies |
 | `TRUST_PROXY` | | Whether to trust the proxy settings provided via an `X-Forwarded-*` header |
 
-`*` This must match the webhook URL that you configured for your GitHub app.
+`**` This must match the webhook URL that you configured for your GitHub app.
 
-`**` Use this property instead of configuring your board via a local `wuffle.config.js` file or the `package/app/wuffle.config.js` file.
+`***` Use this property instead of configuring your board via a local `wuffle.config.js` file or the `package/app/wuffle.config.js` file.
 
 
 ### Persistence
@@ -36,6 +39,8 @@ Several aspects of [wuffle](https://wuffle.dev) are configured via environment v
 | `AWS_ACCESS_KEY_ID` |  | Your AWS access key ID |
 | `AWS_SECRET_ACCESS_KEY` |  | Your AWS secret access key |
 | `S3_BUCKET` |  | Name of S3 bucket to load and dump task board to |
+| `S3_KEY` |  | Name of S3 bucket to load and dump task board to |
+| `S3_REGION` |  | Region of the S3 bucket to dump to |
 
 
 ### Background Sync
@@ -55,7 +60,10 @@ Several aspects of [wuffle](https://wuffle.dev) are configured via environment v
 
 | Parameter | Required? | Description |
 | :--- | :---: | :--- |
+| `LOG_LEVEL` | | The log level |
+| `LOG_FORMAT` | | The log output format (pretty or json) |
 | `LOG_WEBHOOK_EVENTS` | | Whether to log incoming web hook events to a temporary directory. Useful for local debugging. |
+| `SENTRY_DSN` | | The sentry remote endpoint to log errors to |
 | `WEBHOOK_PATH` | | |
 | `WEBHOOK_PROXY_URL` | | The proxy url to use during local development. |
 
