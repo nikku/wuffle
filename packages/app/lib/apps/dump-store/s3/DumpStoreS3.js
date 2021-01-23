@@ -1,4 +1,4 @@
-const S3 = require('aws-sdk/clients/s3');
+const S3 = require('./S3');
 
 
 /**
@@ -15,59 +15,7 @@ function DumpStoreS3(logger, store, events) {
     name: 'wuffle:dump-store-s3'
   });
 
-  const {
-    AWS_ACCESS_KEY_ID: accessKeyId,
-    AWS_SECRET_ACCESS_KEY: secretAccessKey,
-    S3_BUCKET: bucket
-  } = process.env;
-
-  const s3 = new S3({
-    accessKeyId,
-    secretAccessKey
-  });
-
-  var params = {
-    Bucket: bucket,
-    Key: 'storedump.json'
-  };
-
-
-  // io helpers
-
-  function upload(dump) {
-
-    return new Promise((resolve, reject) => {
-
-      const opts = {
-        ...params,
-        Body: dump
-      };
-
-      s3.putObject(opts, (err, data) => {
-
-        if (err) {
-          reject(err);
-        } else {
-          resolve();
-        }
-      });
-    });
-  }
-
-  function download() {
-
-    return new Promise((resolve, reject) => {
-
-      s3.getObject(params, (err, data) => {
-
-        if (err) {
-          reject(err);
-        } else {
-          resolve(data.Body.toString('utf8'));
-        }
-      });
-    });
-  }
+  const s3 = new S3();
 
 
   // impl
@@ -79,12 +27,12 @@ function DumpStoreS3(logger, store, events) {
     try {
       const dump = await store.asJSON();
 
-      await upload(dump);
+      await s3.upload(dump);
 
-      log.info({ ...params, t: Date.now() - start }, 'dumped');
+      log.info({ ...s3.params, t: Date.now() - start }, 'dumped');
     } catch (error) {
       log.error(error, 'dump failed: %o', {
-        ...params,
+        ...s3.params,
         t: Date.now() - start
       });
     }
@@ -95,13 +43,13 @@ function DumpStoreS3(logger, store, events) {
     let start = Date.now();
 
     try {
-      const dump = await download();
+      const dump = await s3.download();
 
       await store.loadJSON(dump);
 
-      log.info({ ...params, t: Date.now() - start }, 'restored');
+      log.info({ ...s3.params, t: Date.now() - start }, 'restored');
     } catch (err) {
-      log.warn({ ...params, t: Date.now() - start }, 'restore failed', err);
+      log.warn({ ...s3.params, t: Date.now() - start }, 'restore failed', err);
     }
   }
 
@@ -132,7 +80,6 @@ function DumpStoreS3(logger, store, events) {
 
   this.restoreStore = restoreStore;
   this.dumpStore = dumpStore;
-
 }
 
 module.exports = DumpStoreS3;
