@@ -27,7 +27,7 @@ const RequiredEvents = [
 ];
 
 /**
- * @typedef {import('@octokit/rest').Octokit.AppsListInstallationsResponseItem} Installation
+ * @typedef {import('./types').Installation} Installation
  */
 
 /**
@@ -225,12 +225,12 @@ function GithubApp(config, app, logger, injector) {
    * @return {Promise<Array<Installation>>} installations
    */
   function fetchInstallations() {
-    return getAppScopedClient().then(
-      github => github.paginate(
-        github.apps.listInstallations.endpoint.merge({ per_page: 100 }),
-        (response) => response.data
+    return /** @type Promise<Array<Installation>> */ (getAppScopedClient().then(
+      octokit => octokit.paginate(
+        octokit.apps.listInstallations,
+        { per_page: 100 }
       )
-    );
+    ));
   }
 
   // api ///////////////////

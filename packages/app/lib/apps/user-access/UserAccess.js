@@ -36,11 +36,10 @@ function UserAccess(logger, githubClient, events, webhookEvents) {
 
   async function fetchUserInstallations(user) {
 
-    const github = await githubClient.getUserScoped(user);
+    const octokit = await githubClient.getUserScoped(user);
 
-    return github.paginate(
-      github.apps.listInstallationsForAuthenticatedUser.endpoint.merge({}),
-      res => res.data
+    return octokit.paginate(
+      octokit.apps.listInstallationsForAuthenticatedUser
     );
   }
 
@@ -56,13 +55,14 @@ function UserAccess(logger, githubClient, events, webhookEvents) {
 
   async function fetchUserRepositoriesForInstallation(user, installation) {
 
-    const github = await githubClient.getUserScoped(user);
+    const octokit = await githubClient.getUserScoped(user);
 
-    return await github.paginate(
-      github.apps.listInstallationReposForAuthenticatedUser.endpoint.merge({
+    return octokit.paginate(
+      octokit.apps.listInstallationReposForAuthenticatedUser,
+      {
         installation_id: installation.id
-      }),
-      res => res.data.repositories || res.data
+      },
+      response => response.data.repositories || response.data
     );
   }
 
@@ -175,8 +175,8 @@ function UserAccess(logger, githubClient, events, webhookEvents) {
     } = repoAndOwner;
 
     return githubClient.getOrgScoped(owner)
-      .then(github => {
-        return github.repos.getCollaboratorPermissionLevel({
+      .then(octokit => {
+        return octokit.repos.getCollaboratorPermissionLevel({
           repo,
           owner,
           username: login
