@@ -9,9 +9,16 @@ _**Note:** Yet to be released changes appear here._
 ## 0.36.0
 
 * `FEAT`: fetch user access repositories with max page size
+* `FEAT`: rework S3 data dump
 * `CHORE`: bump to Probot@11 ([https://github.com/nikku/wuffle/commit/9e4c933910db82ef2e4416e2a9ea42a749d78d2b](https://github.com/nikku/wuffle/commit/9e4c933910db82ef2e4416e2a9ea42a749d78d2b), [https://github.com/nikku/wuffle/commit/cc8ad79a9845e5447cc090332da96bb49c7bed3c](https://github.com/nikku/wuffle/commit/cc8ad79a9845e5447cc090332da96bb49c7bed3c))
 * `CHORE`: require Node@14 ([https://github.com/nikku/wuffle/commit/45a335a77b700b90abf088ec426867cc69504f30](https://github.com/nikku/wuffle/commit/45a335a77b700b90abf088ec426867cc69504f30))
 * `DOCS`: add missing configuration entries
+
+### Breaking Changes
+
+* Probot@11 update changes some internal APIs as well as webhook data
+* Persistent S3 task board storage requires `env.S3_REGION` to be configured
+* Minimal required NodeJS version is now 14
 
 ## 0.35.5
 
