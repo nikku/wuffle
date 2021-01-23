@@ -105,11 +105,13 @@ We automatically synchronize all repositories you granted us access to via the G
     log.debug({ installation: owner }, 'processing');
 
     try {
-      const github = await githubClient.getOrgScoped(owner);
+      const octokit = await githubClient.getOrgScoped(owner);
 
-      const repositories = await github.paginate(
-        github.apps.listRepos.endpoint.merge({ per_page: 100 }),
-        (response) => response.data
+      const repositories = await octokit.paginate(
+        octokit.apps.listReposAccessibleToInstallation,
+        {
+          per_page: 100
+        }
       );
 
       for (const repository of repositories) {
@@ -153,39 +155,42 @@ We automatically synchronize all repositories you granted us access to via the G
           ] = await Promise.all([
 
             // open issues
-            github.paginate(
-              github.issues.listForRepo.endpoint.merge({
+            octokit.paginate(
+              octokit.issues.listForRepo,
+              {
                 ...params,
                 state: 'open'
-              }),
-              (response) => response.data.filter(issue => !issue.pull_request)
+              },
+              response => response.data.filter(issue => !issue.pull_request)
             ),
 
             // closed issues, updated last 30 days
-            github.paginate(
-              github.issues.listForRepo.endpoint.merge({
+            octokit.paginate(
+              octokit.issues.listForRepo,
+              {
                 ...params,
                 state: 'closed',
                 since: new Date(syncClosedSince).toISOString()
-              }),
-              (response) => response.data.filter(issue => !issue.pull_request)
+              },
+              response => response.data.filter(issue => !issue.pull_request)
             ),
 
             // open pulls
-            github.paginate(
-              github.pulls.list.endpoint.merge({
+            octokit.paginate(
+              octokit.pulls.list,
+              {
                 ...params,
                 state: 'open'
-              }),
-              (response) => response.data
+              }
             ),
 
             // closed pulls, updated last 30 days
-            github.paginate(
-              github.pulls.list.endpoint.merge({
+            octokit.paginate(
+              octokit.pulls.list,
+              {
                 ...params,
                 state: 'closed'
-              }),
+              },
               (response, done) => {
 
                 const pulls = response.data;
