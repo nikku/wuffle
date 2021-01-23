@@ -48,8 +48,11 @@ function DumpStoreLocal(logger, store, events) {
       await upload(dump);
 
       log.info({ ...params, t: Date.now() - start }, 'dumped');
-    } catch (err) {
-      log.error({ ...params, t: Date.now() - start }, 'dump failed', err);
+    } catch (error) {
+      log.error(error, 'dump failed: %o', {
+        ...params,
+        t: Date.now() - start
+      });
     }
   }
 

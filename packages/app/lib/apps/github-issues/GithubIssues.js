@@ -76,7 +76,7 @@ function GithubIssues(logger, config, columns) {
 
     const params = context.repo({ issue_number });
 
-    return context.github.issues.get(params)
+    return context.octokit.issues.get(params)
       .then(response => response.data)
       .catch(error => {
 
@@ -149,7 +149,7 @@ function GithubIssues(logger, config, columns) {
 
     log.info(params, 'update');
 
-    return context.github.issues.update(params);
+    return context.octokit.issues.update(params);
   }
 
 

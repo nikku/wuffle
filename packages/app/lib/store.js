@@ -321,7 +321,9 @@ class Store {
     if (!id) {
       const error = new Error('<id> required');
 
-      this.log.error('update processing failed', { update }, error);
+      this.log.error(error, 'failed to process update %o', {
+        update
+      });
 
       throw error;
     }
@@ -340,7 +342,11 @@ class Store {
     if (!updatedIssue.key) {
       const error = new Error('<key> required');
 
-      this.log.error({ issue: id }, 'update processing failed', { update, existingIssue }, error);
+      this.log.error(error, 'failed to process update %o', {
+        existingIssue,
+        issue: id,
+        update
+      });
 
       throw error;
     }
@@ -348,7 +354,11 @@ class Store {
     if (!updatedIssue.repository) {
       const error = new Error('<repository> required');
 
-      this.log.error({ issue: id }, 'update processing failed', { update, existingIssue }, error);
+      this.log.error(error, 'failed to process update %o', {
+        existingIssue,
+        issue: id,
+        update
+      });
 
       throw error;
     }

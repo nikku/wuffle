@@ -12,7 +12,7 @@ export type DidiModule = {
   [propName: string]: any,
 };
 
-export type ProbotApp = import('probot').Application;
+export type ProbotApp = import('probot').Probot;
 
 export type GitHubUser = {
   last_checked: number,

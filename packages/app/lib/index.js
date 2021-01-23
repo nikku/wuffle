@@ -41,16 +41,16 @@ const Columns = require('./columns');
 
 /**
  *
- * @param  {import('probot').Application} app
+ * @param {import('./types').ProbotApp} app
  *
  * @return {Promise<any>}
  */
-module.exports = function(app) {
+module.exports = function(app, { getRouter }) {
 
   const logger = app.log;
 
   const log = logger.child({
-    name: 'wuffle'
+    name: 'wuffle:core'
   });
 
 
@@ -58,7 +58,7 @@ module.exports = function(app) {
 
     // intialize ///////////////////
 
-    const router = app.router;
+    const router = getRouter();
 
     const config = loadConfig(log);
 
@@ -106,23 +106,17 @@ module.exports = function(app) {
 
     await events.emit('wuffle.start');
 
-    log.info('started');
+    log.debug('Initialized');
 
     preExit(async () => {
 
-      log.info('pre-exit');
+      log.debug('Pre-exit');
 
       await events.emit('wuffle.pre-exit');
 
-      log.info('closed');
+      log.info('Closed');
     });
   }
 
-  return setup().catch(
-    err => {
-      log.fatal('failed to create app', err);
-
-      process.exit(21);
-    }
-  );
+  return setup();
 };
