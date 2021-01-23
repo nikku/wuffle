@@ -60,9 +60,10 @@ function UserAccess(logger, githubClient, events, webhookEvents) {
     return octokit.paginate(
       octokit.apps.listInstallationReposForAuthenticatedUser,
       {
-        installation_id: installation.id
+        installation_id: installation.id,
+        per_page: 100
       },
-      response => response.data.repositories || response.data
+      response => response.data
     );
   }
 
