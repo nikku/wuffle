@@ -200,11 +200,11 @@ async function start() {
   const app = require('../');
 
   const {
-    serverApp
+    expressApp
   } = await CustomProbot.run(app);
 
   if (process.env.TRUST_PROXY) {
-    serverApp.set('trust proxy', true);
+    expressApp.set('trust proxy', true);
   }
 }
 
