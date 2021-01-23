@@ -147,7 +147,6 @@ module.exports = async (
       store.updateIssueOrder(issue, before, after, column),
       githubIssues.moveIssue(context, issue, columnDefinition)
     ]);
-
   }
 
   // public endpoints ////////
@@ -163,8 +162,8 @@ module.exports = async (
         items: filteredItems,
         cursor
       });
-    }).catch(err => {
-      log.error('failed to retrieve cards', err);
+    }).catch(error => {
+      log.error(error, 'failed to retrieve cards');
 
       res.status(500).json({ error : true });
     });
@@ -201,8 +200,11 @@ module.exports = async (
     return (
       filterUpdates(req, updates).then(filteredUpdates => {
         res.type('json').json(filteredUpdates);
-      }).catch(err => {
-        log.error('failed to retrieve card updates', { cursor, updates }, err);
+      }).catch(error => {
+        log.error(error, 'failed to retrieve card updates: %o', {
+          cursor,
+          updates
+        });
 
         res.status(500).json({ error : true });
       })
@@ -247,10 +249,10 @@ module.exports = async (
       return res.status(403).json({});
     }
 
-    const github = await githubClient.getUserScoped(user);
+    const octokit = await githubClient.getUserScoped(user);
 
     const context = {
-      github,
+      octokit,
       repo(opts) {
         return {
           ...repo,
@@ -262,8 +264,8 @@ module.exports = async (
     return (
       moveIssue(context, issue, column, { before, after }).then(() => {
         res.type('json').json({});
-      }).catch(err => {
-        log.error('failed to move issue', err);
+      }).catch(error => {
+        log.error(error, 'failed to move issue');
 
         res.status(500).json({ error : true });
       })

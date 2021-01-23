@@ -5,14 +5,13 @@ require('dotenv').config();
 const fs = require('fs');
 const path = require('path');
 
-const { Probot } = require('../lib/probot');
+const { getLog } = require('probot/lib/helpers/get-log');
 
-const { logger } = require('probot/lib/logger');
-const { wrapLogger } = require('probot/lib/wrap-logger');
-
-const log = wrapLogger(logger, logger).child({
+const log = getLog().child({
   name: 'wuffle:run'
 });
+
+const { CustomProbot } = require('../lib/probot');
 
 const Columns = require('../lib/columns');
 
@@ -188,10 +187,12 @@ async function start() {
 
   const app = require('../');
 
-  const probot = await Probot.run(app);
+  const {
+    serverApp
+  } = await CustomProbot.run(app);
 
   if (process.env.TRUST_PROXY) {
-    probot.server.set('trust proxy', true);
+    serverApp.set('trust proxy', true);
   }
 }
 
@@ -200,9 +201,7 @@ async function open() {
   if (IS_DEV) {
     const url = process.env.BASE_URL || 'http://localhost:3000';
 
-    log.info(`
-Wuffle started on ${url}
-`);
+    log.info(`Wuffle started on ${url}`);
   }
 }
 

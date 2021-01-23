@@ -1,7 +1,6 @@
 const {
-  GitHubAPI,
   ProbotOctokit
-} = require('probot/lib/github');
+} = require('probot/lib/octokit/probot-octokit');
 
 const {
   Cache
@@ -53,7 +52,10 @@ function GitHubClient(app, webhookEvents, logger, githubApp, events) {
         .then(
           installation => this.getInstallationScoped(installation.id),
           error => {
-            log.error({ login }, 'failed to authenticate', error);
+            log.error(error, 'failed to authenticate: %o', {
+              login
+            });
+
             throw error;
           }
         );
@@ -66,10 +68,11 @@ function GitHubClient(app, webhookEvents, logger, githubApp, events) {
     const access_token = typeof user === 'string' ? user : user.access_token;
 
     return cache.get(`user_scoped=${access_token}`, () => {
-      return GitHubAPI({
-        Octokit: ProbotOctokit,
-        auth: `token ${access_token}`,
-        logger: logger.child({ name: 'github:user-auth' })
+      return new ProbotOctokit({
+        log: logger.child({ name: 'github:user-auth' }),
+        auth: {
+          token: access_token
+        }
       });
     });
 
