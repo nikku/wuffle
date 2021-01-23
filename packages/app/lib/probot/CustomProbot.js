@@ -17,7 +17,7 @@ const CustomProbot = {
   async run(appFn) {
 
     const appId = parseInt(process.env.APP_ID, 10);
-    const host = process.env.HOST || 'localhost';
+    const host = process.env.HOST;
     const port = parseInt(process.env.PORT || '3000', 10);
     const privateKey = getPrivateKey() || undefined;
 
