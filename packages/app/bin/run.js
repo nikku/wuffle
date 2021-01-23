@@ -43,6 +43,7 @@ async function validate() {
     checkEnv('GITHUB_CLIENT_SECRET', IS_PROD),
     checkEnv('SESSION_SECRET', IS_PROD),
     checkEnv('BASE_URL', IS_PROD),
+    checkDumpConfig(),
     checkConfig(),
     checkBoardAssets(),
     checkBaseUrl()
@@ -138,6 +139,17 @@ async function validate() {
 
     if (config) {
       return checkConfigValues(config);
+    }
+  }
+
+  function checkDumpConfig() {
+    if (process.env.S3_BUCKET) {
+      return [
+        checkEnv('AWS_ACCESS_KEY_ID', true),
+        checkEnv('AWS_SECRET_ACCESS_KEY', true),
+        checkEnv('S3_BUCKET', true),
+        checkEnv('S3_REGION', true)
+      ];
     }
   }
 
