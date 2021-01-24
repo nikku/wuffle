@@ -2,6 +2,12 @@
 
 require('dotenv').config();
 
+const NODE_ENV = process.env.NODE_ENV = (
+  process.argv[2] === 'setup'
+    ? 'development'
+    : process.env.NODE_ENV || 'production'
+);
+
 const fs = require('fs');
 const path = require('path');
 
@@ -17,11 +23,8 @@ const Columns = require('../lib/columns');
 
 const { version } = require('../package');
 
-const NODE_ENV = process.env.NODE_ENV || 'development';
-
 const IS_PROD = NODE_ENV === 'production';
 const IS_DEV = NODE_ENV === 'development';
-
 
 // shim
 
@@ -36,6 +39,7 @@ async function validate() {
   log.info('Validating configuration');
 
   const problems = [
+    IS_DEV ? warning('Running in development mode') : null,
     checkEnv('APP_ID', IS_PROD),
     checkEnv('PRIVATE_KEY', IS_PROD),
     checkEnv('WEBHOOK_SECRET', IS_PROD),
@@ -130,10 +134,19 @@ async function validate() {
     }
 
     if (!config) {
+      const configPath = path.resolve('wuffle.config.js');
+
       try {
-        config = require(path.resolve('wuffle.config.js'));
+        config = require(configPath);
       } catch (err) {
-        return problem('Board not configured via env.BOARD_CONFIG or wuffle.config.js');
+
+        if (IS_DEV) {
+          fs.copyFileSync(path.join(__dirname, '../wuffle.config.example.js'), configPath);
+
+          log.info('Created board configuration in %s', configPath);
+        } else {
+          return problem('Board not configured via env.BOARD_CONFIG or wuffle.config.js');
+        }
       }
     }
 
@@ -219,7 +232,7 @@ async function open() {
 
 async function run() {
 
-  log.info(`Attempting to run Wuffle v${version} in ${process.cwd()}`);
+  log.info(`Starting Wuffle v${version} in ${process.cwd()}`);
 
   await validate();
   await start();

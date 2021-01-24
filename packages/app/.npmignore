@@ -2,6 +2,7 @@ test
 tmp
 !public
 wuffle.*.js
+!wuffle.config.example.js
 .eslintrc
 .eslintignore
 .env

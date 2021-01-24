@@ -28,7 +28,7 @@
   "scripts": {
     "all": "run-s lint lint:types test",
     "dev": "nodemon",
-    "start": "node ./bin/run.js",
+    "start": "node ./bin/wuffle",
     "test": "mocha 'test/**/*.js' --exit",
     "lint": "run-s lint:*",
     "lint:eslint": "eslint .",
@@ -68,6 +68,9 @@
   },
   "nodemonConfig": {
     "exec": "npm start",
+    "env": {
+      "NODE_ENV": "development"
+    },
     "watch": [
       ".env",
       "."

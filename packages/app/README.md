@@ -11,7 +11,13 @@ A multi-repository task board for [GitHub issues](https://guides.github.com/feat
 
 ## Usage
 
-To start your own [Wuffle Board](https://github.com/nikku/wuffle), execute:
+To setup your own [Wuffle Board](https://github.com/nikku/wuffle) execute:
+
+```
+npx wuffle setup
+```
+
+Once you completed the setup, run the board via:
 
 ```
 npx wuffle
