@@ -6,6 +6,13 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 _**Note:** Yet to be released changes appear here._
 
+## 0.37.0
+
+* `FEAT`: allow setup to be executed via app binary
+* `FEAT`: add explicit setup command
+* `FIX`: make `mkdirp` a production dependency
+* `CHORE`: use leak free in memory session store
+
 ## 0.36.0
 
 * `FEAT`: fetch user access repositories with max page size
