@@ -14,7 +14,7 @@ A multi-repository task board for [GitHub issues](https://guides.github.com/feat
 ## Features
 
 * Multi-repository / organization support
-* Maps issues to columns via labels and/or close states
+* Maps issues to columns via labels or close states
 * Allows you to filter issues by name, issue label, and more
 * Visualizes reviews and pull request status/checks on a card
 * Automatically [moves cards across columns](https://github.com/nikku/wuffle/blob/master/docs/AUTOMATIC_CARD_MOVEMENT.md), as you develop
@@ -35,11 +35,11 @@ A multi-repository task board for [GitHub issues](https://guides.github.com/feat
 
 Some key aspects separate [Wuffle](https://github.com/nikku/wuffle) from the GitHub task board competition:
 
-* __[GitHub issues](https://guides.github.com/features/issues/) are the source of truth.__ We read and store columns, relationships and everything else directly on GitHub. The only exception is issue order (not supported by GitHub, so far).
+* __[GitHub issues](https://guides.github.com/features/issues/) are the source of truth.__ We read and store columns, relationships, and everything else directly on GitHub. The only exception is issue order (not supported by GitHub, so far).
 
 * __Tight integration with the [GitHub flow](https://guides.github.com/introduction/flow/).__ Your issues move automatically across the board. The board is always up to date with things going on in development.
 
-* __Publicly accessible.__ You can share your project status without restrictions. Applied board filters are shareable deep links. We do, however, only display those issues to a visitor that she sees on GitHub, too. You'd like to see cards of your private repositories? Log-in with your GitHub identity and see them pop up in the mapped column.
+* __Publicly accessible.__ You can share your project status without restrictions. Applied board filters are shareable deep links. However, we do only display those issues to a visitor that she sees on GitHub, too. Would you like to see cards from your private repositories? Log in with your GitHub identity and see them pop up in the mapped column.
 
 * __Hackable.__ Wuffle is open source, MIT licensed. Contribute to it to make it even better. Self-host it and stay the owner of your data.
 
