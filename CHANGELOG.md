@@ -6,6 +6,13 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 _**Note:** Yet to be released changes appear here._
 
+## 0.38.0
+
+* `FEAT`: implement first time setup
+* `FIX`: add `member` permission to app manifest
+* `FIX`: correct app default permmissions
+* `DOCS`: rewrite setup guide
+
 ## 0.37.0
 
 * `FEAT`: allow setup to be executed via app binary
