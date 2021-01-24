@@ -8,22 +8,18 @@ A multi-repository task board for [GitHub issues](https://guides.github.com/feat
   </a>
 </p>
 
+Refer to the [project documentation](https://github.com/nikku/wuffle#readme) for an in-depth feature break down.
+
 
 ## Usage
 
-To setup your own [Wuffle Board](https://github.com/nikku/wuffle) execute:
-
-```
-npx wuffle setup
-```
-
-Once you completed the setup, run the board via:
+Run your own [Wuffle Board](https://github.com/nikku/wuffle) via `npx`:
 
 ```
 npx wuffle
 ```
 
-Checkout the [project documentation](https://github.com/nikku/wuffle) for an in-depth feature break down and setup instructions.
+Turn to our [setup instructions](https://github.com/nikku/wuffle/blob/master/docs/SETUP.md) for additional details.
 
 
 ## License
