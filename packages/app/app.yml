@@ -126,13 +126,13 @@ default_permissions:
 
 
 # The name of the GitHub App. Defaults to the name specified in package.json
-# name: wuffle-sync
+# name: wuffle-app
 
 # The homepage of your GitHub App.
-# url: https://example.com/
+# url: https://github.com/nikku/wuffle
 
 # A description of the GitHub App.
-# description: A description of my awesome app
+# description: The [Wuffle Board](https://github.com/nikku/wuffle) sync app.
 
 # Set to true when your GitHub App is available to the public or false when it is only accessible to the owner of the app.
 # Default: true
