@@ -28,7 +28,7 @@
   "scripts": {
     "all": "run-s lint lint:types test",
     "dev": "nodemon",
-    "start": "node ./bin/wuffle",
+    "start": "NODE_ENV=production node ./bin/wuffle",
     "test": "mocha 'test/**/*.js' --exit",
     "lint": "run-s lint:*",
     "lint:eslint": "eslint .",
@@ -67,7 +67,7 @@
     "node": ">= 14.0"
   },
   "nodemonConfig": {
-    "exec": "npm start",
+    "exec": "node ./bin/wuffle",
     "env": {
       "NODE_ENV": "development"
     },

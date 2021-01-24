@@ -2,11 +2,11 @@
 
 require('dotenv').config();
 
-const NODE_ENV = process.env.NODE_ENV = (
-  process.argv[2] === 'setup'
-    ? 'development'
-    : process.env.NODE_ENV || 'production'
-);
+const { CustomProbot } = require('../lib/probot');
+
+const NODE_ENV = process.env.NODE_ENV;
+
+const IS_SETUP = NODE_ENV !== 'production' && !CustomProbot.isSetup();
 
 const fs = require('fs');
 const path = require('path');
@@ -17,14 +17,11 @@ const log = getLog().child({
   name: 'wuffle:run'
 });
 
-const { CustomProbot } = require('../lib/probot');
-
 const Columns = require('../lib/columns');
 
 const { version } = require('../package');
 
 const IS_PROD = NODE_ENV === 'production';
-const IS_DEV = NODE_ENV === 'development';
 
 // shim
 
@@ -39,14 +36,14 @@ async function validate() {
   log.info('Validating configuration');
 
   const problems = [
-    IS_DEV ? warning('Running in development mode') : null,
+    !IS_PROD ? warning('Not running in production mode') : null,
     checkEnv('APP_ID', IS_PROD),
-    checkEnv('PRIVATE_KEY', IS_PROD),
-    checkEnv('WEBHOOK_SECRET', IS_PROD),
+    checkEnv('BASE_URL', IS_PROD),
     checkEnv('GITHUB_CLIENT_ID', IS_PROD),
     checkEnv('GITHUB_CLIENT_SECRET', IS_PROD),
+    checkEnv('PRIVATE_KEY', IS_PROD),
     checkEnv('SESSION_SECRET', IS_PROD),
-    checkEnv('BASE_URL', IS_PROD),
+    checkEnv('WEBHOOK_SECRET', IS_PROD),
     checkDumpConfig(),
     checkConfig(),
     checkBoardAssets(),
@@ -139,14 +136,7 @@ async function validate() {
       try {
         config = require(configPath);
       } catch (err) {
-
-        if (IS_DEV) {
-          fs.copyFileSync(path.join(__dirname, '../wuffle.config.example.js'), configPath);
-
-          log.info('Created board configuration in %s', configPath);
-        } else {
-          return problem('Board not configured via env.BOARD_CONFIG or wuffle.config.js');
-        }
+        return problem('Board not configured via env.BOARD_CONFIG or wuffle.config.js');
       }
     }
 
@@ -197,7 +187,9 @@ async function validate() {
       log[isFatal(problem) ? 'error' : 'warn'](problem.message);
     }
 
-    log[fatal ? 'error' : 'warn']('Please refer to https://wuffle.dev for setup instructions');
+    if (!IS_SETUP) {
+      log[fatal ? 'error' : 'warn']('Please refer to https://wuffle.dev for configuration and setup instructions');
+    }
 
     if (fatal) {
       log.error('Exiting due to error(s)');
@@ -206,9 +198,42 @@ async function validate() {
   }
 }
 
-async function start() {
+async function performSetup() {
 
-  log.info('Starting Wuffle');
+  log.info('Running first time setup');
+
+  const configPath = path.resolve('wuffle.config.js');
+
+  if (!process.env.BOARD_CONFIG && !fs.existsSync(configPath)) {
+    fs.copyFileSync(path.join(__dirname, '../wuffle.config.example.js'), configPath);
+
+    log.info('Created board config: wuffle.config.js');
+  }
+
+  const manifestPath = path.resolve('app.yml');
+
+  if (!fs.existsSync(manifestPath)) {
+    fs.copyFileSync(path.join(__dirname, '../app.yml'), manifestPath);
+
+    log.info('Created GitHub App manifest: app.yml');
+  }
+
+  log.info('Validating setup');
+
+  const errors = CustomProbot.validateSetup();
+
+  if (errors.length) {
+    for (const error of errors) {
+      log.error(error.message);
+    }
+
+    log.error('Please correct above errors and restart');
+
+    process.exit(1);
+  }
+}
+
+async function start() {
 
   const app = require('../');
 
@@ -223,16 +248,22 @@ async function start() {
 
 async function open() {
 
-  if (IS_DEV) {
-    const url = process.env.BASE_URL || 'http://localhost:3000';
+  const url = process.env.BASE_URL || 'http://localhost:3000';
 
+  if (IS_SETUP) {
+    log.warn(`Visit ${url} to create a GitHub App that connects us to GitHub`);
+  } else {
     log.info(`Wuffle started on ${url}`);
   }
 }
 
 async function run() {
 
-  log.info(`Starting Wuffle v${version} in ${process.cwd()}`);
+  log.info(`Running Wuffle v${version} in ${process.cwd()}`);
+
+  if (IS_SETUP) {
+    await performSetup();
+  }
 
   await validate();
   await start();
