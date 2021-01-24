@@ -2,12 +2,20 @@ const {
   randomString
 } = require('../util');
 
-const SEVEN_DAYS = 1000 * 60 * 60 * 24 * 7;
+const session = require('express-session');
 
-module.exports.withSession = require('express-session')({
+const MemoryStore = require('memorystore')(session);
+
+const ONE_DAY = 1000 * 60 * 60 * 24;
+const SEVEN_DAYS = ONE_DAY * 7;
+
+module.exports.withSession = session({
   secret: process.env.SESSION_SECRET || randomString(),
   resave: false,
   saveUninitialized: false,
+  store: new MemoryStore({
+    checkPeriod: ONE_DAY
+  }),
   cookie: {
     maxAge: SEVEN_DAYS,
     sameSite: 'lax',

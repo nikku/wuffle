@@ -41,6 +41,7 @@
     "body-parser": "^1.19.0",
     "compression": "^1.7.4",
     "express-session": "^1.17.1",
+    "memorystore": "^1.6.4",
     "min-dash": "^3.5.2",
     "mkdirp": "^1.0.4",
     "p-defer": "^3.0.0",
