@@ -469,7 +469,7 @@ We automatically synchronize all repositories you granted us access to via the G
 
   const syncInterval = (
     parseInt(process.env.BACKGROUND_SYNC_SYNC_INTERVAL, 10) || (
-      process.env.NODE_ENV === 'development'
+      process.env.NODE_ENV !== 'production'
 
         // one minute
         ? 1000 * 60
