@@ -1,60 +1,89 @@
+
 # Setup
 
-Learn how to setup, configure and run your own [Wuffle board](https://wuffle.dev).
+Learn how to set up, configure and run your own [Wuffle board](https://wuffle.dev).
 
 | Table of Contents |
 | :--- |
-| [Create GitHub App](#create-github-app) |
-| [Configure GitHub App](#configure-github-app) |
-| [Install GitHub App](#configure-github-app) |
-| [Configure Board](#configure-board) |
-| [Run Board](#run-board) |
+| [Install and Run](#install-and-run) |
+| [Configure the GitHub App](#configure-the-github-app) |
+| [Connect GitHub Repositories](#connect-github-repositories) |
+| [Configure the Board](#configure-the-board) |
+| [Run in Production](#run-in-production) |
+| [Run via Docker](#run-via-docker) |
 
-If you accounter problems while setting up your Wuffle instance, please [file a help request](https://github.com/nikku/wuffle/issues/new?labels=question%2C+installation&template=SETUP_PROBLEM.md).
-
-
-## Create GitHub App
-
-The board is connected to GitHub as a [GitHub app](https://developer.github.com/apps/). Get started by creating a GitHub app, either via the development setup or using [manual configuration steps](#manual-steps) as documented below.
+If you accounter problems during the setup, please [file a help request](https://github.com/nikku/wuffle/issues/new?labels=question%2C+installation&template=SETUP_PROBLEM.md).
 
 
-### Automatic Development Setup
+## Install and Run
 
-Checkout, install and run the application in development mode as shown below:
+Start from an empty folder:
 
-```bash
-git clone git@github.com:nikku/wuffle.git
-cd wuffle
-npm install
-npm run dev
+```sh
+# initialize a new app
+npm init
+
+# if you plan to check-in your board app,
+# do not check-in environment files
+echo ".env" > .gitignore
 ```
 
-Access the application on [`localhost:3000`](http://localhost:3000). [Probot](https://probot.github.io/), the app framework used by Wuffle, helps you to create your GitHub app. Give your app a unique name and remember it.
+Install [wuffle](https://wuffle.dev) via `npm`:
 
-Once the setup completes probot writes the basic app configuration to the `packages/app/.env` file. Go to your app page on GitHub, fetch client ID and client secret and add these properties to the `.env` file as `GITHUB_CLIENT_ID` and `GITHUB_CLIENT_SECRET`, respectively.
+```sh
+npm install wuffle
+```
 
-### Manual Steps
+Starting the board by using the `wuffle` executable:
+
+```sh
+npx wuffle
+```
+
+Open the app on [`localhost:3000`](http://localhost:3000).
+
+The first time setup guides you through the installation process and helps you to [create a GitHub app](#configure-the-github-app). It also creates several assets in your local working directory: The `.env` file contains all environment variables required to run the app. The `wuffle.config.js` contains the [board configuration](#configure-board).
+
+Once re-started and properly configured, [connect your GitHub repositories](#connect-github-repositories). Periodic background sync will pickup repositories, fetch issues from GitHub, and populate your board.
+
+As a post-installation activity [configure the user login flow](#configure-user-login-flow). That allows users to log in to your board via GitHub to see their private repositories.
+
+When [going into production](#run-in-production), run `wuffle` with strict validation and production tweaks turned on:
+
+```sh
+NODE_ENV=production npx wuffle
+```
+
+
+## Configure the GitHub App
+
+The board connects to GitHub as a [GitHub app](https://developer.github.com/apps/). As part of the first-time setup, you create that GitHub app or import it into your environment.
+
+You can [setup the app manually](#manual-github-app-setup), too.
+
+
+### Configure User Login Flow
+
+The board requires your visitors to login via GitHub if they want to perform board operations or move cards around.
+
+To enable the login flow, configure the `User authorization callback URL` in your GitHub App settings page to point to `$BASE_URL/wuffle/login/callback`.
+
+
+### Manual GitHub App Setup
 
 [Create your GitHub app](https://github.com/settings/apps/new) and configure it according to the [provided app mainfest](../packages/app/app.yml).
 
-Create a `packages/app/.env` file with the required configuration variables as provided by GitHub. Use the [provided example](../packages/app/.env.example) as a starting point.
+In your current working directory, create a `.env` file-based on [our example](../packages/app/.env.example). Fill in the configuration provided to you by GitHub.
 
 
-## Configure GitHub App
+## Connect GitHub Repositories
 
-The board requires your visitors to login via GitHub if the would like to perform board operations or move cards around. 
-
-To enable the login flow point the `User authorization callback URL` property on your GitHub App settings page to `$BASE_URL/wuffle/login/callback`.
+Go to `https://github.com/apps/{APP_NAME}/installations/new` to install the app for all desired repositories and organizations. That sets up the required change notifications and write permissions to keep the board in sync with GitHub issues.
 
 
-## Install GitHub App
+## Configure the Board
 
-Go to your GitHub app user page on `https://github.com/apps/YOUR_APP_NAME` and install the app for all desired repositories and organizations. This sets up the required change notifications and write permissions to keep the board in sync with GitHub issues.
-
-
-## Configure Board
-
-Setup a `packages/app/wuffle.config.js` file, configuring the board:
+The board is configured via a local `wuffle.config.js` file:
 
 ```js
 module.exports = {
@@ -70,12 +99,12 @@ module.exports = {
 };
 ```
 
-Make sure that you [enabled your app](#configure-github-app) for all repositories that you would like to connect to the board.
+Connect repositories that should appear on the board [via GitHub](#connect-github-repositories).
 
 
 ### Mapping Special Columns
 
-The board requires you to map a number of special columns in order to know, how to react to PR opening, issue closing and so on. The following table shows the states and their mapping to the default column names used above:
+The board requires you to map some special columns to know how to react to PR opening, issue closing, and so on. The following table shows the states and their mapping to the default column names used above:
 
 | State | Default Column |
 | :--- | :--- |
@@ -98,32 +127,32 @@ module.exports = {
 };
 ```
 
-Column mappings enable [automatic card movement](./AUTOMATIC_CARD_MOVEMENT.md) across the board, as you develop.
+Column mappings enable [automatic card movement](./AUTOMATIC_CARD_MOVEMENT.md) across the board as you develop.
 
 
-### Issue Links and Automatic Sorting 
+### Issue Links and Automatic Sorting
 
 Board columns can sorted automatically, based on [sematic issue links](./ISSUE_LINKS.md). Enable this feature for individual columns by marking them as `sorting`.
 
 
-## Run Board
+## Run in Production
 
-If you started your app in development mode the board should reload automatically. If properly configured, background sync will pickup repositories, fetch issues from GitHub and populate your board.
+Run the app with `NODE_ENV=production` to enable strict validation and certain production tweaks.
 
-### Run in Production
-
-You can pass the environment variables stored in your `.env` directly when starting the app:
+Instead of relying on a `.env` file, you can also  pass environment variables directly when starting the app:
 
 ```
-NODE_ENV=production APP_ID=YOUR_APP_ID cd packages/app && node bin/run.js
+NODE_ENV=production APP_ID=YOUR_APP_ID npx wuffle
 ```
+
+Pass the [board configuration](#configure-board) as a JSON encoded string via the `BOARD_CONFIG` environment variable.
 
 Read through our [configuration section](./CONFIG.md) to learn about all available configuration options.
 
-Make sure to pass the correct `BASE_URL` and update it on your GitHub app once it changes for production.
+As you move to production, make sure to pass the correct `BASE_URL`. Update it on your GitHub app setting page if it changes.
 
 
-### Run via Docker
+## Run via Docker
 
 If you use the [docker distribution](https://hub.docker.com/r/nrehwaldt/wuffle), pass your app configuration via environment variables:
 
