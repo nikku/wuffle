@@ -24,8 +24,11 @@ Start from an empty folder:
 npm init
 
 # if you plan to check-in your board app,
-# do not check-in environment files
-echo ".env" > .gitignore
+# do not check-in node_modules
+echo "node_modules" >> .gitignore
+
+# do not check-in environment file, too
+echo ".env" >> .gitignore
 ```
 
 Install [wuffle](https://wuffle.dev) via `npm`:
