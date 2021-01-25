@@ -147,6 +147,8 @@ NODE_ENV=production APP_ID=YOUR_APP_ID npx wuffle
 
 Pass the [board configuration](#configure-board) as a JSON encoded string via the `BOARD_CONFIG` environment variable.
 
+Hook up [Sentry](https://sentry.io/welcome/) to track errors at run-time.
+
 Read through our [configuration section](./CONFIG.md) to learn about all available configuration options.
 
 As you move to production, make sure to pass the correct `BASE_URL`. Update it on your GitHub app setting page if it changes.
