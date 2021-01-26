@@ -1,7 +1,7 @@
 {
   "name": "wuffle",
   "version": "0.38.0",
-  "description": "The wuffle board back-end",
+  "description": "The wuffle task board application",
   "author": {
     "name": "Nico Rehwaldt",
     "url": "https://github.com/nikku"
