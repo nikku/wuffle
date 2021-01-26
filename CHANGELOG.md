@@ -6,6 +6,10 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 _**Note:** Yet to be released changes appear here._
 
+## 0.38.1
+
+* `FIX`: bump docker file base image to Node@14
+
 ## 0.38.0
 
 * `FEAT`: implement first time setup
