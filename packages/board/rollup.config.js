@@ -2,6 +2,7 @@ import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import url from '@rollup/plugin-url';
 
+import css from 'rollup-plugin-css-only';
 import svelte from 'rollup-plugin-svelte';
 import livereload from 'rollup-plugin-livereload';
 
@@ -30,18 +31,18 @@ export default [
       }),
       svelte({
 
-        // enable run-time checks during development
-        dev: !production,
-        immutable: true,
+        compilerOptions: {
 
-        // we'll extract any component CSS out into
-        // a separate file — better for performance
-        css: css => {
-          css.write('bundle.css');
+          // enable run-time checks during development
+          dev: !production,
+
+          immutable: true
         },
 
         preprocess: svelteConfig.preprocess
       }),
+
+      css({ output: 'bundle.css' }),
 
       resolve(),
       commonjs(),
