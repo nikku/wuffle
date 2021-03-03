@@ -1,6 +1,6 @@
 # Wuffle
 
-[![CI Status](https://img.shields.io/github/workflow/status/nikku/wuffle/CI)](https://github.com/nikku/wuffle/actions?query=workflow%3ACI) ![Maturity pre-release](https://img.shields.io/badge/maturity-preview-orange.svg)
+[![CI Status](https://img.shields.io/github/workflow/status/nikku/wuffle/CI)](https://github.com/nikku/wuffle/actions?query=workflow%3ACI)
 
 A multi-repository task board for [GitHub issues](https://guides.github.com/features/issues/).
 
