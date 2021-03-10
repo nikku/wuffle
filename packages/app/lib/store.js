@@ -829,6 +829,11 @@ class Store {
     }, {});
 
     await this.emit('restored', { data });
+
+    this.log.debug({
+      issues: issues.length,
+      lastSync
+    }, 'load JSON complete');
   }
 
 }
