@@ -30,11 +30,12 @@ function DumpStoreS3(logger, store, events) {
       await s3.upload(dump);
 
       log.info({ ...s3.params, t: Date.now() - start }, 'dumped');
-    } catch (error) {
-      log.error(error, 'dump failed: %o', {
+    } catch (err) {
+      log.error({
+        err,
         ...s3.params,
         t: Date.now() - start
-      });
+      }, 'dump failed');
     }
   }
 
@@ -47,8 +48,7 @@ function DumpStoreS3(logger, store, events) {
     try {
       dump = await s3.download();
     } catch (err) {
-      log.warn({ ...s3.params, t: Date.now() - start }, 'restore failed');
-      log.warn(err);
+      log.warn({ ...s3.params, t: Date.now() - start, err }, 'restore failed');
 
       return;
     }

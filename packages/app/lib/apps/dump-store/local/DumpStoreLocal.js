@@ -48,11 +48,12 @@ function DumpStoreLocal(logger, store, events) {
       await upload(dump);
 
       log.info({ ...params, t: Date.now() - start }, 'dumped');
-    } catch (error) {
-      log.error(error, 'dump failed: %o', {
+    } catch (err) {
+      log.error({
+        err,
         ...params,
         t: Date.now() - start
-      });
+      }, 'dump failed');
     }
   }
 
@@ -65,8 +66,7 @@ function DumpStoreLocal(logger, store, events) {
     try {
       dump = await download();
     } catch (err) {
-      log.warn({ ...params, t: Date.now() - start }, 'restore failed');
-      log.warn(err);
+      log.warn({ ...params, t: Date.now() - start, err }, 'restore failed');
 
       return;
     }

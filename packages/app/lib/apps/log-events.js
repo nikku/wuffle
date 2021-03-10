@@ -53,8 +53,8 @@ module.exports = function(logger, webhookEvents) {
       payload
     } = context;
 
-    write(event, payload).catch(error => {
-      log.error(error, 'failed to log event');
+    write(event, payload).catch(err => {
+      log.error(err, 'failed to log event');
     });
   });
 

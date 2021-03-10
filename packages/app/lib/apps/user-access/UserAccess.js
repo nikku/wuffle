@@ -192,7 +192,7 @@ function UserAccess(logger, githubClient, events, webhookEvents) {
           permission === 'admin'
         );
       }).catch(err => {
-        log.warn('failed to determine write status', { login, owner, repo }, err);
+        log.warn({ login, owner, repo, err }, 'failed to determine write status');
 
         return false;
       });

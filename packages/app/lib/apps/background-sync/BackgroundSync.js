@@ -240,36 +240,39 @@ We automatically synchronize all repositories you granted us access to via the G
                   [type]: `${owner}/${repo}#${issueOrPull.number}`
                 }, 'scheduled for update');
               }
-            } catch (error) {
-              log.error(error, 'synching %o failed', {
+            } catch (err) {
+              log.error({
+                err,
                 [type]: `${owner}/${repo}#${issueOrPull.number}`
-              });
+              }, 'synching failed');
             }
           }
 
           log.debug({
             repo: `${owner}/${repo}`
           }, 'processed');
-        } catch (error) {
-          log.error(error, 'processing %o failed', {
+        } catch (err) {
+          log.error({
+            err,
             repo: `${owner}/${repo}`
-          });
+          }, 'processing failed');
 
-          if (isInternalError(error)) {
-            throw error;
+          if (isInternalError(err)) {
+            throw err;
           }
         }
 
       } // end --- for (const repository of repositories)
 
       log.debug({ installation: owner }, 'processed');
-    } catch (error) {
-      log.error(error, 'processing %o failed', {
+    } catch (err) {
+      log.error({
+        err,
         installation: owner
-      });
+      }, 'processing failed');
 
-      if (isInternalError(error)) {
-        throw error;
+      if (isInternalError(err)) {
+        throw err;
       }
     }
 
@@ -348,10 +351,11 @@ We automatically synchronize all repositories you granted us access to via the G
         await store.removeIssueById(id);
 
         removedIssues[id] = issue;
-      } catch (error) {
-        log.error(error, 'cleaning up %o failed', {
+      } catch (err) {
+        log.error({
+          err,
           issue: key
-        });
+        }, 'cleaning up failed');
       }
     }
 
@@ -441,10 +445,11 @@ We automatically synchronize all repositories you granted us access to via the G
 
       return events.emit('backgroundSync.sync', {
         issue
-      }).catch(error => {
-        log.error(error, 'sync %o details failed',{
+      }).catch(err => {
+        log.error({
+          err,
           issue: issueIdent(issue)
-        });
+        }, 'sync details failed');
       });
     });
 
@@ -461,8 +466,8 @@ We automatically synchronize all repositories you granted us access to via the G
       await doSync(installations);
 
       log.info('done');
-    } catch (error) {
-      log.error(error, 'failed');
+    } catch (err) {
+      log.error(err, 'failed');
     }
 
   }
