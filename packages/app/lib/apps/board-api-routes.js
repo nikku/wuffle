@@ -162,8 +162,8 @@ module.exports = async (
         items: filteredItems,
         cursor
       });
-    }).catch(error => {
-      log.error(error, 'failed to retrieve cards');
+    }).catch(err => {
+      log.error(err, 'failed to retrieve cards');
 
       res.status(500).json({ error : true });
     });
@@ -200,11 +200,12 @@ module.exports = async (
     return (
       filterUpdates(req, updates).then(filteredUpdates => {
         res.type('json').json(filteredUpdates);
-      }).catch(error => {
-        log.error(error, 'failed to retrieve card updates: %o', {
+      }).catch(err => {
+        log.error({
+          err,
           cursor,
           updates
-        });
+        }, 'failed to retrieve card updates');
 
         res.status(500).json({ error : true });
       })
@@ -264,8 +265,8 @@ module.exports = async (
     return (
       moveIssue(context, issue, column, { before, after }).then(() => {
         res.type('json').json({});
-      }).catch(error => {
-        log.error(error, 'failed to move issue');
+      }).catch(err => {
+        log.error(err, 'failed to move issue');
 
         res.status(500).json({ error : true });
       })

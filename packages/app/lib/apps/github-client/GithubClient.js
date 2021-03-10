@@ -51,12 +51,13 @@ function GitHubClient(app, webhookEvents, logger, githubApp, events) {
       githubApp.getInstallationByLogin(login)
         .then(
           installation => this.getInstallationScoped(installation.id),
-          error => {
-            log.error(error, 'failed to authenticate: %o', {
+          err => {
+            log.error({
+              err,
               login
-            });
+            }, 'failed to authenticate');
 
-            throw error;
+            throw err;
           }
         );
 

@@ -78,10 +78,10 @@ function GithubIssues(logger, config, columns) {
 
     return context.octokit.issues.get(params)
       .then(response => response.data)
-      .catch(error => {
+      .catch(err => {
 
         // gracefully handle not found
-        log.debug(params, 'issue not found', error);
+        log.debug({ ...params, err }, 'issue not found');
 
         return null;
       });

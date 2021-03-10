@@ -213,11 +213,11 @@ function AuthRoutes(logger, router, securityContext) {
         await securityContext.getAuthenticatedUser(access_token);
 
         githubUser.last_checked = Date.now();
-      } catch (error) {
+      } catch (err) {
 
         log.debug({
           ...logContext,
-          error
+          err
         }, 'failed to check GitHub authentication');
 
         // access is not granted anymore, clear current session

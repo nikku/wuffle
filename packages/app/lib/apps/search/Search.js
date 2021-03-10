@@ -282,7 +282,7 @@ function Search(logger, store) {
       try {
         return filterFns.every(fn => fn(issue));
       } catch (err) {
-        log.warn({ issue: issueIdent(issue) }, 'filter failed', err);
+        log.warn({ issue: issueIdent(issue), err }, 'filter failed');
 
         return false;
       }

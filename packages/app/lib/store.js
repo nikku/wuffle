@@ -319,13 +319,14 @@ class Store {
     } = update;
 
     if (!id) {
-      const error = new Error('<id> required');
+      const err = new Error('<id> required');
 
-      this.log.error(error, 'failed to process update %o', {
+      this.log.error({
+        err,
         update
-      });
+      }, 'failed to process update');
 
-      throw error;
+      throw err;
     }
 
     if (updated_at) {
@@ -340,27 +341,29 @@ class Store {
     };
 
     if (!updatedIssue.key) {
-      const error = new Error('<key> required');
+      const err = new Error('<key> required');
 
-      this.log.error(error, 'failed to process update %o', {
+      this.log.error({
+        err,
         existingIssue,
         issue: id,
         update
-      });
+      }, 'failed to process update');
 
-      throw error;
+      throw err;
     }
 
     if (!updatedIssue.repository) {
-      const error = new Error('<repository> required');
+      const err = new Error('<repository> required');
 
-      this.log.error(error, 'failed to process update %o', {
+      this.log.error({
+        err,
         existingIssue,
         issue: id,
         update
-      });
+      }, 'failed to process update');
 
-      throw error;
+      throw err;
     }
 
     const ident = issueIdent(updatedIssue);
