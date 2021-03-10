@@ -60,15 +60,20 @@ function DumpStoreLocal(logger, store, events) {
 
     let start = Date.now();
 
+    let dump;
+
     try {
-      const dump = await download();
-
-      await store.loadJSON(dump);
-
-      log.info({ ...params, t: Date.now() - start }, 'restored');
+      dump = await download();
     } catch (err) {
-      log.warn({ ...params, t: Date.now() - start }, 'restore failed', err);
+      log.warn({ ...params, t: Date.now() - start }, 'restore failed');
+      log.warn(err);
+
+      return;
     }
+
+    await store.loadJSON(dump);
+
+    log.info({ ...params, t: Date.now() - start }, 'restored');
   }
 
   const DUMP_INTERVAL = process.env.NODE_ENV === 'development'

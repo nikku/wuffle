@@ -42,15 +42,20 @@ function DumpStoreS3(logger, store, events) {
 
     let start = Date.now();
 
+    let dump;
+
     try {
-      const dump = await s3.download();
-
-      await store.loadJSON(dump);
-
-      log.info({ ...s3.params, t: Date.now() - start }, 'restored');
+      dump = await s3.download();
     } catch (err) {
-      log.warn({ ...s3.params, t: Date.now() - start }, 'restore failed', err);
+      log.warn({ ...s3.params, t: Date.now() - start }, 'restore failed');
+      log.warn(err);
+
+      return;
     }
+
+    await store.loadJSON(dump);
+
+    log.info({ ...s3.params, t: Date.now() - start }, 'restored');
   }
 
 
