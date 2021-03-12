@@ -110,7 +110,7 @@ module.exports = function(app, { getRouter }) {
 
     preExit(async () => {
 
-      log.debug('Pre-exit');
+      log.info('Closing...');
 
       await events.emit('wuffle.pre-exit');
 
