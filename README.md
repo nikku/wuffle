@@ -27,7 +27,7 @@ A multi-repository task board for [GitHub issues](https://guides.github.com/feat
 
 * [Issues](https://github.com/nikku/wuffle/issues)
 * [Roadmap](https://github.com/nikku/wuffle/issues?q=is%3Aissue+is%3Aopen+label%3Aroadmap)
-* [Changelog](https://github.com/nikku/wuffle/blob/master/CHANGELOG.md)
+* [Changelog](https://github.com/nikku/wuffle/blob/master/packages/app/CHANGELOG.md)
 * [Setup and Run](https://github.com/nikku/wuffle/blob/master/docs/SETUP.md)
 
 
