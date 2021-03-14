@@ -8,6 +8,7 @@
 
 #### User Documentation
 
+* [Board Filters](./BOARD_FILTERS.md)
 * [Issue Links](./ISSUE_LINKS.md)
 * [Automatic Card Movement](./AUTOMATIC_CARD_MOVEMENT.md)
 
