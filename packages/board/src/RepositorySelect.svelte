@@ -16,8 +16,6 @@
 
   let matchedHints;
 
-  let allHints;
-
   let keyboardSelectedHint;
   let mouseSelectedHint;
 
@@ -33,7 +31,6 @@
     console.timeEnd('RepositorySelect#computeMatch');
 
     matchedHints = opts.matchedHints;
-    allHints = opts.allHints;
 
     keyboardSelectedHint = (
       matchedHints && keyboardSelectedHint && matchedHints.find(
@@ -45,17 +42,6 @@
   $: selectedHint = mouseSelectedHint || keyboardSelectedHint;
 
   function computeMatch(search, repositories) {
-    const allHints = repositories.map(name => {
-      return {
-        name,
-        apply() {
-          return {
-            val: name,
-            idx: 0
-          };
-        }
-      };
-    });
 
     const matchedHints = repositories.reduce((matchedHints, name) => {
 
@@ -83,7 +69,7 @@
 
           return {
             val: name,
-            idx: 0
+            idx: name.length
           };
         }
       };
@@ -95,8 +81,7 @@
 
     return {
       keyboardSelectedHint: matchedHints[0],
-      matchedHints,
-      allHints
+      matchedHints
     };
   }
 
@@ -109,6 +94,10 @@
 
     input.value = value = val;
     input.selectionEnd = input.selectionStart = idx;
+
+    const [ owner, repo ] = val.split('/');
+
+    return onSelect(owner, repo);
   }
 
   function handleInput(event) {
@@ -117,7 +106,7 @@
 
   function nextHint(currentHint, direction) {
 
-    const hints = (allHints || []);
+    const hints = (matchedHints || []);
 
     const currentIndex = hints.findIndex(hint => hint.name === currentHint.name);
 
@@ -141,6 +130,7 @@
     if (key === 'Enter') {
       if (keyboardSelectedHint) {
         applyHint(keyboardSelectedHint);
+        event.preventDefault();
       }
     }
 
