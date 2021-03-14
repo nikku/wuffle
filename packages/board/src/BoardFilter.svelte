@@ -40,6 +40,7 @@
 
   export let className = '';
   export let value = '';
+  export let placeholder;
 
   export let completionOptions = {};
 
@@ -357,11 +358,12 @@
     <input
       class="form-control"
       type="search"
-      placeholder="Filter board"
+      placeholder={ placeholder }
       id={searchId}
       autocomplete="off"
       spellcheck="false"
-      aria-label="Filter"
+      aria-label={ placeholder }
+      title={ placeholder + ' (f)'}
       bind:this={ input }
       bind:value={ value }
       on:input={ handleInput }
