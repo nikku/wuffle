@@ -53,7 +53,7 @@
         class="selectable"
         on:mouseover={ () => onHover(hint) }
         on:mouseout={ () => onBlur(hint) }
-        on:mousedown={ (event) => { event.preventDefault(); onSelect(hint); } }
+        on:mousedown|preventDefault={ (event) => onSelect(hint) }
       >{#each hint.parts as part}<span class:matched={ part.matched }>{ part.text }</span>{/each}</li>
     {/if}
   {/each}
