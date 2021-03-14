@@ -14,7 +14,7 @@
     onClose={ onClose }
     onSelect={ onCreate }
   >
-    <h4 slot="header" class="chooser-header mb-3">
+    <h4 slot="header" class="chooser-header my-3">
       Create new Issue
     </h4>
   </RepositorySelect>

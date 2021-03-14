@@ -2,13 +2,16 @@
 
   @import "variables";
 
-  @import './InputPrefixed';
+  @import "./HelpDropdown";
 
   .board-filter {
-
     &.expanded {
       width: 500px;
       max-width: 100%;
+    }
+
+    > input {
+      width: 100%;
     }
 
     width: 300px;
@@ -24,7 +27,6 @@
   import { Id } from './util';
 
   import {
-    Icon,
     HintList
   } from './components';
 
@@ -35,8 +37,6 @@
   import {
     debounce
   } from './util';
-
-  import SearchIcon from './components/SearchIcon.svelte';
 
   export let className = '';
   export let value = '';
@@ -346,62 +346,53 @@
 
 <svelte:window on:keydown={ handleGlobalKey } />
 
-<div class="board-filter { className } { expanded && 'expanded' }">
-  <div class="input-prefixed" class:focussed={ focussed }>
+<div class="board-filter { className } dropdown-parent { expanded && 'expanded' }">
+  <input
+    class="form-control"
+    type="search"
+    placeholder={ placeholder }
+    id={searchId}
+    autocomplete="off"
+    spellcheck="false"
+    aria-label={ placeholder }
+    title={ placeholder + ' (f)'}
+    bind:this={ input }
+    bind:value={ value }
+    on:input={ handleInput }
+    on:keydown={ handleInputKey }
+    on:focus={ () => focussed = true }
+    on:blur={ () => focussed = false }
+  />
 
-    <label class="prefix" for={searchId}>
-      <Icon class="icon" name="search">
-        <SearchIcon />
-      </Icon>
-    </label>
+  {#if value && match}
+    <div class="help-dropdown">
+      {#each match.categories as category, idx}
+        {#if idx > 0}
+        <hr />
+        {/if}
 
-    <input
-      class="form-control"
-      type="search"
-      placeholder={ placeholder }
-      id={searchId}
-      autocomplete="off"
-      spellcheck="false"
-      aria-label={ placeholder }
-      title={ placeholder + ' (f)'}
-      bind:this={ input }
-      bind:value={ value }
-      on:input={ handleInput }
-      on:keydown={ handleInputKey }
-      on:focus={ () => focussed = true }
-      on:blur={ () => focussed = false }
-    />
+        <div class="category">{ category.name }</div>
 
-    {#if value && match}
-      <div class="help">
-        {#each match.categories as category, idx}
-          {#if idx > 0}
-          <hr />
-          {/if}
+        <HintList
+          hints={ category.values }
+          selectedHint={ selectedHint }
+          onHover={ hint => mouseSelectedHint = hint }
+          onBlur={ () => mouseSelectedHint = null }
+          onSelect={ applyHint }
+          maxElements= { 7 }
+        />
 
-          <div class="category">{ category.name }</div>
+      {/each}
+    </div>
+  {:else if focussed && !value}
+    <div class="help-dropdown">
+      <p class="note">
+        Filter cards by title and description.
+      </p>
 
-          <HintList
-            hints={ category.values }
-            selectedHint={ selectedHint }
-            onHover={ hint => mouseSelectedHint = hint }
-            onBlur={ () => mouseSelectedHint = null }
-            onSelect={ applyHint }
-            maxElements= { 7 }
-          />
-
-        {/each}
-      </div>
-    {:else if focussed && !value}
-      <div class="help">
-        <p class="note">
-          Filter cards by title and description.
-        </p>
-
-        <p class="note">
-          Refine your search with operators: <em>created</em>, <em>updated</em>, <em>milestone</em>, <em>repo</em>, <em>assignee</em>, <em>label</em> and <em>is</em>.
-        </p>
-      </div>
-    {/if}
-  </div>
+      <p class="note">
+        Refine your search with operators: <em>created</em>, <em>updated</em>, <em>milestone</em>, <em>repo</em>, <em>assignee</em>, <em>label</em> and <em>is</em>.
+      </p>
+    </div>
+  {/if}
 </div>
