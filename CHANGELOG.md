@@ -6,6 +6,11 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 _**Note:** Yet to be released changes appear here._
 
+## 0.40.1
+
+* `FIX`: allow create issue repository hint selection via mouse
+* `FIX`: correct create issue repository hints navigation via keyboard
+
 ## 0.40.0
 
 * `FEAT`: filter board for collaborators
