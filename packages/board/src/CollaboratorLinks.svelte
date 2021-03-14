@@ -1,5 +1,12 @@
 <script>
+
+  import {
+    isAddFilterClick,
+    isApplyFilterClick
+  } from './shortcuts';
+
   export let item;
+  export let onSelect;
 
   $: number = item.number;
   $: repository = item.repository;
@@ -38,6 +45,19 @@
     dismissed: 'dismissed his review'
   };
 
+  function handleSelection(qualifier, value) {
+
+    return onSelect && function(event) {
+
+      if (!isApplyFilterClick(event)) {
+        return;
+      }
+
+      event.preventDefault();
+
+      onSelect(qualifier, value, isAddFilterClick(event));
+    };
+  }
 </script>
 
 <style lang="scss">
@@ -125,7 +145,10 @@
 </style>
 
 {#each requested_reviewers as reviewer}
-  <span class="assignee requested-reviewer" title="{ reviewer.login } requested for review">
+  <span
+    class="assignee requested-reviewer"
+    title="{ reviewer.login } requested for review"
+    on:click={ handleSelection('involves', reviewer.login) }>
     <img src="{ reviewer.avatar_url }&s=40" alt="{ reviewer.login } avatar" />
     <div class="icon-shadow"></div>
   </span>
@@ -139,6 +162,7 @@
     class:commented={ review.state === 'commented' || review.state === 'dismissed' }
     title="{ review.user.login } { stateToVerb[review.state] }"
     href={ `${repoUrl}/pull/${number}#pullrequestreview-${review.id}` }
+    on:click={ handleSelection('involves', review.user.login) }
     target="_blank"
     rel="noopener noreferrer"
   >
@@ -148,7 +172,11 @@
 {/each}
 
 {#each assignees as assignee}
-  <span class="assignee" title="{ assignee.login } assigned">
+  <span
+    class="assignee"
+    title="{ assignee.login } assigned"
+    on:click={ handleSelection('involves', assignee.login) }
+  >
     <img src="{ assignee.avatar_url }&s=40" alt="{ assignee.login } avatar" />
     <div class="icon-shadow"></div>
   </span>

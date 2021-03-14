@@ -77,11 +77,11 @@
   $: milestoneUrl = milestone && `${repoUrl}/milestone/${milestone.number}`;
   $: cardUrl = `${repoUrl}/issues/${ number }`;
 
-  function handleSelection(qualifier, value, clickThrough=true) {
+  function handleSelection(qualifier, value) {
 
-    return function(event) {
+    return onSelect && function(event) {
 
-      if (clickThrough && !isApplyFilterClick(event)) {
+      if (!isApplyFilterClick(event)) {
         return;
       }
 
@@ -193,7 +193,7 @@
       <span class="repository" title={ repositoryName }>{ repositoryName }</span>
 
       <span class="collaborator-links">
-        <CollaboratorLinks item={ item } />
+        <CollaboratorLinks item={ item } onSelect={ onSelect } />
       </span>
     </div>
     <div class="title">
@@ -203,7 +203,8 @@
       <div
         class="progress"
         on:click={ () => showChildren = !showChildren }
-        title="Click toggle child tasks ({ completedChildren.length } of { children.length } completed)">
+        title="{ completedChildren.length } of { children.length } child tasks completed"
+      >
         <svg class="icon issue closed" width="1em" height="1em" viewBox="0 0 16 16" version="1.1" aria-hidden="true" fill="currentColor">
           <path fill-rule="evenodd" d="M7 10h2v2H7v-2zm2-6H7v5h2V4zm1.5 1.5l-1 1L12 9l4-4.5-1-1L12 7l-1.5-1.5zM8 13.7A5.71 5.71 0 0 1 2.3 8c0-3.14 2.56-5.7 5.7-5.7 1.83 0 3.45.88 4.5 2.2l.92-.92A6.947 6.947 0 0 0 8 1C4.14 1 1 4.14 1 8s3.14 7 7 7 7-3.14 7-7l-1.52 1.52c-.66 2.41-2.86 4.19-5.48 4.19v-.01z"></path>
         </svg>
@@ -221,7 +222,8 @@
           class="tag milestone"
           name={ milestone.title }
           href={ milestoneUrl }
-          onClick={ onSelect && handleSelection('milestone', milestone.title, !!milestoneUrl) }
+          title={ milestone.title }
+          onClick={ handleSelection('milestone', milestone.title) }
         />
       {/if}
 
@@ -230,7 +232,8 @@
           class="tag label"
           color="#{ color }"
           name={ name }
-          onClick={ onSelect && handleSelection('label', name, false) }
+          title={ name }
+          onClick={ handleSelection('label', name) }
         />
       {/each}
 
