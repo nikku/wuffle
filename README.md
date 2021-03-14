@@ -15,11 +15,11 @@ A multi-repository task board for [GitHub issues](https://guides.github.com/feat
 
 * Multi-repository / organization support
 * Maps issues to columns via labels or close states
-* Allows you to filter issues by name, issue label, and more
+* Allows you to [filter issues](https://github.com/nikku/wuffle/blob/master/docs/BOARD_FILTERS.md) by name, label, assignee, and more
 * Visualizes reviews and pull request status/checks on a card
 * Automatically [moves cards across columns](https://github.com/nikku/wuffle/blob/master/docs/AUTOMATIC_CARD_MOVEMENT.md), as you develop
 * Supports private repositories: Visitors only see cards for issues they see on GitHub, too
-* Contributors can move/reorder cards
+* Allows contributors to move/reorder cards
 * Simple setup: Connects to GitHub as a [GitHub app](https://developer.github.com/apps/)
 
 
