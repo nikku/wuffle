@@ -748,8 +748,8 @@
 
   .powered-by-logo {
     position: absolute;
-    bottom: 18px;
-    right: 12px;
+    bottom: 17px;
+    right: 17px;
 
     opacity: .5;
     transition: opacity .3s;
