@@ -17,6 +17,7 @@
     return hsp > 127.5;
   }
 
+  export let title = '';
   export let name;
   export let color = '';
   export let className = '';
@@ -31,7 +32,7 @@
   <a
     href={ href }
     target="_blank"
-    title={ name }
+    title={ title || name }
     rel="noopener noreferrer"
     class:inverted={ inverted }
     class="tag { className }"
@@ -45,7 +46,7 @@
     class:clickable={ onClick }
     style="background-color: { color }"
     on:click={ onClick }
-    title={ name }
+    title={ title || name }
   >{ name }</span>
 {/if}
 

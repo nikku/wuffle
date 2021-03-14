@@ -12,8 +12,6 @@
 
   export let item;
 
-  export let className = '';
-
   export let onSelect;
 
   export let hovered = false;
@@ -48,7 +46,7 @@
 
   function handleSelection(qualifier, value) {
 
-    return function(event) {
+    return onSelect && function(event) {
 
       if (!isApplyFilterClick(event)) {
         return;
@@ -89,7 +87,7 @@
        target="_blank"
        rel="noopener noreferrer"
        class="issue-number"
-       on:click={ onSelect && handleSelection('ref', item.key) }
+       on:click={ handleSelection('ref', item.key) }
        title="{ repositoryName }#{ number } · { linkTitle } this issue"
      >
       {#if pull_request}
@@ -126,7 +124,7 @@
     <span class="short-title" title={ title }>{ title }</span>
 
     <span class="collaborator-links">
-      <CollaboratorLinks item={ item } />
+      <CollaboratorLinks item={ item } onSelect={ onSelect } />
     </span>
   </div>
 
