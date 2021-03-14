@@ -22,6 +22,10 @@ module.exports = async (router) => {
     res.sendFile(path.join(staticDirectory, 'index.html'));
   });
 
+  router.get('/robots.txt', (req, res, next) => {
+    res.sendFile(path.join(staticDirectory, 'robots.txt'));
+  });
+
   router.get('/service-worker.js', (req, res, next) => {
     res.sendFile(path.join(staticDirectory, 'service-worker.js'));
   });
