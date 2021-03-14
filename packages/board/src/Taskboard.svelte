@@ -829,44 +829,46 @@
 
   <nav class="navbar navbar-expand navbar-light taskboard-header">
 
-    <a class="navbar-brand mb-0 h1" href="/" aria-label={ name }>
-      <img src="./logo.svg" width="20" height="20" alt="" class="logo">
-      <span class="brand-name">{ name }</span>
+    <a class="navbar-brand m-0 mr-2" href="/" aria-label={ name } title="{ name } - Wuffle board">
+      <img src="./logo.svg" height="30px" alt="Wuffle board logo" class="logo" />
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#{navId}" aria-controls={navId} aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
     <div class="collapse navbar-collapse" id={navId}>
-      <div class="navbar-nav mr-auto">
 
-        <form class="form-inline mx-2 my-2 my-sm-0" on:submit|preventDefault={ openCreateIssue }>
-          <button class="btn btn-secondary btn-sm" type="submit">
-            <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 16 16"><path fill="currentColor" fill-rule="evenodd" d="M7.75 2a.75.75 0 01.75.75V7h4.25a.75.75 0 110 1.5H8.5v4.25a.75.75 0 11-1.5 0V8.5H2.75a.75.75 0 010-1.5H7V2.75A.75.75 0 017.75 2z"></path></svg>
-          </button>
-        </form>
-
-      </div>
-
-      <form class="form-inline my-2 mx-2 my-lg-0" on:submit|preventDefault={ () => {} }>
-        <BoardFilter value={ filter } completionOptions={ filterOptions } onChange={ filterChanged } />
+      <form class="form-inline my-2 my-lg-0" on:submit|preventDefault={ () => {} }>
+        <BoardFilter
+          value={ filter }
+          completionOptions={ filterOptions }
+          onChange={ filterChanged }
+          placeholder={ 'Filter board...' }
+        />
       </form>
 
-      <div class="taskboard-header-login ml-2">
-        {#if user}
-          <a href="/wuffle/logout" aria-label="Logout">
-            <Avatar title={ `Logout ${user.login}` } rounded>
-              <img src="{ user.avatar_url }&s=40" style="max-width: 100%" alt="Logged in user avatar" />
-            </Avatar>
-          </a>
-        {:else}
-          <a href="/wuffle/login" aria-label="Login with GitHub">
-            <Avatar title="Login with GitHub" rounded>
-              <svg height="1.3em" fill="currentColor" viewBox="0 0 12 16" version="1.1" aria-hidden="true"><path fill-rule="evenodd" d="M12 14.002a.998.998 0 0 1-.998.998H1.001A1 1 0 0 1 0 13.999V13c0-2.633 4-4 4-4s.229-.409 0-1c-.841-.62-.944-1.59-1-4 .173-2.413 1.867-3 3-3s2.827.586 3 3c-.056 2.41-.159 3.38-1 4-.229.59 0 1 0 1s4 1.367 4 4v1.002z"></path></svg>
-            </Avatar>
-          </a>
-        {/if}
-      </div>
+    </div>
+
+    <form class="form-inline mx-2 my-2 my-sm-0" on:submit|preventDefault={ openCreateIssue }>
+      <button class="btn btn-light" type="submit" title="Create new issue (n)">
+        <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 16 16"><path fill="currentColor" fill-rule="evenodd" d="M7.75 2a.75.75 0 01.75.75V7h4.25a.75.75 0 110 1.5H8.5v4.25a.75.75 0 11-1.5 0V8.5H2.75a.75.75 0 010-1.5H7V2.75A.75.75 0 017.75 2z"></path></svg>
+      </button>
+    </form>
+
+    <div class="taskboard-header-login ml-2">
+      {#if user}
+        <a href="/wuffle/logout" aria-label="Logout">
+          <Avatar title={ `Logout ${user.login}` } rounded>
+            <img src="{ user.avatar_url }&s=40" style="max-width: 100%" alt="Logged in user avatar" />
+          </Avatar>
+        </a>
+      {:else}
+        <a href="/wuffle/login" aria-label="Login with GitHub">
+          <Avatar title="Login with GitHub" rounded>
+            <svg height="1.3em" fill="currentColor" viewBox="0 0 12 16" version="1.1" aria-hidden="true"><path fill-rule="evenodd" d="M12 14.002a.998.998 0 0 1-.998.998H1.001A1 1 0 0 1 0 13.999V13c0-2.633 4-4 4-4s.229-.409 0-1c-.841-.62-.944-1.59-1-4 .173-2.413 1.867-3 3-3s2.827.586 3 3c-.056 2.41-.159 3.38-1 4-.229.59 0 1 0 1s4 1.367 4 4v1.002z"></path></svg>
+          </Avatar>
+        </a>
+      {/if}
     </div>
   </nav>
 
