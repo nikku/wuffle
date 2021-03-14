@@ -193,7 +193,7 @@
 
 <style lang="scss">
 
-  @import './InputPrefixed';
+  @import './HelpDropdown';
 
   .repository-select {
     position: fixed;
@@ -225,10 +225,9 @@
 
     line-height: 1.5;
 
-    border-radius: 3px;
+    border-radius: 5px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   }
-
 </style>
 
 <svelte:window on:keydown={ checkClose } />
@@ -236,23 +235,19 @@
 <div class="repository-select">
   <div class="overlay" on:click={ onClose }></div>
 
-  <form class="form-inline issue-creator p-4" on:submit={ checkSubmit }>
+  <form class="issue-creator px-4 py-2" on:submit={ checkSubmit }>
 
     <slot name="header"></slot>
 
-    <div class="input-prefixed input-prefixed-lg">
-
-      <label class="prefix" for={ inputId }>
-        <svg height="1em" viewBox="0 0 12 16" version="1.1" aria-hidden="true"><path fill-rule="evenodd" d="M4 9H3V8h1v1zm0-3H3v1h1V6zm0-2H3v1h1V4zm0-2H3v1h1V2zm8-1v12c0 .55-.45 1-1 1H6v2l-1.5-1.5L3 16v-2H1c-.55 0-1-.45-1-1V1c0-.55.45-1 1-1h10c.55 0 1 .45 1 1zm-1 10H1v2h2v-1h3v1h5v-2zm0-10H2v9h9V1z"></path></svg>
-      </label>
+    <div class="form-group dropdown-parent">
 
       <input
         id={ inputId }
-        bind:this={input}
+        bind:this={ input }
         value={ value }
         on:input={ handleInput }
         on:keydown={ handleInputKey }
-        placeholder="Choose org/repo"
+        placeholder="Choose repository"
         autocomplete="off"
         spellcheck="false"
         aria-label="Repository name input"
@@ -261,7 +256,7 @@
       />
 
       {#if value && matchedHints.length }
-        <div class="help">
+        <div class="help-dropdown">
           <HintList
             hints={ matchedHints }
             selectedHint={ selectedHint }

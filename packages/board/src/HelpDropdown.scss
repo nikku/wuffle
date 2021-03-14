@@ -1,0 +1,53 @@
+@import "variables";
+
+.dropdown-parent {
+  position: relative;
+}
+
+.help-dropdown {
+  border-radius: 4px;
+  margin: 0;
+  margin-top: 5px;
+  text-align: left;
+  height: auto;
+  position: relative;
+  background: transparent;
+  border: none;
+  z-index: 999;
+  width: 100%;
+  min-width: 0!important;
+  max-width: none!important;
+  padding: .6em 0;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid rgba(0,0,0,.1);
+  box-shadow: 0 0.1rem 1rem rgba(0,0,0,.075);
+
+  position: absolute;
+  top: 100%;
+  z-index: 100;
+  left: 0px;
+  right: auto;
+  display: block;
+
+  .category {
+    color: $primary;
+    font-weight: bold;
+    padding: 0 .8rem;
+  }
+
+  .note {
+    padding: 0 .8rem;
+    color: $gray-600;
+    margin: 0;
+
+    em {
+      font-style: italic;
+    }
+  }
+
+  .note + .note {
+    margin-top: 5px;
+  }
+
+}
