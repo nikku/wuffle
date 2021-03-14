@@ -12,8 +12,9 @@ _**Note:** Yet to be released changes appear here._
 * `FEAT`: apply board filters with `SHIFT` / `ALT` click modifiers only
 * `FEAT`: add create issue widget ([#65](https://github.com/nikku/wuffle/issues/65))
 * `FEAT`: improve navigation layout
-* `DOCS`: document [board filters](./docs/BOARD_FILTERS.md)
+* `FIX`: workaround Chromium service worker bug ([`f6d20222`](https://github.com/nikku/wuffle/commit/f6d202227979935d3d9b62f1f2f02c43eedd9f54))
 * `CHORE`: adjust board filters
+* `DOCS`: document [board filters](./docs/BOARD_FILTERS.md)
 
 ### Breaking Changes
 
