@@ -74,6 +74,10 @@
 
     text-decoration: none;
 
+    &:not(a) {
+      cursor: default;
+    }
+
     &.inverted {
       color: #333;
     }
