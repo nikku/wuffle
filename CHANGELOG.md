@@ -6,6 +6,19 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 _**Note:** Yet to be released changes appear here._
 
+## 0.40.0
+
+* `FEAT`: filter board for collaborators
+* `FEAT`: apply board filters with `SHIFT` / `ALT` click modifiers only
+* `FEAT`: add create issue widget ([#65](https://github.com/nikku/wuffle/issues/65))
+* `FEAT`: improve navigation layout
+* `DOCS`: document [board filters](./docs/BOARD_FILTERS.md)
+* `CHORE`: adjust board filters
+
+### Breaking Changes
+
+* Filtering issues on the board via click now consistently requires a `SHIFT` or `ALT` modifier
+
 ## 0.39.0
 
 * `FIX`: do not swallow store import errors ([#114](https://github.com/nikku/wuffle/pull/114))
