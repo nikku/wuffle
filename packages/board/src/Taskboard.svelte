@@ -4,6 +4,8 @@
   import Avatar from './components/Avatar.svelte';
   import Loader from './components/Loader.svelte';
 
+  import PoweredBy from './PoweredBy.svelte';
+
   import Notifications from './components/Notifications.svelte';
   import Notification from './components/Notification.svelte';
 
@@ -32,8 +34,6 @@
 
   import loaderImage from './logo-gray.svg';
   import errorImage from './error.svg';
-
-  import wuffleLogo from './logo-gray.svg';
 
   import { onMount } from 'svelte';
 
@@ -745,21 +745,6 @@
   .taskboard {
     position: relative;
   }
-
-  .powered-by-logo {
-    position: absolute;
-    bottom: 17px;
-    right: 17px;
-
-    opacity: .5;
-    transition: opacity .3s;
-
-    z-index: 10;
-
-    &:hover {
-      opacity: 1;
-    }
-  }
 </style>
 
 <svelte:head>
@@ -816,12 +801,7 @@
     {/if}
   </Notifications>
 
-  <a class="powered-by-logo" href="https://wuffle.dev"
-     target="_blank"
-     rel="noopener noreferrer"
-     title="Powered by Wuffle Board">
-    <img src={ wuffleLogo } width="20" height="20" alt="Wuffle logo" class="logo">
-  </a>
+  <PoweredBy />
 
   <nav class="navbar navbar-expand navbar-light taskboard-header">
 
