@@ -6,6 +6,10 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 _**Note:** Yet to be released changes appear here._
 
+## 0.41.0
+
+* `FEAT`: link documentation next to powered by icon
+
 ## 0.40.1
 
 * `FIX`: allow create issue repository hint selection via mouse
