@@ -60,17 +60,18 @@
 
 <div class="powered-by">
   <div class="help">
-    <a class="help-item" href="https://wuffle.dev/docs">Documentation</a>
+    <a class="help-item" href="https://wuffle.dev/docs"
+       target="_blank" rel="noopener">
+      Documentation
+    </a>
 
     <span class="help-item">
       Powered by
     </span>
   </div>
 
-  <a href="https://wuffle.dev"
-     class="logo"
-     target="_blank"
-     rel="noopener noreferrer" title="Wuffle">
+  <a class="logo" href="https://wuffle.dev"
+     target="_blank" rel="noopener">
 
     <!-- ./logo-gray.svg with dynamic fill color -->
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="20" height="20"><path d="M12 0h56c7 0 12 5 12 12v56c0 7-5 12-12 12H12C5 80 0 75 0 68V12C0 5 5 0 12 0z" fill="currentColor"/><path d="M15 10h21c3 0 5 2 5 5v6c0 3-2 5-5 5H15c-2 0-4-2-4-5v-6c0-3 2-5 4-5zm0 20h21c3 0 5 2 5 5v6c0 2-2 4-5 4H15c-2 0-4-1-4-4v-6c0-3 2-5 4-5zm27 22h21c2 0 4 2 4 5v6c0 2-2 4-4 4H42c-2 0-4-2-4-4v-6c0-3 2-5 4-5z" fill="#fff"/></svg>
