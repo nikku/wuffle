@@ -6,8 +6,8 @@
     top: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
-
     z-index: 200;
+    pointer-events: none;
 
     > .content {
       opacity: 0.3;
@@ -23,7 +23,6 @@
 
     &:not(.shown) > .content {
       opacity: 0;
-      pointer-events: none;
     }
   }
 
