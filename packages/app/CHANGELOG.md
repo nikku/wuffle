@@ -6,6 +6,10 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 _**Note:** Yet to be released changes appear here._
 
+## 0.41.4
+
+* `CHORE`: control published files via `package.json#files`
+
 ## 0.41.3
 
 * `FIX`: distinguish requested review and commented states for PR participants
