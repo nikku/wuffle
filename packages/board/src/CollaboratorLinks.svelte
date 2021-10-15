@@ -114,7 +114,7 @@
     }
 
     &.requested-reviewer {
-      @include review-badge($info);
+      @include review-badge($gray-500);
     }
 
     &.commented {
