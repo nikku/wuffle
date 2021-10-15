@@ -6,6 +6,10 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 _**Note:** Yet to be released changes appear here._
 
+## 0.41.3
+
+* `FIX`: distinguish requested review and commented states for PR participants
+
 ## 0.41.2
 
 * `FIX`: correctly disable loader interaction if hidden
