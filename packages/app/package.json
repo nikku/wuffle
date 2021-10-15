@@ -80,5 +80,13 @@
       "tmp/*",
       "test/*"
     ]
-  }
+  },
+  "files": [
+    "bin",
+    "lib",
+    "public",
+    "app.yml",
+    "index.js",
+    "wuffle.config.example.js"
+  ]
 }
