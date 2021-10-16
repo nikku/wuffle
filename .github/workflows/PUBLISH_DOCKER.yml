@@ -1,0 +1,24 @@
+name: PUBLISH_DOCKER
+
+on:
+  push:
+    tags:
+      - 'v[0-9]+.*'
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Login
+      env:
+        DOCKER_USER: ${{secrets.DOCKER_USERNAME}}
+        DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
+      run: |
+        docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+    - name: Build image
+      run: docker build -f support/docker/Dockerfile -t nrehwaldt/wuffle:latest .
+    - name: Push image
+      run: docker push nrehwaldt/wuffle
