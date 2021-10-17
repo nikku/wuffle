@@ -46,13 +46,15 @@ Some key aspects separate [Wuffle](https://github.com/nikku/wuffle) from the Git
 
 ## Setup and Run
 
-Starting the board, including first-time setup:
+Starting the board, including first-time setup if you have [npm](https://www.npmjs.com/) installed:
 
 ```
 npx wuffle
 ```
 
 Read the [setup instructions](https://github.com/nikku/wuffle/blob/master/docs/SETUP.md) for detailed explaination for the what and why.
+
+Alternatively, run the app [via Docker](https://github.com/nikku/wuffle/tree/master/support/docker) if you already configured it.
 
 
 ## Components
