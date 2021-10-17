@@ -1,6 +1,6 @@
 {
   "name": "wuffle",
-  "version": "0.41.4",
+  "version": "0.41.5",
   "description": "A multi-repository task board for GitHub issues",
   "author": {
     "name": "Nico Rehwaldt",
