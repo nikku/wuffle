@@ -6,6 +6,11 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 _**Note:** Yet to be released changes appear here._
 
+## 0.41.5
+
+* `CHORE`: push `latest` and `next` tags to [docker hub](https://hub.docker.com/repository/docker/nrehwaldt/wuffle) again
+* `DEPS`: patch bump dependencies
+
 ## 0.41.4
 
 * `CHORE`: control published files via `package.json#files`
