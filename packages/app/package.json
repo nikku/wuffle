@@ -41,6 +41,7 @@
     "body-parser": "^1.19.0",
     "compression": "^1.7.4",
     "express-session": "^1.17.2",
+    "fake-tag": "^3.0.0",
     "memorystore": "^1.6.6",
     "min-dash": "^3.8.0",
     "mkdirp": "^1.0.4",
@@ -50,12 +51,15 @@
     "smee-client": "^1.2.2"
   },
   "devDependencies": {
+    "@octokit/graphql-schema": "^10.73.0",
     "@types/compression": "^1.7.2",
     "@types/express-session": "^1.17.4",
     "@types/mkdirp": "^1.0.2",
     "chai": "^4.3.4",
     "eslint": "^7.32.0",
     "eslint-plugin-bpmn-io": "^0.12.0",
+    "eslint-plugin-graphql": "^4.0.0",
+    "graphql": "^15.6.1",
     "mocha": "^9.1.3",
     "nock": "^13.1.4",
     "nodemon": "^2.0.14",
