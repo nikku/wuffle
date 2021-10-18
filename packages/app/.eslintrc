@@ -8,6 +8,13 @@
   },
   "rules": {
     "comma-dangle": [ "error", "never" ],
-    "require-atomic-updates": "off"
-  }
+    "require-atomic-updates": "off",
+    "graphql/template-strings": [ "error", {
+      "env": "literal",
+      "tagName": "gql"
+    } ]
+  },
+  "plugins": [
+    "graphql"
+  ]
 }
