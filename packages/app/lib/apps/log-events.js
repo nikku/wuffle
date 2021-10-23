@@ -47,13 +47,13 @@ module.exports = function(logger, webhookEvents) {
 
   // behavior //////////////////////
 
-  webhookEvents.on('*', async context => {
+  webhookEvents.onAny(async context => {
     const {
-      event,
+      name,
       payload
     } = context;
 
-    write(event, payload).catch(err => {
+    write(name, payload).catch(err => {
       log.error(err, 'failed to log event');
     });
   });
