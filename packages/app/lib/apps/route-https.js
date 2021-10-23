@@ -5,7 +5,7 @@ const {
 /**
  * Enables https redirects and strict transport security.
  *
- * @param {import("express").Router} router
+ * @param {import('express').Router} router
  */
 module.exports = function(router) {
 

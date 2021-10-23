@@ -1,3 +1,8 @@
+/**
+ * @constructor
+ *
+ * @param {import('../github-client/GithubClient')} githubClient
+ */
 function SecurityContext(githubClient) {
 
   /**

@@ -15,12 +15,14 @@ function isInternalError(error) {
 /**
  * This component performs a periodic background sync of a project.
  *
- * @param {import("../../types").Logger} logger
+ * @constructor
+ *
+ * @param {import('../../types').Logger} logger
  * @param {Object} config
- * @param {import("../../store")} store
- * @param {import("../github-client/GithubClient")} githubClient
- * @param {import("../github-app/GithubApp")} githubApp
- * @param {import("../../events")} events
+ * @param {import('../../store')} store
+ * @param {import('../github-client/GithubClient')} githubClient
+ * @param {import('../github-app/GithubApp')} githubApp
+ * @param {import('../../events')} events
  */
 function BackgroundSync(logger, config, store, githubClient, githubApp, events) {
 
@@ -140,8 +142,8 @@ We automatically synchronize all repositories you granted us access to via the G
           }, 'processing');
 
           const params = {
-            sort: 'updated',
-            direction: 'desc',
+            sort: /** @type { 'updated' } */ ('updated'),
+            direction: /** @type { 'desc' } */ ('desc'),
             per_page: 100,
             owner,
             repo
@@ -161,7 +163,7 @@ We automatically synchronize all repositories you granted us access to via the G
                 ...params,
                 state: 'open'
               },
-              response => response.data.filter(issue => !issue.pull_request)
+              response => response.data.filter(issue => !('pull_request' in issue))
             ),
 
             // closed issues, updated last 30 days
@@ -172,7 +174,7 @@ We automatically synchronize all repositories you granted us access to via the G
                 state: 'closed',
                 since: new Date(syncClosedSince).toISOString()
               },
-              response => response.data.filter(issue => !issue.pull_request)
+              response => response.data.filter(issue => !('pull_request' in issue))
             ),
 
             // open pulls

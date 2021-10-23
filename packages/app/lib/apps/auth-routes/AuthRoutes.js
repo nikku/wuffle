@@ -23,9 +23,11 @@ const {
  * Under the hood, it uses GitHub's APIs to perform user authentication
  * via OAuth.
  *
- * @param {import("../../types").Logger} logger
- * @param {import("../../types").Router} router
- * @param {import("../security-context/SecurityContext")} securityContext
+ * @constructor
+ *
+ * @param {import('../../types').Logger} logger
+ * @param {import('../../types').Router} router
+ * @param {import('../security-context/SecurityContext')} securityContext
  */
 function AuthRoutes(logger, router, securityContext) {
 

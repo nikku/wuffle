@@ -10,7 +10,20 @@ const {
 // 15 minutes
 const TTL = 1000 * 60 * 15;
 
+/**
+ * @typedef { import('../../types').Octokit } Octokit
+ * @typedef { { [x: string]: Promise<Octokit> } } LoginCache
+ */
 
+/**
+ * @constructor
+ *
+ * @param {import('../../types').ProbotApp} app
+ * @param {import('../webhook-events/WebhookEvents')} webhookEvents
+ * @param {import('../../types').Logger} logger
+ * @param {import('../github-app/GithubApp')} githubApp
+ * @param {import('../../events')} events
+ */
 function GitHubClient(app, webhookEvents, logger, githubApp, events) {
 
   const log = logger.child({
@@ -21,7 +34,7 @@ function GitHubClient(app, webhookEvents, logger, githubApp, events) {
 
   // cached data ///////////////////
 
-  let authByLogin = {};
+  let authByLogin = /** @type { LoginCache } */ ({});
 
 
   // reactivity ////////////////////
@@ -33,10 +46,20 @@ function GitHubClient(app, webhookEvents, logger, githubApp, events) {
 
   // functionality /////////////////
 
+  /**
+   * @param {number} id
+   *
+   * @return {Promise<Octokit>}
+   */
   function getInstallationScoped(id) {
     return app.auth(id);
   }
 
+  /**
+   * @param {string} login
+   *
+   * @return {Promise<Octokit>}
+   */
   function getOrgScoped(login) {
 
     let auth = authByLogin[login];
@@ -50,7 +73,7 @@ function GitHubClient(app, webhookEvents, logger, githubApp, events) {
     auth = authByLogin[login] =
       githubApp.getInstallationByLogin(login)
         .then(
-          installation => this.getInstallationScoped(installation.id),
+          installation => getInstallationScoped(installation.id),
           err => {
             log.error({
               err,
@@ -64,6 +87,13 @@ function GitHubClient(app, webhookEvents, logger, githubApp, events) {
     return auth;
   }
 
+  /**
+   * Return user scoped octokit instance.
+   *
+   * @param {string|{ access_token: string }} user
+   *
+   * @return {Promise<Octokit>}
+   */
   function getUserScoped(user) {
 
     const access_token = typeof user === 'string' ? user : user.access_token;

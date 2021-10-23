@@ -11,6 +11,8 @@ const {
 /**
  * This component updates synchronizes GitHub statuses with pull requests.
  *
+ * @constructor
+ *
  * @param {import('../webhook-events/WebhookEvents')} webhookEvents
  * @param {import('../../events')} events
  * @param {import('../github-client/GithubClient')} githubClient

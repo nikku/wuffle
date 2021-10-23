@@ -8,9 +8,11 @@ const mkdirp = require('mkdirp');
  * This component restores a store dump on startup and periodically
  * persists the store to disc.
  *
- * @param {import("../../../types").Logger} logger
- * @param {import("../../../store")} store
- * @param {import("../../../events")} events
+ * @constructor
+ *
+ * @param {import('../../../types').Logger} logger
+ * @param {import('../../../store')} store
+ * @param {import('../../../events')} events
  */
 function DumpStoreLocal(logger, store, events) {
 

@@ -1,18 +1,35 @@
-const ExpressSession = import('express-session').Session;
+/* global InstanceType:true */
 
-export type Logger = import('probot').Logger;
+import type { ExpressSession } from 'express-session';
 
-export type Router = import('express').Router;
+import type {
+  ProbotOctokit,
+  Probot as ProbotApp,
+  Logger
+} from 'probot';
 
-export type Injector = import('async-didi').Injector;
+import type {
+  Router
+} from 'express';
+
+export type Octokit = InstanceType<typeof ProbotOctokit>;
+
+import type { Injector } from 'async-didi';
+
+export {
+  Logger,
+  ExpressSession,
+  Router,
+  Octokit,
+  Injector,
+  ProbotApp
+};
 
 export type DidiModule = {
   __init__?: Array<String>,
   __depends__?: Array<String>,
   [propName: string]: any,
 };
-
-export type ProbotApp = import('probot').Probot;
 
 export type GitHubUser = {
   last_checked: number,

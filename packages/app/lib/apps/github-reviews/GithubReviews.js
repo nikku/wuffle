@@ -11,7 +11,9 @@ const {
 /**
  * This component updates the stored issues based on GitHub events.
  *
- * @param {import("../webhook-events/WebhookEvents")} webhookEvents
+ * @constructor
+ *
+ * @param {import('../webhook-events/WebhookEvents')} webhookEvents
  * @param {import('../../events')} events
  * @param {import('../github-client/GithubClient')} githubClient
  * @param {import('../../store')} store

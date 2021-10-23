@@ -13,9 +13,9 @@ const {
  * This component provides the board API routes.
  *
  * @param {Object} config
- * @param {import("../store")} store
- * @param {import("../types").Router} router
- * @param {import("../types").Logger} logger
+ * @param {import('../store')} store
+ * @param {import('../types').Router} router
+ * @param {import('../types').Logger} logger
  * @param {import('./github-client/GithubClient')} githubClient
  * @param {import('./auth-routes/AuthRoutes')} authRoutes
  * @param {import('./user-access/UserAccess')} userAccess
