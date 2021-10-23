@@ -52,6 +52,8 @@
   "devDependencies": {
     "@types/express-session": "^1.17.3",
     "@types/node-fetch": "^2.5.8",
+    "@types/express-session": "^1.17.4",
+    "@types/node-fetch": "^3.0.3",
     "chai": "^4.3.4",
     "eslint": "^7.21.0",
     "eslint-plugin-bpmn-io": "^0.12.0",
