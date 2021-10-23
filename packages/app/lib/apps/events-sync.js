@@ -11,11 +11,13 @@ const {
 /**
  * This component updates the stored issues based on GitHub events.
  *
- * @param {import("./webhook-events/WebhookEvents")} webhookEvents
- * @param {import("../store")} store
- * @param {import("../types").Logger} logger
+ * @constructor
+ *
+ * @param {import('./webhook-events/WebhookEvents')} webhookEvents
+ * @param {import('../store')} store
+ * @param {import('../types').Logger} logger
  */
-module.exports = function EventsSync(webhookEvents, store, logger) {
+function EventsSync(webhookEvents, store, logger) {
 
   const log = logger.child({
     name: 'wuffle:user-access'
@@ -265,4 +267,6 @@ module.exports = function EventsSync(webhookEvents, store, logger) {
     return store.removeIssueById(storedIssue.id);
   });
 
-};
+}
+
+module.exports = EventsSync;

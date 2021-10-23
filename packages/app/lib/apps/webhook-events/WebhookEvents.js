@@ -1,3 +1,9 @@
+/**
+ * @constructor
+ *
+ * @param {import('../../types').ProbotApp} app
+ * @param {import('../github-app/GithubApp')} githubApp
+ */
 function WebhookEvents(app, githubApp) {
 
   /**
@@ -31,7 +37,7 @@ function WebhookEvents(app, githubApp) {
    * Register a event lister for a single
    * or a number of webhook events.
    *
-   * @param {String|Array<String>} events
+   * @param {any|any[]} events
    * @param {Function} fn listener
    */
   function on(events, fn) {

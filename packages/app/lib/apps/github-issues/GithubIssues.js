@@ -8,12 +8,18 @@ const {
 } = linkTypes;
 
 
+/**
+ * @constructor
+ *
+ * @param {import('../../types').Logger} logger
+ * @param {any} config
+ * @param {import('../../columns')} columns
+ */
 function GithubIssues(logger, config, columns) {
 
   const log = logger.child({
     name: 'wuffle:github-issues'
   });
-
 
   function getAssigneeUpdate(issue, newAssignee) {
 

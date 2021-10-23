@@ -11,8 +11,10 @@ const {
 /**
  * This app allows you to create a search filter from a given term.
  *
- * @param {import("../../types").Logger} logger
- * @param {import("../../store")} store
+ * @constructor
+ *
+ * @param {import('../../types').Logger} logger
+ * @param {import('../../store')} store
  */
 function Search(logger, store) {
 

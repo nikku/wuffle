@@ -34,10 +34,12 @@ const RequiredEvents = [
  * This component validates and exposes
  * installations of the GitHub app.
  *
+ * @constructor
+ *
  * @param {Object} config
- * @param {import("../../types").ProbotApp} app
- * @param {import("../../types").Logger} logger
- * @param {import("../../types").Injector} injector
+ * @param {import('../../types').ProbotApp} app
+ * @param {import('../../types').Logger} logger
+ * @param {import('../../types').Injector} injector
  */
 function GithubApp(config, app, logger, injector) {
 
@@ -68,6 +70,9 @@ function GithubApp(config, app, logger, injector) {
 
   // functionality /////////////////
 
+  /**
+   * @return {Promise<import('../../types').Octokit>}
+   */
   function getAppScopedClient() {
     return app.auth();
   }
@@ -159,6 +164,11 @@ function GithubApp(config, app, logger, injector) {
     return getInstallationById(installation_id).then(installation => !!installation);
   }
 
+  /**
+   * @param {string} login
+   *
+   * @return {boolean}
+   */
   function isLoginEnabled(login) {
     if (allowedOrgs) {
       return allowedOrgs.some(org => org === login);
@@ -167,6 +177,12 @@ function GithubApp(config, app, logger, injector) {
     return true;
   }
 
+  /**
+   * @param {string} requested
+   * @param {string} actual
+   *
+   * @return {boolean}
+   */
   function isRequiredLevel(requested, actual) {
     return PermissionLevels[requested] <= PermissionLevels[actual || 'none'];
   }

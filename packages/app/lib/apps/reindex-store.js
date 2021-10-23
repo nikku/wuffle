@@ -2,7 +2,16 @@ const {
   version
 } = require('../../package.json');
 
-module.exports = function ReindexStore(logger, config, events, store) {
+
+/**
+ * @constructor
+ *
+ * @param {any} logger
+ * @param {any} config
+ * @param {any} events
+ * @param {any} store
+ */
+function ReindexStore(logger, config, events, store) {
 
   const log = logger.child({
     name: 'wuffle:reindex-store'
@@ -49,7 +58,10 @@ module.exports = function ReindexStore(logger, config, events, store) {
     data.wuffleVersion = version;
   });
 
-};
+}
+
+module.exports = ReindexStore;
+
 
 // helpers //////////////////
 

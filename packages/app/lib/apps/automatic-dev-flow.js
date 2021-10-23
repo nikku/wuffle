@@ -9,6 +9,8 @@ const IN_REVIEW = 'IN_REVIEW';
  * across the board, as long as the user adheres to a specified
  * dev flow.
  *
+ * @constructor
+ *
  * @param {import('./webhook-events/WebhookEvents')} webhookEvents
  * @param {import('./github-issues/GithubIssues')} githubIssues
  * @param {import('../columns')} columns
