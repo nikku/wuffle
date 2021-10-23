@@ -36,17 +36,17 @@
     "auto-test": "npm test -- --watch"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.3.0",
+    "@aws-sdk/client-s3": "^3.38.0",
     "async-didi": "^0.2.1",
     "body-parser": "^1.19.0",
     "compression": "^1.7.4",
-    "express-session": "^1.17.1",
-    "memorystore": "^1.6.4",
-    "min-dash": "^3.5.2",
+    "express-session": "^1.17.2",
+    "memorystore": "^1.6.6",
+    "min-dash": "^3.8.0",
     "mkdirp": "^1.0.4",
     "p-defer": "^3.0.0",
     "prexit": "0.0.5",
-    "probot": "^11.1.0",
+    "probot": "^11.4.1",
     "smee-client": "^1.2.2"
   },
   "devDependencies": {
