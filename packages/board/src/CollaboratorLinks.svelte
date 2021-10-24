@@ -8,11 +8,6 @@
   export let item;
   export let onSelect;
 
-  $: number = item.number;
-  $: repository = item.repository;
-  $: repositoryName = `${repository.owner.login}/${repository.name}`;
-  $: repoUrl = `https://github.com/${ repositoryName }`;
-
   $: assignees = item.assignees;
 
   $: requested_reviewers = item.requested_reviewers || [];
@@ -161,7 +156,7 @@
     class:requested-changes={ review.state === 'changes_requested' }
     class:commented={ review.state === 'commented' || review.state === 'dismissed' }
     title="{ review.user.login } { stateToVerb[review.state] }"
-    href={ `${repoUrl}/pull/${number}#pullrequestreview-${review.id}` }
+    href={ review.html_url }
     on:click={ handleSelection('involves', review.user.login) }
     target="_blank"
     rel="noopener noreferrer"

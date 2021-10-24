@@ -68,7 +68,7 @@ describe('filters', function() {
 
 // eslint-disable-next-line
 function writeFiltered(name, value) {
-  fs.writeFileSync(__dirname + '/fixtures/filters/filtered/' + name + '.json', JSON.stringify(value), 'utf8');
+  fs.writeFileSync(__dirname + '/fixtures/filters/filtered/' + name + '.json', JSON.stringify(value, null, '  '), 'utf8');
 }
 
 function loadFiltered(name) {
