@@ -15,6 +15,7 @@ const apps = [
   require('./apps/events-sync'),
   require('./apps/github-app'),
   require('./apps/github-issues'),
+  require('./apps/github-comments'),
   require('./apps/github-client'),
   require('./apps/github-checks'),
   require('./apps/github-reviews'),
