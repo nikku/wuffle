@@ -122,7 +122,8 @@ function filterReview(review) {
     commit_id,
     submitted_at,
     state,
-    user
+    user,
+    html_url
   } = review;
 
   return {
@@ -132,6 +133,7 @@ function filterReview(review) {
     commit_id,
     submitted_at,
     state: state.toLowerCase(),
-    user: filterUser(user)
+    user: filterUser(user),
+    html_url
   };
 }

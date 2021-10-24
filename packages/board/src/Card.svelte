@@ -72,10 +72,8 @@
 
   $: repositoryName = `${repository.owner.login}/${repository.name}`;
 
-  $: repoUrl = `https://github.com/${ repositoryName }`;
-
-  $: milestoneUrl = milestone && `${repoUrl}/milestone/${milestone.number}`;
-  $: cardUrl = `${repoUrl}/issues/${ number }`;
+  $: milestoneUrl = milestone && milestone.html_url;
+  $: cardUrl = item.html_url;
 
   function handleSelection(qualifier, value) {
 

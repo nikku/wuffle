@@ -31,7 +31,8 @@ function filterRepository(githubRepository) {
     node_id,
     name,
     'private': isPrivate,
-    owner
+    owner,
+    html_url
   } = githubRepository;
 
   return {
@@ -39,7 +40,8 @@ function filterRepository(githubRepository) {
     node_id,
     name,
     'private': isPrivate,
-    owner: filterUser(owner)
+    owner: filterUser(owner),
+    html_url
   };
 }
 
@@ -52,14 +54,16 @@ function filterUser(githubUser) {
     id,
     node_id,
     login,
-    avatar_url
+    avatar_url,
+    html_url
   } = githubUser;
 
   return {
     id,
     node_id,
     login,
-    avatar_url
+    avatar_url,
+    html_url
   };
 }
 
@@ -112,7 +116,8 @@ function filterMilestone(githubMilestone) {
     node_id,
     number,
     title,
-    state
+    state,
+    html_url
   } = githubMilestone;
 
   return {
@@ -120,7 +125,8 @@ function filterMilestone(githubMilestone) {
     node_id,
     number,
     title,
-    state
+    state,
+    html_url
   };
 }
 
@@ -158,7 +164,8 @@ function filterPull(githubPull, githubRepository) {
     commits,
     additions,
     deletions,
-    changed_files
+    changed_files,
+    html_url
   } = githubPull;
 
   // stable ID that is independent from GitHubs internal issue/pr distinction
@@ -199,7 +206,8 @@ function filterPull(githubPull, githubRepository) {
     deletions,
     changed_files,
     pull_request: true,
-    repository: filterRepository(githubRepository)
+    repository: filterRepository(githubRepository),
+    html_url
   };
 }
 
@@ -222,7 +230,8 @@ function filterIssue(githubIssue, githubRepository) {
     labels,
     milestone,
     comments,
-    pull_request
+    pull_request,
+    html_url
   } = githubIssue;
 
   // stable ID that is independent from GitHubs internal issue/pr distinction
@@ -251,7 +260,8 @@ function filterIssue(githubIssue, githubRepository) {
     milestone: milestone ? filterMilestone(milestone) : null,
     comments,
     repository: filterRepository(githubRepository),
-    pull_request: !!pull_request
+    pull_request: !!pull_request,
+    html_url
   };
 
 }
