@@ -73,6 +73,25 @@ function EventsSync(webhookEvents, store, logger) {
     return store.removeIssueById(id);
   });
 
+  // issue_comment ///////////////////////
+
+  // https://docs.github.com/en/free-pro-team@latest/developers/webhooks-and-events/webhook-events-and-payloads#issue_comment
+
+  webhookEvents.on([
+    'issue_comment.created',
+    'issue_comment.edited'
+  ], async ({ payload }) => {
+
+    const {
+      issue,
+      repository
+    } = payload;
+
+    // necro bump issue on comment
+    return store.updateIssue(filterIssueOrPull(issue, repository));
+  });
+
+
   // pull requests //////////////////
 
   webhookEvents.on([
@@ -202,19 +221,6 @@ function EventsSync(webhookEvents, store, logger) {
 
     // rename issues in repository
 
-  });
-
-
-  // issue_comment ///////////////////////
-
-  // https://docs.github.com/en/free-pro-team@latest/developers/webhooks-and-events/webhook-events-and-payloads#issue_comment
-
-  webhookEvents.on([
-    'issue_comment.created',
-    'issue_comment.edited'
-  ], async ({ payload }) => {
-
-    // necro bump issue
   });
 
 
