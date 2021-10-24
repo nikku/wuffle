@@ -31,7 +31,7 @@
 
   $: repositoryName = `${repository.owner.login}/${repository.name}`;
 
-  $: cardUrl = item.html_url;
+  $: cardUrl = item.html_url || `https://github.com/${ repositoryName }/issues/${ number }`;
 
   $: linkTitle = ({
     CHILD_OF: 'Parent of',
