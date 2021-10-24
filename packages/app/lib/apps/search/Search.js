@@ -183,13 +183,38 @@ function Search(logger, store) {
       };
     },
 
+    commented: function commentedFilter(name) {
+
+      return function filterCommented(issue) {
+
+        const {
+          comments
+        } = issue;
+
+        // issues do not have comments attached
+        if (!Array.isArray(comments)) {
+          return false;
+        }
+
+        return (
+          comments.some(comment => fuzzyMatches(comment.user.login, name))
+        );
+      };
+    },
+
     involves: function involvesFilter(name) {
+
+      const isAssigned = filters.assignee(name);
+      const isAuthor = filters.author(name);
+      const isReviewer = filters.reviewer(name);
+      const hasCommented = filters.commented(name);
 
       return function filterInvolves(issue) {
         return (
-          filters.assignee(name)(issue) ||
-          filters.author(name)(issue) ||
-          filters.reviewer(name)(issue)
+          isAssigned(issue) ||
+          isAuthor(issue) ||
+          isReviewer(issue) ||
+          hasCommented(issue)
         );
       };
     },
