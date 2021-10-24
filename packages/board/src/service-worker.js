@@ -89,7 +89,7 @@ function fromCache(event, request) {
 
 self.addEventListener('install', event => {
   event.waitUntil(
-    precache(event)
+    precache()
   );
 
   self.skipWaiting();
