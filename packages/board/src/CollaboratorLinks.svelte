@@ -10,10 +10,25 @@
 
   $: assignees = item.assignees;
 
+  $: comments = (
+    Array.isArray(item.comments) ? item.comments : []
+  ).map(comment => {
+    const {
+      user,
+      html_url
+    } = comment;
+
+    return {
+      state: 'commented',
+      user,
+      html_url
+    };
+  });
+
   $: requested_reviewers = item.requested_reviewers || [];
 
   $: reviews = Object.values(
-    (item.reviews || [])
+    [].concat(comments, item.reviews || [])
       .filter(review => !requested_reviewers.find(reviewer => reviewer.login === review.user.login))
       .reduce((byUser, review) => {
 
