@@ -182,12 +182,15 @@
 {/each}
 
 {#each assignees as assignee}
-  <span
+  <a
     class="assignee"
     title="{ assignee.login } assigned"
     on:click={ handleSelection('involves', assignee.login) }
+    href={ assignee.html_url }
+    target="_blank"
+    rel="noopener noreferrer"
   >
     <img src="{ assignee.avatar_url }&s=40" alt="{ assignee.login } avatar" />
     <div class="icon-shadow"></div>
-  </span>
+  </a>
 {/each}
