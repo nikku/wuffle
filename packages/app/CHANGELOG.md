@@ -6,6 +6,22 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 _**Note:** Yet to be released changes appear here._
 
+## 0.42.0
+
+* `FEAT`: synchronize issue comments ([#94](https://github.com/nikku/wuffle/issues/94))
+* `FEAT`: display commented in collaborator links ([#94](https://github.com/nikku/wuffle/issues/94))
+* `FEAT`: adjust _requested for review_ indicator to match GitHub ([`7c84c49a`](https://github.com/nikku/wuffle/commit/7c84c49a95ad28ae2a9971ecfd6c772403423971))
+* `FEAT`: necrobump issues on commented ([`070aaffd`](https://github.com/nikku/wuffle/commit/070aaffd30bc67427623d087385bc1274e9da3cd))
+* `FEAT`: fetch and use GitHub provided `html_url` for entities ([#121](https://github.com/nikku/wuffle/pull/121))
+* `FEAT`: link author avatar to GitHub ([`72cf233a`](https://github.com/nikku/wuffle/commit/72cf233a02830de2f5bcb52a254f1400e9a4022b))
+* `CHORE`: use `ProbotApp#onAny` ([`ed1b2248`](https://github.com/nikku/wuffle/pull/119/commits/ed1b2248fcce95e575f21365d9211c0ed7334245))
+* `DEPS`: bump to `probot@11.4.1`
+* `DEPS`: bump dependencies
+
+### Breaking Changes
+
+* Introduction of comments as well as `html_url` requires a full background sync
+
 ## 0.41.5
 
 * `CHORE`: push `latest` and `next` tags to [docker hub](https://hub.docker.com/repository/docker/nrehwaldt/wuffle) again
