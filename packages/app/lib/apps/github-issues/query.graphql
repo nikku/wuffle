@@ -1,0 +1,71 @@
+mutation MyMutation($issue_id: ID!) {
+  closeIssue(input: {issueId: $issue_id}) {
+    issue {
+      closedAt
+    }
+  }
+  removeLabelsFromLabelable(input: {labelableId: $issue_id, labelIds: "10"}) {
+    labelable {
+      labels {
+        edges {
+          node {
+            name
+            id
+            color
+          }
+        }
+      }
+    }
+  }
+  addLabelsToLabelable(input:{ labelableId: $issue_id, labelIds}) {
+    labels {
+      edges {
+        node {
+          name
+          id
+          color
+        }
+      }
+    }
+  }
+  reopenIssue(input: { issueId: $issue_id }) {
+    issue {
+      updatedAt
+    }
+  }
+
+  reopenPullRequest(input:{ pullRequestId:$issue_id}) {
+    pullRequest {
+      updatedAt
+    }
+  }
+
+  convertPullRequestToDraft(input: { pullRequestId: $issue_id }) {
+    pullRequest {
+      updatedAt
+    }
+  }
+
+  markPullRequestReadyForReview(input:{ pullRequestId:$issue_id}) {
+    pullRequest {
+      updatedAt
+    }
+  }
+
+  addAssigneesToAssignable(input: {
+    assignableId:$issue_id,
+    assigneeIds: [ "100"]
+  }) {
+    assignable {
+      assignees {
+        edges {
+          node {
+            login,
+            html_url: url,
+            name
+          }
+        }
+      }
+    }
+  }
+}
