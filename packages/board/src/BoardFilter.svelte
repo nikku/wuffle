@@ -96,6 +96,7 @@
         'author',
         'repo',
         'reviewer',
+        'commented',
         'milestone',
         'created',
         'updated',
