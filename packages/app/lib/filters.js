@@ -159,8 +159,6 @@ function filterPull(githubPull, githubRepository) {
     mergeable,
     mergeable_state,
     merged_by,
-    comments,
-    review_comments,
     commits,
     additions,
     deletions,
@@ -199,8 +197,6 @@ function filterPull(githubPull, githubRepository) {
     mergeable,
     mergeable_state,
     merged_by,
-    comments,
-    review_comments,
     commits,
     additions,
     deletions,
@@ -229,7 +225,6 @@ function filterIssue(githubIssue, githubRepository) {
     assignees,
     labels,
     milestone,
-    comments,
     pull_request,
     html_url
   } = githubIssue;
@@ -258,7 +253,6 @@ function filterIssue(githubIssue, githubRepository) {
     assignees: assignees.map(filterUser),
     labels: labels.map(filterLabel),
     milestone: milestone ? filterMilestone(milestone) : null,
-    comments,
     repository: filterRepository(githubRepository),
     pull_request: !!pull_request,
     html_url
