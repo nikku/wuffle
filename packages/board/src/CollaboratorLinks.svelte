@@ -124,7 +124,7 @@
     }
 
     &.requested-reviewer {
-      @include review-badge($gray-500);
+      @include review-badge(#bf8700);
     }
 
     &.commented {
