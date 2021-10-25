@@ -6,6 +6,11 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 _**Note:** Yet to be released changes appear here._
 
+## 0.42.2
+
+* `FIX`: correct style overrides (milestone style, ...)
+* `FIX`: correct board filter not maximizing responsively
+
 ## 0.42.1
 
 * `FIX`: gracefully handle missing `html_url` ([`6651df27`](https://github.com/nikku/wuffle/commit/6651df276e9ec3720e3978151b170eee18e3d7a2))
