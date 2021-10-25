@@ -39,7 +39,6 @@
 
   let hovered = false;
 
-  $: id = item.id;
   $: number = item.number;
   $: title = item.title;
   $: repository = item.repository;

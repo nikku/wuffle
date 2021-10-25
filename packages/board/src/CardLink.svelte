@@ -18,16 +18,11 @@
 
   export let type;
 
-  $: id = item.id;
   $: number = item.number;
   $: title = item.title;
   $: repository = item.repository;
   $: pull_request = item.pull_request;
   $: state = item.state;
-
-  $: assignees = item.assignees || [];
-
-  $: requested_reviewers = item.requested_reviewers || [];
 
   $: repositoryName = `${repository.owner.login}/${repository.name}`;
 
