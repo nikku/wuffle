@@ -814,7 +814,7 @@
 
     <div class="collapse navbar-collapse" id={navId}>
 
-      <form class="form-inline my-2 my-lg-0" on:submit|preventDefault={ () => {} }>
+      <form class="form-inline board-filter-parent my-2 my-lg-0" on:submit|preventDefault={ () => {} }>
         <BoardFilter
           value={ filter }
           completionOptions={ filterOptions }
