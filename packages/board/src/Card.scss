@@ -19,22 +19,24 @@
   }
 }
 
-:global(.card-link):not(:last-child) {
-  > .card-status {
-    margin-bottom: -2px !important;
-  }
-}
-
-:global(.board-card-links.attached) .card-link:last-child,
-:global(.board-card) {
-  > .card-status {
-
-    .state:last-child {
-      border-bottom-right-radius: 4px;
+:global {
+  .card-link:not(:last-child) {
+    > .card-status {
+      margin-bottom: -2px !important;
     }
+  }
 
-    .state:first-child {
-      border-bottom-left-radius: 4px;
+  .board-card-links.attached .card-link:last-child,
+  .board-card {
+    > .card-status {
+
+      .state:last-child {
+        border-bottom-right-radius: 4px;
+      }
+
+      .state:first-child {
+        border-bottom-left-radius: 4px;
+      }
     }
   }
 }

@@ -151,10 +151,12 @@
     box-shadow: 0 0 0 1px $separatorColor;
   }
 
-  :global(.hovered) > .header {
-    .assignee + .assignee {
-      margin-left: 3px !important;
-      box-shadow: none;
+  :global {
+    .hovered > .header {
+      .assignee + .assignee {
+        margin-left: 3px !important;
+        box-shadow: none;
+      }
     }
   }
 </style>

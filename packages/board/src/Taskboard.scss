@@ -7,21 +7,23 @@
 }
 
 @media all and (max-width: 600px) {
-  :global(.board-filter) {
-    width: 100% !important;
-  }
-
   .brand-name {
     display: none;
   }
 
-  :global(.navbar) .form-inline {
-    flex: 1 !important;
-  }
+  :global {
+    .board-filter {
+      width: 100% !important;
+    }
 
-  :global(.navbar) .logo {
-    width: 32px;
-    height: 32px;
+    .navbar .form-inline {
+      flex: 1 !important;
+    }
+
+    .navbar .logo {
+      width: 32px;
+      height: 32px;
+    }
   }
 }
 

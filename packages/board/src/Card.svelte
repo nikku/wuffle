@@ -96,15 +96,24 @@
 
   @import "./Card";
 
-  :global(.tag).label,
-  :global(.tag).tag.milestone {
-    margin-right: 4px;
-    margin-bottom: 4px;
-  }
+  :global {
+    .tag {
+      &.label,
+      &.milestone {
+        margin-right: 4px;
+        margin-bottom: 4px;
+      }
 
-  :global(.tag).milestone {
-    color: $gray-800 !important;
-    border: solid 1px $gray-600;
+      &.milestone {
+        color: $gray-800 !important;
+        border: solid 1px $gray-600;
+      }
+    }
+
+    .card-link:first-child {
+      border-top: none !important;
+      margin-top: 1px !important;
+    }
   }
 
   .board-card-links.attached {
@@ -114,11 +123,6 @@
     margin-top: -6px;
     position: relative;
     padding: 7px 8px 4px 8px;
-
-    :global(.card-link):first-child {
-      border-top: none;
-      margin-top: 1px;
-    }
   }
 
   .progress {

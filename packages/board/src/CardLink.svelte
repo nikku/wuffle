@@ -72,8 +72,10 @@
     flex: 1;
   }
 
-  :global(.card-link) .epic {
-    color: #1d76db;
+  :global {
+    .card-link .epic {
+      color: #1d76db;
+    }
   }
 </style>
 
