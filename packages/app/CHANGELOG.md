@@ -6,6 +6,13 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 _**Note:** Yet to be released changes appear here._
 
+## 0.43.0
+
+* `FEAT`: support GitHub style task breakdowns to create epics ([#118](https://github.com/nikku/wuffle/issues/118))
+* `FEAT`: add and remove labels, rather than overriding ([#77](https://github.com/nikku/wuffle/issues/77))
+* `FEAT`: color draft PRs differently ([`e134cb81`](https://github.com/nikku/wuffle/commit/e134cb810a04097363336b6c6c079f9aa48f0b61))
+* `CHORE`: update to `probot@12`
+
 ## 0.42.2
 
 * `FIX`: correct style overrides (milestone style, ...)
