@@ -22,7 +22,7 @@ const {
 
 const crypto = require('crypto');
 
-module.exports.randomString = function randomString(length=64) {
+module.exports.randomString = function randomString(length = 64) {
   return crypto.randomBytes(length).toString('base64');
 };
 

@@ -17,7 +17,7 @@ class ManifestCreation extends ProbotManifestCreation {
     const options = {
       code,
       mediaType: {
-        previews: ['fury'] // needed for GHES 2.20 and older
+        previews: [ 'fury' ] // needed for GHES 2.20 and older
       },
       ...(process.env.GHE_HOST && {
         baseUrl: `${process.env.GHE_PROTOCOL || 'https'}://${

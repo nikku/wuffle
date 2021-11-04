@@ -246,7 +246,7 @@
     return filterChanged(newFilter);
   }
 
-  function filterChanged(value, pushHistory=true) {
+  function filterChanged(value, pushHistory = true) {
 
     if (value === filter) {
       return;
@@ -284,7 +284,7 @@
     return decodeURIComponent(search.split(/=/)[1]);
   }
 
-  function buildQueryString(filter, separator='?') {
+  function buildQueryString(filter, separator = '?') {
     if (filter) {
       return `${separator}s=${encodeURIComponent(filter)}`;
     } else {

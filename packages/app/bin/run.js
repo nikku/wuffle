@@ -156,7 +156,7 @@ async function validate() {
     }
   }
 
-  function checkEnv(key, isError=false) {
+  function checkEnv(key, isError = false) {
 
     if (!process.env[key]) {
       return (isError ? error : warning)(

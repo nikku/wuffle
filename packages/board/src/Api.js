@@ -75,7 +75,7 @@ function fetchJSON(url, options) {
 }
 
 
-function buildQueryString(filter, separator='?') {
+function buildQueryString(filter, separator = '?') {
   if (filter) {
     return `${separator}s=${encodeURIComponent(filter)}`;
   } else {

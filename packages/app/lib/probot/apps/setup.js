@@ -91,7 +91,7 @@ function getBaseUrl(req) {
 }
 
 
-function renderSuccess(appUrl=null) {
+function renderSuccess(appUrl = null) {
 
   return `
 <!DOCTYPE html>
