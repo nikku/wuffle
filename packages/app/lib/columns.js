@@ -14,9 +14,15 @@ const StateToNames = {
   EXTERNAL_CONTRIBUTION: 'Inbox'
 };
 
+/**
+ * @typedef { { name: string, label?: string|null, closed?: boolean } } ColumnDefinition
+ */
 
 class Columns {
 
+  /**
+   * @param { ColumnDefinition[] } columns
+   */
   constructor(columns) {
     this.columns = columns;
 

@@ -15,8 +15,19 @@ const {
 const { Links } = require('./links');
 
 
+/**
+ * The store that holds all board data
+ * and makes it accessible.
+ */
 class Store {
 
+  /**
+   * @param {import('./columns')} columns
+   * @param {import('./types').Logger} logger
+   * @param {import('./events')} events
+   *
+   * @constructor
+   */
   constructor(columns, logger, events) {
     this.log = logger.child({
       name: 'wuffle:store'
