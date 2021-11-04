@@ -89,7 +89,11 @@ function createColumnGetter(columns) {
 
   return function(issue) {
 
-    const column = sortedColumns.find(column => {
+    const {
+      column: issueColumn
+    } = issue;
+
+    const columns = sortedColumns.filter(column => {
 
       const issueClosed = issue.state === 'closed';
 
@@ -101,14 +105,17 @@ function createColumnGetter(columns) {
         return false;
       }
 
-      if (!columnLabel) {
+      if (!columnLabel && defaultColumn !== column) {
         return true;
       }
 
       return issue.labels.find(l => l.name === columnLabel);
     });
 
-    return (column || defaultColumn);
+    // ensure that column is stable; it only changes
+    // if the given configuration doesn't match the
+    // existing column
+    return columns.find(c => c.name === issueColumn) || columns[0] || defaultColumn;
   };
 }
 

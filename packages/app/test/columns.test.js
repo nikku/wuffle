@@ -140,6 +140,67 @@ describe('columns', function() {
     });
 
 
+    describe('in a stable manner', function() {
+
+      it('open, removed column label', function() {
+        expectIssueColumn({
+          labels: [],
+          state: 'open',
+          column: 'Needs Review'
+        }, 'Inbox');
+      });
+
+
+      it('open, add column label', function() {
+
+        expectIssueColumn({
+          labels: [
+            { name: 'needs review' }
+          ],
+          state: 'open',
+          column: 'Inbox'
+        }, 'Needs Review');
+
+      });
+
+
+      it('open, column changes', function() {
+
+        expectIssueColumn({
+          labels: [
+            { name: 'backlog' },
+            { name: 'needs review' }
+          ],
+          state: 'open',
+          column: 'Backlog'
+        }, 'Backlog');
+
+        expectIssueColumn({
+          labels: [
+            { name: 'backlog' },
+            { name: 'needs review' }
+          ],
+          state: 'open',
+          column: 'Needs Review'
+        }, 'Needs Review');
+      });
+
+
+      it('closed, existing column', function() {
+
+        expectIssueColumn({
+          labels: [
+            { name: 'needs review' }
+          ],
+          state: 'closed',
+          column: 'Needs Review'
+        }, 'Done');
+
+      });
+
+    });
+
+
     // helpers ////////////////////
 
     function expectIssueColumn(issue, expectedColumn) {
