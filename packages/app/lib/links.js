@@ -19,6 +19,9 @@ const InverseLinkTypes = {
   LINKED_TO: LinkTypes.LINKED_BY
 };
 
+/**
+ * @typedef { { sourceId: string, targetId: string, type: string, key: string } } Link
+ */
 
 /**
  * A utility to maintain links
@@ -30,6 +33,13 @@ class Links {
     this.inverseLinks = (data && data.inverseLinks) || {};
   }
 
+  /**
+   * @param {string} sourceId
+   * @param {string} targetId
+   * @param {string} linkType
+   *
+   * @return {Link}
+   */
   createLink(sourceId, targetId, linkType) {
 
     const key = `${targetId}-${linkType}`;
@@ -47,7 +57,7 @@ class Links {
   /**
    * Establish a link between source and target with the given type.
    *
-   * @param {Object} link
+   * @param {Link} link
    */
   addLink(link) {
 
@@ -92,9 +102,9 @@ class Links {
   /**
    * Get all links that have the issue as the source.
    *
-   * @param {number} sourceId
+   * @param {string} sourceId
    *
-   * @return {Array<Object>} links
+   * @return {Link[]} links
    */
   getBySource(sourceId) {
     const links = this.getDirect(sourceId);
@@ -118,9 +128,9 @@ class Links {
   /**
    * Remove primary links that have the issue as the source.
    *
-   * @param {number} sourceId
+   * @param {string} sourceId
    *
-   * @return {Object} removedLinks
+   * @return {Link[]} removedLinks
    */
   removeBySource(sourceId) {
 
