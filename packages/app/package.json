@@ -47,7 +47,7 @@
     "mkdirp": "^1.0.4",
     "p-defer": "^3.0.0",
     "prexit": "0.0.5",
-    "probot": "^11.4.1",
+    "probot": "^12.1.1",
     "smee-client": "^1.2.2"
   },
   "devDependencies": {
