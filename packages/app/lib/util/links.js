@@ -54,63 +54,85 @@ function findLinks(issue, types) {
   const issueUrlPart = `https:\\/\\/github.com\\/(${namePart})\\/(${namePart})\\/(?:issues|pull)\\/(\\d+)`;
   const issuePart = `(?:${issueShortHandPart}|${issueUrlPart})`;
   const separatorPart = '(?:[\\s,]+(?:and[\\s,]+)?)';
+  const taskPart = '[-*]{1}\\s*\\[[x ]{1}\\]\\s+.*';
 
   const pattern = new RegExp(`${typePart}${issuePart}`, 'ig');
   const continuationPattern = new RegExp(`^${separatorPart}${issuePart}`, 'i');
+  const taskPattern = new RegExp(`${taskPart}`, 'img');
 
   const links = [];
 
   let match, continuationMatch;
 
-  // find all links with the given types
+  const issueMatches = [];
+
+  /*
+   * match = [
+   *   short_org, short_repo, short_number,
+   *   long_org, long_repo, long_number
+   * ]
+   */
 
   while ((match = pattern.exec(text))) {
 
     const type = phrasesToTypes[match[1]];
 
-    let issueMatches = match.slice(2);
+    issueMatches.push([ type, match.slice(2) ]);
 
     let continuationIdx = match.index + match[0].length;
+
+    /*
+     * continuationMatch = [
+     *   short_org, short_repo, short_number,
+     *   long_org, long_repo, long_number
+     * ]
+     */
 
     do {
       continuationMatch = continuationPattern.exec(text.slice(continuationIdx));
 
       if (continuationMatch) {
-        issueMatches = [
-          ...issueMatches,
-          ...continuationMatch.slice(1)
-        ];
+        issueMatches.push([ type, continuationMatch.slice(1) ]);
 
         continuationIdx += continuationMatch[0].length;
       }
 
     } while (continuationMatch);
 
+  }
 
-    for (let i = 0; i < issueMatches.length / 3; i++) {
+  while ((match = taskPattern.exec(text))) {
 
-      const offset = i * 3;
+    const text = match[0];
 
-      if (typeof issueMatches[offset + 2] === 'undefined') {
-        continue;
-      }
+    let issueMatch;
 
-      const owner = issueMatches[offset];
-      const repo = issueMatches[offset + 1];
-      const number = parseInt(issueMatches[offset + 2], 10);
+    const issuePattern = new RegExp(`${issuePart}`, 'ig');
 
-      const link = owner ? {
-        type,
-        number,
-        owner,
-        repo
-      } : {
-        type,
-        number
-      };
-
-      links.push(link);
+    while ((issueMatch = issuePattern.exec(text))) {
+      issueMatches.push([ PARENT_OF, issueMatch.slice(1) ]);
     }
+  }
+
+  for (const issueMatch of issueMatches) {
+
+    const [ type, issueParts ] = issueMatch;
+
+    const owner = issueParts[0] || issueParts[3];
+    const repo = issueParts[1] || issueParts[4];
+    const number = parseInt(issueParts[2] || issueParts[5], 10);
+
+    const link = owner ? {
+      type,
+      number,
+      owner,
+      repo
+    } : {
+      type,
+      number
+    };
+
+    links.push(link);
   }
 
   if (typeof types !== 'undefined') {

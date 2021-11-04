@@ -123,6 +123,7 @@ describe('util', function() {
       ]);
     });
 
+
     it('should recognize connects to', function() {
 
       // given
@@ -575,43 +576,31 @@ describe('util', function() {
     });
 
 
-    it('should find by type', function() {
+    it('should recognize task lists', function() {
 
       // given
       const issue = createIssue(
-        'FOO (child of #1)',
-        'Parent of #2'
+        'FOO',
+        'Some things to do: \n' +
+        '* [ ] A https://github.com/foo/bar/issues/200\n' +
+        '* [ ] B #1, #11\n' +
+        '* [ ] #2\n' +
+        '* [ ] Other issue (#5)\n' +
+        '* [ ] [Nicely linked issue](#6)\n'
       );
 
       // when
-      const links = findLinks(issue, PARENT_OF);
+      const links = findLinks(issue);
 
       // then
       expect(links).to.eql([
-        { type: PARENT_OF, number: 2 }
+        { type: 'PARENT_OF', number: 200, owner: 'foo', repo: 'bar' },
+        { type: 'PARENT_OF', number: 1 },
+        { type: 'PARENT_OF', number: 11 },
+        { type: 'PARENT_OF', number: 2 },
+        { type: 'PARENT_OF', number: 5 },
+        { type: 'PARENT_OF', number: 6 }
       ]);
-
-    });
-
-
-    it('should find by types', function() {
-
-      // given
-      const issue = createIssue(
-        'FOO (child of #1)',
-        'Parent of #2\n' +
-        'Related to #12'
-      );
-
-      // when
-      const links = findLinks(issue, { PARENT_OF, LINKED_TO });
-
-      // then
-      expect(links).to.eql([
-        { type: PARENT_OF, number: 2 },
-        { type: LINKED_TO, number: 12 }
-      ]);
-
     });
 
   });
