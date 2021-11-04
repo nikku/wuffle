@@ -55,27 +55,25 @@ function GithubIssues(logger, config, columns) {
       };
     }
 
+    return update;
+  }
+
+  function getLabelUpdate(issue, newColumn) {
+
     const issueLabels = issue.labels.map(l => l.name);
 
     const newLabel = newColumn.label;
 
-    const labelsToAdd = (!newLabel || issueLabels.includes(newLabel)) ? [] : [ newLabel ];
+    const addLabels = (!newLabel || issueLabels.includes(newLabel)) ? [] : [ newLabel ];
 
-    const labelsToRemove = columns.getAll().map(c => c.label).filter(
+    const removeLabels = columns.getAll().map(c => c.label).filter(
       label => label && label !== newLabel && issueLabels.includes(label)
     );
 
-    if (labelsToRemove.length || labelsToAdd.length) {
-      update = {
-        ...update,
-        labels: [
-          ...issueLabels.filter(l => !labelsToRemove.includes(l)),
-          ...labelsToAdd
-        ]
-      };
-    }
-
-    return update;
+    return {
+      addLabels,
+      removeLabels
+    };
   }
 
   function findIssue(context, issue_number) {
@@ -144,18 +142,67 @@ function GithubIssues(logger, config, columns) {
       ...getStateUpdate(issue, newColumn)
     };
 
-    if (!hasKeys(update)) {
-      return;
+    const {
+      addLabels,
+      removeLabels
+    } = getLabelUpdate(issue, newColumn);
+
+    const invocations = [];
+
+    if (hasKeys(addLabels)) {
+
+      const addLabelParams = context.repo({
+        issue_number,
+        labels: addLabels
+      });
+
+      log.info(addLabelParams, 'add labels');
+
+      invocations.push(
+        context.octokit.issues.addLabels(addLabelParams)
+      );
     }
 
-    const params = context.repo({
-      issue_number,
-      ...update
-    });
+    if (hasKeys(update)) {
 
-    log.info(params, 'update');
+      const params = context.repo({
+        issue_number,
+        ...update
+      });
 
-    return context.octokit.issues.update(params);
+      log.info(params, 'update');
+
+      invocations.push(
+        context.octokit.issues.update(params)
+      );
+    }
+
+    for (const label of removeLabels) {
+
+      const removeLabelParams = context.repo({
+        issue_number,
+        name: label
+      });
+
+      log.info({
+        ...removeLabelParams,
+        label
+      }, 'remove label');
+
+      invocations.push(
+        context.octokit.issues.removeLabel(removeLabelParams).catch(err => {
+
+          // gracefully handle non-existing label
+          // may have been already removed by other
+          // integrations
+          if (err.status !== 404) {
+            return Promise.reject(err);
+          }
+        })
+      );
+    }
+
+    return Promise.all(invocations);
   }
 
 
@@ -168,6 +215,8 @@ function GithubIssues(logger, config, columns) {
   this.getStateUpdate = getStateUpdate;
 
   this.getAssigneeUpdate = getAssigneeUpdate;
+
+  this.getLabelUpdate = getLabelUpdate;
 
   this.findAndMoveIssue = findAndMoveIssue;
 

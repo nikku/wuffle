@@ -108,12 +108,11 @@ describe('apps', () => {
         const newColumn = columns.getByState('DONE');
 
         // when
-        const update = githubIssues.getStateUpdate(issue, newColumn);
+        const stateUpdate = githubIssues.getStateUpdate(issue, newColumn);
 
         // then
-        expect(update).to.eql({
-          state: 'closed',
-          labels: [ 'bug' ]
+        expect(stateUpdate).to.eql({
+          state: 'closed'
         });
 
       });
@@ -140,14 +139,11 @@ describe('apps', () => {
         const update = githubIssues.getStateUpdate(issue, newColumn);
 
         // then
-        expect(update).to.eql({
-          labels: [ 'bug' ]
-        });
-
+        expect(update).to.eql({});
       });
 
 
-      it('should compute Done -> Done (removing labels)', function() {
+      it('should compute Done -> Done', function() {
 
         // given
         const issue = {
@@ -171,8 +167,202 @@ describe('apps', () => {
         const update = githubIssues.getStateUpdate(issue, newColumn);
 
         // then
+        expect(update).to.eql({});
+      });
+
+
+      it('should compute Done -> In Progress', function() {
+
+        // given
+        const issue = {
+          labels: [
+            {
+              name: 'bug'
+            }
+          ],
+          state: 'closed'
+        };
+
+        const newColumn = columns.getByState('IN_PROGRESS');
+
+        // when
+        const update = githubIssues.getStateUpdate(issue, newColumn);
+
+        // then
         expect(update).to.eql({
-          labels: [ 'bug' ]
+          state: 'open'
+        });
+
+      });
+
+    });
+
+
+    describe('label update', function() {
+
+      it('should compute Inbox -> Done', async function() {
+
+        // given
+        const issue = {
+          labels: [
+            {
+              name: 'bug'
+            }
+          ],
+          state: 'open'
+        };
+
+        const newColumn = columns.getByState('DONE');
+
+        // when
+        const update = githubIssues.getLabelUpdate(issue, newColumn);
+
+        // then
+        expect(update).to.eql({
+          addLabels: [],
+          removeLabels: []
+        });
+
+      });
+
+
+      it('should compute Inbox -> Inbox', function() {
+
+        // given
+        const issue = {
+          labels: [
+            {
+              name: 'bug'
+            }
+          ],
+          state: 'open'
+        };
+
+        const newColumn = columns.getByState('DEFAULT');
+
+        // when
+        const update = githubIssues.getLabelUpdate(issue, newColumn);
+
+        // then
+        expect(update).to.eql({
+          addLabels: [],
+          removeLabels: []
+        });
+
+      });
+
+
+      it('should compute Needs Review -> Done', function() {
+
+        // given
+        const issue = {
+          labels: [
+            {
+              name: 'bug'
+            },
+            {
+              name: 'needs review'
+            }
+          ],
+          state: 'open'
+        };
+
+        const newColumn = columns.getByState('DONE');
+
+        // when
+        const stateUpdate = githubIssues.getLabelUpdate(issue, newColumn);
+
+        // then
+        expect(stateUpdate).to.eql({
+          addLabels: [],
+          removeLabels: [ 'needs review' ]
+        });
+
+      });
+
+
+      it('should compute Needs Review -> Inbox', function() {
+
+        // given
+        const issue = {
+          labels: [
+            {
+              name: 'bug'
+            },
+            {
+              name: 'needs review'
+            }
+          ],
+          state: 'open'
+        };
+
+        const newColumn = columns.getByState('DEFAULT');
+
+        // when
+        const update = githubIssues.getLabelUpdate(issue, newColumn);
+
+        // then
+        expect(update).to.eql({
+          addLabels: [],
+          removeLabels: [ 'needs review' ]
+        });
+
+      });
+
+
+      it('should compute Done -> Done', function() {
+
+        // given
+        const issue = {
+          labels: [
+            {
+              name: 'bug'
+            },
+            {
+              name: 'needs review'
+            },
+            {
+              name: 'in progress'
+            }
+          ],
+          state: 'closed'
+        };
+
+        const newColumn = columns.getByState('DONE');
+
+        // when
+        const update = githubIssues.getLabelUpdate(issue, newColumn);
+
+        // then
+        expect(update).to.eql({
+          addLabels: [],
+          removeLabels: [ 'in progress', 'needs review' ]
+        });
+
+      });
+
+
+      it('should compute Done -> In Progress', function() {
+
+        // given
+        const issue = {
+          labels: [
+            {
+              name: 'bug'
+            }
+          ],
+          state: 'closed'
+        };
+
+        const newColumn = columns.getByState('IN_PROGRESS');
+
+        // when
+        const update = githubIssues.getLabelUpdate(issue, newColumn);
+
+        // then
+        expect(update).to.eql({
+          addLabels: [ 'in progress' ],
+          removeLabels: []
         });
 
       });
