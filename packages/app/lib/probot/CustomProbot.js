@@ -3,7 +3,7 @@ const { Server, Probot } = require('probot');
 const { getLog } = require('probot/lib/helpers/get-log');
 const { setupAppFactory } = require('./apps/setup');
 
-const { ManifestCreation } = require('./manifest-creation');
+const { ManifestCreation } = require('probot/lib/manifest-creation');
 
 const { getErrorHandler } = require('probot/lib/helpers/get-error-handler');
 const { getPrivateKey } = require('@probot/get-private-key');

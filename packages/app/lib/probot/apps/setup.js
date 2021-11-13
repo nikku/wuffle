@@ -1,7 +1,7 @@
 const bodyParser = require('body-parser');
 const updateDotenv = require('update-dotenv');
 
-const { ManifestCreation } = require('../manifest-creation');
+const { ManifestCreation } = require('probot/lib/manifest-creation');
 
 const { getLoggingMiddleware } = require('probot/lib/server/logging-middleware');
 
