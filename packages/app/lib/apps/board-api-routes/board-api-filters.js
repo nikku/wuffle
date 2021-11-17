@@ -139,7 +139,7 @@ function filterPull(pullRequest) {
     assignees: assignees.map(filterUser),
     requested_reviewers: requested_reviewers.map(filterUser),
     labels: labels.map(filterLabel),
-    comments: comments.map(filterComment),
+    comments: Array.isArray(comments) ? comments.map(filterComment) : [],
     milestone: milestone ? filterMilestone(milestone) : null,
     draft,
     merged,
@@ -183,7 +183,7 @@ function filterIssue(issue) {
     labels: labels.map(filterLabel),
     milestone: milestone ? filterMilestone(milestone) : null,
     repository: filterRepository(repository),
-    comments: comments.map(filterComment),
+    comments: Array.isArray(comments) ? comments.map(filterComment) : [],
     pull_request,
     html_url,
     links: links.map(filterLink)
