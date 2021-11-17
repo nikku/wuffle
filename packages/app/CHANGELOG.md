@@ -6,6 +6,11 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 _**Note:** Yet to be released changes appear here._
 
+## 0.44.1
+
+* `FIX`: account for `comments` being a number in the past
+* `FIX`: send `order`, `column_label` and `column` information to board
+
 ## 0.44.0
 
 * `FEAT`: reduce payload of transferred board data ([`d76db5c0`](https://github.com/nikku/wuffle/commit/d76db5c0d9b378b2ffff52123a75eaa813b5206c))
