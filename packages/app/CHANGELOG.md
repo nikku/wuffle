@@ -6,6 +6,10 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 _**Note:** Yet to be released changes appear here._
 
+## 0.44.0
+
+* `FEAT`: reduce payload of transferred board data ([`d76db5c0`](https://github.com/nikku/wuffle/commit/d76db5c0d9b378b2ffff52123a75eaa813b5206c))
+
 ## 0.43.0
 
 * `FEAT`: support GitHub style task breakdowns to create epics ([#118](https://github.com/nikku/wuffle/issues/118))
