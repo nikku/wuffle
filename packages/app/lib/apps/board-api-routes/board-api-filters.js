@@ -126,7 +126,8 @@ function filterPull(pullRequest) {
     merged,
     html_url,
     pull_request,
-    links = []
+    links = [],
+    order
   } = pullRequest;
 
   return {
@@ -146,7 +147,8 @@ function filterPull(pullRequest) {
     repository: filterRepository(repository),
     html_url,
     pull_request,
-    links: links.map(filterLink)
+    links: links.map(filterLink),
+    order
   };
 }
 
@@ -169,7 +171,8 @@ function filterIssue(issue) {
     repository,
     pull_request,
     comments = [],
-    links = []
+    links = [],
+    order
   } = issue;
 
   return {
@@ -186,7 +189,8 @@ function filterIssue(issue) {
     comments: Array.isArray(comments) ? comments.map(filterComment) : [],
     pull_request,
     html_url,
-    links: links.map(filterLink)
+    links: links.map(filterLink),
+    order
   };
 
 }
