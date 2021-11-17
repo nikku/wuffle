@@ -6,6 +6,10 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 _**Note:** Yet to be released changes appear here._
 
+## 0.44.2
+
+* `FIX`: account for absence of `user`
+
 ## 0.44.1
 
 * `FIX`: account for `comments` being a number in the past
