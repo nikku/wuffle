@@ -2,11 +2,11 @@ const bodyParser = require('body-parser').text();
 
 const {
   withSession
-} = require('../middleware');
+} = require('../../middleware');
 
 const {
   repoAndOwner
-} = require('../util');
+} = require('../../util');
 
 
 /**
