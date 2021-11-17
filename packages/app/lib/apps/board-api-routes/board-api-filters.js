@@ -28,13 +28,13 @@ function filterRepository(githubRepository) {
 module.exports.filterRepository = filterRepository;
 
 
-function filterUser(githubUser) {
+function filterUser(user) {
 
   const {
     login,
     avatar_url,
     html_url
-  } = githubUser;
+  } = user;
 
   return {
     login,
@@ -139,7 +139,7 @@ function filterPull(pullRequest) {
     number,
     state,
     title,
-    user: filterUser(user),
+    user: user ? filterUser(user) : null,
     assignees: assignees.map(filterUser),
     requested_reviewers: requested_reviewers.map(filterUser),
     labels: labels.map(filterLabel),
@@ -186,7 +186,7 @@ function filterIssue(issue) {
     number,
     state,
     title,
-    user: filterUser(user),
+    user: user ? filterUser(user) : null,
     assignees: assignees.map(filterUser),
     labels: labels.map(filterLabel),
     milestone: milestone ? filterMilestone(milestone) : null,

@@ -127,11 +127,7 @@
     "number": 91,
     "state": "open",
     "title": "Support repository transfer",
-    "user": {
-      "login": "nikku",
-      "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-      "html_url": "https://github.com/nikku"
-    },
+    "user": null,
     "assignees": [],
     "labels": [
       {

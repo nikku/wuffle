@@ -356,13 +356,6 @@
     "number": 91,
     "state": "open",
     "title": "Support repository transfer",
-    "user": {
-      "id": 58601,
-      "node_id": "MDQ6VXNlcjU4NjAx",
-      "login": "nikku",
-      "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-      "html_url": "https://github.com/nikku"
-    },
     "body": "#### Tasks\r\n\r\n* `repository.transferred` is handled\r\n\r\n---\r\n\r\nCloses #90 ",
     "created_at": "2020-11-15T20:31:44Z",
     "updated_at": "2021-10-24T19:44:56Z",
