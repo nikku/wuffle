@@ -9,19 +9,24 @@ const {
 } = require('../../util');
 
 
+const {
+  filterIssueOrPull
+} = require('./board-api-filters');
+
+
 /**
  * This component provides the board API routes.
  *
  * @param {Object} config
- * @param {import('../store')} store
- * @param {import('../types').Router} router
- * @param {import('../types').Logger} logger
- * @param {import('./github-client/GithubClient')} githubClient
- * @param {import('./auth-routes/AuthRoutes')} authRoutes
- * @param {import('./user-access/UserAccess')} userAccess
- * @param {import('./github-issues/GithubIssues')} githubIssues
- * @param {import('./search/Search')} search
- * @param {import('../columns')} columns
+ * @param {import('../../store')} store
+ * @param {import('../../types').Router} router
+ * @param {import('../../types').Logger} logger
+ * @param {import('../github-client/GithubClient')} githubClient
+ * @param {import('../auth-routes/AuthRoutes')} authRoutes
+ * @param {import('../user-access/UserAccess')} userAccess
+ * @param {import('../github-issues/GithubIssues')} githubIssues
+ * @param {import('../search/Search')} search
+ * @param {import('../../columns')} columns
  */
 module.exports = async (
     config, store,
@@ -79,7 +84,7 @@ module.exports = async (
 
         const searchFiltered = searchFilter ? accessFiltered.filter(searchFilter) : accessFiltered;
 
-        filteredItems[columnKey] = searchFiltered;
+        filteredItems[columnKey] = searchFiltered.map(filterIssueOrPull);
 
         return filteredItems;
       }, {});
@@ -126,7 +131,15 @@ module.exports = async (
         };
       }) : accessFiltered;
 
-      return searchFiltered;
+      return searchFiltered.map(update => {
+
+        const { issue } = update;
+
+        return {
+          ...update,
+          issue: filterIssueOrPull(issue)
+        };
+      });
     });
 
   }
