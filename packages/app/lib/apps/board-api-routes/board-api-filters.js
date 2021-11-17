@@ -127,7 +127,8 @@ function filterPull(pullRequest) {
     html_url,
     pull_request,
     links = [],
-    order
+    order,
+    column
   } = pullRequest;
 
   return {
@@ -148,7 +149,8 @@ function filterPull(pullRequest) {
     html_url,
     pull_request,
     links: links.map(filterLink),
-    order
+    order,
+    column
   };
 }
 
@@ -172,7 +174,8 @@ function filterIssue(issue) {
     pull_request,
     comments = [],
     links = [],
-    order
+    order,
+    column
   } = issue;
 
   return {
@@ -190,7 +193,8 @@ function filterIssue(issue) {
     pull_request,
     html_url,
     links: links.map(filterLink),
-    order
+    order,
+    column
   };
 
 }

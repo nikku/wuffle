@@ -111,11 +111,13 @@
           "pull_request": false,
           "html_url": "https://github.com/nikku/testtest-checks/issues/6",
           "links": [],
-          "order": 709876.54321
+          "order": 709876.54321,
+          "column": "Needs Review"
         }
       }
     ],
-    "order": -4632742.113349999
+    "order": -4632742.113349999,
+    "column": "Backlog"
   },
   {
     "id": "176821946-91",
@@ -196,11 +198,13 @@
           "pull_request": false,
           "html_url": "https://github.com/nikku/wuffle/issues/90",
           "links": [],
-          "order": -3768494.9777300013
+          "order": -3768494.9777300013,
+          "column": "Done"
         }
       }
     ],
-    "order": -2511408.235010001
+    "order": -2511408.235010001,
+    "column": "Backlog"
   },
   {
     "id": "176821946-16",
@@ -234,7 +238,8 @@
     "pull_request": false,
     "html_url": "https://github.com/nikku/wuffle/issues/16",
     "links": [],
-    "order": -2432840.313590001
+    "order": -2432840.313590001,
+    "column": "Backlog"
   },
   {
     "id": "176821946-15",
@@ -272,7 +277,8 @@
     "pull_request": false,
     "html_url": "https://github.com/nikku/wuffle/issues/15",
     "links": [],
-    "order": -2354272.392170001
+    "order": -2354272.392170001,
+    "column": "Backlog"
   },
   {
     "id": "176821946-95",
@@ -344,11 +350,13 @@
           "pull_request": false,
           "html_url": "https://github.com/nikku/wuffle/issues/94",
           "links": [],
-          "order": -3454223.292050001
+          "order": -3454223.292050001,
+          "column": "Done"
         }
       }
     ],
-    "order": -2275704.470750001
+    "order": -2275704.470750001,
+    "column": "Backlog"
   },
   {
     "id": "176821946-124",
@@ -431,11 +439,13 @@
           "pull_request": false,
           "html_url": "https://github.com/nikku/wuffle/issues/116",
           "links": [],
-          "order": -2040000.7064900007
+          "order": -2040000.7064900007,
+          "column": "Backlog"
         }
       }
     ],
-    "order": -2118568.6279100007
+    "order": -2118568.6279100007,
+    "column": "Backlog"
   },
   {
     "id": "176821946-116",
@@ -518,11 +528,13 @@
           "html_url": "https://github.com/nikku/wuffle/pull/124",
           "pull_request": true,
           "links": [],
-          "order": -2118568.6279100007
+          "order": -2118568.6279100007,
+          "column": "Backlog"
         }
       }
     ],
-    "order": -2040000.7064900007
+    "order": -2040000.7064900007,
+    "column": "Backlog"
   },
   {
     "id": "176821946-74",
@@ -564,7 +576,8 @@
     "pull_request": false,
     "html_url": "https://github.com/nikku/wuffle/issues/74",
     "links": [],
-    "order": -1961432.7850700007
+    "order": -1961432.7850700007,
+    "column": "Backlog"
   },
   {
     "id": "159565926-3",
@@ -611,7 +624,8 @@
     "html_url": "https://github.com/nikku/testtest-checks/pull/3",
     "pull_request": true,
     "links": [],
-    "order": -1175753.5708700004
+    "order": -1175753.5708700004,
+    "column": "Backlog"
   },
   {
     "id": "159565926-4",
@@ -648,7 +662,8 @@
     "html_url": "https://github.com/nikku/testtest-checks/pull/4",
     "pull_request": true,
     "links": [],
-    "order": -1097185.6494500004
+    "order": -1097185.6494500004,
+    "column": "Backlog"
   },
   {
     "id": "150751504-83",
@@ -731,7 +746,8 @@
           "pull_request": false,
           "html_url": "https://github.com/nikku/testtest/issues/76",
           "links": [],
-          "order": 2765.250429999898
+          "order": 2765.250429999898,
+          "column": "Backlog"
         }
       },
       {
@@ -771,11 +787,13 @@
           "html_url": "https://github.com/nikku/testtest/pull/92",
           "pull_request": true,
           "links": [],
-          "order": -782913.9637700003
+          "order": -782913.9637700003,
+          "column": "Needs Review"
         }
       }
     ],
-    "order": -625778.1209300002
+    "order": -625778.1209300002,
+    "column": "Backlog"
   },
   {
     "id": "150751504-110",
@@ -812,7 +830,8 @@
     "html_url": "https://github.com/nikku/testtest/pull/110",
     "pull_request": true,
     "links": [],
-    "order": -547210.1995100002
+    "order": -547210.1995100002,
+    "column": "Backlog"
   },
   {
     "id": "150751504-95",
@@ -884,11 +903,13 @@
           "pull_request": false,
           "html_url": "https://github.com/nikku/testtest/issues/94",
           "links": [],
-          "order": 474172.77894999995
+          "order": 474172.77894999995,
+          "column": "Inbox"
         }
       }
     ],
-    "order": -75802.6709900001
+    "order": -75802.6709900001,
+    "column": "Backlog"
   },
   {
     "id": "150751504-76",
@@ -987,7 +1008,8 @@
           "pull_request": false,
           "html_url": "https://github.com/nikku/testtest/issues/81",
           "links": [],
-          "order": 709876.54321
+          "order": 709876.54321,
+          "column": "Needs Review"
         }
       },
       {
@@ -1030,7 +1052,8 @@
           "pull_request": false,
           "html_url": "https://github.com/nikku/testtest/issues/74",
           "links": [],
-          "order": 631308.62179
+          "order": 631308.62179,
+          "column": "Needs Review"
         }
       },
       {
@@ -1082,11 +1105,13 @@
           "html_url": "https://github.com/nikku/testtest/pull/83",
           "pull_request": true,
           "links": [],
-          "order": -625778.1209300002
+          "order": -625778.1209300002,
+          "column": "Backlog"
         }
       }
     ],
-    "order": 2765.250429999898
+    "order": 2765.250429999898,
+    "column": "Backlog"
   },
   {
     "id": "150751504-102",
@@ -1120,7 +1145,8 @@
     "pull_request": false,
     "html_url": "https://github.com/nikku/testtest/issues/102",
     "links": [],
-    "order": 81333.1718499999
+    "order": 81333.1718499999,
+    "column": "Backlog"
   },
   {
     "id": "150751504-77",
@@ -1192,7 +1218,8 @@
           "pull_request": false,
           "html_url": "https://github.com/nikku/testtest/issues/80",
           "links": [],
-          "order": 238469.0146899999
+          "order": 238469.0146899999,
+          "column": "Inbox"
         }
       },
       {
@@ -1235,7 +1262,8 @@
           "pull_request": false,
           "html_url": "https://github.com/nikku/testtest/issues/74",
           "links": [],
-          "order": 631308.62179
+          "order": 631308.62179,
+          "column": "Needs Review"
         }
       },
       {
@@ -1303,10 +1331,12 @@
           "pull_request": false,
           "html_url": "https://github.com/nikku/testtest/issues/81",
           "links": [],
-          "order": 709876.54321
+          "order": 709876.54321,
+          "column": "Needs Review"
         }
       }
     ],
-    "order": 317036.9361099999
+    "order": 317036.9361099999,
+    "column": "Backlog"
   }
 ]
