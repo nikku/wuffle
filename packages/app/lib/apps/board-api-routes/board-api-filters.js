@@ -66,12 +66,14 @@ function filterLabel(githubLabel) {
 
   const {
     name,
-    color
+    color,
+    column_label
   } = githubLabel;
 
   return {
     name,
-    color
+    color,
+    ...(column_label ? { column_label } : {})
   };
 }
 

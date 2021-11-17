@@ -15,7 +15,8 @@
     "labels": [
       {
         "name": "backlog",
-        "color": "ededed"
+        "color": "ededed",
+        "column_label": true
       }
     ],
     "comments": [],
@@ -57,7 +58,8 @@
           "labels": [
             {
               "name": "needs review",
-              "color": "ededed"
+              "color": "ededed",
+              "column_label": true
             },
             {
               "name": ":art: Design",
@@ -138,7 +140,8 @@
       },
       {
         "name": "backlog",
-        "color": "ededed"
+        "color": "ededed",
+        "column_label": true
       }
     ],
     "milestone": null,
@@ -221,7 +224,8 @@
     "labels": [
       {
         "name": "backlog",
-        "color": "ededed"
+        "color": "ededed",
+        "column_label": true
       }
     ],
     "milestone": null,
@@ -260,7 +264,8 @@
       },
       {
         "name": "backlog",
-        "color": "ededed"
+        "color": "ededed",
+        "column_label": true
       }
     ],
     "milestone": null,
@@ -299,7 +304,8 @@
       },
       {
         "name": "backlog",
-        "color": "ededed"
+        "color": "ededed",
+        "column_label": true
       }
     ],
     "milestone": null,
@@ -374,7 +380,8 @@
     "labels": [
       {
         "name": "backlog",
-        "color": "ededed"
+        "color": "ededed",
+        "column_label": true
       }
     ],
     "comments": [],
@@ -414,11 +421,13 @@
             },
             {
               "name": "backlog",
-              "color": "ededed"
+              "color": "ededed",
+              "column_label": true
             },
             {
               "name": "roadmap",
-              "color": "1f2f9b"
+              "color": "1f2f9b",
+              "column_label": true
             },
             {
               "name": "blocked",
@@ -466,11 +475,13 @@
       },
       {
         "name": "backlog",
-        "color": "ededed"
+        "color": "ededed",
+        "column_label": true
       },
       {
         "name": "roadmap",
-        "color": "1f2f9b"
+        "color": "1f2f9b",
+        "column_label": true
       },
       {
         "name": "blocked",
@@ -509,7 +520,8 @@
           "labels": [
             {
               "name": "backlog",
-              "color": "ededed"
+              "color": "ededed",
+              "column_label": true
             }
           ],
           "comments": [],
@@ -555,11 +567,13 @@
       },
       {
         "name": "backlog",
-        "color": "ededed"
+        "color": "ededed",
+        "column_label": true
       },
       {
         "name": "roadmap",
-        "color": "1f2f9b"
+        "color": "1f2f9b",
+        "column_label": true
       }
     ],
     "milestone": null,
@@ -605,7 +619,8 @@
       },
       {
         "name": "backlog",
-        "color": "ededed"
+        "color": "ededed",
+        "column_label": true
       }
     ],
     "comments": [],
@@ -643,7 +658,8 @@
     "labels": [
       {
         "name": "backlog",
-        "color": "ededed"
+        "color": "ededed",
+        "column_label": true
       }
     ],
     "comments": [],
@@ -693,7 +709,8 @@
     "labels": [
       {
         "name": "backlog",
-        "color": "ededed"
+        "color": "ededed",
+        "column_label": true
       }
     ],
     "comments": [],
@@ -729,7 +746,8 @@
           "labels": [
             {
               "name": "backlog",
-              "color": "ededed"
+              "color": "ededed",
+              "column_label": true
             }
           ],
           "milestone": null,
@@ -768,7 +786,8 @@
           "labels": [
             {
               "name": "needs review",
-              "color": "ededed"
+              "color": "ededed",
+              "column_label": true
             }
           ],
           "comments": [],
@@ -811,7 +830,8 @@
     "labels": [
       {
         "name": "backlog",
-        "color": "ededed"
+        "color": "ededed",
+        "column_label": true
       }
     ],
     "comments": [],
@@ -848,7 +868,8 @@
     "labels": [
       {
         "name": "backlog",
-        "color": "ededed"
+        "color": "ededed",
+        "column_label": true
       }
     ],
     "milestone": null,
@@ -926,7 +947,8 @@
     "labels": [
       {
         "name": "backlog",
-        "color": "ededed"
+        "color": "ededed",
+        "column_label": true
       }
     ],
     "milestone": null,
@@ -966,7 +988,8 @@
           "labels": [
             {
               "name": "needs review",
-              "color": "ededed"
+              "color": "ededed",
+              "column_label": true
             }
           ],
           "milestone": null,
@@ -1035,7 +1058,8 @@
           "labels": [
             {
               "name": "needs review",
-              "color": "ededed"
+              "color": "ededed",
+              "column_label": true
             }
           ],
           "milestone": null,
@@ -1086,7 +1110,8 @@
           "labels": [
             {
               "name": "backlog",
-              "color": "ededed"
+              "color": "ededed",
+              "column_label": true
             }
           ],
           "comments": [],
@@ -1128,7 +1153,8 @@
     "labels": [
       {
         "name": "backlog",
-        "color": "ededed"
+        "color": "ededed",
+        "column_label": true
       }
     ],
     "milestone": null,
@@ -1163,7 +1189,8 @@
     "labels": [
       {
         "name": "backlog",
-        "color": "ededed"
+        "color": "ededed",
+        "column_label": true
       }
     ],
     "milestone": null,
@@ -1245,7 +1272,8 @@
           "labels": [
             {
               "name": "needs review",
-              "color": "ededed"
+              "color": "ededed",
+              "column_label": true
             }
           ],
           "milestone": null,
@@ -1289,7 +1317,8 @@
           "labels": [
             {
               "name": "needs review",
-              "color": "ededed"
+              "color": "ededed",
+              "column_label": true
             }
           ],
           "milestone": null,
