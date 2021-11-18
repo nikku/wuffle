@@ -10,13 +10,47 @@ function filterIssueOrPull(issueOrPull) {
 module.exports.filterIssueOrPull = filterIssueOrPull;
 
 
-function filterRepository(githubRepository) {
+function filterCheckRun(checkRun) {
+  const {
+    status,
+    conclusion,
+    name,
+    html_url
+  } = checkRun;
+
+  return {
+    status,
+    conclusion,
+    name,
+    html_url
+  };
+}
+
+
+function filterStatus(status) {
+  const {
+    context,
+    description,
+    target_url,
+    state
+  } = status;
+
+  return {
+    context,
+    description,
+    target_url,
+    state
+  };
+}
+
+
+function filterRepository(repository) {
 
   const {
     name,
     owner,
     html_url
-  } = githubRepository;
+  } = repository;
 
   return {
     name,
@@ -130,7 +164,9 @@ function filterPull(pullRequest) {
     pull_request,
     links = [],
     order,
-    column
+    column,
+    check_runs = [],
+    statuses = []
   } = pullRequest;
 
   return {
@@ -152,7 +188,9 @@ function filterPull(pullRequest) {
     pull_request,
     links: links.map(filterLink),
     order,
-    column
+    column,
+    statuses: statuses.map(filterStatus),
+    check_runs: check_runs.map(filterCheckRun)
   };
 }
 

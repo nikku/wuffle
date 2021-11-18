@@ -119,7 +119,22 @@
       }
     ],
     "order": -4632742.113349999,
-    "column": "Backlog"
+    "column": "Backlog",
+    "statuses": [],
+    "check_runs": [
+      {
+        "status": "completed",
+        "conclusion": "success",
+        "name": "Travis CI - Pull Request",
+        "html_url": "https://github.com/nikku/testtest-checks/runs/741284010"
+      },
+      {
+        "status": "completed",
+        "conclusion": "success",
+        "name": "Travis CI - Branch",
+        "html_url": "https://github.com/nikku/testtest-checks/runs/741283950"
+      }
+    ]
   },
   {
     "id": "176821946-91",
@@ -450,7 +465,40 @@
       }
     ],
     "order": -2118568.6279100007,
-    "column": "Backlog"
+    "column": "Backlog",
+    "statuses": [],
+    "check_runs": [
+      {
+        "status": "completed",
+        "conclusion": "success",
+        "name": "CodeQL",
+        "html_url": "https://github.com/nikku/wuffle/runs/4198855993"
+      },
+      {
+        "status": "completed",
+        "conclusion": "success",
+        "name": "Analyze (javascript)",
+        "html_url": "https://github.com/nikku/wuffle/runs/4198847487?check_suite_focus=true"
+      },
+      {
+        "status": "completed",
+        "conclusion": "failure",
+        "name": "Build",
+        "html_url": "https://github.com/nikku/wuffle/runs/4198847483?check_suite_focus=true"
+      },
+      {
+        "status": "completed",
+        "conclusion": "success",
+        "name": "WIP",
+        "html_url": "https://github.com/nikku/wuffle/runs/4198847438"
+      },
+      {
+        "status": "completed",
+        "conclusion": "failure",
+        "name": "Build",
+        "html_url": "https://github.com/nikku/wuffle/runs/4198847426?check_suite_focus=true"
+      }
+    ]
   },
   {
     "id": "176821946-116",
@@ -537,7 +585,40 @@
           "pull_request": true,
           "links": [],
           "order": -2118568.6279100007,
-          "column": "Backlog"
+          "column": "Backlog",
+          "statuses": [],
+          "check_runs": [
+            {
+              "status": "completed",
+              "conclusion": "success",
+              "name": "CodeQL",
+              "html_url": "https://github.com/nikku/wuffle/runs/4198855993"
+            },
+            {
+              "status": "completed",
+              "conclusion": "success",
+              "name": "Analyze (javascript)",
+              "html_url": "https://github.com/nikku/wuffle/runs/4198847487?check_suite_focus=true"
+            },
+            {
+              "status": "completed",
+              "conclusion": "failure",
+              "name": "Build",
+              "html_url": "https://github.com/nikku/wuffle/runs/4198847483?check_suite_focus=true"
+            },
+            {
+              "status": "completed",
+              "conclusion": "success",
+              "name": "WIP",
+              "html_url": "https://github.com/nikku/wuffle/runs/4198847438"
+            },
+            {
+              "status": "completed",
+              "conclusion": "failure",
+              "name": "Build",
+              "html_url": "https://github.com/nikku/wuffle/runs/4198847426?check_suite_focus=true"
+            }
+          ]
         }
       }
     ],
@@ -636,7 +717,9 @@
     "pull_request": true,
     "links": [],
     "order": -1175753.5708700004,
-    "column": "Backlog"
+    "column": "Backlog",
+    "statuses": [],
+    "check_runs": []
   },
   {
     "id": "159565926-4",
@@ -675,7 +758,9 @@
     "pull_request": true,
     "links": [],
     "order": -1097185.6494500004,
-    "column": "Backlog"
+    "column": "Backlog",
+    "statuses": [],
+    "check_runs": []
   },
   {
     "id": "150751504-83",
@@ -803,12 +888,16 @@
           "pull_request": true,
           "links": [],
           "order": -782913.9637700003,
-          "column": "Needs Review"
+          "column": "Needs Review",
+          "statuses": [],
+          "check_runs": []
         }
       }
     ],
     "order": -625778.1209300002,
-    "column": "Backlog"
+    "column": "Backlog",
+    "statuses": [],
+    "check_runs": []
   },
   {
     "id": "150751504-110",
@@ -847,7 +936,9 @@
     "pull_request": true,
     "links": [],
     "order": -547210.1995100002,
-    "column": "Backlog"
+    "column": "Backlog",
+    "statuses": [],
+    "check_runs": []
   },
   {
     "id": "150751504-95",
@@ -1127,7 +1218,9 @@
           "pull_request": true,
           "links": [],
           "order": -625778.1209300002,
-          "column": "Backlog"
+          "column": "Backlog",
+          "statuses": [],
+          "check_runs": []
         }
       }
     ],
