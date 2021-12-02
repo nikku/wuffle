@@ -6,6 +6,10 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 _**Note:** Yet to be released changes appear here._
 
+## 0.44.4
+
+* `FIX`: gracefully handle missing `requested_reviewers`
+
 ## 0.44.3
 
 * `FIX`: send `check_runs` and `statuses` information to the board
