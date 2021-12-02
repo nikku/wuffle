@@ -177,7 +177,7 @@ function filterPull(pullRequest) {
     title,
     user: user ? filterUser(user) : null,
     assignees: assignees.map(filterUser),
-    requested_reviewers: requested_reviewers.map(filterUser),
+    requested_reviewers: (requested_reviewers || []).map(filterUser),
     labels: labels.map(filterLabel),
     comments: Array.isArray(comments) ? comments.map(filterComment) : [],
     milestone: milestone ? filterMilestone(milestone) : null,
