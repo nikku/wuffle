@@ -2,7 +2,7 @@
 
 [![CI Status](https://img.shields.io/github/workflow/status/nikku/wuffle/CI)](https://github.com/nikku/wuffle/actions?query=workflow%3ACI)
 
-A multi-repository task board for [GitHub issues](https://guides.github.com/features/issues/).
+A multi-repository / multi-organization task board for [GitHub issues](https://guides.github.com/features/issues/).
 
 <p>
   <a target="_blank" rel="noopener noreferrer" href="https://github.com/nikku/wuffle">
