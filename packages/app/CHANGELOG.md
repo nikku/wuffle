@@ -6,6 +6,11 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 _**Note:** Yet to be released changes appear here._
 
+## 0.45.0
+
+* `FEAT`: add `is:epic` filter
+* `FEAT`: persist column toggle state in query parameters
+
 ## 0.44.4
 
 * `FIX`: gracefully handle missing `requested_reviewers`
