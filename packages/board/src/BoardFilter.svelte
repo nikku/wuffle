@@ -61,11 +61,12 @@
     is: [
       'assigned',
       'unassigned',
-      'closed',
+      'epic',
+      'milestoned',
       'open',
+      'closed',
       'issue',
-      'pull',
-      'milestoned'
+      'pull'
     ].map(name => {
       return { name, value: `${name} ` };
     }),

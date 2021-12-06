@@ -7,6 +7,15 @@ const {
   issueIdent
 } = require('../../util');
 
+const {
+  LinkTypes
+} = require('../../links');
+
+const CHILD_LINK_TYPES = {
+  [ LinkTypes.CHILD_OF ]: true,
+  [ LinkTypes.CLOSES ]: true
+};
+
 
 /**
  * This app allows you to create a search filter from a given term.
@@ -100,6 +109,12 @@ function Search(logger, store) {
       case 'milestoned':
         return function filterMilestoned(issue) {
           return !!issue.milestone;
+        };
+      case 'epic':
+        return function filterEpic(issue) {
+          const links = issue.links;
+
+          return !links || !links.some(link => CHILD_LINK_TYPES[link.type]);
         };
       default:
         return filterNoop;
