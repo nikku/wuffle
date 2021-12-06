@@ -1,7 +1,7 @@
 {
   "name": "wuffle-builder",
   "description": "A task board for GitHub issues",
-  "version": "0.3.0",
+  "version": "0.0.0",
   "license": "MIT",
   "private": true,
   "scripts": {
