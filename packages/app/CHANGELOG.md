@@ -6,6 +6,10 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 _**Note:** Yet to be released changes appear here._
 
+## 0.45.1
+
+* `FIX`: send `reviews` information to the board
+
 ## 0.45.0
 
 * `FEAT`: add `is:epic` filter
