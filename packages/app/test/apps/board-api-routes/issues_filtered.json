@@ -21,6 +21,62 @@
     ],
     "comments": [],
     "milestone": null,
+    "reviews": [
+      {
+        "state": "changes_requested",
+        "html_url": "https://github.com/nikku/testtest-checks/pull/7#pullrequestreview-425035349",
+        "user": {
+          "login": "waltaaa",
+          "avatar_url": "https://avatars.githubusercontent.com/u/43684505?u=7d484e008242e75626e637ee648e2179ebe9368b&v=4",
+          "html_url": "https://github.com/waltaaa"
+        }
+      },
+      {
+        "state": "approved",
+        "html_url": "https://github.com/nikku/testtest-checks/pull/7#pullrequestreview-425035431",
+        "user": {
+          "login": "waltaaa",
+          "avatar_url": "https://avatars.githubusercontent.com/u/43684505?u=7d484e008242e75626e637ee648e2179ebe9368b&v=4",
+          "html_url": "https://github.com/waltaaa"
+        }
+      },
+      {
+        "state": "changes_requested",
+        "html_url": "https://github.com/nikku/testtest-checks/pull/7#pullrequestreview-425039137",
+        "user": {
+          "login": "waltaaa",
+          "avatar_url": "https://avatars.githubusercontent.com/u/43684505?u=7d484e008242e75626e637ee648e2179ebe9368b&v=4",
+          "html_url": "https://github.com/waltaaa"
+        }
+      },
+      {
+        "state": "approved",
+        "html_url": "https://github.com/nikku/testtest-checks/pull/7#pullrequestreview-425039219",
+        "user": {
+          "login": "waltaaa",
+          "avatar_url": "https://avatars.githubusercontent.com/u/43684505?u=7d484e008242e75626e637ee648e2179ebe9368b&v=4",
+          "html_url": "https://github.com/waltaaa"
+        }
+      },
+      {
+        "state": "changes_requested",
+        "html_url": "https://github.com/nikku/testtest-checks/pull/7#pullrequestreview-425040270",
+        "user": {
+          "login": "waltaaa",
+          "avatar_url": "https://avatars.githubusercontent.com/u/43684505?u=7d484e008242e75626e637ee648e2179ebe9368b&v=4",
+          "html_url": "https://github.com/waltaaa"
+        }
+      },
+      {
+        "state": "approved",
+        "html_url": "https://github.com/nikku/testtest-checks/pull/7#pullrequestreview-425040354",
+        "user": {
+          "login": "waltaaa",
+          "avatar_url": "https://avatars.githubusercontent.com/u/43684505?u=7d484e008242e75626e637ee648e2179ebe9368b&v=4",
+          "html_url": "https://github.com/waltaaa"
+        }
+      }
+    ],
     "draft": false,
     "merged": false,
     "repository": {
@@ -397,6 +453,7 @@
     ],
     "comments": [],
     "milestone": null,
+    "reviews": [],
     "draft": true,
     "merged": false,
     "repository": {
@@ -570,6 +627,7 @@
           ],
           "comments": [],
           "milestone": null,
+          "reviews": [],
           "draft": true,
           "merged": false,
           "repository": {
@@ -702,6 +760,7 @@
     ],
     "comments": [],
     "milestone": null,
+    "reviews": [],
     "draft": false,
     "merged": false,
     "repository": {
@@ -743,6 +802,7 @@
     ],
     "comments": [],
     "milestone": null,
+    "reviews": [],
     "draft": false,
     "merged": false,
     "repository": {
@@ -796,6 +856,7 @@
     ],
     "comments": [],
     "milestone": null,
+    "reviews": [],
     "draft": false,
     "merged": false,
     "repository": {
@@ -873,6 +934,7 @@
           ],
           "comments": [],
           "milestone": null,
+          "reviews": [],
           "draft": false,
           "merged": false,
           "repository": {
@@ -921,6 +983,7 @@
     ],
     "comments": [],
     "milestone": null,
+    "reviews": [],
     "draft": false,
     "merged": false,
     "repository": {
@@ -1203,6 +1266,7 @@
           ],
           "comments": [],
           "milestone": null,
+          "reviews": [],
           "draft": false,
           "merged": false,
           "repository": {

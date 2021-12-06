@@ -143,6 +143,24 @@ function filterMilestone(githubMilestone) {
 module.exports.filterMilestone = filterMilestone;
 
 
+function filterReview(review) {
+
+  const {
+    state,
+    user,
+    html_url
+  } = review;
+
+  return {
+    state,
+    html_url,
+    user: filterUser(user)
+  };
+}
+
+module.exports.filterReview = filterReview;
+
+
 function filterPull(pullRequest) {
 
   const {
@@ -158,6 +176,7 @@ function filterPull(pullRequest) {
     milestone,
     repository,
     draft,
+    reviews = [],
     comments = [],
     merged,
     html_url,
@@ -181,6 +200,7 @@ function filterPull(pullRequest) {
     labels: labels.map(filterLabel),
     comments: Array.isArray(comments) ? comments.map(filterComment) : [],
     milestone: milestone ? filterMilestone(milestone) : null,
+    reviews: reviews.map(filterReview),
     draft,
     merged,
     repository: filterRepository(repository),
