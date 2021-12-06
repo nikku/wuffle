@@ -39,7 +39,6 @@
 
   const DEFAULT_PER_COLUMN_RENDER_COUNT = 25;
 
-  const COLUMNS_COLLAPSED_KEY = 'Taskboard_columns_collapsed_state';
   const POLL_KEY = 'Taskboard_polling';
 
   const api = new Api();
@@ -54,13 +53,11 @@
 
   let itemsById = {};
 
-  let localCollapsed = localStore.get(COLUMNS_COLLAPSED_KEY, {});
   let loading = true;
   let updating = 0;
   let error = null;
   let warnings = [];
 
-  let filter = parseSearchFilter();
   let user = null;
   let cursor = null;
 
@@ -78,12 +75,16 @@
     return defaultCollapsed;
   }, {});
 
+  let filter = parseSearchFilter();
+
+  let localCollapsed = parseCollapsedColumns();
+
   $: collapsed = {
     ...defaultCollapsed,
     ...localCollapsed
   };
 
-  $: localStore.set(COLUMNS_COLLAPSED_KEY, localCollapsed);
+  $: updateBoardLocation(filter, localCollapsed);
 
   // shown items
   $: shownItems = Object.keys(items).reduce((shownItems, column) => {
@@ -203,7 +204,9 @@
       history.onPop(() => {
         const newFilter = parseSearchFilter();
 
-        filterChanged(newFilter, false);
+        localCollapsed = parseCollapsedColumns();
+
+        filterChanged(newFilter);
       })
     ];
 
@@ -246,26 +249,20 @@
     return filterChanged(newFilter);
   }
 
-  function filterChanged(value, pushHistory = true) {
+  function filterChanged(value) {
 
     if (value === filter) {
       return;
     }
 
-    const currentFilter = filter;
-
-    filter = value;
-
-    if (pushHistory) {
-      history.push(`/board${buildQueryString(filter)}`);
-    }
-
-    if (currentFilter.trim() !== filter.trim()) {
+    if (value.trim() !== filter.trim()) {
 
       action('Fetching cards')(
-        () => fetchCards(filter)
+        () => fetchCards(value)
       );
     }
+
+    filter = value;
   }
 
   function parseSearchFilter() {
@@ -273,23 +270,68 @@
       return '';
     }
 
-    const queryString = window.location.search;
+    const url = new URL(window.location.href);
 
-    const search = queryString.split(/[?&]/).find(param => /^s=/.test(param));
-
-    if (!search) {
-      return '';
-    }
-
-    return decodeURIComponent(search.split(/=/)[1]);
+    return url.searchParams.get('s') || '';
   }
 
-  function buildQueryString(filter, separator = '?') {
-    if (filter) {
-      return `${separator}s=${encodeURIComponent(filter)}`;
-    } else {
+  function parseCollapsedColumns() {
+    if (typeof window === 'undefined') {
       return '';
     }
+
+    const url = new URL(window.location.href);
+
+    const collapsed = url.searchParams.get('c');
+
+    if (!collapsed) {
+      return {};
+    }
+
+    return collapsed.split(',').filter(c => c).reduce((collapsed, column) => {
+
+      const split = column.split('!');
+
+      collapsed[split[1] || split[0]] = split.length === 1;
+
+      return collapsed;
+    }, {});
+  }
+
+  function updateBoardLocation(filter, collapsed) {
+    const ref = buildBoardLink(filter, collapsed);
+
+    if (ref !== window.location.href) {
+      history.push(ref);
+    }
+  }
+
+  function buildBoardLink(filter, collapsed) {
+
+    const url = new URL(window.location.href);
+
+    const searchParams = url.searchParams;
+
+    const searchParam = filter;
+    const collapsedParam = Object.entries(collapsed).filter(([ key, value ]) => {
+      return defaultCollapsed[key] !== value;
+    }).map(
+      ([ key, value ]) => (value ? '' : '!') + key
+    ).join(',');
+
+    if (searchParam) {
+      searchParams.set('s', searchParam);
+    } else {
+      searchParams.delete('s');
+    }
+
+    if (collapsedParam) {
+      searchParams.set('c', collapsedParam);
+    } else {
+      searchParams.delete('c');
+    }
+
+    return url.toString();
   }
 
   function loginCheck() {
