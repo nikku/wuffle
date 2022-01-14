@@ -10,7 +10,7 @@ const {
 
 
 const {
-  filterIssueOrPull
+  filterIssueOrPull: _filterIssueOrPull
 } = require('./board-api-filters');
 
 
@@ -45,6 +45,21 @@ module.exports = async (
   ];
 
   // endpoints ///////////////////
+
+  function filterIssueOrPull(issueOrPull) {
+
+    try {
+      return _filterIssueOrPull(issueOrPull);
+    } catch (err) {
+
+      log.error({
+        err,
+        issueOrPull
+      }, 'failed to filter issueOrPull');
+
+      throw err;
+    }
+  }
 
   function getIssueSearchFilter(req) {
     const s = req.query.s;
@@ -176,7 +191,10 @@ module.exports = async (
         cursor
       });
     }).catch(err => {
-      log.error(err, 'failed to retrieve cards');
+      log.error({
+        err,
+        cursor
+      }, 'failed to retrieve cards');
 
       res.status(500).json({ error : true });
     });
@@ -216,8 +234,7 @@ module.exports = async (
       }).catch(err => {
         log.error({
           err,
-          cursor,
-          updates
+          cursor
         }, 'failed to retrieve card updates');
 
         res.status(500).json({ error : true });
