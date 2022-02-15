@@ -39,7 +39,7 @@ Several aspects of [wuffle](https://wuffle.dev) are configured via environment v
 | `AWS_ACCESS_KEY_ID` |  | Your AWS access key ID |
 | `AWS_SECRET_ACCESS_KEY` |  | Your AWS secret access key |
 | `S3_BUCKET` |  | Name of S3 bucket to load and dump task board to |
-| `S3_KEY` |  | Name of S3 bucket to load and dump task board to |
+| `S3_KEY` |  | Name of the file to store in the bucket[Default: `storedump.json`] |
 | `S3_REGION` |  | Region of the S3 bucket to dump to |
 
 
