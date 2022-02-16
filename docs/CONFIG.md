@@ -41,7 +41,7 @@ Several aspects of [wuffle](https://wuffle.dev) are configured via environment v
 | `S3_BUCKET` |  | Name of S3 bucket to load and dump task board to |
 | `S3_REGION` |  | Region of the S3 bucket to dump to |
 | `S3_KEY` |  | Name of the file to store in the bucket; defaults to `storedump.json` |
-| `S3_ENDPOINT` |  | fully qualified domain name of the S3 compatible service you are using to persist data with; defaults to AWS S3 endpoints |
+| `S3_ENDPOINT` |  | Fully qualified domain name of the S3 compatible endpoint to use; defaults to AWS S3 endpoints |
 
 
 ### Background Sync
