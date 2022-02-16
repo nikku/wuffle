@@ -6,6 +6,10 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 _**Note:** Yet to be released changes appear here._
 
+## 0.46.0
+
+* `FEAT`: allow custom `S3_ENDPOINT` to be configured ([#127](https://github.com/nikku/wuffle/pull/127))
+
 ## 0.45.2
 
 * `CHORE`: improve board API error logging ([`04015630`](https://github.com/nikku/wuffle/commit/04015630e3f6a1332c2297388fd228049184d75a))
