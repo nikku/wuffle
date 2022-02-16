@@ -11,11 +11,13 @@ function S3() {
     AWS_SECRET_ACCESS_KEY: secretAccessKey,
     S3_BUCKET: bucket,
     S3_REGION: region,
-    S3_KEY: key = 'storedump.json'
+    S3_KEY: key = 'storedump.json',
+    S3_ENDPOINT: endpoint
   } = process.env;
 
   const s3client = new S3Client({
     region,
+    endpoint,
     credentials: {
       accessKeyId,
       secretAccessKey
