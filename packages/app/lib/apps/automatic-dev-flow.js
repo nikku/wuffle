@@ -2,6 +2,7 @@ const DONE = 'DONE';
 const EXTERNAL_CONTRIBUTION = 'EXTERNAL_CONTRIBUTION';
 const IN_PROGRESS = 'IN_PROGRESS';
 const IN_REVIEW = 'IN_REVIEW';
+const CHANGES_REQUESTED = 'changes_requested';
 
 
 /**
@@ -95,6 +96,31 @@ module.exports = function(webhookEvents, githubIssues, columns) {
     const column = columns.getIssueColumn(pull_request);
 
     await githubIssues.moveReferencedIssues(context, pull_request, column);
+  });
+
+  webhookEvents.on('pull_request_review.submitted', async (context) => {
+
+    const {
+      pull_request,
+      review
+    } = context.payload;
+
+    const {
+      state: reviewState
+    } = review;
+
+    if (reviewState !== CHANGES_REQUESTED) {
+      return;
+    }
+
+    const state = isExternal(pull_request) ? EXTERNAL_CONTRIBUTION : IN_PROGRESS;
+
+    const column = columns.getByState(state);
+
+    await Promise.all([
+      githubIssues.moveIssue(context, pull_request, column),
+      githubIssues.moveReferencedIssues(context, pull_request, column)
+    ]);
   });
 
   webhookEvents.on('create', async (context) => {
