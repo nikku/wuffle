@@ -6,6 +6,14 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 _**Note:** Yet to be released changes appear here._
 
+## 0.47.0
+
+* `FEAT`: move changes requested collaborator PRs back to `IN_PROGRESS` ([#128](https://github.com/nikku/wuffle/pull/128))
+* `FEAT`: add ability to auto-assign collaborator PRs ([#129](https://github.com/nikku/wuffle/pull/129))
+* `FEAT`: provide way to use existing `assignee` filter on PRs ([#125](https://github.com/nikku/wuffle/issues/125))
+* `FIX`: react to `pull_request.converted_to_draft`
+* `FIX`: correct avatar sizing
+
 ## 0.46.0
 
 * `FEAT`: allow custom `S3_ENDPOINT` to be configured ([#127](https://github.com/nikku/wuffle/pull/127))
