@@ -74,16 +74,26 @@ module.exports = function(webhookEvents, githubIssues, columns) {
       pull_request
     } = context.payload;
 
+    const external = isExternal(pull_request);
+    const draft = isDraft(pull_request);
+
     const newState =
-      isExternal(pull_request) ? EXTERNAL_CONTRIBUTION : (
-        isDraft(pull_request) ? IN_PROGRESS : IN_REVIEW
+      external ? EXTERNAL_CONTRIBUTION : (
+        draft ? IN_PROGRESS : IN_REVIEW
       );
 
     const column = columns.getByState(newState);
 
+    const author = pull_request.user;
+
+    const newAssignee = (
+      process.env.AUTO_ASSIGN_PULLS && !external &&
+      author && author.type === 'User' && author.login
+    );
+
     await Promise.all([
-      githubIssues.moveIssue(context, pull_request, column),
-      githubIssues.moveReferencedIssues(context, pull_request, column)
+      githubIssues.moveIssue(context, pull_request, column, newAssignee),
+      githubIssues.moveReferencedIssues(context, pull_request, column, newAssignee)
     ]);
   });
 

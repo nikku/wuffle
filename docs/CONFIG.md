@@ -57,6 +57,12 @@ Several aspects of [wuffle](https://wuffle.dev) are configured via environment v
 | `DISABLE_BACKGROUND_SYNC` | | |
 
 
+### Behavior
+
+| Parameter | Required? | Description |
+| :--- | :---: | :--- |
+| `AUTO_ASSIGN_PULLS` | | If set, assign newly created collaborator PRs to the PR author |
+
 ### Misc
 
 | Parameter | Required? | Description |
