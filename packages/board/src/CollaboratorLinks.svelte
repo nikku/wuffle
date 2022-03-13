@@ -102,7 +102,7 @@
     margin: 0;
     font-size: 14px;
     position: relative;
-    display: inline-block;
+    display: flex;
     text-align: center;
     border-radius: 2px;
 
