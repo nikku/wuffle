@@ -6,6 +6,10 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 _**Note:** Yet to be released changes appear here._
 
+## 0.47.1
+
+* `FIX`: gracefully handle missing assignee
+
 ## 0.47.0
 
 * `FEAT`: move changes requested collaborator PRs back to `IN_PROGRESS` ([#128](https://github.com/nikku/wuffle/pull/128))
