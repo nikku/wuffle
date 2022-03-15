@@ -20,7 +20,6 @@
     "closed_at": null,
     "merged_at": null,
     "merge_commit_sha": "7ae6ce3d6fc9336a70a18d5b3fed104e4c2911dd",
-    "assignees": [],
     "requested_reviewers": [],
     "labels": [
       {
@@ -360,7 +359,6 @@
     "created_at": "2020-11-15T20:31:44Z",
     "updated_at": "2021-10-24T19:44:56Z",
     "closed_at": null,
-    "assignees": [],
     "labels": [
       {
         "id": 1282550519,
