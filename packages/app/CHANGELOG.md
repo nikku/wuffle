@@ -6,6 +6,12 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 _**Note:** Yet to be released changes appear here._
 
+## 0.48.0
+
+* `FEAT`: support `@me` in search to reference logged-in user ([#133](https://github.com/nikku/wuffle/pull/133))
+* `FEAT`: support relative `@today`, `@last_week` and `@last_month` temporal qualifiers ([#134](https://github.com/nikku/wuffle/pull/134))
+* `FIX`: recognize comma in quoted search values ([#135](https://github.com/nikku/wuffle/pull/135))
+
 ## 0.47.3
 
 * `FIX`: mark app as Node@16 compatible, again
