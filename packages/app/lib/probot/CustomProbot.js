@@ -55,7 +55,7 @@ function isSetup() {
   const appId = parseInt(process.env.APP_ID, 10);
   const privateKey = getPrivateKey() || undefined;
 
-  return appId && privateKey;
+  return !!(appId && privateKey);
 }
 
 function isProduction() {
