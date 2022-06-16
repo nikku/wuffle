@@ -43,12 +43,12 @@
     "express-session": "^1.17.2",
     "fake-tag": "^3.0.0",
     "memorystore": "^1.6.6",
-    "min-dash": "^3.8.0",
+    "min-dash": "^3.8.1",
     "mkdirp": "^1.0.4",
     "p-defer": "^3.0.0",
     "prexit": "0.0.5",
     "probot": "^12.1.1",
-    "smee-client": "^1.2.2"
+    "smee-client": "^1.2.3"
   },
   "devDependencies": {
     "@octokit/graphql-schema": "^10.73.0",
