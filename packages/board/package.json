@@ -1,6 +1,6 @@
 {
   "name": "wuffle-board",
-  "version": "0.47.0",
+  "version": "0.47.2",
   "private": true,
   "devDependencies": {
     "@rollup/plugin-commonjs": "^22.0.0",
