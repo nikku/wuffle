@@ -68,7 +68,9 @@ module.exports = async (
       return null;
     }
 
-    return search.getSearchFilter(s);
+    const user = authRoutes.getGitHubUser(req);
+
+    return search.getSearchFilter(s, user);
   }
 
   function getIssueReadFilter(req) {

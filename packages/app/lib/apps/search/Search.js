@@ -35,8 +35,16 @@ function Search(logger, store) {
     return true;
   }
 
+  function filterReject(issue) {
+    return false;
+  }
+
   function noopFilter(value) {
     return filterNoop;
+  }
+
+  function noneFilter(value) {
+    return filterReject;
   }
 
   function includes(actual, pattern) {
@@ -285,15 +293,16 @@ function Search(logger, store) {
    * Retrieve a filter function from the given search string.
    *
    * @param {string} search
+   * @param {import('../../types').GitHubUser} [user]
    *
    * @return {Function}
    */
-  function getSearchFilter(search) {
+  function getSearchFilter(search, user) {
 
     const terms = parseSearch(search);
 
     const filterFns = terms.map(term => {
-      const {
+      let {
         qualifier,
         value,
         negated
@@ -301,6 +310,14 @@ function Search(logger, store) {
 
       if (!value) {
         return noopFilter();
+      }
+
+      if (value === '@me') {
+        if (!user) {
+          return noneFilter();
+        }
+
+        value = user.login;
       }
 
       const factoryFn = filters[qualifier];
