@@ -58,6 +58,10 @@ function isSetup() {
   return appId && privateKey;
 }
 
+function isProduction() {
+  return process.env.NODE_ENV === 'production';
+}
+
 function validateSetup() {
 
   const setup = new ManifestCreation();
@@ -73,5 +77,6 @@ function validateSetup() {
 module.exports = {
   run,
   isSetup,
+  isProduction,
   validateSetup
 };

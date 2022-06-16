@@ -4,9 +4,9 @@ require('dotenv').config();
 
 const { CustomProbot } = require('../lib/probot');
 
-const NODE_ENV = process.env.NODE_ENV;
+const IS_PROD = CustomProbot.isProduction();
 
-const IS_SETUP = NODE_ENV !== 'production' && !CustomProbot.isSetup();
+const IS_SETUP = !IS_PROD && !CustomProbot.isSetup();
 
 const fs = require('fs');
 const path = require('path');
@@ -20,8 +20,6 @@ const log = getLog().child({
 const Columns = require('../lib/columns');
 
 const { version } = require('../package');
-
-const IS_PROD = NODE_ENV === 'production';
 
 // shim
 
