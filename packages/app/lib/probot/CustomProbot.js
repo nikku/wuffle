@@ -18,25 +18,46 @@ async function run(appFn) {
 
   const log = getLog();
 
-  const server = new Server({
+  const serverOptions = {
     host,
     log: log.child({ name: 'server' }),
     port,
     webhookPath: process.env.WEBHOOK_PATH,
-    webhookProxy: process.env.WEBHOOK_PROXY_URL,
-    Probot: Probot.defaults({
-      appId,
-      log: log.child({ name: 'probot' }),
-      privateKey,
-      secret: process.env.WEBHOOK_SECRET
-    })
-  });
+    webhookProxy: process.env.WEBHOOK_PROXY_URL
+  };
+
+  let probotOptions = {
+    appId,
+    log: log.child({ name: 'probot' }),
+    privateKey,
+    secret: process.env.WEBHOOK_SECRET
+  };
 
   // use probots own setup app if the probot app
   // is not configured yet
-  if (!isSetup()) {
+  if (!isProduction() && !isSetup()) {
+
+    // Workaround for setup (probot/probot#1512)
+    // When probot is started for the first time, it gets into a setup mode
+    // where `appId` and `privateKey` are not present. The setup mode gets
+    // these credentials. In order to not throw an error, we set the values
+    // to anything, as the Probot instance is not used in setup it makes no
+    // difference anyway.
+    probotOptions = {
+      ...probotOptions,
+      appId: 1,
+      privateKey: 'dummy value for setup, see probot/probot#1512'
+    };
+
     appFn = setupAppFactory(host, port);
   }
+
+  const server = new Server({
+    ...serverOptions,
+    Probot: Probot.defaults({
+      ...probotOptions
+    })
+  });
 
   // log all unhandled rejections
   process.on('unhandledRejection', getErrorHandler(server.log));
