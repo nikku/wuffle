@@ -47,14 +47,11 @@
   export let onChange;
 
   let temporalPresets = [
-    [ 'today', Date.now() ],
-    [ 'last week', Date.now() - 1000 * 60 * 60 * 24 * 7 ],
-    [ 'last month', Date.now() - 1000 * 60 * 60 * 24 * 30 ]
+    [ 'today', '@today' ],
+    [ 'last week', '@last_week' ],
+    [ 'last month', '@last_month' ]
   ].map(([ name, value ]) => {
-
-    const date = new Date(value);
-
-    return { name, value: `>=${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()} ` };
+    return { name, value };
   });
 
   let staticValues = {

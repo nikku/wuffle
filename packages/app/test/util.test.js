@@ -2,6 +2,8 @@ const {
   expect
 } = require('chai');
 
+const sinon = require('sinon');
+
 const {
   findLinks,
   linkTypes,
@@ -620,7 +622,8 @@ describe('util', function() {
         'milestone:',
         'author:walt',
         'label:"in progress"',
-        'ref:foo/bar#80'
+        'ref:foo/bar#80',
+        'assignee:@me'
       ].join(' ');
 
       // when
@@ -637,7 +640,8 @@ describe('util', function() {
         { qualifier: 'milestone', value: undefined, negated: false },
         { qualifier: 'author', value: 'walt', negated: false },
         { qualifier: 'label', value: 'in progress', negated: false },
-        { qualifier: 'ref', value: 'foo/bar#80', negated: false }
+        { qualifier: 'ref', value: 'foo/bar#80', negated: false },
+        { qualifier: 'assignee', value: '@me', negated: false }
       ]);
 
     });
@@ -795,6 +799,71 @@ describe('util', function() {
         date: 1600128000000,
         qualifier: '<='
       });
+    });
+
+
+    describe('should parse logical qualifiers', function() {
+
+      let clock;
+
+      afterEach(function() {
+        clock.restore();
+      });
+
+
+      it('@today', function() {
+
+        // given
+        clock = sinon.useFakeTimers(new Date(2015, 9, 15, 10, 5, 15, 3));
+
+        // when
+        const filter = parseTemporalFilter('@today');
+
+        const expected = new Date(2015, 9, 15, 0, 0, 0, 0);
+
+        // then
+        expect(filter).to.eql({
+          date: expected.getTime(),
+          qualifier: '>='
+        });
+      });
+
+
+      it('@last_week', function() {
+
+        // given
+        clock = sinon.useFakeTimers(new Date(2015, 9, 15, 10, 5, 15, 3));
+
+        // when
+        const filter = parseTemporalFilter('@last_week');
+
+        const expected = new Date(2015, 9, 8, 0, 0, 0, 0);
+
+        // then
+        expect(filter).to.eql({
+          date: expected.getTime(),
+          qualifier: '>='
+        });
+      });
+
+
+      it('@last_month', function() {
+
+        // given
+        clock = sinon.useFakeTimers(new Date(2015, 9, 15, 10, 5, 15, 3));
+
+        // when
+        const filter = parseTemporalFilter('@last_month');
+
+        const expected = new Date(2015, 8, 15, 0, 0, 0, 0);
+
+        // then
+        expect(filter).to.eql({
+          date: expected.getTime(),
+          qualifier: '>='
+        });
+      });
+
     });
 
 
