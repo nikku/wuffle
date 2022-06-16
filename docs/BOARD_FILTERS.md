@@ -11,8 +11,8 @@ The board supports the following filters:
 | :--- | :--- | :--- |
 | Text | Filter by issue and body text | `Foo` |
 | `is` | Filter by a card state | `is:assigned`, `is:open` |
-| `created`, `updated` | Filter card by temporal state | `created>=2020-09-23` |
-| `assignee`, `reviewer`, `author`, `involved` | Filter for cards that involve a specific user | `involves:nikku` |
+| `created`, `updated` | Filter card by temporal state | `created:>=2020-09-23`, `updated:@last_week` |
+| `assignee`, `reviewer`, `author`, `involved` | Filter for cards that involve a specific user | `involves:nikku`, `author:@me` |
 | `milestone` | Filter by [milestone](https://docs.github.com/en/github/managing-your-work-on-github/about-milestones) | `milestone:M1` |
 | `label` | Filter by [label](https://docs.github.com/en/github/managing-your-work-on-github/managing-labels) | `label:critical` |
 | `repo` | Filter by repository | `repo:"nikku/wuffle"` |
