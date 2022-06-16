@@ -6,6 +6,11 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 _**Note:** Yet to be released changes appear here._
 
+## 0.47.2
+
+* `FIX`: correct first time setup ([#131](https://github.com/nikku/wuffle/pull/131))
+* `DEPS`: bump dependencies
+
 ## 0.47.1
 
 * `FIX`: gracefully handle missing assignee
