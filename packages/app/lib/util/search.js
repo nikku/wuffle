@@ -59,7 +59,7 @@ function startOfDay(time) {
 
 function parseSearch(str) {
 
-  const regexp = /(?:([\w#/&]+)|"([\w#/&\s-.]+)"|([-!]?)([\w]+):(?:([\w-#/&@<>=.]+)|"([\w-#/&@:. ]+)")?)(?:\s|$)/g;
+  const regexp = /(?:([\w#/&]+)|"([\w#/&\s-.]+)"|([-!]?)([\w]+):(?:([\w-#/&@<>=.]+)|"([\w-#/&@:.,; ]+)")?)(?:\s|$)/g;
 
   const terms = [];
 

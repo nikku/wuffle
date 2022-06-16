@@ -623,7 +623,8 @@ describe('util', function() {
         'author:walt',
         'label:"in progress"',
         'ref:foo/bar#80',
-        'assignee:@me'
+        'assignee:@me',
+        'label:"some,stuff;yea"'
       ].join(' ');
 
       // when
@@ -641,7 +642,8 @@ describe('util', function() {
         { qualifier: 'author', value: 'walt', negated: false },
         { qualifier: 'label', value: 'in progress', negated: false },
         { qualifier: 'ref', value: 'foo/bar#80', negated: false },
-        { qualifier: 'assignee', value: '@me', negated: false }
+        { qualifier: 'assignee', value: '@me', negated: false },
+        { qualifier: 'label', value: 'some,stuff;yea', negated: false }
       ]);
 
     });
