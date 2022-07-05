@@ -1,36 +1,36 @@
 
 <script>
-import CreateFilter from "./CreateQuickFilter.svelte";
+import CreateFilter from './CreateQuickFilter.svelte';
 
-  import { createLocalStore } from "./util";
+import { createLocalStore } from './util';
 
-  export let setFilter;
-  export let currentFilter;
-   
-  const defaultFilter = [
-    {
-      name: "Assigned to me",
-      value: "assignee:@me"
-    }
-  ];
+export let setFilter;
+export let currentFilter;
 
-  const localStorage = createLocalStore();
-
-  let filters = localStorage.get("quickFilters", defaultFilter);
-  const removeFilter = (filter) => {
-    filters = filters.filter(f => f !== filter);
-    localStorage.set("quickFilters", filters);
-  };
-  
-
-  const createFilter = name => {
-    const filter = {
-      name,
-      value: currentFilter
-    };
-    filters = [...filters, filter];
-    localStorage.set("quickFilters", filters);
+const defaultFilter = [
+  {
+    name: 'Assigned to me',
+    value: 'assignee:@me'
   }
+];
+
+const localStorage = createLocalStore();
+
+let filters = localStorage.get('quickFilters', defaultFilter);
+const removeFilter = (filter) => {
+  filters = filters.filter(f => f !== filter);
+  localStorage.set('quickFilters', filters);
+};
+
+
+const createFilter = name => {
+  const filter = {
+    name,
+    value: currentFilter
+  };
+  filters = [ ...filters, filter ];
+  localStorage.set('quickFilters', filters);
+};
 
 </script>
 
@@ -41,7 +41,7 @@ import CreateFilter from "./CreateQuickFilter.svelte";
     <button
       class="btn btn-outline-primary ml-1 {filter.value === currentFilter ? 'active' : ''}"
         on:click={() => {
-          if(filter.value !== currentFilter) {
+          if (filter.value !== currentFilter) {
             setFilter(filter.value);
           }
           else {

@@ -1,7 +1,7 @@
 <script>
   import CreateFilterDialog from './CreateQuickFilterDialog.svelte';
 
-  export let onSubmit= () => {};
+  export let onSubmit = () => {};
   export let onClose = () => {};
 
   let open;
@@ -17,7 +17,7 @@
   };
 </script>
 
-<button class="btn btn-outline-primary ml-1" on:click={() => {open = true}}>🖫</button>
+<button class="btn btn-outline-primary ml-1" on:click={() => {open = true;}}>🖫</button>
 
 {#if open}
   <CreateFilterDialog
