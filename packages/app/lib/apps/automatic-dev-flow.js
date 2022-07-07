@@ -158,7 +158,13 @@ module.exports = function(webhookEvents, githubIssues, columns) {
 
     const column = columns.getByState(IN_PROGRESS);
 
-    return githubIssues.findAndMoveIssue(context, issue_number, column, assignee);
+    return githubIssues.findAndMoveIssue(
+      context,
+      issue_number,
+      column,
+      assignee,
+      issue => issue.state === 'open'
+    );
   });
 
 };
