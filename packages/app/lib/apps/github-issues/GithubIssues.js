@@ -91,9 +91,9 @@ function GithubIssues(logger, config, columns) {
       });
   }
 
-  function findAndMoveIssue(context, number, newColumn, newAssignee) {
+  function findAndMoveIssue(context, number, newColumn, newAssignee, test = (issue) => true) {
     return findIssue(context, number)
-      .then((issue) => issue && moveIssue(context, issue, newColumn, newAssignee));
+      .then((issue) => issue && test(issue) && moveIssue(context, issue, newColumn, newAssignee));
   }
 
   async function moveReferencedIssues(context, issue, newColumn, newAssignee) {
