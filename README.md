@@ -29,6 +29,7 @@ A multi-repository / multi-organization task board for [GitHub issues](https://g
 * [Roadmap](https://github.com/nikku/wuffle/issues?q=is%3Aissue+is%3Aopen+label%3Aroadmap)
 * [Changelog](https://github.com/nikku/wuffle/blob/master/packages/app/CHANGELOG.md)
 * [Setup and Run](https://github.com/nikku/wuffle/blob/master/docs/SETUP.md)
+* [Documentation](https://github.com/nikku/wuffle/tree/master/docs#readme)
 
 
 ## Philosophy
