@@ -37,6 +37,8 @@ Some key aspects separate [Wuffle](https://github.com/nikku/wuffle) from the Git
 
 * __[GitHub issues](https://guides.github.com/features/issues/) are the source of truth.__ We read and store columns, relationships, and everything else directly on GitHub. The only exception is issue order (not supported by GitHub, so far).
 
+* __No [projects](https://docs.github.com/en/issues/planning-and-tracking-with-projects/learning-about-projects/about-projects), no cards.__ No secondary editing UI, no incomplete views on your backlog. Just issues, milestones, and labels, all the way.
+
 * __Tight integration with the [GitHub flow](https://guides.github.com/introduction/flow/).__ Your issues move automatically across the board. The board is always up to date with things going on in development.
 
 * __Publicly accessible.__ You can share your project status without restrictions. Applied board filters are shareable deep links. However, we do only display those issues to a visitor that she sees on GitHub, too. Would you like to see cards from your private repositories? Log in with your GitHub identity and see them pop up in the mapped column.
