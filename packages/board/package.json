@@ -37,7 +37,7 @@
     "build:js:watch": "rollup -c -w",
     "build:static:prod": "cpx public/**/* ../app/public",
     "build:static:watch": "cpx public/**/* ../app/public -w",
-    "build:css": "node-sass --include-path=node_modules src/style/global.scss -o ../app/public",
+    "build:css": "node-sass --include-path=../../node_modules src/style/global.scss -o ../app/public",
     "build:css:prod": "run-s 'build:css -- --output-style compressed'",
     "build:css:watch": "run-s build:css 'build:css -- -w'",
     "dev": "run-s build:watch"
