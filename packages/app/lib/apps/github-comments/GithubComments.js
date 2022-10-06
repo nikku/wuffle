@@ -96,8 +96,8 @@ function GithubComments(webhookEvents, events, githubClient, store) {
             }
           }
         }
-      }
-    `, {
+      }`,
+    {
       owner,
       repo,
       issue_number: number

@@ -4,13 +4,18 @@
   ],
   "rules": {
     "comma-dangle": [ "error", "never" ],
-    "require-atomic-updates": "off",
-    "graphql/template-strings": [ "error", {
-      "env": "literal",
-      "tagName": "gql"
-    } ]
+    "require-atomic-updates": "off"
   },
-  "plugins": [
-    "graphql"
+  "overrides": [
+    {
+      "files": ["*.js"],
+      "processor": "@graphql-eslint/graphql"
+    },
+    {
+      "files": ["*.graphql"],
+      "parser": "@graphql-eslint/eslint-plugin",
+      "plugins": ["@graphql-eslint"],
+      "extends": "plugin:@graphql-eslint/schema-recommended"
+    }
   ]
 }
