@@ -4,13 +4,11 @@
   "private": true,
   "devDependencies": {
     "@rollup/plugin-commonjs": "^22.0.0",
-    "@rollup/plugin-node-resolve": "^13.3.0",
+    "@rollup/plugin-node-resolve": "^14.1.0",
     "@rollup/plugin-url": "^7.0.0",
     "bootstrap": "^4.6.1",
     "cpx": "^1.5.0",
     "dragula": "^3.7.3",
-    "eslint": "^7.21.0",
-    "eslint-plugin-bpmn-io": "^0.13.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-svelte3": "^4.0.0",
     "min-dash": "^3.8.1",
@@ -40,8 +38,8 @@
     "build:static:prod": "cpx public/**/* ../app/public",
     "build:static:watch": "cpx public/**/* ../app/public -w",
     "build:css": "node-sass --include-path=node_modules src/style/global.scss -o ../app/public",
-    "build:css:prod": "run-s \"build:css -- --output-style compressed\"",
-    "build:css:watch": "run-s build:css \"build:css -- -w\"",
+    "build:css:prod": "run-s 'build:css -- --output-style compressed'",
+    "build:css:watch": "run-s build:css 'build:css -- -w'",
     "dev": "run-s build:watch"
   }
 }
