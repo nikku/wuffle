@@ -1,3 +1,5 @@
+/* eslint-env node */
+
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import url from '@rollup/plugin-url';

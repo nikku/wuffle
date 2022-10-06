@@ -1,11 +1,7 @@
 {
   "extends": [
-    "plugin:bpmn-io/es6"
+    "plugin:bpmn-io/node"
   ],
-  "env": {
-    "node": true,
-    "es6": true
-  },
   "rules": {
     "comma-dangle": [ "error", "never" ],
     "require-atomic-updates": "off",

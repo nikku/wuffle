@@ -1,1 +1,3 @@
-{ "schema": "packages/app/node_modules/@octokit/graphql-schema/schema.graphql" }
+{
+  "schema": "node_modules/@octokit/graphql-schema/schema.graphql"
+}
