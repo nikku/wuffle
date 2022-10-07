@@ -6,6 +6,12 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 _**Note:** Yet to be released changes appear here._
 
+## 0.49.0
+
+* `FEAT`: add `l` shortcut to toggle login
+* `FEAT`: do not establish `CHILD_OF` relationship through deep links ([#138](https://github.com/nikku/wuffle/issues/138))
+* `FIX`: gracefully handle missing asset folder in `dev`
+
 ## 0.48.1
 
 * `FIX`: don't necrobump closed issues on `{SOME_NUMBER}-branch` creation ([#137](https://github.com/nikku/wuffle/pull/137))
