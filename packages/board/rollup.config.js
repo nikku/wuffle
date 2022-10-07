@@ -4,6 +4,8 @@ import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import url from '@rollup/plugin-url';
 
+import copy from 'rollup-plugin-copy';
+
 import css from 'rollup-plugin-css-only';
 import svelte from 'rollup-plugin-svelte';
 import livereload from 'rollup-plugin-livereload';
@@ -27,6 +29,11 @@ export default [
       file: distDirectory + '/bundle.js'
     },
     plugins: [
+      copy({
+        targets: [
+          { src: 'public/*', dest: distDirectory }
+        ]
+      }),
       url({
         fileName: '[dirname][filename][extname]',
         publicPath: '/board/'
