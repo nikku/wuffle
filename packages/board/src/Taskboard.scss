@@ -7,10 +7,6 @@
 }
 
 @media all and (max-width: 600px) {
-  .brand-name {
-    display: none;
-  }
-
   :global {
     .board-filter {
       width: 100% !important;

@@ -771,15 +771,6 @@
 
   @import "./Taskboard";
 
-  .vertical-divider {
-    display: inline-block;
-    width: 1px;
-    height: 0.9em;
-    margin: 0 8px;
-
-    background: $gray-300;
-  }
-
   .muted {
     color:  $gray-600;
   }
