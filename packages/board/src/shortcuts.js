@@ -31,6 +31,15 @@ export function isNewIssueShortcut(event) {
   return event.key === 'n';
 }
 
+export function isLoginShortcut(event) {
+
+  if (!isGlobal(event) || hasModifier(event)) {
+    return false;
+  }
+
+  return event.key === 'l';
+}
+
 export function isApplyFilterClick(event) {
 
   const {
