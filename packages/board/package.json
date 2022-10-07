@@ -33,13 +33,14 @@
     "lint": "eslint --ext js,svelte .",
     "build": "run-p build:*:prod",
     "build:watch": "run-p build:*:watch",
-    "build:js:prod": "rollup -c",
-    "build:js:watch": "rollup -c -w",
+    "build:js": "rollup -c",
+    "build:js:prod": "npm run build:js",
+    "build:js:watch": "npm run build:js -- -w",
     "build:static:prod": "cpy 'public/**/*' ../app/public",
     "build:static:watch": "cpy 'public/**/*' ../app/public -w",
     "build:css": "sass --load-path=../../node_modules src/style/global.scss:../app/public/global.css",
-    "build:css:prod": "run-s 'build:css -- --style compressed'",
-    "build:css:watch": "run-s build:css 'build:css -- -w'",
+    "build:css:prod": "npm run build:css -- --style compressed",
+    "build:css:watch": "npm run build:css -- -w",
     "dev": "run-s build:watch"
   }
 }
