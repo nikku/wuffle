@@ -51,7 +51,7 @@ function findLinks(issue, types) {
 
   const typePart = '(close|closes|closed|connect to|connected to|connects to|fix|fixes|fixed|resolve|resolves|resolved|child of|parent of|depends on|needs|requires|required by|needed by|related to):?\\s+';
   const issueShortHandPart = `(?:(${namePart})\\/(${namePart}))?#(\\d+)`;
-  const issueUrlPart = `https:\\/\\/github.com\\/(${namePart})\\/(${namePart})\\/(?:issues|pull)\\/(\\d+)`;
+  const issueUrlPart = `https:\\/\\/github.com\\/(${namePart})\\/(${namePart})\\/(?:issues|pull)\\/(\\d+)((?:[/][\\w-/]+)?(?:[?][\\w-=&]+)?(?:[#][\\w-]+)?)`;
   const issuePart = `(?:${issueShortHandPart}|${issueUrlPart})`;
   const separatorPart = '(?:[\\s,]+(?:and[\\s,]+)?)';
   const taskPart = '[-*]{1}\\s*\\[[x ]{1}\\]\\s+.*';
@@ -110,7 +110,9 @@ function findLinks(issue, types) {
     const issuePattern = new RegExp(`${issuePart}`, 'ig');
 
     while ((issueMatch = issuePattern.exec(text))) {
-      issueMatches.push([ PARENT_OF, issueMatch.slice(1) ]);
+      const ref = issueMatch[7];
+
+      issueMatches.push([ ref ? LINKED_TO : PARENT_OF, issueMatch.slice(1) ]);
     }
   }
 

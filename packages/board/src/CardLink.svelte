@@ -23,10 +23,11 @@
   $: repository = item.repository;
   $: pull_request = item.pull_request;
   $: state = item.state;
+  $: ref = item.ref || '';
 
   $: repositoryName = `${repository.owner.login}/${repository.name}`;
 
-  $: cardUrl = item.html_url || `https://github.com/${ repositoryName }/issues/${ number }`;
+  $: cardUrl = item.html_url || `https://github.com/${ repositoryName }/issues/${ number }${ ref}`;
 
   $: linkTitle = ({
     CHILD_OF: 'Parent of',

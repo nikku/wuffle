@@ -368,7 +368,9 @@ describe('util', function() {
       const issue = createIssue(
         'FOO',
         'Related to #2, related to https://github.com/foo/bar/pull/1828\n' +
-        'Related to: #3'
+        'Related to: #3\n' +
+        'Related to https://github.com/foo/bar/pull/1828#some-comment\n' +
+        'Related to https://github.com/foo/bar/pull/1828#some-comment?'
       );
 
       // when
@@ -385,6 +387,14 @@ describe('util', function() {
         },
         {
           type: LINKED_TO, number: 3
+        },
+        {
+          type: LINKED_TO, number: 1828,
+          owner: 'foo', repo: 'bar'
+        },
+        {
+          type: LINKED_TO, number: 1828,
+          owner: 'foo', repo: 'bar'
         }
       ]);
     });
@@ -583,12 +593,21 @@ describe('util', function() {
       // given
       const issue = createIssue(
         'FOO',
-        'Some things to do: \n' +
-        '* [ ] A https://github.com/foo/bar/issues/200\n' +
-        '* [ ] B #1, #11\n' +
-        '* [ ] #2\n' +
-        '* [ ] Other issue (#5)\n' +
-        '* [ ] [Nicely linked issue](#6)\n'
+        `
+        Some things to do:
+
+          * [ ] A https://github.com/foo/bar/issues/200
+          * [ ] B #1, #11
+          * [ ] #2
+          * [ ] Other issue (#5)
+          * [ ] [Nicely linked issue](#6)
+          * [ ] Related to be verified: https://github.com/foo/bar/issues/200#deeplink-foo
+          * [ ] Check out https://github.com/nikku/testtest/issues/118#issuecomment-1271223336
+          * [ ] Is  https://github.com/nikku/testtest/pull/82/commits/ff859a123b95377186900829eeebd1a6dd7ee1ee#r989781035 still valid?
+          * [ ] Maybe https://github.com/foo/bar/issues/200#deeplink-foo?
+          * [ ] Check out https://github.com/foo/bar/issues/200#deeplink-foo: Makes it happen
+          * [ ] See https://github.com/foo/bar/issues/200?a=1&b=3#deeplink-foo
+        `
       );
 
       // when
@@ -601,7 +620,13 @@ describe('util', function() {
         { type: 'PARENT_OF', number: 11 },
         { type: 'PARENT_OF', number: 2 },
         { type: 'PARENT_OF', number: 5 },
-        { type: 'PARENT_OF', number: 6 }
+        { type: 'PARENT_OF', number: 6 },
+        { type: 'LINKED_TO', number: 200, owner: 'foo', repo: 'bar' },
+        { type: 'LINKED_TO', number: 118, owner: 'nikku', repo: 'testtest' },
+        { type: 'LINKED_TO', number: 82, owner: 'nikku', repo: 'testtest' },
+        { type: 'LINKED_TO', number: 200, owner: 'foo', repo: 'bar' },
+        { type: 'LINKED_TO', number: 200, owner: 'foo', repo: 'bar' },
+        { type: 'LINKED_TO', number: 200, owner: 'foo', repo: 'bar' }
       ]);
     });
 
