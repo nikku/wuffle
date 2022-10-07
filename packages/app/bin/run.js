@@ -108,9 +108,10 @@ async function validate() {
   }
 
   function checkBoardAssets() {
+    const problem = IS_PROD ? error : warning;
 
     if (!fs.existsSync(path.join(__dirname, '../public/index.html'))) {
-      return error('board assets not found, please compile them via npm run build');
+      return problem('board assets not found, please compile them via npm run build');
     }
   }
 
