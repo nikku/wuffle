@@ -37,14 +37,16 @@ class Links {
    * @param {string} sourceId
    * @param {string} targetId
    * @param {string} linkType
+   * @param {Record<string,any>} linkAttrs
    *
    * @return {Link}
    */
-  createLink(sourceId, targetId, linkType) {
+  createLink(sourceId, targetId, linkType, linkAttrs) {
 
     const key = `${targetId}-${linkType}`;
 
     const link = {
+      ...linkAttrs,
       key,
       sourceId,
       targetId,
@@ -64,7 +66,8 @@ class Links {
     const {
       sourceId,
       targetId,
-      type
+      type,
+      ...linkAttrs
     } = link;
 
     if (!LinkTypes[type]) {
@@ -76,6 +79,7 @@ class Links {
     const key = `${targetId}-${type}`;
 
     links[key] = {
+      ...linkAttrs,
       key,
       sourceId,
       targetId,

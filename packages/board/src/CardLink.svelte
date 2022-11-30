@@ -12,6 +12,8 @@
 
   export let item;
 
+  export let ref;
+
   export let onSelect;
 
   export let hovered = false;
@@ -23,11 +25,10 @@
   $: repository = item.repository;
   $: pull_request = item.pull_request;
   $: state = item.state;
-  $: ref = item.ref || '';
 
   $: repositoryName = `${repository.owner.login}/${repository.name}`;
 
-  $: cardUrl = item.html_url || `https://github.com/${ repositoryName }/issues/${ number }${ ref}`;
+  $: cardUrl = `https://github.com/${ repositoryName }/issues/${ number }${ ref || '' }`;
 
   $: linkTitle = ({
     CHILD_OF: 'Parent of',

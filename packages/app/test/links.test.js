@@ -58,6 +58,25 @@ describe('links', function() {
   });
 
 
+  it('should create link + attach meta-data', function() {
+
+    // given
+    const links = new Links();
+
+    // when
+    const link = links.createLink(1, 2, LinkTypes.CLOSES, { ref: '#foo' });
+
+    // then
+    expect(link).to.eql({
+      key: `2-${LinkTypes.CLOSES}`,
+      sourceId: 1,
+      targetId: 2,
+      type: LinkTypes.CLOSES,
+      ref: '#foo'
+    });
+  });
+
+
   it('should retrieve self links', function() {
 
     // given
