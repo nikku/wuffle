@@ -1,6 +1,7 @@
 <script>
   import {
     isPull,
+    isOpenOrMerged,
     noDuplicates
   } from './util';
 
@@ -69,7 +70,7 @@
   $: completedChildren = children.filter(l => l.target.state === 'closed');
 
   $: prLinks = links.filter(
-    link => isClosingPull(link)
+    link => isClosingPull(link) && isOpenOrMerged(link.target)
   ).filter(
     noDuplicates(link => link.target.id + link.ref)
   );
