@@ -390,11 +390,13 @@ describe('util', function() {
         },
         {
           type: LINKED_TO, number: 1828,
-          owner: 'foo', repo: 'bar'
+          owner: 'foo', repo: 'bar',
+          ref: '#some-comment'
         },
         {
           type: LINKED_TO, number: 1828,
-          owner: 'foo', repo: 'bar'
+          owner: 'foo', repo: 'bar',
+          ref: '#some-comment'
         }
       ]);
     });
@@ -585,6 +587,37 @@ describe('util', function() {
         ]);
       });
 
+
+      it('parse deep ref', function() {
+
+        // given
+        const issue = createIssue(
+          'FOO',
+          'Closes https://github.com/foo/bar/issues/2#foop, https://github.com/foo/bar/issues/5?woop=1'
+        );
+
+        // when
+        const links = findLinks(issue);
+
+        // then
+        expect(links).to.eql([
+          {
+            owner: 'foo',
+            repo: 'bar',
+            type: CLOSES,
+            number: 2,
+            ref: '#foop'
+          },
+          {
+            owner: 'foo',
+            repo: 'bar',
+            type: CLOSES,
+            number: 5,
+            ref: '?woop=1'
+          }
+        ]);
+      });
+
     });
 
 
@@ -621,12 +654,12 @@ describe('util', function() {
         { type: 'PARENT_OF', number: 2 },
         { type: 'PARENT_OF', number: 5 },
         { type: 'PARENT_OF', number: 6 },
-        { type: 'LINKED_TO', number: 200, owner: 'foo', repo: 'bar' },
-        { type: 'LINKED_TO', number: 118, owner: 'nikku', repo: 'testtest' },
-        { type: 'LINKED_TO', number: 82, owner: 'nikku', repo: 'testtest' },
-        { type: 'LINKED_TO', number: 200, owner: 'foo', repo: 'bar' },
-        { type: 'LINKED_TO', number: 200, owner: 'foo', repo: 'bar' },
-        { type: 'LINKED_TO', number: 200, owner: 'foo', repo: 'bar' }
+        { type: 'PARENT_OF', number: 200, owner: 'foo', repo: 'bar', ref: '#deeplink-foo' },
+        { type: 'PARENT_OF', number: 118, owner: 'nikku', repo: 'testtest', ref: '#issuecomment-1271223336' },
+        { type: 'PARENT_OF', number: 82, owner: 'nikku', repo: 'testtest', ref: '/commits/ff859a123b95377186900829eeebd1a6dd7ee1ee#r989781035' },
+        { type: 'PARENT_OF', number: 200, owner: 'foo', repo: 'bar', ref: '#deeplink-foo' },
+        { type: 'PARENT_OF', number: 200, owner: 'foo', repo: 'bar', ref: '#deeplink-foo' },
+        { type: 'PARENT_OF', number: 200, owner: 'foo', repo: 'bar', ref: '?a=1&b=3#deeplink-foo' }
       ]);
     });
 

@@ -478,7 +478,8 @@ class Store {
         owner,
         repo,
         number,
-        type: linkType
+        type: linkType,
+        ...linkAttrs
       } = link;
 
       const linkedKey = `${owner}/${repo}#${number}`;
@@ -489,7 +490,7 @@ class Store {
 
         const { id: targetId } = linkedIssue;
 
-        const link = this.links.createLink(id, targetId, linkType);
+        const link = this.links.createLink(id, targetId, linkType, linkAttrs);
 
         map[link.key] = link;
       }
@@ -592,12 +593,11 @@ class Store {
       linked = this.linkedCache[id] = Object.values(this.links.getBySource(id)).map(link => {
 
         const {
-          type,
           targetId
         } = link;
 
         return {
-          type,
+          ...link,
           target: this.getIssueById(targetId)
         };
       }).filter(link => link.target);

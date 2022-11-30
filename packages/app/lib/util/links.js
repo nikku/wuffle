@@ -69,7 +69,8 @@ function findLinks(issue, types) {
   /*
    * match = [
    *   short_org, short_repo, short_number,
-   *   long_org, long_repo, long_number
+   *   long_org, long_repo, long_number,
+   *   ref
    * ]
    */
 
@@ -84,7 +85,8 @@ function findLinks(issue, types) {
     /*
      * continuationMatch = [
      *   short_org, short_repo, short_number,
-     *   long_org, long_repo, long_number
+     *   long_org, long_repo, long_number,
+     *   ref
      * ]
      */
 
@@ -110,9 +112,7 @@ function findLinks(issue, types) {
     const issuePattern = new RegExp(`${issuePart}`, 'ig');
 
     while ((issueMatch = issuePattern.exec(text))) {
-      const ref = issueMatch[7];
-
-      issueMatches.push([ ref ? LINKED_TO : PARENT_OF, issueMatch.slice(1) ]);
+      issueMatches.push([ PARENT_OF, issueMatch.slice(1) ]);
     }
   }
 
@@ -124,14 +124,22 @@ function findLinks(issue, types) {
     const repo = issueParts[1] || issueParts[4];
     const number = parseInt(issueParts[2] || issueParts[5], 10);
 
-    const link = owner ? {
+    const ref = issueParts[6];
+
+    const link = {
       type,
       number,
-      owner,
-      repo
-    } : {
-      type,
-      number
+      ...(owner
+        ? {
+          owner,
+          repo
+        }
+        : { }
+      ),
+      ...(ref
+        ? { ref }
+        : { }
+      )
     };
 
     links.push(link);

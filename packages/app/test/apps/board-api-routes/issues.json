@@ -231,6 +231,10 @@
     "links": [
       {
         "type": "CLOSES",
+        "targetId": "foonbar",
+        "sourceId": "foobar",
+        "key": "abc",
+        "ref": "#ref",
         "target": {
           "id": "159565926-6",
           "issue_node_id": "MDU6SXNzdWU1MDU3NDI4MzY=",

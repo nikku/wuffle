@@ -93,6 +93,7 @@
     "links": [
       {
         "type": "CLOSES",
+        "ref": "#ref",
         "target": {
           "id": "159565926-6",
           "key": "nikku/testtest-checks#6",

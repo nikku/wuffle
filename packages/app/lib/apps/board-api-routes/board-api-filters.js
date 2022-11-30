@@ -116,12 +116,14 @@ module.exports.filterLabel = filterLabel;
 function filterLink(link) {
   const {
     type,
-    target
+    target,
+    ref
   } = link;
 
   return {
     type,
-    target: filterIssueOrPull(target)
+    target: filterIssueOrPull(target),
+    ...(ref ? { ref } : { })
   };
 }
 
