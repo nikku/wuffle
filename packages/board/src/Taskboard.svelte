@@ -865,7 +865,7 @@
 
       <form class="form-inline mx-3 my-2 my-sm-0" on:submit|preventDefault={ openCreateIssue }>
         <button class="btn btn-outline-primary" type="submit" title="Create new issue (n)">
-          <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 16 16"><path fill="currentColor" fill-rule="evenodd" d="M7.75 2a.75.75 0 01.75.75V7h4.25a.75.75 0 110 1.5H8.5v4.25a.75.75 0 11-1.5 0V8.5H2.75a.75.75 0 010-1.5H7V2.75A.75.75 0 017.75 2z"></path></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" height="16" fill="currentColor"><path fill-rule="evenodd" d="M7.75 2a.75.75 0 01.75.75V7h4.25a.75.75 0 110 1.5H8.5v4.25a.75.75 0 11-1.5 0V8.5H2.75a.75.75 0 010-1.5H7V2.75A.75.75 0 017.75 2z"></path></svg>
         </button>
       </form>
     </div>
@@ -880,7 +880,7 @@
       {:else}
         <a href="/wuffle/login" aria-label="Login with GitHub">
           <Avatar title="Login with GitHub (l)" rounded>
-            <svg height="1.3em" fill="currentColor" viewBox="0 0 12 16" version="1.1" aria-hidden="true"><path fill-rule="evenodd" d="M12 14.002a.998.998 0 0 1-.998.998H1.001A1 1 0 0 1 0 13.999V13c0-2.633 4-4 4-4s.229-.409 0-1c-.841-.62-.944-1.59-1-4 .173-2.413 1.867-3 3-3s2.827.586 3 3c-.056 2.41-.159 3.38-1 4-.229.59 0 1 0 1s4 1.367 4 4v1.002z"></path></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" height="1.3em" fill="currentColor"><path d="M4.243 4.757a3.757 3.757 0 115.851 3.119 6.006 6.006 0 013.9 5.339.75.75 0 01-.715.784H2.721a.75.75 0 01-.714-.784 6.006 6.006 0 013.9-5.34 3.753 3.753 0 01-1.664-3.118z"></path></svg>
           </Avatar>
         </a>
       {/if}
