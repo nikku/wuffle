@@ -39,7 +39,7 @@
       target
     } = link;
 
-    return isPull(target) && type === 'CLOSED_BY';
+    return isPull(target) && (type === 'CLOSED_BY' || type === 'DEPENDS_ON');
   }
 
   let showChildren = false;
