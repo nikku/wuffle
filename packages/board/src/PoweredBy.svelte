@@ -60,9 +60,15 @@
 
 <div class="powered-by">
   <div class="help">
+
     <a class="help-item" href="https://wuffle.dev/docs"
        target="_blank" rel="noopener">
       Documentation
+    </a>
+
+    <a class="help-item" href="https://wuffle.dev/docs/shortcuts-navigation"
+       target="_blank" rel="noopener">
+      Keyboard shortcuts
     </a>
 
     <span class="help-item">
