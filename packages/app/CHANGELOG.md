@@ -6,6 +6,10 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 _**Note:** Yet to be released changes appear here._
 
+## 0.50.1
+
+* `FIX`: correct tag contrast
+
 ## 0.50.0
 
 * `FEAT`: overhaul icons, card, and tag UI ([#144](https://github.com/nikku/wuffle/pull/144))
