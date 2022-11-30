@@ -459,7 +459,7 @@ class Store {
 
   createLinks(context, issue) {
 
-    const { id } = issue;
+    const { id, number: issueNumber } = issue;
 
     const repoAndOwner = {
       repo: issue.repository.name,
@@ -481,6 +481,15 @@ class Store {
         type: linkType,
         ...linkAttrs
       } = link;
+
+      // skip self links
+      if (
+        owner === repoAndOwner.owner &&
+        repo === repoAndOwner.repo &&
+        number === issueNumber
+      ) {
+        return map;
+      }
 
       const linkedKey = `${owner}/${repo}#${number}`;
 
