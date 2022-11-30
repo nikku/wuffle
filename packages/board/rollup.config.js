@@ -1,17 +1,16 @@
 /* eslint-env node */
 
-import resolve from '@rollup/plugin-node-resolve';
-import commonjs from '@rollup/plugin-commonjs';
-import url from '@rollup/plugin-url';
+const resolve = require('@rollup/plugin-node-resolve');
+const commonjs = require('@rollup/plugin-commonjs');
+const url = require('@rollup/plugin-url');
+const terser = require('@rollup/plugin-terser');
 
-import copy from 'rollup-plugin-copy';
+const copy = require('rollup-plugin-copy');
+const css = require('rollup-plugin-css-only');
+const svelte = require('rollup-plugin-svelte');
+const livereload = require('rollup-plugin-livereload');
 
-import css from 'rollup-plugin-css-only';
-import svelte from 'rollup-plugin-svelte';
-import livereload from 'rollup-plugin-livereload';
-
-import { terser } from 'rollup-plugin-terser';
-import { string } from 'rollup-plugin-string';
+const { string } = require('rollup-plugin-string');
 
 const svelteConfig = require('./svelte.config');
 
@@ -19,7 +18,7 @@ const distDirectory = '../app/public';
 
 const production = !process.env.ROLLUP_WATCH;
 
-export default [
+module.exports = [
   {
     input: 'src/main.js',
     output: {
