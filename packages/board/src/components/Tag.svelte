@@ -14,7 +14,7 @@
       0.114 * (b * b)
     );
 
-    return hsp > 135;
+    return hsp > 145;
   }
 
   export let title = '';
@@ -78,7 +78,7 @@
     }
 
     &.inverted {
-      color: #333;
+      color: #000;
     }
   }
 
