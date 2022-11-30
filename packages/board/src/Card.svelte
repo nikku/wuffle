@@ -1,7 +1,5 @@
 <script>
   import {
-    isOpen,
-    isMerged,
     isPull,
     noDuplicates
   } from './util';
@@ -35,6 +33,15 @@
 
   export let onSelect;
 
+  function isClosingPull(link) {
+    const {
+      type,
+      target
+    } = link;
+
+    return isPull(target) && type === 'CLOSED_BY';
+  }
+
   let showChildren = false;
 
   let hovered = false;
@@ -46,14 +53,14 @@
   $: labels = item.labels.filter(l => !l.column_label);
   $: pull_request = item.pull_request;
 
-  $: links = item.links || [];
-
-  $: embeddedLinks = links.filter(
-    (link) => !isPull(link.target) && link.type !== 'LINKED_BY'
-  ).sort(
+  $: links = (item.links || []).sort(
     (a, b) => {
       return linkOrder[a.type] - linkOrder[b.type];
     }
+  );
+
+  $: embeddedLinks = links.filter(
+    (link) => !isClosingPull(link) && link.type !== 'LINKED_BY'
   );
 
   $: shownLinks = embeddedLinks.filter(link => showChildren || link.type !== 'PARENT_OF');
@@ -62,12 +69,10 @@
   $: completedChildren = children.filter(l => l.target.state === 'closed');
 
   $: prLinks = links.filter(
-    link => isPull(link.target) && (
-      isOpen(link.target) || (
-        isMerged(link.target) && link.type === 'CLOSED_BY'
-      )
-    )
-  ).filter(noDuplicates(link => link.target.id));
+    link => isClosingPull(link)
+  ).filter(
+    noDuplicates(link => link.target.id + link.ref)
+  );
 
   $: repositoryName = `${repository.owner.login}/${repository.name}`;
 
@@ -183,9 +188,7 @@
 
         {#if children.length}
           <EpicIcon item={ item } linkType="PARENT_OF" />
-        {/if}
-
-        {#if pull_request}
+        {:else if pull_request}
           <PullRequestIcon item={ item } />
         {/if}
 
@@ -251,7 +254,7 @@
     {#if shownLinks.length}
       <div class="board-card-links embedded">
         {#each shownLinks as link}
-          <CardLink item={link.target} type={ link.type } onSelect={ onSelect } />
+          <CardLink item={ link.target } type={ link.type } ref={ link.ref } onSelect={ onSelect } />
         {/each}
       </div>
     {/if}
@@ -262,7 +265,9 @@
   {#if prLinks.length}
     <div class="board-card-links attached">
       {#each prLinks as link}
-        <CardLink item={ link.target } type={ link.type } onSelect={ onSelect } />
+        <CardLink item={ link.target } type={ link.type } ref={ link.ref } onSelect={ onSelect }>
+          <CardStatus item={ link.target } />
+        </CardLink>
       {/each}
     </div>
   {/if}

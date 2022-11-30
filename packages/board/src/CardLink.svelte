@@ -3,7 +3,6 @@
   import LinkIcon from './components/LinkIcon.svelte';
 
   import CollaboratorLinks from './CollaboratorLinks.svelte';
-  import CardStatus from './CardStatus.svelte';
 
   import {
     isApplyFilterClick,
@@ -31,14 +30,14 @@
   $: cardUrl = `https://github.com/${ repositoryName }/issues/${ number }${ ref || '' }`;
 
   $: linkTitle = ({
-    CHILD_OF: 'Parent of',
-    DEPENDS_ON: 'Required by',
-    PARENT_OF: 'Child of',
-    CLOSED_BY: 'Closes',
-    REQUIRED_BY: 'Depends on',
-    CLOSES: 'Closed by',
+    CHILD_OF: 'Child of',
+    DEPENDS_ON: 'Depends on',
+    PARENT_OF: 'Parent of',
+    CLOSED_BY: 'Closed by',
+    REQUIRED_BY: 'Required by',
+    CLOSES: 'Closes',
     LINKED_TO: 'Linked to',
-    LINKED_BY: 'Linked to'
+    LINKED_BY: 'Linked by'
   })[type] || type;
 
   function handleSelection(qualifier, value) {
@@ -87,33 +86,27 @@
        rel="noopener noreferrer"
        class="issue-number"
        on:click={ handleSelection('ref', item.key) }
-       title="{ repositoryName }#{ number } · { linkTitle } this issue"
+       title="{ linkTitle } { repositoryName }#{ number }"
      >
-      {#if pull_request}
+      {#if pull_request }
         <PullRequestIcon item={ item } />
       {:else}
         {#if type === 'PARENT_OF'}
           <LinkIcon name="issue" state={ state } />
-        {/if}
-
-        {#if type === 'CHILD_OF'}
+        {:else if type === 'CHILD_OF'}
           <LinkIcon name="epic" />
-        {/if}
-
-        {#if type === 'DEPENDS_ON' || type === 'CLOSED_BY'}
+        {:else if type === 'DEPENDS_ON' || type === 'CLOSED_BY' }
           <LinkIcon name="depends-on" state={ state } />
-        {/if}
-
-        {#if type === 'REQUIRED_BY' || type === 'CLOSES' }
+        {:else if type === 'REQUIRED_BY' || type === 'CLOSES' }
           {#if state === 'open'}
-            <LinkIcon name="linked-to" />
+            <LinkIcon name="linked-to" state={ state } />
           {:else}
             <LinkIcon name="issue" state={ state } />
           {/if}
-        {/if}
-
-        {#if type === 'LINKED_TO'}
-          <LinkIcon name="linked-to" />
+        {:else if type === 'LINKED_TO'}
+          <LinkIcon name="linked-to" state={ state } />
+        {:else}
+          <LinkIcon name="issue" state={ state } />
         {/if}
       {/if}
 
@@ -127,5 +120,5 @@
     </span>
   </div>
 
-  <CardStatus item={ item } />
+  <slot></slot>
 </div>
