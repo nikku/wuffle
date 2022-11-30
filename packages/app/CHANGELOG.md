@@ -6,6 +6,10 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 _**Note:** Yet to be released changes appear here._
 
+## 0.50.2
+
+* `FIX`: do not attach closed, unmerged PRs
+
 ## 0.50.1
 
 * `FIX`: correct tag contrast
