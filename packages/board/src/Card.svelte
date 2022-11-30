@@ -137,22 +137,15 @@
 
     cursor: pointer;
 
-    &:hover {
-      svg {
-        color: $gray-600;
-      }
-    }
-
     svg {
-      color: #CCC;
-      transition: color .3s;
+      color: $gray-600;
     }
 
     .bar {
       border-radius: 3px;
       height: 5px;
       width: 80px;
-      background: #EEE;
+      background: $gray-200;
       margin: auto 6px;
 
       .indicator {
