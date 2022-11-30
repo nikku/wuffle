@@ -6,6 +6,14 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 _**Note:** Yet to be released changes appear here._
 
+## 0.50.0
+
+* `FEAT`: overhaul icons, card, and tag UI ([#144](https://github.com/nikku/wuffle/pull/144))
+* `FEAT`: add ability to link issue comments from within a task breakdown ([#144](https://github.com/nikku/wuffle/pull/144))
+* `FEAT`: allow PRs to be attached to task break downs ([#144](https://github.com/nikku/wuffle/pull/144))
+* `FEAT`: add keyboard shortcuts documentation ([#140](https://github.com/nikku/wuffle/issues/140))
+* `FIX`: prevent creation of self-referencing links ([#143](https://github.com/nikku/wuffle/issues/143))
+
 ## 0.49.0
 
 * `FEAT`: add `l` shortcut to toggle login
