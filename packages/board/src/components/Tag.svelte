@@ -14,7 +14,7 @@
       0.114 * (b * b)
     );
 
-    return hsp > 127.5;
+    return hsp > 135;
   }
 
   export let title = '';
@@ -57,12 +57,11 @@
     height: auto;
 
     margin: 0 4px 4px 0;
-    padding: 1px 7px;
+    padding: 2px 7px;
 
     font-size: 12px;
-    font-weight: 500;
+    font-weight: 400;
 
-    line-height: 20px;
     white-space: nowrap;
 
     overflow: hidden;
@@ -70,7 +69,7 @@
 
     color: white;
     background: #fafafa;
-    border-radius: 4px;
+    border-radius: 6px;
 
     text-decoration: none;
 
