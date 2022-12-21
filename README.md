@@ -1,6 +1,6 @@
 # Wuffle
 
-[![CI Status](https://img.shields.io/github/workflow/status/nikku/wuffle/CI)](https://github.com/nikku/wuffle/actions?query=workflow%3ACI)
+[![CI](https://github.com/nikku/wuffle/actions/workflows/CI.yml/badge.svg)](https://github.com/nikku/wuffle/actions/workflows/CI.yml)
 
 A multi-repository / multi-organization task board for [GitHub issues](https://guides.github.com/features/issues/).
 
