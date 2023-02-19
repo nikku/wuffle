@@ -8,7 +8,6 @@ function precache() {
       '/board',
       '/board/apple-touch-icon.png',
       '/board/bundle.css',
-      '/board/bundle.css.map',
       '/board/bundle.js',
       '/board/bundle.js.map',
       '/board/favicon.png',
