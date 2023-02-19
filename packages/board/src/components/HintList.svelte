@@ -86,7 +86,7 @@
       use:scrollIntoView={ [ hint, selectedHint ] }
       on:mouseover={ () => onHover(hint) }
       on:mouseout={ () => onBlur(hint) }
-      on:mousedown|preventDefault={ (event) => onSelect(hint) }
+      on:mousedown={ (event) => handleMousedown(event, hint) }
     >{#each hint.parts as part}<span class:matched={ part.matched }>{ part.text }</span>{/each}</li>
   {/each}
 </ul>
