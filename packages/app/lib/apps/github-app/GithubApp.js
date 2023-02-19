@@ -214,15 +214,17 @@ function GithubApp(config, app, logger, injector) {
     if (missingPermissions.length) {
       log.warn({
         installation: login,
-        permissions
-      }, 'missing required permissions', missingPermissions);
+        permissions,
+        missingPermissions
+      }, 'missing required permissions');
     }
 
     if (missingEvents.length) {
       log.warn({
         installation: login,
-        events
-      }, 'missing required event subscriptions', missingEvents);
+        events,
+        missingEvents
+      }, 'missing required event subscriptions');
     }
 
   }
