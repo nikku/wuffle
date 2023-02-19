@@ -6,6 +6,12 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 _**Note:** Yet to be released changes appear here._
 
+## 0.53.1
+
+* `FIX`: remove unknown file from eager cache list
+* `FIX`: add missing link title
+* `CHORE`: pre-render 15 cards only
+
 ## 0.53.0
 
 * `FEAT`: preload board configuration
