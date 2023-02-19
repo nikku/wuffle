@@ -1,5 +1,7 @@
 const express = require('express');
 
+const fs = require('fs');
+
 const path = require('path');
 
 
@@ -8,7 +10,7 @@ const path = require('path');
  *
  * @param {import('express').Router} router
  */
-module.exports = async (router) => {
+module.exports = async (config, router) => {
 
   const staticDirectory = path.join(__dirname, '..', '..', 'public');
 
@@ -18,8 +20,51 @@ module.exports = async (router) => {
 
   // board page
 
+  const {
+    name,
+    columns
+  } = config;
+
+  const boardConfig = {
+    columns: columns.map(c => {
+      const { name, collapsed } = c;
+
+      return {
+        name,
+        collapsed: collapsed || false
+      };
+    }),
+    name: name || 'Wuffle Board'
+  };
+
+  let indexPage;
+
+  function getIndexPage() {
+    if (indexPage) {
+      return indexPage;
+    }
+
+    indexPage = fs.readFileSync(path.join(staticDirectory, 'index.html'), 'utf8');
+
+    indexPage = indexPage.replace(
+      '<title>Wuffle Board</title>',
+      '<title>' + boardConfig.name + ' · Wuffle Board</title>'
+    );
+
+    indexPage = indexPage.replace(
+      '<script type="application/json+config"></script>',
+      '<script type="application/json+config">' +
+        JSON.stringify(boardConfig)
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;') +
+      '</script>'
+    );
+  }
+
   router.get('/board', (req, res, next) => {
-    res.sendFile(path.join(staticDirectory, 'index.html'));
+    indexPage = getIndexPage();
+
+    res.type('html').status(200).send(getIndexPage());
   });
 
   router.get('/robots.txt', (req, res, next) => {

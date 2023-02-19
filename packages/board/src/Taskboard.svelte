@@ -349,6 +349,19 @@
   }
 
   function fetchBoard() {
+    const boardEl = document.querySelector('script[type="application/json+config"]');
+
+    if (boardEl) {
+      const text = boardEl.textContent;
+
+      if (text) {
+        const result = JSON.parse(text);
+
+        columns = result.columns;
+        name = result.name;
+      }
+    }
+
     return api.getBoard().then(result => {
       columns = result.columns;
       name = result.name;
@@ -786,12 +799,6 @@
     position: relative;
   }
 </style>
-
-<svelte:head>
-  {#if !loading}
-  <title>{ name } · Wuffle Board</title>
-  {/if}
-</svelte:head>
 
 <svelte:window on:keydown={ handleGlobalKey } />
 
