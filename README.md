@@ -67,6 +67,11 @@ Alternatively, run the app [via Docker](https://github.com/nikku/wuffle/tree/mai
 * [app](https://github.com/nikku/wuffle/blob/main/packages/app) - the back-end and board API
 
 
+## Related
+
+* [The making of Wuffle](https://nikku.github.io/talks/2022-making-of-wuffle/) - a talk about the tool and it's philosophy
+
+
 ## License
 
 [MIT](https://github.com/nikku/wuffle/blob/main/LICENSE)
