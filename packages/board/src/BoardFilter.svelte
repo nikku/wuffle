@@ -143,6 +143,8 @@
         hint => hint.name === keyboardSelectedHint.name
       ) || opts.keyboardSelectedHint
     );
+
+    mouseSelectedHint = null;
   }
 
   const searchId = Id();
