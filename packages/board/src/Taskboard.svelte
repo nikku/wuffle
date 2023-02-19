@@ -887,7 +887,7 @@
     </div>
   </nav>
 
-  <main class="taskboard-board">
+  <main class="taskboard-board scroll-container-h">
 
     {#if !error}
       {#each columns as column }
@@ -913,7 +913,7 @@
           </div>
 
           {#if !collapsed[column.name] }
-            <div class="taskboard-column-items"
+            <div class="taskboard-column-items scroll-container-v"
                  data-column-id={ column.name }
                  on:scroll={ checkRender(column.name) }>
 
