@@ -58,8 +58,7 @@
   background: #ebecf0;
 
   &.collapsed {
-    line-height: 2em;
-    min-width: 42px;
+    min-width: 3rem;
 
     flex: 0;
   }
@@ -81,10 +80,6 @@
 
 .taskboard-column-collapse {
   color: $gray-500;
-  float: left;
-  padding: 0 12px;
-  line-height: 2.4em;
-  margin-right: -20px;
   font-size: 1.2rem;
 }
 
@@ -92,12 +87,26 @@
   color: $gray-700;
 }
 
+.taskboard-column:not(.collapsed) {
+
+  .taskboard-column-header {
+    position: relative;
+  }
+
+  .taskboard-column-collapse {
+    position: absolute;
+    padding: 0 0.4rem;
+    top: 50%;
+    left: .5rem;
+    transform: translateY(-50%);
+  }
+}
+
 .taskboard-column.collapsed {
 
   .taskboard-column-collapse {
-    float: unset;
-    padding: 0 12px;
-    margin: 0;
+    padding: 0 0.1rem;
+    margin: 0.6rem 0.5rem;
   }
 
   .taskboard-column-header {
