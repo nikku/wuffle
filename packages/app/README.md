@@ -4,7 +4,7 @@ A multi-repository task board for [GitHub issues](https://guides.github.com/feat
 
 <p>
   <a target="_blank" rel="noopener noreferrer" href="https://github.com/nikku/wuffle">
-    <img src="https://raw.githubusercontent.com/nikku/wuffle/master/docs/screenshot.png" width="100%" alt="Wuffle Screenshot" style="max-width:100%;" />
+    <img src="https://raw.githubusercontent.com/nikku/wuffle/main/docs/screenshot.png" width="100%" alt="Wuffle Screenshot" style="max-width:100%;" />
   </a>
 </p>
 
@@ -19,7 +19,7 @@ Run your own [Wuffle Board](https://github.com/nikku/wuffle) via `npx`:
 npx wuffle
 ```
 
-Turn to our [setup instructions](https://github.com/nikku/wuffle/blob/master/docs/SETUP.md) for additional details.
+Turn to our [setup instructions](https://github.com/nikku/wuffle/blob/main/docs/SETUP.md) for additional details.
 
 
 ## License

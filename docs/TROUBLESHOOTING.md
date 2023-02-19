@@ -4,7 +4,7 @@ This page collects common setup errors and possible solutions.
 
 ### I cannot log in on the board.
 
-This problem may arise due to a miss-configured _User authorization callback URL_ in your board's GitHub app. Make sure you configured it correctly according to the [setup instructions](https://github.com/nikku/wuffle/blob/master/docs/SETUP.md#configure-github-app).
+This problem may arise due to a miss-configured _User authorization callback URL_ in your board's GitHub app. Make sure you configured it correctly according to the [setup instructions](https://github.com/nikku/wuffle/blob/main/docs/SETUP.md#configure-github-app).
 
 
 ### The logs show `signature mismatch error`.
@@ -14,7 +14,7 @@ Double-check the webhook secret configured on the board and make sure it matches
 
 ### The board fails to start with `no column mapped to state <Y> or called <Y>`.
 
-The board requires some special columns to exist by name or to be assigned to an issue state. [Read more about it](https://github.com/nikku/wuffle/blob/master/docs/SETUP.md#mapping-special-columns) and ensure you configure your board accordingly.
+The board requires some special columns to exist by name or to be assigned to an issue state. [Read more about it](https://github.com/nikku/wuffle/blob/main/docs/SETUP.md#mapping-special-columns) and ensure you configure your board accordingly.
 
 
 ### I would like to persist the board's logs.
@@ -41,4 +41,4 @@ Alternatively, capture and send the output as shown above.
 
 ---
 
-See also: [Setup](https://github.com/nikku/wuffle/blob/master/docs/SETUP.md)
+See also: [Setup](https://github.com/nikku/wuffle/blob/main/docs/SETUP.md)

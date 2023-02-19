@@ -3,7 +3,7 @@ name: PUBLISH_DOCKER
 on:
   push:
     branches:
-      - master
+      - main
     tags:
       - 'v[0-9]+.*'
 

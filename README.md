@@ -6,7 +6,7 @@ A multi-repository / multi-organization task board for [GitHub issues](https://g
 
 <p>
   <a target="_blank" rel="noopener noreferrer" href="https://github.com/nikku/wuffle">
-    <img src="https://raw.githubusercontent.com/nikku/wuffle/master/docs/screenshot.png" width="100%" alt="Wuffle Screenshot" style="max-width:100%;" />
+    <img src="https://raw.githubusercontent.com/nikku/wuffle/main/docs/screenshot.png" width="100%" alt="Wuffle Screenshot" style="max-width:100%;" />
   </a>
 </p>
 
@@ -15,9 +15,9 @@ A multi-repository / multi-organization task board for [GitHub issues](https://g
 
 * Multi-repository / organization support
 * Maps issues to columns via labels or close states
-* Allows you to [filter issues](https://github.com/nikku/wuffle/blob/master/docs/BOARD_FILTERS.md) by name, label, assignee, and more
+* Allows you to [filter issues](https://github.com/nikku/wuffle/blob/main/docs/BOARD_FILTERS.md) by name, label, assignee, and more
 * Visualizes reviews and pull request status/checks on a card
-* Automatically [moves cards across columns](https://github.com/nikku/wuffle/blob/master/docs/AUTOMATIC_CARD_MOVEMENT.md), as you develop
+* Automatically [moves cards across columns](https://github.com/nikku/wuffle/blob/main/docs/AUTOMATIC_CARD_MOVEMENT.md), as you develop
 * Supports private repositories: Visitors only see cards for issues they see on GitHub, too
 * Allows contributors to move/reorder cards
 * Simple setup: Connects to GitHub as a [GitHub app](https://developer.github.com/apps/)
@@ -27,9 +27,9 @@ A multi-repository / multi-organization task board for [GitHub issues](https://g
 
 * [Issues](https://github.com/nikku/wuffle/issues)
 * [Roadmap](https://github.com/nikku/wuffle/issues?q=is%3Aissue+is%3Aopen+label%3Aroadmap)
-* [Changelog](https://github.com/nikku/wuffle/blob/master/packages/app/CHANGELOG.md)
-* [Setup and Run](https://github.com/nikku/wuffle/blob/master/docs/SETUP.md)
-* [Documentation](https://github.com/nikku/wuffle/tree/master/docs#readme)
+* [Changelog](https://github.com/nikku/wuffle/blob/main/packages/app/CHANGELOG.md)
+* [Setup and Run](https://github.com/nikku/wuffle/blob/main/docs/SETUP.md)
+* [Documentation](https://github.com/nikku/wuffle/tree/main/docs#readme)
 
 
 ## Philosophy
@@ -55,17 +55,17 @@ Starting the board, including first-time setup if you have [npm](https://www.npm
 npx wuffle
 ```
 
-Read the [setup instructions](https://github.com/nikku/wuffle/blob/master/docs/SETUP.md) for detailed explaination for the what and why.
+Read the [setup instructions](https://github.com/nikku/wuffle/blob/main/docs/SETUP.md) for detailed explaination for the what and why.
 
-Alternatively, run the app [via Docker](https://github.com/nikku/wuffle/tree/master/support/docker) if you already configured it.
+Alternatively, run the app [via Docker](https://github.com/nikku/wuffle/tree/main/support/docker) if you already configured it.
 
 
 ## Components
 
-* [board](https://github.com/nikku/wuffle/blob/master/packages/board) - the task board front-end
-* [app](https://github.com/nikku/wuffle/blob/master/packages/app) - the back-end and board API
+* [board](https://github.com/nikku/wuffle/blob/main/packages/board) - the task board front-end
+* [app](https://github.com/nikku/wuffle/blob/main/packages/app) - the back-end and board API
 
 
 ## License
 
-[MIT](https://github.com/nikku/wuffle/blob/master/LICENSE)
+[MIT](https://github.com/nikku/wuffle/blob/main/LICENSE)
