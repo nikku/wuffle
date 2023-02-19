@@ -6,6 +6,11 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 _**Note:** Yet to be released changes appear here._
 
+## 0.51.1
+
+* `CHORE`: simplify board description
+* `DOCS`: improve various bits of the documentation
+
 ## 0.51.0
 
 * `FEAT`: make filter available through `ctrl + k`
