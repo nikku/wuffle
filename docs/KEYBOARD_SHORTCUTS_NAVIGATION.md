@@ -9,6 +9,7 @@ This page lists keyboard shortcuts and navigation utilities supported by the boa
 | :--------------- | :--------------- |
 | `f` or `ctrl + k`| Filter issues    |
 | `n`              | Create new issue |
+| `l`              | Toggle login     |
 
 
 ## Navigation tools
