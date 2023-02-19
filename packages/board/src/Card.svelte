@@ -13,6 +13,7 @@
   import Tag from './components/Tag.svelte';
   import PullRequestIcon from './components/PullRequestIcon.svelte';
   import EpicIcon from './components/EpicIcon.svelte';
+  import LinkIcon from './components/LinkIcon.svelte';
 
   import CardStatus from './CardStatus.svelte';
   import CollaboratorLinks from './CollaboratorLinks.svelte';
@@ -53,6 +54,7 @@
   $: milestone = item.milestone;
   $: labels = item.labels.filter(l => !l.column_label);
   $: pull_request = item.pull_request;
+  $: state_reason = item.state_reason;
 
   $: links = (item.links || []).sort(
     (a, b) => {
@@ -184,6 +186,8 @@
           <EpicIcon />
         {:else if pull_request}
           <PullRequestIcon item={ item } />
+        {:else if state_reason === 'not_planned'}
+          <LinkIcon name="issue" state="closed" state_reason={ state_reason } />
         {/if}
 
         { number }

@@ -648,6 +648,7 @@
           "url": "https://api.github.com/repos/nikku/wuffle/issues/94",
           "number": 94,
           "state": "closed",
+          "state_reason": "not_planned",
           "title": "Synchronize issue comments",
           "user": {
             "id": 58601,

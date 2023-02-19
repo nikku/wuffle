@@ -93,12 +93,12 @@
     "links": [
       {
         "type": "CLOSES",
-        "ref": "#ref",
         "target": {
           "id": "159565926-6",
           "key": "nikku/testtest-checks#6",
           "number": 6,
           "state": "open",
+          "state_reason": null,
           "title": "BUG",
           "user": {
             "login": "nikku",
@@ -172,7 +172,8 @@
           "links": [],
           "order": 709876.54321,
           "column": "Needs Review"
-        }
+        },
+        "ref": "#ref"
       }
     ],
     "order": -4632742.113349999,
@@ -198,6 +199,7 @@
     "key": "nikku/wuffle#91",
     "number": 91,
     "state": "open",
+    "state_reason": null,
     "title": "Support repository transfer",
     "user": null,
     "assignees": [],
@@ -233,6 +235,7 @@
           "key": "nikku/wuffle#90",
           "number": 90,
           "state": "closed",
+          "state_reason": null,
           "title": "Filter transferred issues (so to not display them twice)",
           "user": {
             "login": "MaxTru",
@@ -282,6 +285,7 @@
     "key": "nikku/wuffle#16",
     "number": 16,
     "state": "open",
+    "state_reason": null,
     "title": "Add ability to select and move multiple cards",
     "user": {
       "login": "nikku",
@@ -318,6 +322,7 @@
     "key": "nikku/wuffle#15",
     "number": 15,
     "state": "open",
+    "state_reason": null,
     "title": "Add ability to move cards onto collapsed columns",
     "user": {
       "login": "nikku",
@@ -358,6 +363,7 @@
     "key": "nikku/wuffle#95",
     "number": 95,
     "state": "open",
+    "state_reason": null,
     "title": "Add <mentions:someuser> filter",
     "user": {
       "login": "nikku",
@@ -397,6 +403,7 @@
           "key": "nikku/wuffle#94",
           "number": 94,
           "state": "closed",
+          "state_reason": "not_planned",
           "title": "Synchronize issue comments",
           "user": {
             "login": "nikku",
@@ -476,6 +483,7 @@
           "key": "nikku/wuffle#116",
           "number": 116,
           "state": "open",
+          "state_reason": null,
           "title": "Moving a draft PR to review column should mark it as ready for review",
           "user": {
             "login": "nikku",
@@ -563,6 +571,7 @@
     "key": "nikku/wuffle#116",
     "number": 116,
     "state": "open",
+    "state_reason": null,
     "title": "Moving a draft PR to review column should mark it as ready for review",
     "user": {
       "login": "nikku",
@@ -689,6 +698,7 @@
     "key": "nikku/wuffle#74",
     "number": 74,
     "state": "open",
+    "state_reason": null,
     "title": "Use GraphQL API for GitHub interactions",
     "user": {
       "login": "nikku",
@@ -879,6 +889,7 @@
           "key": "nikku/testtest#76",
           "number": 76,
           "state": "open",
+          "state_reason": null,
           "title": "FOO 1",
           "user": {
             "login": "nikku",
@@ -1009,6 +1020,7 @@
     "key": "nikku/testtest#95",
     "number": 95,
     "state": "open",
+    "state_reason": null,
     "title": "Sub Task 1",
     "user": {
       "login": "nikku",
@@ -1044,6 +1056,7 @@
           "key": "nikku/testtest#94",
           "number": 94,
           "state": "open",
+          "state_reason": null,
           "title": "OTHER EPIC",
           "user": {
             "login": "nikku",
@@ -1088,6 +1101,7 @@
     "key": "nikku/testtest#76",
     "number": 76,
     "state": "open",
+    "state_reason": null,
     "title": "FOO 1",
     "user": {
       "login": "nikku",
@@ -1123,6 +1137,7 @@
           "key": "nikku/testtest#81",
           "number": 81,
           "state": "open",
+          "state_reason": null,
           "title": "BAR 2",
           "user": {
             "login": "nikku",
@@ -1193,6 +1208,7 @@
           "key": "nikku/testtest#74",
           "number": 74,
           "state": "open",
+          "state_reason": null,
           "title": "FOOP",
           "user": {
             "login": "nikku",
@@ -1297,6 +1313,7 @@
     "key": "nikku/testtest#102",
     "number": 102,
     "state": "open",
+    "state_reason": null,
     "title": "asdasd",
     "user": {
       "login": "nikku",
@@ -1333,6 +1350,7 @@
     "key": "nikku/testtest#77",
     "number": 77,
     "state": "open",
+    "state_reason": null,
     "title": "BAR 1",
     "user": {
       "login": "nikku",
@@ -1368,6 +1386,7 @@
           "key": "nikku/testtest#80",
           "number": 80,
           "state": "open",
+          "state_reason": null,
           "title": "EPIC",
           "user": {
             "login": "nikku",
@@ -1410,6 +1429,7 @@
           "key": "nikku/testtest#74",
           "number": 74,
           "state": "open",
+          "state_reason": null,
           "title": "FOOP",
           "user": {
             "login": "nikku",
@@ -1455,6 +1475,7 @@
           "key": "nikku/testtest#81",
           "number": 81,
           "state": "open",
+          "state_reason": null,
           "title": "BAR 2",
           "user": {
             "login": "nikku",

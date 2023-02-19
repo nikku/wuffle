@@ -44,6 +44,7 @@
         }
       ],
       "state": "open",
+      "state_reason": "reopened",
       "locked": false,
       "assignee": null,
       "assignees": [],

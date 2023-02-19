@@ -13,7 +13,7 @@ describe('board-api-routes - board-api-filters', function() {
 
     // given
     const issues = loadFixture('issues');
-    const expectedIssues = loadFixture('issues_filtered');
+    const expectedIssues = loadFixture('issues.filtered');
 
     // when
     const filteredIssues = issues.map(filterIssueOrPull);

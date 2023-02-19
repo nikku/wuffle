@@ -24,6 +24,7 @@
   $: repository = item.repository;
   $: pull_request = item.pull_request;
   $: state = item.state;
+  $: state_reason = item.state_reason;
 
   $: repositoryName = `${repository.owner.login}/${repository.name}`;
 
@@ -92,21 +93,21 @@
         <PullRequestIcon item={ item } />
       {:else}
         {#if type === 'PARENT_OF'}
-          <LinkIcon name="issue" state={ state } />
+          <LinkIcon name="issue" state={ state } state_reason={ state_reason } />
         {:else if type === 'CHILD_OF'}
-          <LinkIcon name="epic" />
+          <LinkIcon name="epic" state_reason={ state_reason } />
         {:else if type === 'DEPENDS_ON' || type === 'CLOSED_BY' }
-          <LinkIcon name="depends-on" state={ state } />
+          <LinkIcon name="depends-on" state={ state } state_reason={ state_reason } />
         {:else if type === 'REQUIRED_BY' || type === 'CLOSES' }
           {#if state === 'open'}
-            <LinkIcon name="linked-to" state={ state } />
+            <LinkIcon name="linked-to" state={ state } state_reason={ state_reason } />
           {:else}
-            <LinkIcon name="issue" state={ state } />
+            <LinkIcon name="issue" state={ state } state_reason={ state_reason } />
           {/if}
         {:else if type === 'LINKED_TO'}
-          <LinkIcon name="linked-to" state={ state } />
+          <LinkIcon name="linked-to" state={ state } state_reason={ state_reason } />
         {:else}
-          <LinkIcon name="issue" state={ state } />
+          <LinkIcon name="issue" state={ state } state_reason={ state_reason } />
         {/if}
       {/if}
 

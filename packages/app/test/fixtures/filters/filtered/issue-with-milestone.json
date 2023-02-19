@@ -5,6 +5,7 @@
   "url": "https://api.github.com/repos/nikku/testtest/pulls/75",
   "number": 75,
   "state": "open",
+  "state_reason": "reopened",
   "title": "Update README.md",
   "user": {
     "id": 58601,
