@@ -46,14 +46,15 @@
 
     max-height: 200px;
     overflow-y: auto;
+    padding: 0;
+  }
 
-    margin: 0.25rem 3px .8rem;
-    padding: 0 3px 0 7px;
+  .hint-list:not(:first-child) {
+    margin-top: 0;
   }
 
   .hint-list li {
     margin: 0;
-    margin-left: -.35rem;
     padding: .25rem .35rem;
 
     border-radius: 5px;
@@ -78,14 +79,14 @@
   }
 </style>
 
-<ul class={ [ className, 'hint-list' ].join(' ') }>
+<ul class={ [ className, 'hint-list', 'scroll-container-v' ].join(' ') }>
   {#each hints as hint, idx}
     <li
       class:active={ selectedHint === hint }
       class="selectable"
       use:scrollIntoView={ [ hint, selectedHint ] }
-      on:mouseover={ () => onHover(hint) }
-      on:mouseout={ () => onBlur(hint) }
+      on:mouseenter={ () => onHover(hint) }
+      on:mouseleave={ () => onBlur(hint) }
       on:mousedown={ (event) => handleMousedown(event, hint) }
     >{#each hint.parts as part}<span class:matched={ part.matched }>{ part.text }</span>{/each}</li>
   {/each}
