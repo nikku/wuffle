@@ -181,7 +181,7 @@
       >
 
         {#if children.length}
-          <EpicIcon item={ item } linkType="PARENT_OF" />
+          <EpicIcon />
         {:else if pull_request}
           <PullRequestIcon item={ item } />
         {/if}
