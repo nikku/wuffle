@@ -15,6 +15,10 @@ function isGlobal(event) {
 
 export function isFindShortcut(event) {
 
+  if (event.ctrlKey && !event.altKey && event.key.toLowerCase() === 'k') {
+    return true;
+  }
+
   if (!isGlobal(event) || hasModifier(event)) {
     return false;
   }

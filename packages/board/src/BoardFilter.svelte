@@ -354,7 +354,7 @@
     autocomplete="off"
     spellcheck="false"
     aria-label={ placeholder }
-    title={ placeholder + ' (f)'}
+    title={ placeholder + ' (ctrl + k, f)'}
     bind:this={ input }
     bind:value={ value }
     on:input={ handleInput }
