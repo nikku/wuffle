@@ -842,7 +842,7 @@
         {#if accessNotification === 'forbidden'}
           It seems like you do not have write access to the underlying GitHub repository.
         {:else}
-          Please <a href="/wuffle/login" aria-label="Login via GitHub">login via GitHub</a> to interact with cards.
+          Please <a href="/wuffle/login" title="Login via GitHub (l)">login via GitHub</a> to interact with cards.
         {/if}
       </Notification>
     {/if}
@@ -852,8 +852,8 @@
 
   <nav class="navbar navbar-expand navbar-light taskboard-header">
 
-    <a class="navbar-brand m-0 mr-3 my-2" href="/" aria-label={ name } title="{ name } - Wuffle board">
-      <img src="./logo.svg" height="30px" alt="Wuffle board logo" class="logo" />
+    <a class="navbar-brand m-0 mr-3 my-2" href="/" title="{ name } - Wuffle board">
+      <img src="./logo.svg" height="30px" alt="" class="logo" />
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#{navId}" aria-controls={navId} aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -879,14 +879,14 @@
 
     <div class="taskboard-header-login ml-2">
       {#if user}
-        <a href="/wuffle/logout" aria-label="Logout (l)">
-          <Avatar title={ `Logout ${user.login}` } rounded>
+        <a href="/wuffle/logout" title={ `Logged in as ${user.login}. Logout (l)` }>
+          <Avatar rounded>
             <img src="{ user.avatar_url }&s=40" style="max-width: 100%" alt="Logged in user avatar" />
           </Avatar>
         </a>
       {:else}
-        <a href="/wuffle/login" aria-label="Login with GitHub">
-          <Avatar title="Login with GitHub (l)" rounded>
+        <a href="/wuffle/login" title="Login with GitHub (l)">
+          <Avatar rounded>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" height="1.3em" fill="currentColor"><path d="M4.243 4.757a3.757 3.757 0 115.851 3.119 6.006 6.006 0 013.9 5.339.75.75 0 01-.715.784H2.721a.75.75 0 01-.714-.784 6.006 6.006 0 013.9-5.34 3.753 3.753 0 01-1.664-3.118z"></path></svg>
           </Avatar>
         </a>

@@ -1,6 +1,5 @@
 <script>
   export let rounded = false;
-  export let title = '';
 </script>
 
 <style lang="scss">
@@ -37,7 +36,7 @@
   }
 </style>
 
-<span class="avatar" title={ title } class:avatar-rounded={ rounded }>
+<span class="avatar" class:avatar-rounded={ rounded }>
   <slot></slot>
 
   <div class="avatar-shadow"></div>
