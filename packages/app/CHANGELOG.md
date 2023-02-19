@@ -15,6 +15,7 @@ _**Note:** Yet to be released changes appear here._
 * `FIX`: clear mouse on filter change
 * `FIX`: only select hint on primary mouse button click
 * `FIX`: correct filters not hiding on blur
+* `FIX`: correct logging of missing permissions/events ([#145](https://github.com/nikku/wuffle/issues/145))
 
 ## 0.50.2
 
