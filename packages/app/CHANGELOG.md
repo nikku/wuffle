@@ -6,6 +6,11 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 _**Note:** Yet to be released changes appear here._
 
+## 0.53.0
+
+* `FEAT`: preload board configuration
+* `CHORE`: remove unnecessary `aria-*` labels
+
 ## 0.52.0
 
 * `FEAT`: support `issue#state_reason`
