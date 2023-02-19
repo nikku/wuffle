@@ -17,7 +17,7 @@
   width: 100%;
   min-width: 0!important;
   max-width: none!important;
-  padding: .6em 0;
+  padding: 0;
   background-color: #fff;
   background-clip: padding-box;
   border: 1px solid rgba(0,0,0,.1);
@@ -33,21 +33,21 @@
   .category {
     color: $primary;
     font-weight: bold;
-    padding: 0 .8rem;
+    margin: .8rem;
+    margin-bottom: .25rem;
+    font-size: 1em;
   }
 
   .note {
-    padding: 0 .8rem;
+    margin: .8rem;
     color: $gray-600;
-    margin: 0;
 
-    em {
-      font-style: italic;
+    code {
+      display: inline-block;
+      padding: 0 .5rem;
+      background: #F0F0F0;
+      border-radius: 4px;
     }
-  }
-
-  .note + .note {
-    margin-top: 5px;
   }
 
 }

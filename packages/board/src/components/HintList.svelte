@@ -8,22 +8,55 @@
   export let onBlur;
   export let onSelect;
 
-  export let maxElements;
+  function handleMousedown(event, hint) {
+
+    if (event.button === 0) {
+      event.preventDefault();
+
+      return onSelect(hint);
+    }
+  }
+
+  function scrollIntoView(node, [ hint, selectedHint ]) {
+
+    let lastSelectedHint = null;
+
+    const hook = {
+      update([ hint, selectedHint ]) {
+        if (hint === selectedHint && hint !== lastSelectedHint) {
+          lastSelectedHint = hint;
+
+          node.scrollIntoView({ block: 'nearest' });
+        }
+      }
+    };
+
+    hook.update([ hint, selectedHint ]);
+
+    return hook;
+  }
 </script>
 
 <style lang="scss">
 
   @import "variables";
 
-  ul {
+  .hint-list {
     list-style: none;
-    margin: 0;
-    padding: 0;
+
+    max-height: 200px;
+    overflow-y: auto;
+
+    margin: 0.25rem 3px .8rem;
+    padding: 0 3px 0 7px;
   }
 
-  li {
-    padding: 0 .8rem;
-    line-height: 2em;
+  .hint-list li {
+    margin: 0;
+    margin-left: -.35rem;
+    padding: .25rem .35rem;
+
+    border-radius: 5px;
 
     &.selectable {
       cursor: pointer;
@@ -45,20 +78,15 @@
   }
 </style>
 
-<ul class={ className }>
+<ul class={ [ className, 'hint-list' ].join(' ') }>
   {#each hints as hint, idx}
-    {#if idx < maxElements || (selectedHint && selectedHint.name === hint.name) }
-      <li
-        class:active={ selectedHint && selectedHint.name === hint.name }
-        class="selectable"
-        on:mouseover={ () => onHover(hint) }
-        on:mouseout={ () => onBlur(hint) }
-        on:mousedown|preventDefault={ (event) => onSelect(hint) }
-      >{#each hint.parts as part}<span class:matched={ part.matched }>{ part.text }</span>{/each}</li>
-    {/if}
+    <li
+      class:active={ selectedHint === hint }
+      class="selectable"
+      use:scrollIntoView={ [ hint, selectedHint ] }
+      on:mouseover={ () => onHover(hint) }
+      on:mouseout={ () => onBlur(hint) }
+      on:mousedown|preventDefault={ (event) => onSelect(hint) }
+    >{#each hint.parts as part}<span class:matched={ part.matched }>{ part.text }</span>{/each}</li>
   {/each}
-
-  {#if hints.length > maxElements}
-    <li class="text">...</li>
-  {/if}
 </ul>

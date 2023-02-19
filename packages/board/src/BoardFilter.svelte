@@ -370,7 +370,7 @@
         <hr />
         {/if}
 
-        <div class="category">{ category.name }</div>
+        <h3 class="category">{ category.name }</h3>
 
         <HintList
           hints={ category.values }
@@ -378,7 +378,6 @@
           onHover={ hint => mouseSelectedHint = hint }
           onBlur={ () => mouseSelectedHint = null }
           onSelect={ applyHint }
-          maxElements= { 7 }
         />
 
       {/each}
@@ -390,7 +389,7 @@
       </p>
 
       <p class="note">
-        Refine your search with operators: <em>created</em>, <em>updated</em>, <em>milestone</em>, <em>repo</em>, <em>assignee</em>, <em>label</em> and <em>is</em>.
+        Use additional operator such as <code>created</code>, <code>updated</code>, <code>milestone</code>, <code>repo</code>, <code>assignee</code>, <code>label</code> and <code>is</code> to refine your search.
       </p>
     </div>
   {/if}

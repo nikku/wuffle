@@ -253,7 +253,6 @@
             onHover={ hint => mouseSelectedHint = hint }
             onBlur={ () => mouseSelectedHint = null }
             onSelect={ applyHint }
-            maxElements= { 7 }
           />
         </div>
       {/if}
