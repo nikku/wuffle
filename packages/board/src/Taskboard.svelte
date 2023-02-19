@@ -38,7 +38,7 @@
 
   import { onMount } from 'svelte';
 
-  const DEFAULT_PER_COLUMN_RENDER_COUNT = 25;
+  const DEFAULT_PER_COLUMN_RENDER_COUNT = 15;
 
   const POLL_KEY = 'Taskboard_polling';
 
