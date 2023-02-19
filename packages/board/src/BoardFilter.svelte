@@ -363,7 +363,7 @@
     on:blur={ () => focussed = false }
   />
 
-  {#if value && match}
+  {#if focussed && value && match}
     <div class="help-dropdown">
       {#each match.categories as category, idx}
         {#if idx > 0}
