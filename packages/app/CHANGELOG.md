@@ -6,6 +6,16 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 _**Note:** Yet to be released changes appear here._
 
+## 0.51.0
+
+* `FEAT`: make filter available through `ctrl + k`
+* `FEAT`: show all board filter hints in scrollable container
+* `FEAT`: improve scrollbars + paddings
+* `FEAT`: improve column toggle
+* `FIX`: clear mouse on filter change
+* `FIX`: only select hint on primary mouse button click
+* `FIX`: correct filters not hiding on blur
+
 ## 0.50.2
 
 * `FIX`: do not attach closed, unmerged PRs
