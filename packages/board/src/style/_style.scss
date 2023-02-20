@@ -62,6 +62,6 @@ body {
 
   margin: var(--container-gap-v) var(--container-gap-h);
 
-  --container-scroll-pad-inner: calc(var(--container-gap-scroll) * 0.5);
-  --container-scroll-pad-outer: calc(var(--container-gap-scroll) * 0.5);
+  --container-scroll-pad-inner: calc(var(--container-gap-scroll) * 0.7);
+  --container-scroll-pad-outer: calc(var(--container-gap-scroll) * 0.3);
 }
