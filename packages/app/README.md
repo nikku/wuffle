@@ -13,9 +13,9 @@ Refer to the [project documentation](https://github.com/nikku/wuffle#readme) for
 
 ## Usage
 
-Run your own [Wuffle Board](https://github.com/nikku/wuffle) via `npx`:
+Run your own [Wuffle](https://github.com/nikku/wuffle) instance via `npx`:
 
-```
+```sh
 npx wuffle
 ```
 
