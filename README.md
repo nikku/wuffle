@@ -11,6 +11,9 @@ A multi-repository / multi-organization task board for [GitHub issues](https://g
 </p>
 
 
+[Try out Wuffle](#setup-and-run) or checkout [features](#features) and [philosophy](#philosophy) to learn more about the tool.
+
+
 ## Features
 
 * Multi-repository / organization support
@@ -58,7 +61,7 @@ npx wuffle
 
 Read the [setup instructions](https://github.com/nikku/wuffle/blob/main/docs/SETUP.md) for detailed explaination for the what and why.
 
-Alternatively, run the app [via Docker](https://github.com/nikku/wuffle/tree/main/support/docker) if you already configured it.
+Alternatively, start the app [via Docker](https://github.com/nikku/wuffle/tree/main/support/docker) if you already configured it.
 
 
 ## Components
