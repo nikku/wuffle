@@ -51,7 +51,7 @@
     "smee-client": "^1.2.3"
   },
   "devDependencies": {
-    "@graphql-eslint/eslint-plugin": "^3.11.2",
+    "@graphql-eslint/eslint-plugin": "^3.20.1",
     "@octokit/graphql-schema": "^12.10.0",
     "@types/compression": "^1.7.2",
     "@types/express-session": "^1.17.4",
