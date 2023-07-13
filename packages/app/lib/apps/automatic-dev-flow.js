@@ -49,11 +49,21 @@ module.exports = function(webhookEvents, githubIssues, columns) {
     ]);
   });
 
-  webhookEvents.on('pull_request.ready_for_review', async (context) => {
+  webhookEvents.on([
+    'pull_request.ready_for_review',
+    'pull_request.review_requested'
+  ], async (context) => {
 
     const {
-      pull_request
+      pull_request,
+      action
     } = context.payload;
+
+    // do not forcefully move draft PRs into review,
+    // these shall be marked as _ready for review_ first
+    if (action === 'review_requested' && pull_request.draft) {
+      return;
+    }
 
     const state = isExternal(pull_request) ? EXTERNAL_CONTRIBUTION : IN_REVIEW;
 
