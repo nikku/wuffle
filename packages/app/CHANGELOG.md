@@ -6,6 +6,13 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 _**Note:** Yet to be released changes appear here._
 
+## 0.54.0
+
+* `FEAT`: move issue to `needs_review` column on review request ([#156](https://github.com/nikku/wuffle/pull/156))
+* `FEAT`: filter terms in quotes strictly
+* `FEAT`: add ability to provide a default board filter
+* `FIX`: slightly adjust scroller padding
+
 ## 0.53.1
 
 * `FIX`: remove unknown file from eager cache list
