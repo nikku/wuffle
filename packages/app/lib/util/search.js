@@ -57,6 +57,16 @@ function startOfDay(time) {
   return date.getTime();
 }
 
+/**
+ * @param {string} str
+ *
+ * @return { {
+ *   qualifier: string,
+ *   value: string|undefined,
+ *   exact: boolean,
+ *   negated?: boolean
+ * }[] }
+ */
 function parseSearch(str) {
 
   const regexp = /(?:([\w#/&]+)|"([\w#/&\s-.]+)"|([-!]?)([\w]+):(?:([\w-#/&@<>=.]+)|"([\w-#/&@:.,; ]+)")?)(?:\s|$)/g;
@@ -83,7 +93,8 @@ function parseSearch(str) {
     if (textValue) {
       terms.push({
         qualifier: 'text',
-        value: textValue
+        value: textValue,
+        exact: !!textEscaped
       });
     }
 
@@ -93,7 +104,8 @@ function parseSearch(str) {
       terms.push({
         qualifier,
         value: qualifierValue,
-        negated: !!negated
+        negated: !!negated,
+        exact: !!qualifierTextEscaped
       });
     }
   }

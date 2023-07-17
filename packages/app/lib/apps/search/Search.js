@@ -47,19 +47,25 @@ function Search(logger, store) {
     return filterReject;
   }
 
-  function includes(actual, pattern) {
-    return pattern && actual.toLowerCase().includes(pattern.toLowerCase());
-  }
+  /**
+   * @param { string } actual
+   * @param { string } pattern
+   * @param { boolean } [exact=false]
+   *
+   * @return { boolean }
+   */
+  function includes(actual, pattern, exact) {
 
-  function fuzzyMatches(actual, pattern) {
-    return pattern && actual.toLowerCase().startsWith(pattern.toLowerCase());
+    if (exact) {
+      return pattern && actual === pattern;
+    }
+
+    return pattern && actual.toLowerCase().includes(pattern.toLowerCase());
   }
 
   const filters = {
 
-    text: function textFilter(text) {
-
-      text = text.toLowerCase();
+    text: function textFilter(text, exact) {
 
       return function filterText(issue) {
         const issueText = `#${issue.number} ${issue.title}\n\n${issue.body}`;
@@ -129,26 +135,26 @@ function Search(logger, store) {
       }
     },
 
-    label: function labelFilter(name) {
+    label: function labelFilter(name, exact) {
       return function filterLabel(issue) {
 
         const { labels } = issue;
 
-        return (labels || []).some(label => includes(label.name, name));
+        return (labels || []).some(label => includes(label.name, name, exact));
       };
     },
 
-    repo: function repoFilter(name) {
+    repo: function repoFilter(name, exact) {
 
       return function filterRepoAndOwner(issue) {
 
         const { repository } = issue;
 
-        return includes(`${repository.owner.login}/${repository.name}`, name);
+        return includes(`${repository.owner.login}/${repository.name}`, name, exact);
       };
     },
 
-    milestone: function milestoneFilter(name) {
+    milestone: function milestoneFilter(name, exact) {
 
       return function filterMilestone(issue) {
 
@@ -156,11 +162,11 @@ function Search(logger, store) {
           milestone
         } = issue;
 
-        return milestone && fuzzyMatches(milestone.title, name);
+        return milestone && includes(milestone.title, name, exact);
       };
     },
 
-    author: function authorFilter(name) {
+    author: function authorFilter(name, exact) {
 
       return function filterAuthor(issue) {
 
@@ -168,11 +174,11 @@ function Search(logger, store) {
           user
         } = issue;
 
-        return user && fuzzyMatches(user.login, name);
+        return user && includes(user.login, name, exact);
       };
     },
 
-    assignee: function assigneeFilter(name) {
+    assignee: function assigneeFilter(name, exact) {
 
       return function filterAssignee(issue) {
 
@@ -180,11 +186,11 @@ function Search(logger, store) {
           assignees
         } = issue;
 
-        return (assignees || []).some(assignee => fuzzyMatches(assignee.login, name));
+        return (assignees || []).some(assignee => includes(assignee.login, name, exact));
       };
     },
 
-    reviewer: function reviewerFilter(name) {
+    reviewer: function reviewerFilter(name, exact) {
 
       return function filterReviewer(issue) {
 
@@ -199,14 +205,14 @@ function Search(logger, store) {
         }
 
         return (
-          requested_reviewers.some(reviewer => fuzzyMatches(reviewer.login, name))
+          requested_reviewers.some(reviewer => includes(reviewer.login, name, exact))
         ) || (
-          (reviews || []).some(review => fuzzyMatches(review.user.login, name))
+          (reviews || []).some(review => includes(review.user.login, name, exact))
         );
       };
     },
 
-    commented: function commentedFilter(name) {
+    commented: function commentedFilter(name, exact) {
 
       return function filterCommented(issue) {
 
@@ -220,17 +226,17 @@ function Search(logger, store) {
         }
 
         return (
-          comments.some(comment => fuzzyMatches(comment.user.login, name))
+          comments.some(comment => includes(comment.user.login, name))
         );
       };
     },
 
-    involves: function involvesFilter(name) {
+    involves: function involvesFilter(name, exact) {
 
-      const isAssigned = filters.assignee(name);
-      const isAuthor = filters.author(name);
-      const isReviewer = filters.reviewer(name);
-      const hasCommented = filters.commented(name);
+      const isAssigned = filters.assignee(name, exact);
+      const isAuthor = filters.author(name, exact);
+      const isReviewer = filters.reviewer(name, exact);
+      const hasCommented = filters.commented(name, exact);
 
       return function filterInvolves(issue) {
         return (

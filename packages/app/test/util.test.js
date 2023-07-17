@@ -690,18 +690,18 @@ describe('util', function() {
 
       // then
       expect(search).to.eql([
-        { qualifier: 'text', value: 'Copy& Paste' },
-        { qualifier: 'is', value: 'open', negated: false },
-        { qualifier: 'text', value: 'asdsad' },
-        { qualifier: 'milestone', value: 'FOO BAR', negated: false },
-        { qualifier: 'text', value: 'FOO BAR' },
-        { qualifier: 'milestone', value: '12asd', negated: false },
-        { qualifier: 'milestone', value: undefined, negated: false },
-        { qualifier: 'author', value: 'walt', negated: false },
-        { qualifier: 'label', value: 'in progress', negated: false },
-        { qualifier: 'ref', value: 'foo/bar#80', negated: false },
-        { qualifier: 'assignee', value: '@me', negated: false },
-        { qualifier: 'label', value: 'some,stuff;yea', negated: false }
+        { qualifier: 'text', value: 'Copy& Paste', exact: true },
+        { qualifier: 'is', value: 'open', negated: false, exact: false },
+        { qualifier: 'text', value: 'asdsad', exact: false },
+        { qualifier: 'milestone', value: 'FOO BAR', negated: false, exact: true },
+        { qualifier: 'text', value: 'FOO BAR', exact: true },
+        { qualifier: 'milestone', value: '12asd', negated: false, exact: false },
+        { qualifier: 'milestone', value: undefined, negated: false, exact: false },
+        { qualifier: 'author', value: 'walt', negated: false, exact: false },
+        { qualifier: 'label', value: 'in progress', negated: false, exact: true },
+        { qualifier: 'ref', value: 'foo/bar#80', negated: false, exact: false },
+        { qualifier: 'assignee', value: '@me', negated: false, exact: false },
+        { qualifier: 'label', value: 'some,stuff;yea', negated: false, exact: true }
       ]);
 
     });
@@ -714,7 +714,7 @@ describe('util', function() {
 
       // then
       expect(search).to.eql([
-        { qualifier: 'is', value: 'open:b', negated: false }
+        { qualifier: 'is', value: 'open:b', negated: false, exact: true }
       ]);
 
     });
@@ -731,9 +731,9 @@ describe('util', function() {
 
       // then
       expect(search).to.eql([
-        { qualifier: 'is', value: 'open:b', negated: true },
-        { qualifier: 'is', value: 'FOO', negated: true },
-        { qualifier: 'is', value: 'FOO', negated: true }
+        { qualifier: 'is', value: 'open:b', negated: true, exact: true },
+        { qualifier: 'is', value: 'FOO', negated: true, exact: false },
+        { qualifier: 'is', value: 'FOO', negated: true, exact: false }
       ]);
 
     });
@@ -749,8 +749,8 @@ describe('util', function() {
 
       // then
       expect(search).to.eql([
-        { qualifier: 'is', value: 'open-bar', negated: false },
-        { qualifier: 'is', value: 'open-bar', negated: false }
+        { qualifier: 'is', value: 'open-bar', negated: false, exact: false },
+        { qualifier: 'is', value: 'open-bar', negated: false, exact: true }
       ]);
 
     });
@@ -766,8 +766,8 @@ describe('util', function() {
 
       // then
       expect(search).to.eql([
-        { qualifier: 'is', value: 'open.bar', negated: false },
-        { qualifier: 'is', value: 'open.bar', negated: false }
+        { qualifier: 'is', value: 'open.bar', negated: false, exact: false },
+        { qualifier: 'is', value: 'open.bar', negated: false, exact: true }
       ]);
 
     });
@@ -783,8 +783,8 @@ describe('util', function() {
 
       // then
       expect(search).to.eql([
-        { qualifier: 'is', value: 'open_bar', negated: false },
-        { qualifier: 'is', value: 'open_bar', negated: false }
+        { qualifier: 'is', value: 'open_bar', negated: false, exact: false },
+        { qualifier: 'is', value: 'open_bar', negated: false, exact: true }
       ]);
 
     });
@@ -800,8 +800,8 @@ describe('util', function() {
 
       // then
       expect(search).to.eql([
-        { qualifier: 'created', value: '<2020-09-14', negated: false },
-        { qualifier: 'updated', value: '>=2020-09-14', negated: false }
+        { qualifier: 'created', value: '<2020-09-14', negated: false, exact: false },
+        { qualifier: 'updated', value: '>=2020-09-14', negated: false, exact: false }
       ]);
     });
 
