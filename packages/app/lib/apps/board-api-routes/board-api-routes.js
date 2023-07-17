@@ -62,11 +62,7 @@ module.exports = async (
   }
 
   function getIssueSearchFilter(req) {
-    const s = req.query.s;
-
-    if (!s) {
-      return null;
-    }
+    const s = req.query.s || null;
 
     const user = authRoutes.getGitHubUser(req);
 
@@ -99,7 +95,7 @@ module.exports = async (
           };
         });
 
-        const searchFiltered = searchFilter ? accessFiltered.filter(searchFilter) : accessFiltered;
+        const searchFiltered = accessFiltered.filter(searchFilter);
 
         filteredItems[columnKey] = searchFiltered.map(filterIssueOrPull);
 
@@ -134,7 +130,7 @@ module.exports = async (
         };
       });
 
-      const searchFiltered = searchFilter ? accessFiltered.map(update => {
+      const searchFiltered = accessFiltered.map(update => {
 
         if (searchFilter(update.issue)) {
           return update;
@@ -146,7 +142,7 @@ module.exports = async (
           ...update,
           type: 'remove'
         };
-      }) : accessFiltered;
+      });
 
       return searchFiltered.map(update => {
 

@@ -16,16 +16,20 @@ const CHILD_LINK_TYPES = {
   [ LinkTypes.CLOSES ]: true
 };
 
+/**
+ * @typedef { { defaultFilter?: string } } SearchConfig
+ */
 
 /**
  * This app allows you to create a search filter from a given term.
  *
  * @constructor
  *
+ * @param {SearchConfig} config
  * @param {import('../../types').Logger} logger
  * @param {import('../../store')} store
  */
-function Search(logger, store) {
+function Search(config, logger, store) {
 
   const log = logger.child({
     name: 'wuffle:search'
@@ -295,23 +299,16 @@ function Search(logger, store) {
     };
   }
 
-  /**
-   * Retrieve a filter function from the given search string.
-   *
-   * @param {string} search
-   * @param {import('../../types').GitHubUser} [user]
-   *
-   * @return {Function}
-   */
-  function getSearchFilter(search, user) {
+  function buildFilterFns(search, user) {
 
-    const terms = parseSearch(search);
+    const terms = search ? parseSearch(search) : [];
 
-    const filterFns = terms.map(term => {
+    return terms.map(term => {
       let {
         qualifier,
         value,
-        negated
+        negated,
+        exact
       } = term;
 
       if (!value) {
@@ -324,6 +321,7 @@ function Search(logger, store) {
         }
 
         value = user.login;
+        exact = true;
       }
 
       const factoryFn = filters[qualifier];
@@ -332,7 +330,7 @@ function Search(logger, store) {
         return noopFilter();
       }
 
-      const fn = factoryFn(value);
+      const fn = factoryFn(value, exact);
 
       if (negated) {
         return function(arg) {
@@ -342,10 +340,30 @@ function Search(logger, store) {
 
       return fn;
     });
+  }
+
+  /**
+   * Retrieve a filter function from the given search string.
+   *
+   * @param {string} search
+   * @param {import('../../types').GitHubUser} [user]
+   *
+   * @return {Function}
+   */
+  function getSearchFilter(search, user) {
+
+    const filterFns = buildFilterFns(search, user);
+
+    const ignoreFilterFns = buildFilterFns(config.defaultFilter, user);
 
     return function(issue) {
       try {
-        return filterFns.every(fn => fn(issue));
+        if (filterFns.length) {
+          return filterFns.every(fn => fn(issue));
+        } else {
+
+          return ignoreFilterFns.every(fn => fn(issue));
+        }
       } catch (err) {
         log.warn({ issue: issueIdent(issue), err }, 'filter failed');
 

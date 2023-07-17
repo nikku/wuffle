@@ -20,6 +20,11 @@
  * The default column is the column that holds open issues without
  * any label constraints (Inbox in the example below).
  *
+ *
+ * ### Search Config
+ *
+ * You may define a default filter to apply to the board if
+ * there is no user-defined search query.
  */
 module.exports = {
 
@@ -32,6 +37,7 @@ module.exports = {
     { name: 'In Progress', label: 'in progress', sorting: true },
     { name: 'Needs Review', label: 'needs review', sorting: true },
     { name: 'Done', label: null, closed: true }
-  ]
+  ],
 
+  defaultFilter: '!repo:"some/ignored-repository"'
 };
