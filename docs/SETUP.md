@@ -102,6 +102,8 @@ module.exports = {
 };
 ```
 
+Checkout a [full example](../packages/app/wuffle.config.example.js) for all available options.
+
 Connect repositories that should appear on the board [via GitHub](#connect-github-repositories).
 
 
