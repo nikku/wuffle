@@ -221,7 +221,7 @@
 
   function applyFilter(qualifier, value, add) {
 
-    if (/[\s:]+/.test(value)) {
+    if (!value.startsWith('"')) {
       value = '"' + value + '"';
     }
 

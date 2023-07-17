@@ -77,7 +77,7 @@
 
     values[key] = value.slice().sort().map(name => {
 
-      const separator = /[: ]/.test(name) ? '"' : '';
+      const separator = !name.startsWith('"') ? '"' : '';
 
       return { name, value: `${separator}${name}${separator} ` };
     });
