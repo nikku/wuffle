@@ -40,14 +40,14 @@
     on:click={ onClick }
   >{ name }</a>
 {:else}
-  <span
+  <button
     class:inverted={ inverted }
     class="tag { className }"
     class:clickable={ onClick }
     style="background-color: { color }"
     on:click={ onClick }
     title={ title || name }
-  >{ name }</span>
+  >{ name }</button>
 {/if}
 
 <style lang="scss">
@@ -70,6 +70,7 @@
     color: white;
     background: #fafafa;
     border-radius: 6px;
+    border: none;
 
     text-decoration: none;
 

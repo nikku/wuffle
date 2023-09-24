@@ -137,8 +137,10 @@
     flex-direction: row;
     align-items: center;
     margin-bottom: 7px;
+    padding: 0;
 
     cursor: pointer;
+    text-decoration: none;
 
     svg {
       color: $gray-600;
@@ -172,6 +174,9 @@
     class:hovered={ hovered }
     on:mouseenter={ () => hovered = true }
     on:mouseleave={ () => hovered = false }
+    role="button"
+    aria-roledescription="draggable card"
+    tabindex="0"
   >
     <div class="header">
       <a href={ cardUrl }
@@ -203,8 +208,8 @@
       { title }
     </div>
     {#if children.length}
-      <div
-        class="progress"
+      <button
+        class="btn btn-link progress"
         on:click={ () => showChildren = !showChildren }
         title="{ completedChildren.length } of { children.length } child tasks completed"
       >
@@ -217,7 +222,7 @@
         <div class="bar">
           <div class="indicator" style="width: { completedChildren.length / children.length * 100 }%"></div>
         </div>
-      </div>
+      </button>
     {/if}
     <div class="footer">
       {#if milestone}

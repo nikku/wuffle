@@ -55,17 +55,20 @@
 
   .hint-list li {
     margin: 0;
-    padding: .25rem .35rem;
+  }
 
+  .hint-list li a {
+    padding: .25rem .35rem;
+    width: 100%;
+    display: block;
     border-radius: 5px;
 
-    &.selectable {
-      cursor: pointer;
+    color: inherit;
+    text-decoration: none;
 
-      &:hover,
-      &.active {
-        background: scale-color($primary, $alpha: -90%);
-      }
+    &:hover,
+    &.active {
+      background: scale-color($primary, $alpha: -90%);
     }
 
     &.text {
@@ -82,12 +85,15 @@
 <ul class={ [ className, 'hint-list', 'scroll-container-v' ].join(' ') }>
   {#each hints as hint, idx}
     <li
-      class:active={ selectedHint === hint }
-      class="selectable"
       use:scrollIntoView={ [ hint, selectedHint ] }
-      on:mouseenter={ () => onHover(hint) }
-      on:mouseleave={ () => onBlur(hint) }
-      on:mousedown={ (event) => handleMousedown(event, hint) }
-    >{#each hint.parts as part}<span class:matched={ part.matched }>{ part.text }</span>{/each}</li>
+    >
+      <a
+        class:active={ selectedHint === hint }
+        on:mouseenter={ () => onHover(hint) }
+        on:mouseleave={ () => onBlur(hint) }
+        on:click|preventDefault={ (event) => handleMousedown(event, hint) }
+        href
+      >{#each hint.parts as part}<span class:matched={ part.matched }>{ part.text }</span>{/each}</a>
+    </li>
   {/each}
 </ul>

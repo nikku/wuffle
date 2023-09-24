@@ -223,7 +223,7 @@
 <svelte:window on:keydown={ checkClose } />
 
 <div class="repository-select">
-  <div class="overlay" on:click={ onClose }></div>
+  <div aria-hidden="true" class="overlay" on:click={ onClose }></div>
 
   <form class="issue-creator px-4 py-2" on:submit={ checkSubmit }>
 

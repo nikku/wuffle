@@ -80,6 +80,7 @@
   class:hovered={ hovered }
   on:mouseenter={ () => hovered = true }
   on:mouseleave={ () => hovered = false }
+  aria-hidden="true"
 >
   <div class="header">
     <a href={ cardUrl }

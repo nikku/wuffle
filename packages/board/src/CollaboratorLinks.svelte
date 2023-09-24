@@ -162,13 +162,16 @@
 </style>
 
 {#each requested_reviewers as reviewer}
-  <span
+  <a
     class="assignee requested-reviewer"
     title="{ reviewer.login } requested for review"
-    on:click={ handleSelection('involves', reviewer.login) }>
+    href={ reviewer.html_url }
+    on:click={ handleSelection('involves', reviewer.login) }
+    target="_blank"
+    rel="noopener noreferrer">
     <img src="{ reviewer.avatar_url }&s=40" alt="{ reviewer.login } avatar" />
     <div class="icon-shadow"></div>
-  </span>
+  </a>
 {/each}
 
 {#each reviews as review}
