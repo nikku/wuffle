@@ -43,7 +43,7 @@
     "express-session": "^1.17.3",
     "fake-tag": "^3.0.0",
     "memorystore": "^1.6.7",
-    "min-dash": "^3.8.1",
+    "min-dash": "^4.1.1",
     "mkdirp": "^3.0.1",
     "p-defer": "^3.0.0",
     "prexit": "0.0.5",
