@@ -67,7 +67,7 @@
     "typescript": "^5.1.6"
   },
   "engines": {
-    "node": "14.x || 16.x"
+    "node": ">= 16"
   },
   "nodemonConfig": {
     "exec": "node ./bin/wuffle",
