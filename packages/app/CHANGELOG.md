@@ -6,6 +6,11 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 _**Note:** Yet to be released changes appear here._
 
+## 0.55.0
+
+* `FEAT`: various `a11y` improvements
+* `DEPS`: update dependencies
+
 ## 0.54.0
 
 * `FEAT`: move issue to `needs_review` column on review request ([#156](https://github.com/nikku/wuffle/pull/156))
