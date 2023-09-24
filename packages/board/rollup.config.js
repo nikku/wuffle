@@ -52,7 +52,11 @@ module.exports = [
 
       css({ output: 'bundle.css' }),
 
-      resolve(),
+      resolve({
+        browser: true,
+        exportConditions: [ 'svelte' ],
+        extensions: [ '.svelte' ]
+      }),
       commonjs(),
 
       // live reload in development mode

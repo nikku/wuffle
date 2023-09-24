@@ -1,7 +1,3 @@
-<script>
-  export let className;
-</script>
-
 <style>
   .octicon {
     height: 1em;

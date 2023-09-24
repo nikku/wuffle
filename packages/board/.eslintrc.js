@@ -2,7 +2,8 @@
 
 module.exports = {
   extends: [
-    'plugin:bpmn-io/browser'
+    'plugin:bpmn-io/browser',
+    'plugin:svelte/recommended'
   ],
   rules: {
     'comma-dangle': [ 'error', 'never' ],
@@ -10,18 +11,12 @@ module.exports = {
     'import/no-webpack-loader-syntax': 'error'
   },
   plugins: [
-    'svelte3',
     'import'
   ],
   overrides: [
     {
-      'files': [ '*.svelte' ],
-      'processor': 'svelte3/svelte3'
+      files: [ '*.svelte' ],
+      parser: 'svelte-eslint-parser'
     }
-  ],
-  settings: {
-    'svelte3/ignore-styles': function(attrs) {
-      return attrs.lang === 'scss';
-    }
-  }
+  ]
 };

@@ -2,7 +2,7 @@
   export let item;
 
   $: merged = item.merged;
-  $: open = item.state === 'open';
+  $: _open = item.state === 'open';
   $: closed = item.state === 'closed';
   $: draft = item.draft || false;
 </script>
