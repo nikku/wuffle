@@ -15,7 +15,7 @@
 
   import Api from './Api';
 
-  import Dragula from 'dragula';
+  import Dragula from '@bpmn-io/draggle';
 
   import {
     isNewIssueShortcut,

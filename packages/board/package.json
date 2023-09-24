@@ -3,12 +3,12 @@
   "version": "0.54.0",
   "private": true,
   "devDependencies": {
+    "@bpmn-io/draggle": "^4.0.0",
     "@rollup/plugin-commonjs": "^25.0.4",
     "@rollup/plugin-node-resolve": "^15.2.1",
     "@rollup/plugin-terser": "^0.4.3",
     "@rollup/plugin-url": "^8.0.1",
     "bootstrap": "^4.6.1",
-    "dragula": "^3.7.3",
     "eslint-plugin-import": "^2.28.1",
     "eslint-plugin-svelte": "^2.33.2",
     "min-dash": "^4.1.1",
