@@ -6,6 +6,11 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 _**Note:** Yet to be released changes appear here._
 
+## 0.56.0
+
+* `FEAT`: support `PRIVATE_KEY_PATH` to supply key
+* `DEPS`: update dependencies
+
 ## 0.55.0
 
 * `FEAT`: various `a11y` improvements
