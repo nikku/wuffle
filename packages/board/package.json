@@ -22,8 +22,8 @@
     "rollup-plugin-string": "^3.0.0",
     "rollup-plugin-svelte": "^7.1.6",
     "sass": "^1.68.0",
-    "svelte": "^4.2.1",
-    "svelte-preprocess": "^5.0.4"
+    "svelte": "^4.2.3",
+    "svelte-preprocess": "^5.1.0"
   },
   "engines": {
     "node": ">= 16"
