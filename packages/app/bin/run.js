@@ -39,7 +39,7 @@ async function validate() {
     checkEnv('BASE_URL', IS_PROD),
     checkEnv('GITHUB_CLIENT_ID', IS_PROD),
     checkEnv('GITHUB_CLIENT_SECRET', IS_PROD),
-    checkEnv('PRIVATE_KEY', IS_PROD),
+    checkEnv([ 'PRIVATE_KEY', 'PRIVATE_KEY_PATH' ], IS_PROD),
     checkEnv('SESSION_SECRET', IS_PROD),
     checkEnv('WEBHOOK_SECRET', IS_PROD),
     checkDumpConfig(),
@@ -157,7 +157,13 @@ async function validate() {
 
   function checkEnv(key, isError = false) {
 
-    if (!process.env[key]) {
+    if (Array.isArray(key)) {
+      if (key.some(k => process.env[key])) {
+        return (isError ? error : warning)(
+          `Missing one of env.{${key.join(',')}}`
+        );
+      }
+    } else if (!process.env[key]) {
       return (isError ? error : warning)(
         `Missing env.${key}`
       );
