@@ -22,6 +22,11 @@ function precache() {
 
 function cacheResponse(event, request, response) {
 
+  // only cache http(s) resources
+  if (!/^https?:/.test(request.url)) {
+    return;
+  }
+
   return caches.open(CACHE).then(cache => {
 
     if (!event.clientId) {
