@@ -21,10 +21,8 @@ function precache() {
 }
 
 function cacheResponse(event, request, response) {
-  const parsedUrl = new URL(request.url);
-
-  // only cache http resources
-  if (!/^https?:$/.test(parsedUrl.protocol)) {
+  // only cache http(s) resources
+  if (!/^https?:/.test(request.url)) {
     return;
   }
 
