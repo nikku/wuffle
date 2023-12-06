@@ -6,6 +6,10 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 _**Note:** Yet to be released changes appear here._
 
+## 0.56.1
+
+* `FIX`: correct handling of non-http(s) requests in service worker ([#161](https://github.com/nikku/wuffle/issues/161))
+
 ## 0.56.0
 
 * `FEAT`: support `PRIVATE_KEY_PATH` to supply key
