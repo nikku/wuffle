@@ -6,6 +6,11 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 _**Note:** Yet to be released changes appear here._
 
+## 0.57.0
+
+* `FEAT`: add `fifo` column ordering as an alternative to the default `lifo`
+* `DEPS`: update dependencies
+
 ## 0.56.1
 
 * `FIX`: correct handling of non-http(s) requests in service worker ([#161](https://github.com/nikku/wuffle/issues/161))
