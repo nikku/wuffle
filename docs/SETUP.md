@@ -1,4 +1,3 @@
-
 # Setup
 
 Learn how to set up, configure and run your own [Wuffle board](https://wuffle.dev).
