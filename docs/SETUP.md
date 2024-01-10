@@ -149,7 +149,7 @@ Instead of relying on a `.env` file, you can also  pass environment variables di
 NODE_ENV=production APP_ID=YOUR_APP_ID npx wuffle
 ```
 
-Pass the [board configuration](#configure-board) as a JSON encoded string via the `BOARD_CONFIG` environment variable.
+Pass the [board configuration](#configure-the-board) as a JSON encoded string via the `BOARD_CONFIG` environment variable.
 
 Hook up [Sentry](https://sentry.io/welcome/) to track errors at run-time.
 
