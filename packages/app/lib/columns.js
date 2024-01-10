@@ -67,6 +67,12 @@ class Columns {
     return column && column.sorting;
   }
 
+  isFifo(columnName) {
+    const column = this.getByName(columnName);
+
+    return column && column.fifo;
+  }
+
   isColumnLabel(label) {
     return label in this.columnsByLabel;
   }

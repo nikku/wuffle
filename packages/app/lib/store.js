@@ -102,6 +102,7 @@ class Store {
       } = event;
 
       let firstIssue = this.issues[0];
+      let lastIssue = this.issues[this.issues.length - 1];
 
       for (const update of context.getUpdates()) {
 
@@ -125,10 +126,14 @@ class Store {
           ...inverseLinks
         };
 
-        issue.order = this.getSemanticIssueOrder(issue, links, firstIssue);
+        issue.order = this.getSemanticIssueOrder(issue, links, firstIssue, lastIssue);
 
         if (!firstIssue || firstIssue.order > issue.order) {
           firstIssue = issue;
+        }
+
+        if (!lastIssue || lastIssue.order < issue.order) {
+          lastIssue = issue;
         }
       }
     }, 1250);
@@ -396,7 +401,7 @@ class Store {
     return updatedIssue;
   }
 
-  getSemanticIssueOrder(issue, links, firstIssue) {
+  getSemanticIssueOrder(issue, links, firstIssue, lastIssue) {
 
     const {
       id,
@@ -450,11 +455,18 @@ class Store {
         return currentOrder;
       }
 
-      // insert before other issues
-      before = firstIssue;
+      if (this.columns.isFifo(column)) {
+
+        // insert after other issues
+        after = lastIssue;
+      } else {
+
+        // insert before other issues
+        before = firstIssue;
+      }
     }
 
-    return this._computeOrder(before && before.order, after && after.order, currentOrder);
+    return this._computeOrder(before?.order, after?.order, currentOrder);
   }
 
   createLinks(context, issue) {

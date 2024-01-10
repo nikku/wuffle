@@ -558,221 +558,375 @@ describe('store', function() {
 
   describe('ordering', function() {
 
-    it('should add new issue to front', async function() {
+    describe('default', function() {
 
-      // given
-      const store = createStore();
+      it('should add new issue to front', async function() {
 
-      // when
-      const issue_A = await store.updateIssue(createIssue());
-      const issue_B = await store.updateIssue(createIssue());
+        // given
+        const store = createStore();
 
-      // then
-      expectOrder(store, [ issue_B, issue_A ]);
-    });
+        // when
+        const issue_A = await store.updateIssue(createIssue());
+        const issue_B = await store.updateIssue(createIssue());
 
-
-    it('should not sort in closed column', async function() {
-
-      // given
-      const store = createStore();
-
-      // when
-      const issue_A = await store.updateIssue(createIssue({
-        state: 'closed'
-      }));
-
-      const issue_B = await store.updateIssue(createIssue({
-        state: 'closed',
-        title: `Depends on #${issue_A.number}`
-      }));
-
-      // then
-      expectOrder(store, [ issue_B, issue_A ]);
-    });
-
-
-    it('should put before CLOSES', async function() {
-
-      // given
-      const store = createStore();
-
-      const issue_A = await store.updateIssue(createIssue({
-        number: 1,
-        title: '1'
-      }));
-
-      // when
-      const issue_B = await store.updateIssue(createIssue({
-        number: 2,
-        title: 'Closes #1'
-      }));
-
-      // then
-      expectOrder(store, [ issue_B, issue_A ]);
-    });
-
-
-    it('should put after DEPENDS_ON', async function() {
-
-      // given
-      const store = createStore();
-
-      const issue_A = await store.updateIssue(createIssue({
-        number: 1,
-        title: '1'
-      }));
-
-      // when
-      const issue_B = await store.updateIssue(createIssue({
-        number: 2,
-        title: 'Depends on #1'
-      }));
-
-      // then
-      expectOrder(store, [ issue_A, issue_B ]);
-    });
-
-
-    it('should put between', async function() {
-
-      // given
-      const store = createStore();
-
-      const issue_A = await store.updateIssue(createIssue({
-        number: 1,
-        title: '1'
-      }));
-
-      const issue_B = await store.updateIssue(createIssue({
-        number: 2,
-        title: '2'
-      }));
-
-      // when
-      const issue_C = await store.updateIssue(createIssue({
-        title: 'Depends on #2 Closes #1'
-      }));
-
-      // then
-      expectOrder(store, [ issue_B, issue_C, issue_A ]);
-    });
-
-
-    it('should put after two', async function() {
-
-      // given
-      const store = createStore();
-
-      const issue = await store.updateIssue(createIssue({
-        number: 1,
-        title: '1'
-      }));
-
-      const issue_B = await store.updateIssue(createIssue({
-        number: 2,
-        title: '2'
-      }));
-
-      // when
-      const issue_C = await store.updateIssue(createIssue({
-        title: 'Depends on #2 Depends on #1'
-      }));
-
-      // then
-      expectOrder(store, [ issue_B, issue, issue_C ]);
-    });
-
-
-    it('should put before two', async function() {
-
-      // given
-      const store = createStore();
-
-      const issue_A = await store.updateIssue(createIssue({
-        number: 1,
-        title: '1'
-      }));
-
-      const issue_B = await store.updateIssue(createIssue({
-        number: 2,
-        title: 'Depends on #1'
-      }));
-
-      const issue_C = await store.updateIssue(createIssue({
-        number: 3,
-        title: 'Depends on #2'
-      }));
-
-      // when
-      const issue_D = await store.updateIssue(createIssue({
-        title: 'Closes on #2 Closes on #3'
-      }));
-
-      // then
-      expectOrder(store, [ issue_D, issue_A, issue_B, issue_C ]);
-    });
-
-
-    it('should handle ordering conflict', async function() {
-
-      // given
-      const store = createStore();
-
-      const issue_A = await store.updateIssue(createIssue({
-        number: 1,
-        title: '1'
-      }));
-
-      const issue_B = await store.updateIssue(createIssue({
-        number: 2,
-        title: '2'
-      }));
-
-      // when
-      const issue_C = await store.updateIssue(createIssue({
-        title: 'Depends on #1 Closes #2'
-      }));
-
-      // then
-      expectOrder(store, [ issue_B, issue_C, issue_A ]);
-    });
-
-
-    it('should keep unlinked order without column change', async function() {
-
-      // given
-      const store = createStore();
-
-      // when
-      const issue_A = await store.updateIssue(createIssue({
-        state: 'closed'
-      }));
-
-      const issue_B = await store.updateIssue(createIssue({
-        state: 'closed'
-      }));
-
-      const issue_C = await store.updateIssue(createIssue({
-        state: 'closed'
-      }));
-
-      const issue_D = await store.updateIssue(createIssue({
-        state: 'open'
-      }));
-
-      // when
-      const updated_issue_D = await store.updateIssueOrder(issue_D, issue_A.id, issue_B.id, 'Done');
-
-      const final_issue_D = await store.updateIssue({
-        id: issue_D.id,
-        state: 'closed'
+        // then
+        expectOrder(store, [ issue_B, issue_A ]);
       });
 
-      // then
-      expect(final_issue_D.order).to.eql(updated_issue_D.order);
 
-      expectOrder(store, [ issue_C, issue_B, issue_D, issue_A ]);
+      it('should not sort', async function() {
+
+        // given
+        const store = createStore();
+
+        // when
+        const issue_A = await store.updateIssue(createIssue({
+          state: 'closed'
+        }));
+
+        const issue_B = await store.updateIssue(createIssue({
+          state: 'closed',
+          title: `issue_B - Depends on #${issue_A.number}`
+        }));
+
+        // then
+        expectOrder(store, [ issue_B, issue_A ]);
+      });
+
+    });
+
+
+    describe('sorting', function() {
+
+      it('should put before CLOSES', async function() {
+
+        // given
+        const store = createStore();
+
+        const issue_A = await store.updateIssue(createIssue({
+          number: 1,
+          title: 'issue_A'
+        }));
+
+        // when
+        const issue_B = await store.updateIssue(createIssue({
+          title: 'issue_B - Closes #1'
+        }));
+
+        // then
+        expectOrder(store, [ issue_B, issue_A ]);
+      });
+
+
+      it('should put after DEPENDS_ON', async function() {
+
+        // given
+        const store = createStore();
+
+        const issue_A = await store.updateIssue(createIssue({
+          number: 1,
+          title: 'issue_A'
+        }));
+
+        // when
+        const issue_B = await store.updateIssue(createIssue({
+          title: 'issue_B - Depends on #1'
+        }));
+
+        // then
+        expectOrder(store, [ issue_A, issue_B ]);
+      });
+
+
+      it('should put between', async function() {
+
+        // given
+        const store = createStore();
+
+        const issue_A = await store.updateIssue(createIssue({
+          number: 1,
+          title: 'issue_A'
+        }));
+
+        const issue_B = await store.updateIssue(createIssue({
+          number: 2,
+          title: 'issue_B'
+        }));
+
+        // when
+        const issue_C = await store.updateIssue(createIssue({
+          title: 'issue_C - Depends on #2 Closes #1'
+        }));
+
+        // then
+        expectOrder(store, [ issue_B, issue_C, issue_A ]);
+      });
+
+
+      it('should put after two', async function() {
+
+        // given
+        const store = createStore();
+
+        const issue_A = await store.updateIssue(createIssue({
+          number: 1,
+          title: 'issue_A'
+        }));
+
+        const issue_B = await store.updateIssue(createIssue({
+          number: 2,
+          title: 'issue_B'
+        }));
+
+        // when
+        const issue_C = await store.updateIssue(createIssue({
+          title: 'issue_C - Depends on #2 Depends on #1'
+        }));
+
+        // then
+        expectOrder(store, [ issue_B, issue_A, issue_C ]);
+      });
+
+
+      it('should put before two', async function() {
+
+        // given
+        const store = createStore();
+
+        const issue_A = await store.updateIssue(createIssue({
+          number: 1,
+          title: 'issue_A'
+        }));
+
+        const issue_B = await store.updateIssue(createIssue({
+          number: 2,
+          title: 'issue_B - Depends on #1'
+        }));
+
+        const issue_C = await store.updateIssue(createIssue({
+          number: 3,
+          title: 'issue_C - Depends on #2'
+        }));
+
+        // when
+        const issue_D = await store.updateIssue(createIssue({
+          title: 'issue_D - Closes #2 Closes #3'
+        }));
+
+        // then
+        expectOrder(store, [ issue_D, issue_A, issue_B, issue_C ]);
+      });
+
+
+      it('should handle ordering conflict', async function() {
+
+        // given
+        const store = createStore();
+
+        const issue_A = await store.updateIssue(createIssue({
+          number: 1,
+          title: 'issue_A'
+        }));
+
+        const issue_B = await store.updateIssue(createIssue({
+          number: 2,
+          title: 'issue_B'
+        }));
+
+        // when
+        const issue_C = await store.updateIssue(createIssue({
+          title: 'issue_C - Depends on #1 Closes #2'
+        }));
+
+        // then
+        expectOrder(store, [ issue_B, issue_C, issue_A ]);
+      });
+
+
+      it('should keep unlinked order without column change', async function() {
+
+        // given
+        const store = createStore();
+
+        // when
+        const issue_A = await store.updateIssue(createIssue({
+          state: 'closed'
+        }));
+
+        const issue_B = await store.updateIssue(createIssue({
+          state: 'closed'
+        }));
+
+        const issue_C = await store.updateIssue(createIssue({
+          state: 'closed'
+        }));
+
+        const issue_D = await store.updateIssue(createIssue({
+          state: 'open'
+        }));
+
+        // when
+        const updated_issue_D = await store.updateIssueOrder(issue_D, issue_A.id, issue_B.id, 'Done');
+
+        const final_issue_D = await store.updateIssue({
+          id: issue_D.id,
+          state: 'closed'
+        });
+
+        // then
+        expect(final_issue_D.order).to.eql(updated_issue_D.order);
+
+        expectOrder(store, [ issue_C, issue_B, issue_D, issue_A ]);
+      });
+
+    });
+
+
+    describe('fifo', function() {
+
+      const columnConfig = [
+        { name: 'Inbox', label: null, sorting: true, fifo: true },
+        { name: 'Backlog', label: 'backlog', sorting: true },
+        { name: 'Ready', label: 'ready', sorting: true },
+        { name: 'In Progress', label: 'in progress', sorting: true },
+        { name: 'Needs Review', label: 'needs review', sorting: true },
+        { name: 'Done', label: null, closed: true }
+      ];
+
+
+      it('should add new issue to the end', async function() {
+
+        // given
+        const store = createStore(columnConfig);
+
+        // when
+        const issue_A = await store.updateIssue(createIssue());
+        const issue_B = await store.updateIssue(createIssue());
+
+        // then
+        expectOrder(store, [ issue_A, issue_B ]);
+      });
+
+
+      it('should put before CLOSES', async function() {
+
+        // given
+        const store = createStore(columnConfig);
+
+        const issue_A = await store.updateIssue(createIssue({
+          number: 1,
+          title: 'issue_A'
+        }));
+
+        // when
+        const issue_B = await store.updateIssue(createIssue({
+          title: 'issue_B - Closes #1'
+        }));
+
+        // then
+        expectOrder(store, [ issue_B, issue_A ]);
+      });
+
+
+      it('should put after DEPENDS_ON', async function() {
+
+        // given
+        const store = createStore(columnConfig);
+
+        const issue_A = await store.updateIssue(createIssue({
+          number: 1,
+          title: 'issue_A'
+        }));
+
+        // when
+        const issue_B = await store.updateIssue(createIssue({
+          title: 'issue_B - Depends on #1'
+        }));
+
+        // then
+        expectOrder(store, [ issue_A, issue_B ]);
+      });
+
+
+      it('should put between', async function() {
+
+        // given
+        const store = createStore(columnConfig);
+
+        const issue_B = await store.updateIssue(createIssue({
+          number: 2,
+          title: 'issue_B'
+        }));
+
+        const issue_A = await store.updateIssue(createIssue({
+          number: 1,
+          title: 'issue_A'
+        }));
+
+        // when
+        const issue_C = await store.updateIssue(createIssue({
+          title: 'issue_C - Depends on #2 Closes #1'
+        }));
+
+        // then
+        expectOrder(store, [ issue_B, issue_C, issue_A ]);
+      });
+
+
+      it('should put after two', async function() {
+
+        // given
+        const store = createStore(columnConfig);
+
+        const issue_B = await store.updateIssue(createIssue({
+          number: 2,
+          title: 'issue_B'
+        }));
+
+        const issue_A = await store.updateIssue(createIssue({
+          number: 1,
+          title: 'issue_A'
+        }));
+
+        // when
+        const issue_C = await store.updateIssue(createIssue({
+          title: 'issue_C - Depends on #2 Depends on #1'
+        }));
+
+        // then
+        expectOrder(store, [ issue_B, issue_A, issue_C ]);
+      });
+
+
+      it('should put before two', async function() {
+
+        // given
+        const store = createStore(columnConfig);
+
+        const issue_A = await store.updateIssue(createIssue({
+          number: 1,
+          title: 'issue_A'
+        }));
+
+        const issue_B = await store.updateIssue(createIssue({
+          number: 2,
+          title: 'issue_B - Depends on #1'
+        }));
+
+        const issue_C = await store.updateIssue(createIssue({
+          number: 3,
+          title: 'issue_C - Depends on #2'
+        }));
+
+        // when
+        const issue_D = await store.updateIssue(createIssue({
+          title: 'issue_D - Closes #2 Closes #3'
+        }));
+
+        // then
+        expectOrder(store, [ issue_D, issue_A, issue_B, issue_C ]);
+      });
+
     });
 
   });
