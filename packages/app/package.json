@@ -48,18 +48,18 @@
     "p-defer": "^3.0.0",
     "prexit": "0.0.5",
     "probot": "^12.2.4",
-    "smee-client": "^1.2.3"
+    "smee-client": "^1.2.5"
   },
   "devDependencies": {
     "@graphql-eslint/eslint-plugin": "^3.20.1",
     "@octokit/graphql-schema": "^12.10.0",
     "@types/compression": "^1.7.2",
     "@types/express-session": "^1.17.4",
-    "chai": "^4.3.10",
+    "chai": "^4.4.0",
     "graphql": "^16.6.0",
     "mocha": "^10.2.0",
-    "nock": "^13.3.8",
-    "nodemon": "^3.0.1",
+    "nock": "^13.4.0",
+    "nodemon": "^3.0.2",
     "npm-run-all": "^4.1.5",
     "sinon": "^17.0.1",
     "sinon-chai": "^3.7.0",
