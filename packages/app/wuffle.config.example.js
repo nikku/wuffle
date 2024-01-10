@@ -15,6 +15,8 @@
  *  * closed     - if the column issues must be closed
  *  * sorting    - true if column cards should be sorted
  *                 incrementally based on links
+ *  * fifo       - true to turn the default column ordering from
+ *                 last in first out to first in first out
  *  * states     - a list of board states to map to this column
  *
  * The default column is the column that holds open issues without
@@ -33,9 +35,9 @@ module.exports = {
   columns: [
     { name: 'Inbox', label: null },
     { name: 'Backlog', label: 'backlog', sorting: true },
-    { name: 'Ready', label: 'ready', sorting: true },
-    { name: 'In Progress', label: 'in progress', sorting: true },
-    { name: 'Needs Review', label: 'needs review', sorting: true },
+    { name: 'Ready', label: 'ready', sorting: true, fifo: true },
+    { name: 'In Progress', label: 'in progress', sorting: true, fifo: true },
+    { name: 'Needs Review', label: 'needs review', sorting: true, fifo: true },
     { name: 'Done', label: null, closed: true }
   ],
 

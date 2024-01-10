@@ -94,8 +94,8 @@ module.exports = {
     { name: 'Inbox', label: null },
     { name: 'Backlog', label: 'backlog', sorting: true },
     { name: 'Ready', label: 'ready', sorting: true },
-    { name: 'In Progress', label: 'in progress' },
-    { name: 'Needs Review', label: 'needs review' },
+    { name: 'In Progress', label: 'in progress', sorting: true },
+    { name: 'Needs Review', label: 'needs review', sorting: true, fifo: true },
     { name: 'Done', label: null, closed: true }
   ]
 };
@@ -134,9 +134,16 @@ module.exports = {
 Column mappings enable [automatic card movement](./AUTOMATIC_CARD_MOVEMENT.md) across the board as you develop.
 
 
-### Issue Links and Automatic Sorting
+### Column Ordering
 
-Board columns can sorted automatically, based on [sematic issue links](./ISSUE_LINKS.md). Enable this feature for individual columns by marking them as `sorting`.
+Per default issues in a column will be ordered _last in, first out_. This means that, unless they are explicitly sorted into a column, new issues are added on top of existing ones in a column.
+
+To change this to _first in, first out_ mark a column as `fifo`. New items will now end up at the bottom of a column. Useful, i.e. for review columns.
+
+
+### Issue Links and Semantic Sorting
+
+In addition to [default ordering](#column-ordering) board columns can be sorted based on [semantic issue links](./ISSUE_LINKS.md). Enable this feature for a column by marking it as `sorting`.
 
 
 ## Run in Production
