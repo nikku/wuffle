@@ -816,11 +816,13 @@ function createStore(columnConfig) {
 
 const createIssue = (function() {
 
-  let counter = 0;
+  let numbers = [ -1 ];
 
   return function createIssue(config = {}) {
 
-    const number = counter++;
+    const number = config.number || Math.max(...numbers) + 1;
+
+    numbers.push(number);
 
     const defaultConfig = {
       id: `i-${number}`,
