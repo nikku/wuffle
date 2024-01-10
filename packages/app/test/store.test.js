@@ -782,7 +782,16 @@ describe('store', function() {
 
 // helpers //////////////////
 
-function createStore(columnConfig) {
+const defaultColumnConfig = [
+  { name: 'Inbox', label: null, sorting: true },
+  { name: 'Backlog', label: 'backlog', sorting: true },
+  { name: 'Ready', label: 'ready', sorting: true },
+  { name: 'In Progress', label: 'in progress', sorting: true },
+  { name: 'Needs Review', label: 'needs review', sorting: true },
+  { name: 'Done', label: null, closed: true }
+];
+
+function createStore(columnConfig = defaultColumnConfig) {
 
   const log = {
     info: () => {},
@@ -798,15 +807,6 @@ function createStore(columnConfig) {
       return log;
     }
   };
-
-  const defaultColumnConfig = [
-    { name: 'Inbox', label: null, sorting: true },
-    { name: 'Backlog', label: 'backlog', sorting: true },
-    { name: 'Ready', label: 'ready', sorting: true },
-    { name: 'In Progress', label: 'in progress', sorting: true },
-    { name: 'Needs Review', label: 'needs review', sorting: true },
-    { name: 'Done', label: null, closed: true }
-  ];
 
   const columns = new Columns(columnConfig || defaultColumnConfig);
 
