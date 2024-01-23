@@ -55,7 +55,7 @@
     "@octokit/graphql-schema": "^14.0.0",
     "@types/compression": "^1.7.2",
     "@types/express-session": "^1.17.4",
-    "chai": "^4.4.0",
+    "chai": "^5.0.0",
     "graphql": "^16.6.0",
     "mocha": "^10.2.0",
     "nock": "^13.4.0",
