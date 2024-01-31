@@ -36,11 +36,11 @@
     "auto-test": "npm test -- --watch"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.110.0",
+    "@aws-sdk/client-s3": "^3.503.1",
     "async-didi": "^0.3.1",
     "body-parser": "^1.20.0",
     "compression": "^1.7.4",
-    "express-session": "^1.17.3",
+    "express-session": "^1.18.0",
     "fake-tag": "^3.0.0",
     "memorystore": "^1.6.7",
     "min-dash": "^4.1.1",
@@ -54,7 +54,7 @@
     "@graphql-eslint/eslint-plugin": "^3.20.1",
     "@octokit/graphql-schema": "^14.0.0",
     "@types/compression": "^1.7.2",
-    "@types/express-session": "^1.17.4",
+    "@types/express-session": "^1.17.10",
     "chai": "^4.4.0",
     "graphql": "^16.6.0",
     "mocha": "^10.2.0",
