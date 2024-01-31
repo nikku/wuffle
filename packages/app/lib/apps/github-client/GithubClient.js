@@ -98,9 +98,20 @@ function GitHubClient(app, webhookEvents, logger, githubApp, events) {
 
     const access_token = typeof user === 'string' ? user : user.access_token;
 
+    const log = logger.child({ name: 'github:user-auth' });
+
     return cache.get(`user_scoped=${access_token}`, () => {
       return new ProbotOctokit({
-        log: logger.child({ name: 'github:user-auth' }),
+
+        // fallout from Probot@13 migration
+        //
+        // see https://github.com/probot/probot/pull/1874#issuecomment-1837779069
+        log: {
+          debug: log.debug.bind(log),
+          info: log.info.bind(log),
+          warn: log.warn.bind(log),
+          error: log.error.bind(log)
+        },
         auth: {
           token: access_token
         }
