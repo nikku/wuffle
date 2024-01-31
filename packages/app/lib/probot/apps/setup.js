@@ -17,7 +17,11 @@ function setupAppFactory(host, port) {
 
     const log = getLog().child({ name: 'wuffle:setup' });
 
-    if (process.env.NODE_ENV !== 'production' && !process.env.WEBHOOK_PROXY_URL) {
+    if (!(
+      process.env.NODE_ENV === 'production' ||
+      process.env.WEBHOOK_PROXY_URL ||
+      process.env.NO_SMEE_SETUP === 'true'
+    )) {
       await setup.createWebhookChannel();
     }
 
