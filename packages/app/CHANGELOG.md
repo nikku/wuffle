@@ -6,6 +6,14 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 _**Note:** Yet to be released changes appear here._
 
+## 0.58.0
+
+* `FEAT`: improve guided setup steps
+* `FIX`: correct setup not working due to `hbs` missing ([#175](https://github.com/nikku/wuffle/issues/175))
+* `FIX`: do not cache setup resources
+* `DEPS`: update to `probot@13`
+* `DEPS`: update dependencies
+
 ## 0.57.0
 
 * `FEAT`: add `fifo` column ordering as an alternative to the default `lifo`
