@@ -46,7 +46,7 @@
     "min-dash": "^4.1.1",
     "mkdirp": "^3.0.1",
     "p-defer": "^3.0.0",
-    "prexit": "0.0.5",
+    "prexit": "^1.0.0",
     "probot": "^12.2.4",
     "smee-client": "^2.0.0"
   },
