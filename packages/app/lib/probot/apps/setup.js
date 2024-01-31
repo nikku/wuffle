@@ -9,6 +9,8 @@ const { getLog } = require('probot/lib/helpers/get-log');
 
 const { randomString } = require('../../util');
 
+const { importView } = require('probot/lib/views/import');
+const { setupView } = require('probot/lib/views/setup');
 
 function setupAppFactory(host, port) {
 
@@ -36,48 +38,110 @@ function setupAppFactory(host, port) {
     route.use(getLoggingMiddleware(app.log));
 
     route.get('/probot', async (req, res) => {
-      const baseUrl = getBaseUrl(req);
+      const baseUrl = process.env.BASE_URL || getBaseUrl(req);
       const pkg = setup.pkg;
       const manifest = setup.getManifest(pkg, baseUrl);
       const createAppUrl = setup.createAppUrl;
 
+      await setup.updateEnv({
+        BASE_URL: baseUrl
+      });
+
       // Pass the manifest to be POST'd
-      res.render('setup.hbs', { pkg, createAppUrl, manifest });
+      res.writeHead(200, { 'content-type': 'text/html' }).end(setupView({
+        name: pkg.name || 'Wuffle',
+        version: pkg.version,
+        description: pkg.description,
+        createAppUrl,
+        manifest
+      }));
     });
 
     route.get('/probot/setup', async (req, res) => {
       const { code } = req.query;
-      const app_url = await setup.createAppFromCode(code);
 
-      log.info('Setup completed, please start the app');
+      if (!code || typeof code !== 'string' || code.length === 0) {
+        return res
+          .writeHead(400, { 'content-type': 'text/plain' })
+          .end('code missing or invalid');
+      }
 
-      res.send(renderSuccess(app_url + '/installations/new'));
+      const response = await setup.createAppFromCode(code, {
+        request: app.state.request
+      });
+
+      const appUrl = app.state.appUrl = `${response}/installations/new`;
+
+      log.warn('Setup completed, please restart the app');
+
+      log.info(`Visit ${appUrl} to connect GitHub repositories`);
+
+      const location = '/probot/success';
+
+      return res
+        .writeHead(302, {
+          'content-type': 'text/plain',
+          location
+        })
+        .end(`Redirecting to ${ location }`);
     });
 
     route.get('/probot/import', async (_req, res) => {
+
+      const pkg = setup.pkg;
       const { WEBHOOK_PROXY_URL, GHE_HOST } = process.env;
       const GH_HOST = `https://${GHE_HOST ?? 'github.com'}`;
-      res.render('import.hbs', { WEBHOOK_PROXY_URL, GH_HOST });
+
+      return res
+        .writeHead(200, {
+          'content-type': 'text/html'
+        })
+        .end(importView({
+          name: pkg.name || 'Wuffle',
+          WEBHOOK_PROXY_URL,
+          GH_HOST
+        }));
     });
 
     route.post('/probot/import', bodyParser.json(), async (req, res) => {
       const { appId, pem, webhook_secret } = req.body;
       if (!appId || !pem || !webhook_secret) {
-        res.status(400).send('appId and/or pem and/or webhook_secret missing');
-        return;
+        return res
+          .writeHead(400, {
+            'content-type': 'text/plain'
+          })
+          .end('appId and/or pem and/or webhook_secret missing');
       }
+
       await updateDotenv({
         APP_ID: appId,
         PRIVATE_KEY: `"${pem}"`,
         WEBHOOK_SECRET: webhook_secret
       });
 
-      log.info('Setup completed, please start the app');
+      log.warn('Setup completed, please restart the app.');
 
-      res.send(renderSuccess());
+      return res.redirect('/probot/success');
     });
 
-    route.get('/', (req, res, next) => res.redirect('/probot'));
+    route.get('/probot/success', (_req, res) => {
+      const pkg = setup.pkg;
+
+      const appUrl = app.state.appUrl;
+
+      return res
+        .writeHead(200, { 'content-type': 'text/html' })
+        .end(successView({
+          name: pkg.name || 'Wuffle',
+          appUrl
+        }));
+    });
+
+    route.get('/', (_req, res) => {
+      return res
+        .writeHead(302, { 'content-type': 'text/plain', location: '/probot' })
+        .end();
+    });
   };
 }
 
@@ -94,40 +158,40 @@ function getBaseUrl(req) {
   return baseUrl;
 }
 
-
-function renderSuccess(appUrl = null) {
+function successView({ name, appUrl }) {
 
   return `
-<!DOCTYPE html>
-<html lang="en" class="height-full">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Setup Wuffle App | built with Probot</title>
-    <link rel="icon" href="/probot/static/probot-head.png">
-    <link rel="stylesheet" href="/probot/static/primer.css">
-  </head>
-  <body class="height-full bg-gray-light">
-    <div class="d-flex flex-column flex-justify-center flex-items-center text-center height-full">
-      <img src="/probot/static/robot.svg" alt="Probot Logo" width="100" class="mb-6">
-      <div class="box-shadow rounded-2 border p-6 bg-white">
-        <div class="text-center">
-          <h1 class="alt-h2 mb-4">Congrats! You have successfully installed your app!</h1>
+  <!DOCTYPE html>
+  <html lang="en" class="height-full" data-color-mode="auto" data-light-theme="light" data-dark-theme="dark">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta http-equiv="X-UA-Compatible" content="ie=edge">
+      <title>${ name } Setup complete</title>
+      <link rel="icon" href="/probot/static/probot-head.png">
+      <link rel="stylesheet" href="/probot/static/primer.css">
+    </head>
+    <body class="height-full bg-gray-light">
+      <div class="d-flex flex-column flex-justify-center flex-items-center text-center height-full">
+        <img src="/probot/static/robot.svg" alt="Probot Logo" width="100" class="mb-6">
+        <div class="box-shadow rounded-2 border p-6 bg-white">
+          <div class="text-center">
+            <h1 class="alt-h3 mb-2">You completed your ${name} setup!</h1>
 
-          <p class="alt-h3 mb-2">
-            You can now ${ appUrl ? `<a href="${appUrl}" target="_blank" rel="no-opener">` : ''}
-              connect GitHub repositories
-            ${appUrl ? '</a>' : ''} to your board.
-          </p>
+            <p class="mb-2">
+              Go ahead and ${ appUrl ? `<a href="${appUrl}" target="_blank" rel="no-opener">` : ''}
+                connect GitHub repositories
+              ${appUrl ? '</a>' : ''} to your board.
+            </p>
 
-          <p class="alt-h3">
-            Please restart the server to complete the setup.
-          </p>
+            <p>
+              Please restart the server to complete the setup.
+            </p>
+
+          </div>
         </div>
       </div>
-    </div>
-  </body>
-</html>`;
-
+    </body>
+  </html>
+  `;
 }

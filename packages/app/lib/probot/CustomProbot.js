@@ -3,39 +3,60 @@ const { Server, Probot } = require('probot');
 const { getLog } = require('probot/lib/helpers/get-log');
 const { setupAppFactory } = require('./apps/setup');
 
+const { isProduction } = require('probot/lib/helpers/is-production');
+
 const { ManifestCreation } = require('probot/lib/manifest-creation');
 
+const { readEnvOptions } = require('probot/lib/bin/read-env-options');
+
 const { getErrorHandler } = require('probot/lib/helpers/get-error-handler');
-const { getPrivateKey } = require('@probot/get-private-key');
 
 
-async function run(appFn) {
+async function run(appFn, additionalOptions) {
 
-  const appId = parseInt(process.env.APP_ID, 10);
-  const host = process.env.HOST;
-  const port = parseInt(process.env.PORT || '3000', 10);
-  const privateKey = getPrivateKey() || undefined;
+  const {
 
-  const log = getLog();
+    // log options
+    logLevel: level, logFormat, logLevelInString, logMessageKey, sentryDsn,
+
+    // server options
+    host, port, webhookPath, webhookProxy,
+
+    // probot options
+    appId, privateKey, redisConfig, secret, baseUrl
+
+  } = readEnvOptions(additionalOptions?.env);
+
+  const logOptions = {
+    level,
+    logFormat,
+    logLevelInString,
+    logMessageKey,
+    sentryDsn
+  };
+
+  const log = getLog(logOptions);
 
   const serverOptions = {
     host,
-    log: log.child({ name: 'server' }),
     port,
-    webhookPath: process.env.WEBHOOK_PATH,
-    webhookProxy: process.env.WEBHOOK_PROXY_URL
+    webhookPath,
+    webhookProxy,
+    log: log.child({ name: 'server' })
   };
 
   let probotOptions = {
     appId,
-    log: log.child({ name: 'probot' }),
     privateKey,
-    secret: process.env.WEBHOOK_SECRET
+    redisConfig,
+    secret,
+    baseUrl,
+    log: log.child({ name: 'probot' })
   };
 
   // use probots own setup app if the probot app
   // is not configured yet
-  if (!isProduction() && !isSetup()) {
+  if (!isProduction() && !isSetup(probotOptions)) {
 
     // Workaround for setup (probot/probot#1512)
     // When probot is started for the first time, it gets into a setup mode
@@ -72,22 +93,20 @@ async function run(appFn) {
   return server;
 }
 
-function isSetup() {
-  const appId = parseInt(process.env.APP_ID, 10);
-  const privateKey = getPrivateKey() || undefined;
+function isSetup(options) {
+  const {
+    appId,
+    privateKey
+  } = options || readEnvOptions(process.env);
 
   return !!(appId && privateKey);
-}
-
-function isProduction() {
-  return process.env.NODE_ENV === 'production';
 }
 
 function validateSetup() {
 
   const setup = new ManifestCreation();
 
-  const manifest = JSON.parse(setup.getManifest(setup.pkg));
+  const manifest = JSON.parse(setup.getManifest(setup.pkg, process.env.BASE_URL));
 
   return [
     !manifest.url && new Error('No <url> configured in app.yml'),
