@@ -125,6 +125,10 @@ self.addEventListener('fetch', function(event) {
     return;
   }
 
+  if (/\/probot\//.test(url)) {
+    return;
+  }
+
   if (/\/board\?.*$/.test(url)) {
 
     const cachedRequest = new Request('/board');
