@@ -205,7 +205,7 @@ async function validate() {
 
 async function performSetup() {
 
-  log.info('Running first time setup');
+  log.warn('Running first time setup');
 
   const configPath = path.resolve('wuffle.config.js');
 
@@ -232,7 +232,7 @@ async function performSetup() {
       log.error(error.message);
     }
 
-    log.error('Please correct above errors and restart');
+    log.warn('Please correct above errors and restart');
 
     process.exit(1);
   }
@@ -256,7 +256,8 @@ async function open() {
   const url = process.env.BASE_URL || 'http://localhost:3000';
 
   if (IS_SETUP) {
-    log.warn(`Visit ${url} to create a GitHub App that connects us to GitHub`);
+    log.warn('GitHub App is not configured yet');
+    log.warn(`Visit ${url} to continue the setup`);
   } else {
     log.info(`Wuffle started on ${url}`);
   }
