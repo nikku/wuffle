@@ -27,7 +27,7 @@
     "npm-run-all2": "^6.0.0"
   },
   "engines": {
-    "node": ">= 16",
+    "node": ">= 18",
     "npm": ">= 8"
   },
   "workspaces": [
