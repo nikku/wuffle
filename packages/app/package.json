@@ -51,7 +51,7 @@
     "memorystore": "^1.6.7",
     "min-dash": "^4.1.1",
     "mkdirp": "^3.0.1",
-    "p-defer": "^3.0.0",
+    "p-defer": "^4.0.0",
     "prexit": "^2.2.0",
     "probot": "^13.0.1",
     "smee-client": "^2.0.0"
