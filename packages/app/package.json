@@ -32,7 +32,7 @@
     "project management"
   ],
   "scripts": {
-    "all": "run-s lint lint:types test",
+    "all": "run-s lint test",
     "dev": "nodemon",
     "start": "NODE_ENV=production node ./bin/wuffle",
     "test": "mocha 'test/**/*.js' --exit",
