@@ -5,7 +5,7 @@ WORKDIR /build
 COPY packages/*/package*.json package*.json lerna.json ./
 COPY packages/app/package*.json ./packages/app/
 COPY packages/board/package*.json ./packages/board/
-RUN npm install --unsafe-perm
+RUN npm ci --unsafe-perm
 
 # copy + build project
 COPY . /build
