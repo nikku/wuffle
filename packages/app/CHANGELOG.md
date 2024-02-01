@@ -6,6 +6,15 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 _**Note:** Yet to be released changes appear here._
 
+## 0.60.0
+
+* `FEAT`: use native `fetch`
+* `CHORE`: require `Node >= 18`
+
+### Breaking Changes
+
+* `Node >= 18` is required to run the board
+
 ## 0.59.0
 
 * `FEAT`: turn into ES module
@@ -13,6 +22,10 @@ _**Note:** Yet to be released changes appear here._
 * `DEPS`: update `fake-tag@5`
 * `DEPS`: update `p-defer@4`
 * `DEPS`: update to `prexit@2`
+
+### Breaking Changes
+
+* Refactoring of the code base, exposing services as ES modules
 
 ## 0.58.0
 
