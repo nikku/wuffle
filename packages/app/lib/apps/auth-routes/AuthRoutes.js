@@ -1,7 +1,8 @@
-import { URLSearchParams } from 'url';
-import fetch from 'node-fetch';
+import { URLSearchParams } from 'node:url';
+
 import { withSession } from '../../middleware/index.js';
 import { randomString } from '../../util/index.js';
+
 
 /**
  * @typedef {import('../../types.js').Session} WuffleSession
