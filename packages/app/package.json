@@ -52,7 +52,7 @@
     "min-dash": "^4.1.1",
     "mkdirp": "^3.0.1",
     "p-defer": "^3.0.0",
-    "prexit": "^1.0.0",
+    "prexit": "^2.2.0",
     "probot": "^13.0.1",
     "smee-client": "^2.0.0"
   },
@@ -61,7 +61,8 @@
     "@octokit/graphql-schema": "^14.53.0",
     "@types/compression": "^1.7.2",
     "@types/express-session": "^1.17.10",
-    "chai": "^4.4.1",
+    "@types/mocha": "^10.0.6",
+    "chai": "^5.0.3",
     "graphql": "^16.6.0",
     "mocha": "^10.2.0",
     "nock": "^13.5.1",
