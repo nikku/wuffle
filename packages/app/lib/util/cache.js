@@ -1,5 +1,4 @@
-
-class Cache {
+export class Cache {
 
   constructor(ttl) {
     this.ttl = ttl;
@@ -62,10 +61,8 @@ class Cache {
 
 }
 
-module.exports.Cache = Cache;
 
-
-class KeepAliveCache extends Cache {
+export class KeepAliveCache extends Cache {
 
   get(key, defaultValue) {
 
@@ -79,10 +76,8 @@ class KeepAliveCache extends Cache {
   }
 }
 
-module.exports.KeepAliveCache = KeepAliveCache;
 
-
-class NoopCache {
+export class NoopCache {
 
   evict() { }
 
@@ -96,5 +91,3 @@ class NoopCache {
     return value;
   }
 }
-
-module.exports.NoopCache = NoopCache;

@@ -1,52 +1,55 @@
 #!/usr/bin/env node
 
-require('dotenv').config();
+import dotenv from 'dotenv';
 
-const { CustomProbot } = require('../lib/probot');
+dotenv.config();
+
+import * as CustomProbot from '../lib/probot/index.js';
+
+import fs from 'node:fs';
+import path from 'node:path';
+
+import { getLog } from 'probot/lib/helpers/get-log.js';
+
+import {
+  getPackageVersion,
+  relativePath
+} from '../lib/util/index.js';
+
+import Columns from '../lib/columns.js';
+
+const version = getPackageVersion();
 
 const IS_PROD = CustomProbot.isProduction();
 
 const IS_SETUP = !IS_PROD && !CustomProbot.isSetup();
 
-const fs = require('fs');
-const path = require('path');
-
-const { getLog } = require('probot/lib/helpers/get-log');
-
 const log = getLog().child({
   name: 'wuffle:run'
 });
-
-const Columns = require('../lib/columns');
-
-const { version } = require('../package');
-
-// shim
-
-if (typeof Array.prototype.flat !== 'function') {
-  Array.prototype.flat = function() {
-    return [].concat(...this);
-  };
-}
 
 async function validate() {
 
   log.info('Validating configuration');
 
-  const problems = [
-    !IS_PROD ? warning('Not running in production mode') : null,
-    checkEnv('APP_ID', IS_PROD),
-    checkEnv('BASE_URL', IS_PROD),
-    checkEnv('GITHUB_CLIENT_ID', IS_PROD),
-    checkEnv('GITHUB_CLIENT_SECRET', IS_PROD),
-    checkEnv([ 'PRIVATE_KEY', 'PRIVATE_KEY_PATH' ], IS_PROD),
-    checkEnv('SESSION_SECRET', IS_PROD),
-    checkEnv('WEBHOOK_SECRET', IS_PROD),
-    checkDumpConfig(),
-    checkConfig(),
-    checkBoardAssets(),
-    checkBaseUrl()
-  ].flat().filter(problem => problem);
+  const problems = await Promise.all(
+    [
+      !IS_PROD ? warning('Not running in production mode') : null,
+      checkEnv('APP_ID', IS_PROD),
+      checkEnv('BASE_URL', IS_PROD),
+      checkEnv('GITHUB_CLIENT_ID', IS_PROD),
+      checkEnv('GITHUB_CLIENT_SECRET', IS_PROD),
+      checkEnv([ 'PRIVATE_KEY', 'PRIVATE_KEY_PATH' ], IS_PROD),
+      checkEnv('SESSION_SECRET', IS_PROD),
+      checkEnv('WEBHOOK_SECRET', IS_PROD),
+      checkDumpConfig(),
+      checkConfig(),
+      checkBoardAssets(),
+      checkBaseUrl()
+    ]
+  ).then(
+    results => results.flat().filter(problem => problem)
+  );
 
   function isFatal(problem) {
     return problem.type === 'ERROR';
@@ -110,12 +113,12 @@ async function validate() {
   function checkBoardAssets() {
     const problem = IS_PROD ? error : warning;
 
-    if (!fs.existsSync(path.join(__dirname, '../public/index.html'))) {
+    if (!fs.existsSync(projectPath('../public/index.html'))) {
       return problem('board assets not found, please compile them via npm run build');
     }
   }
 
-  function checkConfig() {
+  async function checkConfig() {
 
     const problem = IS_PROD ? error : warning;
 
@@ -133,8 +136,11 @@ async function validate() {
       const configPath = path.resolve('wuffle.config.js');
 
       try {
-        config = require(configPath);
+        config = await import(configPath);
+
+        config = config.default || config;
       } catch (err) {
+        console.error(err);
         return problem('Board not configured via env.BOARD_CONFIG or wuffle.config.js');
       }
     }
@@ -210,7 +216,7 @@ async function performSetup() {
   const configPath = path.resolve('wuffle.config.js');
 
   if (!process.env.BOARD_CONFIG && !fs.existsSync(configPath)) {
-    fs.copyFileSync(path.join(__dirname, '../wuffle.config.example.js'), configPath);
+    fs.copyFileSync(projectPath('../wuffle.config.example.js'), configPath);
 
     log.info('Created board config: wuffle.config.js');
   }
@@ -218,7 +224,7 @@ async function performSetup() {
   const manifestPath = path.resolve('app.yml');
 
   if (!fs.existsSync(manifestPath)) {
-    fs.copyFileSync(path.join(__dirname, '../app.yml'), manifestPath);
+    fs.copyFileSync(projectPath('../app.yml'), manifestPath);
 
     log.info('Created GitHub App manifest: app.yml');
   }
@@ -240,7 +246,7 @@ async function performSetup() {
 
 async function start() {
 
-  const app = require('../');
+  const { default: app } = await import('../index.js');
 
   const {
     expressApp
@@ -274,6 +280,10 @@ async function run() {
   await validate();
   await start();
   await open();
+}
+
+function projectPath(file) {
+  return relativePath(file, import.meta.url);
 }
 
 run().catch(err => {

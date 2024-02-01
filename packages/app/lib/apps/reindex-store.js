@@ -1,17 +1,20 @@
-const {
-  version
-} = require('../../package.json');
+import {
+  getPackageVersion,
+  hash
+} from '../util/index.js';
 
 
 /**
  * @constructor
  *
- * @param {any} logger
  * @param {any} config
- * @param {any} events
- * @param {any} store
+ * @param {import('../types.js').Logger} logger
+ * @param {import('../events.js').default} events
+ * @param {import('../store.js').default} store
  */
-function ReindexStore(logger, config, events, store) {
+export default function ReindexStore(config, logger, events, store) {
+
+  const version = getPackageVersion();
 
   const log = logger.child({
     name: 'wuffle:reindex-store'
@@ -58,15 +61,4 @@ function ReindexStore(logger, config, events, store) {
     data.wuffleVersion = version;
   });
 
-}
-
-module.exports = ReindexStore;
-
-
-// helpers //////////////////
-
-function hash(str) {
-  const crypto = require('crypto');
-
-  return crypto.createHash('md5').update(str).digest('hex');
 }

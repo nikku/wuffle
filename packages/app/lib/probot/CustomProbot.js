@@ -1,15 +1,12 @@
-const { Server, Probot } = require('probot');
+import { Server, Probot } from 'probot';
 
-const { getLog } = require('probot/lib/helpers/get-log');
-const { setupAppFactory } = require('./apps/setup');
+import { getLog } from 'probot/lib/helpers/get-log.js';
+import { isProduction } from 'probot/lib/helpers/is-production.js';
+import { ManifestCreation } from 'probot/lib/manifest-creation.js';
+import { readEnvOptions } from 'probot/lib/bin/read-env-options.js';
+import { getErrorHandler } from 'probot/lib/helpers/get-error-handler.js';
 
-const { isProduction } = require('probot/lib/helpers/is-production');
-
-const { ManifestCreation } = require('probot/lib/manifest-creation');
-
-const { readEnvOptions } = require('probot/lib/bin/read-env-options');
-
-const { getErrorHandler } = require('probot/lib/helpers/get-error-handler');
+import { setupAppFactory } from './apps/setup.js';
 
 
 async function run(appFn, additionalOptions) {
@@ -114,7 +111,7 @@ function validateSetup() {
   ].filter(e => e);
 }
 
-module.exports = {
+export {
   run,
   isSetup,
   isProduction,

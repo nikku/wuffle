@@ -1,5 +1,4 @@
-
-function parseTemporalFilter(str) {
+export function parseTemporalFilter(str) {
 
   const regexp = /^(?:(>|>=|<|<=)?(\d{4}-\d{1,2}-\d{1,2})|@(today|last_week|last_month))$/;
 
@@ -42,8 +41,6 @@ function parseTemporalFilter(str) {
   };
 }
 
-module.exports.parseTemporalFilter = parseTemporalFilter;
-
 /**
  * @param {number} time
  *
@@ -67,7 +64,7 @@ function startOfDay(time) {
  *   negated?: boolean
  * }[] }
  */
-function parseSearch(str) {
+export function parseSearch(str) {
 
   const regexp = /(?:([\w#/&]+)|"([\w#/&\s-.]+)"|([-!]?)([\w]+):(?:([\w-#/&@<>=.]+)|"([\w-#/&@:.,; ]+)")?)(?:\s|$)/g;
 
@@ -112,5 +109,3 @@ function parseSearch(str) {
 
   return terms;
 }
-
-module.exports.parseSearch = parseSearch;

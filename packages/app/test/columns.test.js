@@ -1,6 +1,6 @@
-const { expect } = require('chai');
+import { expect } from 'chai';
 
-const Columns = require('../lib/columns');
+import Columns from 'wuffle/lib/columns.js';
 
 
 describe('columns', function() {

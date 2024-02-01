@@ -1,44 +1,44 @@
-const {
-  Cache,
-  NoopCache
-} = require('./cache');
+import crypto from 'node:crypto';
+import fs from 'node:fs';
 
-const {
-  findLinks,
-  linkTypes
-} = require('./links');
+export { Cache, NoopCache } from './cache.js';
 
-const {
-  parseSearch,
-  parseTemporalFilter
-} = require('./search');
+export { findLinks, linkTypes } from './links.js';
 
-const preExit = require('prexit');
+export { parseSearch, parseTemporalFilter } from './search.js';
 
-const {
-  repoAndOwner,
-  issueIdent
-} = require('./meta');
+export { default as preExit } from 'prexit';
 
-const crypto = require('crypto');
+export { repoAndOwner, issueIdent } from './meta.js';
 
-module.exports.randomString = function randomString(length = 64) {
+export function randomString(length = 64) {
   return crypto.randomBytes(length).toString('base64');
-};
+}
 
-module.exports.preExit = preExit;
+/**
+ * @param {string} str
+ *
+ * @return {string}
+ */
+export function hash(str) {
+  return crypto.createHash('md5').update(str).digest('hex');
+}
 
-module.exports.Cache = Cache;
+/**
+ * @param {string|URL} path
+ * @param {string|URL} baseUrl
+ *
+ * @return {URL}
+ */
+export function relativePath(path, baseUrl) {
+  return new URL(path, baseUrl);
+}
 
-module.exports.NoopCache = NoopCache;
+export function getPackageVersion() {
 
-module.exports.findLinks = findLinks;
+  const { version } = JSON.parse(
+    fs.readFileSync(relativePath('../../package.json', import.meta.url), 'utf8')
+  );
 
-module.exports.linkTypes = linkTypes;
-
-module.exports.parseSearch = parseSearch;
-module.exports.parseTemporalFilter = parseTemporalFilter;
-
-module.exports.repoAndOwner = repoAndOwner;
-
-module.exports.issueIdent = issueIdent;
+  return version;
+}

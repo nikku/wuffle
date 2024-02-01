@@ -1,7 +1,7 @@
-const { mkdirp } = require('mkdirp');
+import { mkdirp } from 'mkdirp';
 
-const path = require('path');
-const fs = require('fs').promises;
+import path from 'node:path';
+import { promises as fs } from 'node:fs';
 
 
 /**
@@ -10,10 +10,10 @@ const fs = require('fs').promises;
  *
  * @constructor
  *
- * @param {import('../types').Logger} logger
- * @param {import('./webhook-events/WebhookEvents')} webhookEvents
+ * @param {import('../types.js').Logger} logger
+ * @param {import('./webhook-events/WebhookEvents.js').default} webhookEvents
  */
-function LogEvents(logger, webhookEvents) {
+export default function LogEvents(logger, webhookEvents) {
 
   if (process.env.NODE_ENV !== 'development' && !process.env.LOG_WEBHOOK_EVENTS) {
     return;
@@ -61,5 +61,3 @@ function LogEvents(logger, webhookEvents) {
   });
 
 }
-
-module.exports = LogEvents;

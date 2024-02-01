@@ -1,19 +1,12 @@
-const { URLSearchParams } = require('url');
-
-const fetch = require('node-fetch').default;
-
-const {
-  withSession
-} = require('../../middleware');
-
-const {
-  randomString
-} = require('../../util');
+import { URLSearchParams } from 'url';
+import fetch from 'node-fetch';
+import { withSession } from '../../middleware/index.js';
+import { randomString } from '../../util/index.js';
 
 /**
- * @typedef {import('../../types').Session} WuffleSession
+ * @typedef {import('../../types.js').Session} WuffleSession
  * @typedef {import('express').Request} Request
- * @typedef {import('../../types').GitHubUser} GitHubUser
+ * @typedef {import('../../types.js').GitHubUser} GitHubUser
  */
 
 /**
@@ -25,11 +18,11 @@ const {
  *
  * @constructor
  *
- * @param {import('../../types').Logger} logger
- * @param {import('../../types').Router} router
- * @param {import('../security-context/SecurityContext')} securityContext
+ * @param {import('../../types.js').Logger} logger
+ * @param {import('../../types.js').Router} router
+ * @param {import('../security-context/SecurityContext.js').default} securityContext
  */
-function AuthRoutes(logger, router, securityContext) {
+export default function AuthRoutes(logger, router, securityContext) {
 
   const middlewares = [
     withSession
@@ -252,9 +245,6 @@ function AuthRoutes(logger, router, securityContext) {
   };
 
 }
-
-
-module.exports = AuthRoutes;
 
 
 // helpers ///////////////////////

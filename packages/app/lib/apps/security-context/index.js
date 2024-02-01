@@ -1,5 +1,5 @@
-const SecurityContext = require('./SecurityContext');
+import SecurityContext from './SecurityContext.js';
 
-module.exports = {
+export default {
   securityContext: [ 'type', SecurityContext ]
 };

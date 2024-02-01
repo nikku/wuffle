@@ -1,6 +1,6 @@
-const GithubChecks = require('./GithubChecks');
+import GithubChecks from './GithubChecks.js';
 
-module.exports = {
+export default {
   __init__: [ 'githubChecks' ],
   githubChecks: [ 'type', GithubChecks ]
 };

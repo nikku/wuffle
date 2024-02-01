@@ -1,6 +1,6 @@
-const AuthRoutes = require('./AuthRoutes');
+import AuthRoutes from './AuthRoutes.js';
 
-module.exports = {
+export default {
   __init__: [ 'authRoutes' ],
   authRoutes: [ 'type', AuthRoutes ]
 };

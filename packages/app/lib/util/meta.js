@@ -1,4 +1,21 @@
-function repoAndOwner(issue) {
+/**
+ * @typedef { {
+ *   number: number,
+ *   repository: {
+ *     name: string,
+ *     owner: {
+ *       login: string
+ *     }
+ *   }
+ * } } Issue
+ */
+
+/**
+ * @param { Issue } issue
+ *
+ * @return { { repo: string, owner: string } }
+ */
+export function repoAndOwner(issue) {
   const {
     repository
   } = issue;
@@ -13,15 +30,15 @@ function repoAndOwner(issue) {
   };
 }
 
-module.exports.repoAndOwner = repoAndOwner;
-
-
-function issueIdent(issue) {
+/**
+ * @param { Issue } issue
+ *
+ * @return { string }
+ */
+export function issueIdent(issue) {
   const { owner, repo } = repoAndOwner(issue);
 
   const { number } = issue;
 
   return `${owner}/${repo}#${number}`;
 }
-
-module.exports.issueIdent = issueIdent;

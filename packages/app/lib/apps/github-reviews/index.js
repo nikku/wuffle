@@ -1,6 +1,6 @@
-const GithubReviews = require('./GithubReviews');
+import GithubReviews from './GithubReviews.js';
 
-module.exports = {
+export default {
   __init__: [ 'githubReviews' ],
   githubReviews: [ 'type', GithubReviews ]
 };

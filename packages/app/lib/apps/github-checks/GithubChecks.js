@@ -1,19 +1,16 @@
-const {
-  repoAndOwner,
-  Cache
-} = require('../../util');
+import { repoAndOwner, Cache } from '../../util/index.js';
 
 /**
  * This component updates the stored issues based on GitHub events.
  *
  * @constructor
  *
- * @param {import('../webhook-events/WebhookEvents')} webhookEvents
- * @param {import('../../events')} events
- * @param {import('../github-client/GithubClient')} githubClient
- * @param {import('../../store')} store
+ * @param {import('../webhook-events/WebhookEvents.js').default} webhookEvents
+ * @param {import('../../events.js').default} events
+ * @param {import('../github-client/GithubClient.js').default} githubClient
+ * @param {import('../../store.js').default} store
  */
-module.exports = function GithubChecks(webhookEvents, events, githubClient, store) {
+export default function GithubChecks(webhookEvents, events, githubClient, store) {
 
   // issues /////////////////////
 
@@ -114,7 +111,7 @@ module.exports = function GithubChecks(webhookEvents, events, githubClient, stor
     cache.evict();
   }, 1000 * 60);
 
-};
+}
 
 
 function filterCheckRun(check_suite) {

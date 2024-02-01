@@ -1,15 +1,6 @@
-const {
-  parseSearch,
-  parseTemporalFilter
-} = require('../../util');
-
-const {
-  issueIdent
-} = require('../../util');
-
-const {
-  LinkTypes
-} = require('../../links');
+import { parseSearch, parseTemporalFilter } from '../../util/index.js';
+import { issueIdent } from '../../util/index.js';
+import { LinkTypes } from '../../links.js';
 
 const CHILD_LINK_TYPES = {
   [ LinkTypes.CHILD_OF ]: true,
@@ -26,10 +17,10 @@ const CHILD_LINK_TYPES = {
  * @constructor
  *
  * @param {SearchConfig} config
- * @param {import('../../types').Logger} logger
- * @param {import('../../store')} store
+ * @param {import('../../types.js').Logger} logger
+ * @param {import('../../store.js').default} store
  */
-function Search(config, logger, store) {
+export default function Search(config, logger, store) {
 
   const log = logger.child({
     name: 'wuffle:search'
@@ -346,7 +337,7 @@ function Search(config, logger, store) {
    * Retrieve a filter function from the given search string.
    *
    * @param {string} search
-   * @param {import('../../types').GitHubUser} [user]
+   * @param {import('../../types.js').GitHubUser} [user]
    *
    * @return {Function}
    */
@@ -376,7 +367,4 @@ function Search(config, logger, store) {
   // api ///////////////////////
 
   this.getSearchFilter = getSearchFilter;
-
 }
-
-module.exports = Search;

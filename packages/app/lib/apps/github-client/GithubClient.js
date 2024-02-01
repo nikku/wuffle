@@ -1,30 +1,31 @@
-const {
-  ProbotOctokit
-} = require('probot/lib/octokit/probot-octokit');
-
-const {
-  Cache
-} = require('../../util');
+import { ProbotOctokit } from 'probot/lib/octokit/probot-octokit.js';
+import { Cache } from '../../util/index.js';
 
 
 // 15 minutes
 const TTL = 1000 * 60 * 15;
 
 /**
- * @typedef { import('../../types').Octokit } Octokit
+ * @typedef { import('../../types.js').Octokit } Octokit
  * @typedef { { [x: string]: Promise<Octokit> } } LoginCache
  */
 
 /**
  * @constructor
  *
- * @param {import('../../types').ProbotApp} app
- * @param {import('../webhook-events/WebhookEvents')} webhookEvents
- * @param {import('../../types').Logger} logger
- * @param {import('../github-app/GithubApp')} githubApp
- * @param {import('../../events')} events
+ * @param {import('../../types.js').ProbotApp} app
+ * @param {import('../webhook-events/WebhookEvents.js').default} webhookEvents
+ * @param {import('../../types.js').Logger} logger
+ * @param {import('../github-app/GithubApp.js').default} githubApp
+ * @param {import('../../events.js').default} events
  */
-function GitHubClient(app, webhookEvents, logger, githubApp, events) {
+export default function GitHubClient(
+    app,
+    webhookEvents,
+    logger,
+    githubApp,
+    events
+) {
 
   const log = logger.child({
     name: 'wuffle:github-client'
@@ -144,5 +145,3 @@ function GitHubClient(app, webhookEvents, logger, githubApp, events) {
   }
 
 }
-
-module.exports = GitHubClient;

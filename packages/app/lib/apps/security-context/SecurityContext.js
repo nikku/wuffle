@@ -1,9 +1,9 @@
 /**
  * @constructor
  *
- * @param {import('../github-client/GithubClient')} githubClient
+ * @param {import('../github-client/GithubClient.js').default} githubClient
  */
-function SecurityContext(githubClient) {
+export default function SecurityContext(githubClient) {
 
   /**
    * Get authenticated user by token.
@@ -23,5 +23,3 @@ function SecurityContext(githubClient) {
   };
 
 }
-
-module.exports = SecurityContext;

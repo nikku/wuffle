@@ -1,5 +1,5 @@
-const WebhookEvents = require('./WebhookEvents');
+import WebhookEvents from './WebhookEvents.js';
 
-module.exports = {
+export default {
   'webhookEvents': [ 'type', WebhookEvents ]
 };

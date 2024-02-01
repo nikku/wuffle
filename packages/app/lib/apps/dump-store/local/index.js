@@ -1,6 +1,6 @@
-const DumpStore = require('./DumpStoreLocal');
+import DumpStore from './DumpStoreLocal.js';
 
-module.exports = {
+export default {
   __init__: [ 'dumpStore' ],
   dumpStore: [ 'type', DumpStore ]
 };

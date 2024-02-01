@@ -15,10 +15,15 @@ const StateToNames = {
 };
 
 /**
- * @typedef { { name: string, label?: string|null, closed?: boolean } } ColumnDefinition
+ * @typedef { {
+ *   name: string,
+ *   label?: string|null,
+ *   closed?: boolean,
+ *   states?: string[]
+ * } } ColumnDefinition
  */
 
-class Columns {
+export default class Columns {
 
   /**
    * @param { ColumnDefinition[] } columns
@@ -80,8 +85,6 @@ class Columns {
 }
 
 Columns.$inject = [ 'config.columns' ];
-
-module.exports = Columns;
 
 
 // helpers //////////////////

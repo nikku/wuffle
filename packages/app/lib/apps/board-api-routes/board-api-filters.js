@@ -1,4 +1,4 @@
-function filterIssueOrPull(issueOrPull) {
+export function filterIssueOrPull(issueOrPull) {
 
   if (issueOrPull.pull_request) {
     return filterPull(issueOrPull);
@@ -6,8 +6,6 @@ function filterIssueOrPull(issueOrPull) {
     return filterIssue(issueOrPull);
   }
 }
-
-module.exports.filterIssueOrPull = filterIssueOrPull;
 
 
 function filterCheckRun(checkRun) {
@@ -44,7 +42,7 @@ function filterStatus(status) {
 }
 
 
-function filterRepository(repository) {
+export function filterRepository(repository) {
 
   const {
     name,
@@ -59,10 +57,8 @@ function filterRepository(repository) {
   };
 }
 
-module.exports.filterRepository = filterRepository;
 
-
-function filterUser(user) {
+export function filterUser(user) {
 
   const {
     login,
@@ -77,10 +73,8 @@ function filterUser(user) {
   };
 }
 
-module.exports.filterUser = filterUser;
 
-
-function filterComment(comment) {
+export function filterComment(comment) {
 
   const {
     user,
@@ -93,10 +87,8 @@ function filterComment(comment) {
   };
 }
 
-module.exports.filterComment = filterComment;
 
-
-function filterLabel(githubLabel) {
+export function filterLabel(githubLabel) {
 
   const {
     name,
@@ -110,8 +102,6 @@ function filterLabel(githubLabel) {
     ...(column_label ? { column_label } : {})
   };
 }
-
-module.exports.filterLabel = filterLabel;
 
 function filterLink(link) {
   const {
@@ -127,7 +117,7 @@ function filterLink(link) {
   };
 }
 
-function filterMilestone(githubMilestone) {
+export function filterMilestone(githubMilestone) {
 
   const {
     number,
@@ -142,10 +132,8 @@ function filterMilestone(githubMilestone) {
   };
 }
 
-module.exports.filterMilestone = filterMilestone;
 
-
-function filterReview(review) {
+export function filterReview(review) {
 
   const {
     state,
@@ -160,10 +148,8 @@ function filterReview(review) {
   };
 }
 
-module.exports.filterReview = filterReview;
 
-
-function filterPull(pullRequest) {
+export function filterPull(pullRequest) {
 
   const {
     id,
@@ -216,10 +202,8 @@ function filterPull(pullRequest) {
   };
 }
 
-module.exports.filterPull = filterPull;
 
-
-function filterIssue(issue) {
+export function filterIssue(issue) {
 
   const {
     id,
@@ -262,5 +246,3 @@ function filterIssue(issue) {
   };
 
 }
-
-module.exports.filterIssue = filterIssue;

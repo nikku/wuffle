@@ -1,10 +1,11 @@
-const {
+import {
   S3Client,
   PutObjectCommand,
   GetObjectCommand
-} = require('@aws-sdk/client-s3');
+} from '@aws-sdk/client-s3';
 
-function S3() {
+
+export default function S3() {
 
   const {
     AWS_ACCESS_KEY_ID: accessKeyId,
@@ -49,8 +50,6 @@ function S3() {
 
   this.params = Object.freeze(params);
 }
-
-module.exports = S3;
 
 
 // helpers /////////////////

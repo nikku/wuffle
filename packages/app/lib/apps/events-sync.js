@@ -1,11 +1,11 @@
-const {
+import {
   filterIssue,
   filterPull,
   filterIssueOrPull,
   filterRepository,
   getIdentifier,
   getKey
-} = require('../filters');
+} from '../filters.js';
 
 
 /**
@@ -13,11 +13,11 @@ const {
  *
  * @constructor
  *
- * @param {import('./webhook-events/WebhookEvents')} webhookEvents
- * @param {import('../store')} store
- * @param {import('../types').Logger} logger
+ * @param {import('./webhook-events/WebhookEvents.js').default} webhookEvents
+ * @param {import('../store.js').default} store
+ * @param {import('../types.js').Logger} logger
  */
-function EventsSync(webhookEvents, store, logger) {
+export default function EventsSync(webhookEvents, store, logger) {
 
   const log = logger.child({
     name: 'wuffle:user-access'
@@ -275,5 +275,3 @@ function EventsSync(webhookEvents, store, logger) {
   });
 
 }
-
-module.exports = EventsSync;

@@ -1,6 +1,6 @@
-const BackgroundSync = require('./BackgroundSync');
+import BackgroundSync from './BackgroundSync.js';
 
-module.exports = {
+export default {
   __init__: [ 'backgroundSync' ],
   backgroundSync: [ 'type', BackgroundSync ]
 };

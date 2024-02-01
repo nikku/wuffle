@@ -1,16 +1,16 @@
-const Events = require('../lib/events');
+import sinon from 'sinon';
+import sinonChai from 'sinon-chai';
 
-const sinon = require('sinon');
-const sinonChai = require('sinon-chai');
+import * as chai from 'chai';
 
-const chai = require('chai');
+import {
+  expect
+} from 'chai';
+
+import Events from 'wuffle/lib/events.js';
 
 chai.use(sinonChai);
 
-const {
-  expect,
-  fail
-} = require('chai');
 
 describe('Events', function() {
 
@@ -279,21 +279,23 @@ describe('Events', function() {
 
 
   describe('passing context', function() {
-    function Dog() {}
 
-    Dog.prototype.bark = function(msg) {
-      return msg || 'WOOF WOOF';
-    };
+    class _Dog {
+      bark(msg) {
+        return msg || 'WOOF WOOF';
+      }
+    }
 
     it('should pass context to listener', async function() {
 
       // given
-      Dog.prototype.bindListener = function() {
-
-        events.on('bark', (event) => {
-          return this.bark();
-        });
-      };
+      class Dog extends _Dog {
+        bindListener() {
+          events.on('bark', (event) => {
+            return this.bark();
+          });
+        }
+      }
 
       var bobby = new Dog();
 
@@ -310,11 +312,13 @@ describe('Events', function() {
     it('should pass context to listener and provide priority', async function() {
 
       // given
-      Dog.prototype.bindListener = function(priority, msg) {
-        events.on('bark', (event) => {
-          return this.bark(msg);
-        }, priority);
-      };
+      class Dog extends _Dog {
+        bindListener(priority, msg) {
+          events.on('bark', (event) => {
+            return this.bark(msg);
+          }, priority);
+        }
+      }
 
       var bobby = new Dog();
       var bull = new Dog();
@@ -333,11 +337,13 @@ describe('Events', function() {
     it('should pass context to listener and provide priority -> once', async function() {
 
       // given
-      Dog.prototype.bindListener = function(priority, msg) {
-        events.once('bark', (event) => {
-          return this.bark(msg);
-        }, priority);
-      };
+      class Dog extends _Dog {
+        bindListener(priority, msg) {
+          events.once('bark', (event) => {
+            return this.bark(msg);
+          }, priority);
+        }
+      }
 
       var bobby = new Dog();
       var bull = new Dog();
@@ -360,13 +366,20 @@ describe('Events', function() {
     it('should.emit only once', async function() {
 
       // given
-      Dog.prototype.barks = [];
+      class Dog extends _Dog {
 
-      Dog.prototype.bindListener = function() {
-        events.once('bark', (event) => {
-          this.barks.push('WOOF WOOF');
-        });
-      };
+        constructor() {
+          super();
+
+          this.barks = [];
+        }
+
+        bindListener(priority, msg) {
+          events.once('bark', (event) => {
+            this.barks.push('WOOF WOOF');
+          });
+        }
+      }
 
       var bobby = new Dog();
 
@@ -472,10 +485,10 @@ describe('Events', function() {
 
     it('should pass arguments', async function() {
 
-      var listenerArgs;
+      var listenerArgs = [];
 
-      function captureArgs() {
-        listenerArgs = arguments;
+      function captureArgs(...args) {
+        listenerArgs = args;
       }
 
       events.on('capture', captureArgs);
@@ -727,7 +740,7 @@ describe('Events', function() {
       try {
         await events.emit({ type: 'fail' });
 
-        fail('unexpected success');
+        expect.fail('unexpected success');
       } catch (error) {
         expect(error.message).to.eql('expected failure');
       }
@@ -770,7 +783,7 @@ describe('Events', function() {
       try {
         await events.emit({ type: 'fail' });
 
-        fail('unexpected success');
+        expect.fail('unexpected success');
       } catch (error) {
         expect(error.message).to.eql('expected failure');
       }

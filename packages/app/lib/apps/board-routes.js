@@ -1,8 +1,9 @@
-const express = require('express');
+import express from 'express';
 
-const fs = require('fs');
+import fs from 'node:fs';
 
-const path = require('path');
+import { relativePath } from '../util/index.js';
+import { fileURLToPath } from 'node:url';
 
 
 /**
@@ -10,9 +11,9 @@ const path = require('path');
  *
  * @param {import('express').Router} router
  */
-module.exports = async (config, router) => {
+export default async function BoardRoutes(config, router) {
 
-  const staticDirectory = path.join(__dirname, '..', '..', 'public');
+  const staticDirectory = relativePath('../../public/', import.meta.url);
 
   router.get('/', (req, res, next) => {
     res.redirect('/board');
@@ -44,7 +45,7 @@ module.exports = async (config, router) => {
       return indexPage;
     }
 
-    indexPage = fs.readFileSync(path.join(staticDirectory, 'index.html'), 'utf8');
+    indexPage = fs.readFileSync(relativePath('index.html', staticDirectory), 'utf8');
 
     indexPage = indexPage.replace(
       '<title>Wuffle Board</title>',
@@ -67,15 +68,25 @@ module.exports = async (config, router) => {
     res.type('html').status(200).send(getIndexPage());
   });
 
+  const robotsPath = fileURLToPath(
+    relativePath('robots.txt', staticDirectory)
+  );
+
   router.get('/robots.txt', (req, res, next) => {
-    res.sendFile(path.join(staticDirectory, 'robots.txt'));
+    res.sendFile(robotsPath);
   });
 
+  const serviceWorkerPath = fileURLToPath(
+    relativePath('service-worker.js', staticDirectory)
+  );
+
   router.get('/service-worker.js', (req, res, next) => {
-    res.sendFile(path.join(staticDirectory, 'service-worker.js'));
+    res.sendFile(serviceWorkerPath);
   });
 
   // static resources
 
-  router.use('/board', express.static(staticDirectory));
-};
+  const staticDirectoryPath = fileURLToPath(staticDirectory);
+
+  router.use('/board', express.static(staticDirectoryPath));
+}

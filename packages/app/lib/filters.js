@@ -1,18 +1,14 @@
-function getKey(githubIssueOrPull, repository) {
+export function getKey(githubIssueOrPull, repository) {
   return `${repository.owner.login}/${repository.name}#${githubIssueOrPull.number}`;
 }
 
-module.exports.getKey = getKey;
 
-
-function getIdentifier(githubIssueOrPull, repository) {
+export function getIdentifier(githubIssueOrPull, repository) {
   return `${repository.id}-${githubIssueOrPull.number}`;
 }
 
-module.exports.getIdentifier = getIdentifier;
 
-
-function filterIssueOrPull(githubIssueOrPull, repository) {
+export function filterIssueOrPull(githubIssueOrPull, repository) {
 
   if ('issue_url' in githubIssueOrPull) {
     return filterPull(githubIssueOrPull, repository);
@@ -21,10 +17,8 @@ function filterIssueOrPull(githubIssueOrPull, repository) {
   }
 }
 
-module.exports.filterIssueOrPull = filterIssueOrPull;
 
-
-function filterRepository(githubRepository) {
+export function filterRepository(githubRepository) {
 
   const {
     id,
@@ -45,10 +39,8 @@ function filterRepository(githubRepository) {
   };
 }
 
-module.exports.filterRepository = filterRepository;
 
-
-function filterUser(githubUser) {
+export function filterUser(githubUser) {
 
   const {
     id,
@@ -67,10 +59,8 @@ function filterUser(githubUser) {
   };
 }
 
-module.exports.filterUser = filterUser;
 
-
-function filterLabel(githubLabel) {
+export function filterLabel(githubLabel) {
 
   const {
     id,
@@ -87,10 +77,8 @@ function filterLabel(githubLabel) {
   };
 }
 
-module.exports.filterLabel = filterLabel;
 
-
-function filterBase(githubBase) {
+export function filterBase(githubBase) {
   const {
     ref,
     sha,
@@ -106,10 +94,8 @@ function filterBase(githubBase) {
   };
 }
 
-module.exports.filterBase = filterBase;
 
-
-function filterMilestone(githubMilestone) {
+export function filterMilestone(githubMilestone) {
 
   const {
     id,
@@ -130,10 +116,8 @@ function filterMilestone(githubMilestone) {
   };
 }
 
-module.exports.filterMilestone = filterMilestone;
 
-
-function filterPull(githubPull, githubRepository) {
+export function filterPull(githubPull, githubRepository) {
 
   const {
     node_id,
@@ -207,10 +191,8 @@ function filterPull(githubPull, githubRepository) {
   };
 }
 
-module.exports.filterPull = filterPull;
 
-
-function filterIssue(githubIssue, githubRepository) {
+export function filterIssue(githubIssue, githubRepository) {
 
   const {
     node_id,
@@ -261,5 +243,3 @@ function filterIssue(githubIssue, githubRepository) {
   };
 
 }
-
-module.exports.filterIssue = filterIssue;

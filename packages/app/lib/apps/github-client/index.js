@@ -1,5 +1,5 @@
-const GithubClient = require('./GithubClient');
+import GithubClient from './GithubClient.js';
 
-module.exports = {
+export default {
   githubClient: [ 'type', GithubClient ]
 };

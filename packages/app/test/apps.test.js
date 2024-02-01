@@ -1,12 +1,9 @@
-const { expect } = require('chai');
+import { expect } from 'chai';
+import nock from 'nock';
 
-const {
-  bootstrap
-} = require('./helpers');
+import { bootstrap } from './helpers/index.js';
 
-const GithubIssues = require('../lib/apps/github-issues');
-
-const nock = require('nock');
+import GithubIssues from 'wuffle/lib/apps/github-issues/index.js';
 
 
 function disableConnect() {

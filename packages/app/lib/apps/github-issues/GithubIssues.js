@@ -1,7 +1,4 @@
-const {
-  findLinks,
-  linkTypes
-} = require('../../util');
+import { findLinks, linkTypes } from '../../util/index.js';
 
 const {
   CLOSES
@@ -11,11 +8,11 @@ const {
 /**
  * @constructor
  *
- * @param {import('../../types').Logger} logger
  * @param {any} config
- * @param {import('../../columns')} columns
+ * @param {import('../../types.js').Logger} logger
+ * @param {import('../../columns.js').default} columns
  */
-function GithubIssues(logger, config, columns) {
+export default function GithubIssues(config, logger, columns) {
 
   const log = logger.child({
     name: 'wuffle:github-issues'
@@ -221,8 +218,6 @@ function GithubIssues(logger, config, columns) {
   this.findAndMoveIssue = findAndMoveIssue;
 
 }
-
-module.exports = GithubIssues;
 
 
 // helpers //////////////

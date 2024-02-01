@@ -1,6 +1,6 @@
-const DumpStore = require('./DumpStoreS3');
+import DumpStore from './DumpStoreS3.js';
 
-module.exports = {
+export default {
   __init__: [ 'dumpStore' ],
   dumpStore: [ 'type', DumpStore ]
 };

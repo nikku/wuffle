@@ -1,5 +1,5 @@
-const GithubIssues = require('./GithubIssues');
+import GithubIssues from './GithubIssues.js';
 
-module.exports = {
+export default {
   githubIssues: [ 'type', GithubIssues ]
 };
