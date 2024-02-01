@@ -19,7 +19,7 @@ WORKDIR /prod-build
 COPY --from=builder /build/packages/app ./packages/app
 
 # install production dependencies
-RUN (cd packages/app && npm prune --production)
+RUN (cd packages/app && npm prune --omit=dev)
 
 
 FROM node:20-alpine
