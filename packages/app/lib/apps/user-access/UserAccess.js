@@ -1,4 +1,4 @@
-const TreeCache = require('./TreeCache');
+import TreeCache from './TreeCache.js';
 
 // 9 days
 const TTL = 1000 * 60 * 60 * 24 * 9;
@@ -10,12 +10,17 @@ const TTL = 1000 * 60 * 60 * 24 * 9;
  *
  * @constructor
  *
- * @param {import('../../types').Logger} logger
- * @param {import('../github-client/GithubClient')} githubClient
- * @param {import('../../events')} events
- * @param {import('../webhook-events/WebhookEvents')} webhookEvents
+ * @param {import('../../types.js').Logger} logger
+ * @param {import('../github-client/GithubClient.js').default} githubClient
+ * @param {import('../../events.js').default} events
+ * @param {import('../webhook-events/WebhookEvents.js').default} webhookEvents
  */
-function UserAccess(logger, githubClient, events, webhookEvents) {
+export default function UserAccess(
+    logger,
+    githubClient,
+    events,
+    webhookEvents
+) {
 
   const log = logger.child({
     name: 'wuffle:user-access'
@@ -304,8 +309,6 @@ function UserAccess(logger, githubClient, events, webhookEvents) {
   });
 
 }
-
-module.exports = UserAccess;
 
 
 // helpers //////////////

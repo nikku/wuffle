@@ -1,15 +1,13 @@
-const {
-  expect
-} = require('chai');
+import { expect } from 'chai';
 
-const sinon = require('sinon');
+import sinon from 'sinon';
 
-const {
+import {
   findLinks,
   linkTypes,
   parseSearch,
   parseTemporalFilter
-} = require('../lib/util');
+} from 'wuffle/lib/util/index.js';
 
 const {
   PARENT_OF,

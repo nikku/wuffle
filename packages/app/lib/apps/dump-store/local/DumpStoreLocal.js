@@ -1,7 +1,6 @@
-const fs = require('fs').promises;
-const path = require('path');
-
-const { mkdirp } = require('mkdirp');
+import { promises as fs } from 'node:fs';
+import path from 'node:path';
+import { mkdirp } from 'mkdirp';
 
 
 /**
@@ -10,11 +9,11 @@ const { mkdirp } = require('mkdirp');
  *
  * @constructor
  *
- * @param {import('../../../types').Logger} logger
- * @param {import('../../../store')} store
- * @param {import('../../../events')} events
+ * @param {import('../../../types.js').Logger} logger
+ * @param {import('../../../store.js').default} store
+ * @param {import('../../../events.js').default} events
  */
-function DumpStoreLocal(logger, store, events) {
+export default function DumpStoreLocal(logger, store, events) {
 
   const log = logger.child({
     name: 'wuffle:dump-store-local'
@@ -110,7 +109,4 @@ function DumpStoreLocal(logger, store, events) {
 
   this.restoreStore = restoreStore;
   this.dumpStore = dumpStore;
-
 }
-
-module.exports = DumpStoreLocal;

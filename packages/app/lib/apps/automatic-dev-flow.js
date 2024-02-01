@@ -12,11 +12,11 @@ const CHANGES_REQUESTED = 'changes_requested';
  *
  * @constructor
  *
- * @param {import('./webhook-events/WebhookEvents')} webhookEvents
- * @param {import('./github-issues/GithubIssues')} githubIssues
- * @param {import('../columns')} columns
+ * @param {import('./webhook-events/WebhookEvents.js').default} webhookEvents
+ * @param {import('./github-issues/GithubIssues.js').default} githubIssues
+ * @param {import('../columns.js').default} columns
  */
-module.exports = function(webhookEvents, githubIssues, columns) {
+export default function(webhookEvents, githubIssues, columns) {
 
   webhookEvents.on([
     'issues.closed',
@@ -177,7 +177,7 @@ module.exports = function(webhookEvents, githubIssues, columns) {
     );
   });
 
-};
+}
 
 
 // helpers //////////////////////

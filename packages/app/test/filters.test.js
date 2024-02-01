@@ -1,12 +1,10 @@
-const { expect } = require('chai');
+import { expect } from 'chai';
 
-const {
-  filterIssue,
-  filterPull
-} = require('../lib/filters');
+import fs from 'node:fs';
 
+import { filterIssue, filterPull } from 'wuffle/lib/filters.js';
 
-const fs = require('fs');
+import { relativePath } from 'wuffle/lib/util/index.js';
 
 
 describe('filters', function() {
@@ -65,26 +63,31 @@ describe('filters', function() {
 
 });
 
+const filteredDir = relativePath('./fixtures/filters/filtered/', import.meta.url);
 
 // eslint-disable-next-line
 function writeFiltered(name, value) {
-  fs.writeFileSync(__dirname + '/fixtures/filters/filtered/' + name + '.json', JSON.stringify(value, null, '  '), 'utf8');
+  fs.writeFileSync(relativePath(name + '.json', filteredDir), JSON.stringify(value, null, '  '), 'utf8');
 }
 
 function loadFiltered(name) {
-  const json = fs.readFileSync(__dirname + '/fixtures/filters/filtered/' + name + '.json', 'utf8');
+  const json = fs.readFileSync(relativePath(name + '.json', filteredDir), 'utf8');
 
   return JSON.parse(json);
 }
+
+const eventsDir = relativePath('./fixtures/filters/events/', import.meta.url);
 
 function loadEvent(name) {
-  const json = fs.readFileSync(__dirname + '/fixtures/filters/events/' + name + '.json', 'utf8');
+  const json = fs.readFileSync(relativePath(name + '.json', eventsDir), 'utf8');
 
   return JSON.parse(json);
 }
 
+const apiResultsDir = relativePath('./fixtures/filters/api-results/', import.meta.url);
+
 function loadApiResult(name) {
-  const json = fs.readFileSync(__dirname + '/fixtures/filters/api-results/' + name + '.json', 'utf8');
+  const json = fs.readFileSync(relativePath(name + '.json', apiResultsDir), 'utf8');
 
   return JSON.parse(json);
 }

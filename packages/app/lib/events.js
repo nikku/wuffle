@@ -1,9 +1,4 @@
-const {
-  isArray,
-  isNumber,
-  assign,
-  isUndefined
-} = require('min-dash');
+import { isArray, isNumber, assign, isUndefined } from 'min-dash';
 
 var FN_REF = '__fn';
 
@@ -11,11 +6,9 @@ var DEFAULT_PRIORITY = 1000;
 
 var slice = Array.prototype.slice;
 
-function Events() {
+export default function Events() {
   this._listeners = {};
 }
-
-module.exports = Events;
 
 
 /**

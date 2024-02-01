@@ -1,15 +1,14 @@
-const {
-  randomString
-} = require('../util');
+import { randomString } from '../util/index.js';
 
-const session = require('express-session');
+import session from 'express-session';
+import MemoryStoreFactory from 'memorystore';
 
-const MemoryStore = require('memorystore')(session);
+const MemoryStore = MemoryStoreFactory(session);
 
 const ONE_DAY = 1000 * 60 * 60 * 24;
 const SEVEN_DAYS = ONE_DAY * 7;
 
-module.exports.withSession = session({
+export const withSession = session({
   secret: process.env.SESSION_SECRET || randomString(),
   resave: false,
   saveUninitialized: false,
@@ -23,7 +22,7 @@ module.exports.withSession = session({
   }
 });
 
-module.exports.useHttps = function(baseUrl) {
+export function useHttps(baseUrl) {
 
   return function(req, res, next) {
 
@@ -35,5 +34,4 @@ module.exports.useHttps = function(baseUrl) {
 
     return res.redirect(302, baseUrl + req.originalUrl);
   };
-
-};
+}

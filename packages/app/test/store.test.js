@@ -1,18 +1,12 @@
-const {
-  expect
-} = require('chai');
+import { expect } from 'chai';
 
-const Columns = require('../lib/columns');
-const Events = require('../lib/events');
-const Store = require('../lib/store');
+import { merge } from 'min-dash';
 
-const {
-  getKey
-} = require('../lib/filters');
+import Columns from 'wuffle/lib/columns.js';
+import Events from 'wuffle/lib/events.js';
+import Store from 'wuffle/lib/store.js';
 
-const {
-  merge
-} = require('min-dash');
+import { getKey } from 'wuffle/lib/filters.js';
 
 
 describe('store', function() {
@@ -964,6 +958,7 @@ function createStore(columnConfig = defaultColumnConfig) {
 
   const columns = new Columns(columnConfig || defaultColumnConfig);
 
+  // @ts-ignore-error mocked logger
   return new Store(columns, logger, events);
 }
 
@@ -1007,9 +1002,13 @@ const createIssue = (function() {
 })();
 
 
+/**
+ * @param {import('wuffle/lib/store.js').default} store
+ * @param {any[]} issues
+ */
 function expectOrder(store, issues) {
 
-  for (const i in issues) {
+  for (let i = 0; i < issues.length; i++) {
 
     const last = issues[i - 1];
     const current = issues[i];

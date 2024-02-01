@@ -1,5 +1,5 @@
-const UserAccess = require('./UserAccess');
+import UserAccess from './UserAccess.js';
 
-module.exports = {
+export default {
   userAccess: [ 'type', UserAccess ]
 };

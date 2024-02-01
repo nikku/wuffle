@@ -27,7 +27,7 @@ const RequiredEvents = [
 ];
 
 /**
- * @typedef {import('./types').Installation} Installation
+ * @typedef {import('./types.js').Installation} Installation
  */
 
 /**
@@ -37,11 +37,11 @@ const RequiredEvents = [
  * @constructor
  *
  * @param {Object} config
- * @param {import('../../types').ProbotApp} app
- * @param {import('../../types').Logger} logger
- * @param {import('../../types').Injector} injector
+ * @param {import('../../types.js').ProbotApp} app
+ * @param {import('../../types.js').Logger} logger
+ * @param {import('../../types.js').Injector} injector
  */
-function GithubApp(config, app, logger, injector) {
+export default function GithubApp(config, app, logger, injector) {
 
   const log = logger.child({
     name: 'wuffle:github-app'
@@ -71,7 +71,7 @@ function GithubApp(config, app, logger, injector) {
   // functionality /////////////////
 
   /**
-   * @return {Promise<import('../../types').Octokit>}
+   * @return {Promise<import('../../types.js').Octokit>}
    */
   function getAppScopedClient() {
     return app.auth();
@@ -263,5 +263,3 @@ function GithubApp(config, app, logger, injector) {
   this.getInstallations = getInstallations;
 
 }
-
-module.exports = GithubApp;

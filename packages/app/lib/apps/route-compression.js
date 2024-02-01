@@ -1,12 +1,10 @@
-const compression = require('compression');
+import compression from 'compression';
 
 /**
  * Enables compression for routes
  *
  * @param {import('express').Router} router
  */
-module.exports = function(router) {
-
+export default function routeCompression(router) {
   router.use(compression());
-
-};
+}

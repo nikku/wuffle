@@ -1,52 +1,48 @@
-const { AsyncInjector } = require('async-didi');
+import { AsyncInjector } from 'async-didi';
+import { preExit } from './util/index.js';
 
-const { preExit } = require('./util');
-
-const apps = [
-  require('./apps/log-events'),
-  require('./apps/webhook-events'),
-  require('./apps/route-compression'),
-  require('./apps/route-https'),
+const appModules = [
+  import('./apps/log-events.js'),
+  import('./apps/webhook-events/index.js'),
+  import('./apps/route-compression.js'),
+  import('./apps/route-https.js'),
   (
     process.env.S3_BUCKET
-      ? require('./apps/dump-store/s3')
-      : require('./apps/dump-store/local')
+      ? import('./apps/dump-store/s3/index.js')
+      : import('./apps/dump-store/local/index.js')
   ),
-  require('./apps/events-sync'),
-  require('./apps/github-app'),
-  require('./apps/github-issues'),
-  require('./apps/github-comments'),
-  require('./apps/github-client'),
-  require('./apps/github-checks'),
-  require('./apps/github-reviews'),
-  require('./apps/github-statuses'),
-  require('./apps/security-context'),
-  require('./apps/user-access'),
-  require('./apps/search'),
-  require('./apps/background-sync'),
-  require('./apps/automatic-dev-flow'),
-  require('./apps/auth-routes'),
-  require('./apps/board-api-routes'),
-  require('./apps/board-routes'),
-  require('./apps/reindex-store')
+  import('./apps/events-sync.js'),
+  import('./apps/github-app/index.js'),
+  import('./apps/github-issues/index.js'),
+  import('./apps/github-comments/index.js'),
+  import('./apps/github-client/index.js'),
+  import('./apps/github-checks/index.js'),
+  import('./apps/github-reviews/index.js'),
+  import('./apps/github-statuses/index.js'),
+  import('./apps/security-context/index.js'),
+  import('./apps/user-access/index.js'),
+  import('./apps/search/index.js'),
+  import('./apps/background-sync/index.js'),
+  import('./apps/automatic-dev-flow.js'),
+  import('./apps/auth-routes/index.js'),
+  import('./apps/board-api-routes/index.js'),
+  import('./apps/board-routes.js'),
+  import('./apps/reindex-store.js')
 ];
 
-const loadConfig = require('./load-config');
-
-const Store = require('./store');
-
-const AsyncEvents = require('./events');
-
-const Columns = require('./columns');
+import loadConfig from './load-config.js';
+import Store from './store.js';
+import AsyncEvents from './events.js';
+import Columns from './columns.js';
 
 
 /**
  *
- * @param {import('./types').ProbotApp} app
+ * @param {import('./types.js').ProbotApp} app
  *
  * @return {Promise<any>}
  */
-module.exports = function(app, { getRouter }) {
+export default function Wuffle(app, { getRouter }) {
 
   const logger = app.log;
 
@@ -61,11 +57,13 @@ module.exports = function(app, { getRouter }) {
 
     const router = getRouter();
 
-    const config = loadConfig(log);
+    const config = await loadConfig(log);
 
     const events = new AsyncEvents();
 
     // load child apps //////////////
+
+    const apps = await Promise.all(appModules).then(apps => apps.map(app => app.default));
 
     const modules = apps.map(app => {
 
@@ -97,7 +95,7 @@ module.exports = function(app, { getRouter }) {
 
     for (const module of modules) {
 
-      const init = /** @type {import('./types').DidiModule} */ (module).__init__ || [];
+      const init = /** @type {import('./types.js').DidiModule} */ (module).__init__ || [];
 
       for (const component of init) {
         await injector[typeof component === 'function' ? 'invoke' : 'get'](component);
@@ -120,4 +118,4 @@ module.exports = function(app, { getRouter }) {
   }
 
   return setup();
-};
+}

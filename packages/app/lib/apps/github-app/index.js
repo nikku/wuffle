@@ -1,6 +1,6 @@
-const GithubApp = require('./GithubApp');
+import GithubApp from './GithubApp.js';
 
-module.exports = {
+export default {
   __init__: [ 'githubApp' ],
   githubApp: [ 'type', GithubApp ]
 };

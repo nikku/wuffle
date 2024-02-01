@@ -28,7 +28,7 @@ const phrasesToTypes = {
   'related to': LINKED_TO
 };
 
-const linkTypes = {
+export const linkTypes = {
   CHILD_OF,
   PARENT_OF,
   DEPENDS_ON,
@@ -38,7 +38,7 @@ const linkTypes = {
 };
 
 
-function findLinks(issue, types) {
+export function findLinks(issue, types) {
 
   const {
     title,
@@ -162,7 +162,3 @@ function filterLinks(links, filterMap) {
 
   return links.filter(l => l.type in filterMap);
 }
-
-module.exports.findLinks = findLinks;
-
-module.exports.linkTypes = linkTypes;

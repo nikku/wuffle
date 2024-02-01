@@ -1,11 +1,5 @@
-const {
-  repoAndOwner,
-  Cache
-} = require('../../util');
-
-const {
-  filterPull
-} = require('../../filters');
+import { repoAndOwner, Cache } from '../../util/index.js';
+import { filterPull } from '../../filters.js';
 
 
 /**
@@ -13,12 +7,12 @@ const {
  *
  * @constructor
  *
- * @param {import('../webhook-events/WebhookEvents')} webhookEvents
- * @param {import('../../events')} events
- * @param {import('../github-client/GithubClient')} githubClient
- * @param {import('../../store')} store
+ * @param {import('../webhook-events/WebhookEvents.js').default} webhookEvents
+ * @param {import('../../events.js').default} events
+ * @param {import('../github-client/GithubClient.js').default} githubClient
+ * @param {import('../../store.js').default} store
  */
-module.exports = function GithubStates(webhookEvents, events, githubClient, store) {
+export default function GithubStates(webhookEvents, events, githubClient, store) {
 
   // issues /////////////////////
 
@@ -154,7 +148,7 @@ module.exports = function GithubStates(webhookEvents, events, githubClient, stor
     cache.evict();
   }, 1000 * 60);
 
-};
+}
 
 
 function filterStatus(status) {

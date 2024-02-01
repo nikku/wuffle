@@ -1,6 +1,6 @@
-const GithubStatuses = require('./GithubStatuses');
+import GithubStatuses from './GithubStatuses.js';
 
-module.exports = {
+export default {
   __init__: [ 'githubStatuses' ],
   githubStatuses: [ 'type', GithubStatuses ]
 };

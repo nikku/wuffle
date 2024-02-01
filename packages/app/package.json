@@ -9,6 +9,12 @@
   "bin": {
     "wuffle": "./bin/wuffle"
   },
+  "exports": {
+    ".": "./index.js",
+    "./package.json": "./package.json",
+    "./lib/*.js": "./lib/*.js"
+  },
+  "type": "module",
   "license": "MIT",
   "homepage": "https://github.com/nikku/wuffle",
   "repository": {

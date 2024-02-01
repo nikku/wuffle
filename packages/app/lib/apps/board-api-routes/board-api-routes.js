@@ -1,40 +1,30 @@
-const bodyParser = require('body-parser').text();
+import bodyParser from 'body-parser';
 
-const {
-  withSession
-} = require('../../middleware');
-
-const {
-  repoAndOwner
-} = require('../../util');
-
-
-const {
-  filterIssueOrPull: _filterIssueOrPull
-} = require('./board-api-filters');
-
+import { withSession } from '../../middleware/index.js';
+import { repoAndOwner } from '../../util/index.js';
+import { filterIssueOrPull as _filterIssueOrPull } from './board-api-filters.js';
 
 /**
  * This component provides the board API routes.
  *
  * @param {Object} config
- * @param {import('../../store')} store
- * @param {import('../../types').Router} router
- * @param {import('../../types').Logger} logger
- * @param {import('../github-client/GithubClient')} githubClient
- * @param {import('../auth-routes/AuthRoutes')} authRoutes
- * @param {import('../user-access/UserAccess')} userAccess
- * @param {import('../github-issues/GithubIssues')} githubIssues
- * @param {import('../search/Search')} search
- * @param {import('../../columns')} columns
+ * @param {import('../../store.js').default} store
+ * @param {import('../../types.js').Router} router
+ * @param {import('../../types.js').Logger} logger
+ * @param {import('../github-client/GithubClient.js').default} githubClient
+ * @param {import('../auth-routes/AuthRoutes.js').default} authRoutes
+ * @param {import('../user-access/UserAccess.js').default} userAccess
+ * @param {import('../github-issues/GithubIssues.js').default} githubIssues
+ * @param {import('../search/Search.js').default} search
+ * @param {import('../../columns.js').default} columns
  */
-module.exports = async (
+export default async function BoardApiRoutes(
     config, store,
     router, logger,
     githubClient, authRoutes,
     userAccess, githubIssues,
     search, columns
-) => {
+) {
 
   const log = logger.child({
     name: 'wuffle:board-api-routes'
@@ -241,7 +231,7 @@ module.exports = async (
   });
 
 
-  router.post('/wuffle/board/issues/move', ...middlewares, bodyParser, async (req, res) => {
+  router.post('/wuffle/board/issues/move', ...middlewares, bodyParser.text(), async (req, res) => {
 
     const user = authRoutes.getGitHubUser(req);
 
@@ -302,4 +292,4 @@ module.exports = async (
 
   });
 
-};
+}

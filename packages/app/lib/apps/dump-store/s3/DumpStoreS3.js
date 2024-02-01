@@ -1,4 +1,4 @@
-const S3 = require('./S3');
+import S3 from './S3.js';
 
 
 /**
@@ -7,11 +7,11 @@ const S3 = require('./S3');
  *
  * @constructor
  *
- * @param {import('../../../types').Logger} logger
- * @param {import('../../../store')} store
- * @param {import('../../../events')} events
+ * @param {import('../../../types.js').Logger} logger
+ * @param {import('../../../store.js').default} store
+ * @param {import('../../../events.js').default} events
  */
-function DumpStoreS3(logger, store, events) {
+export default function DumpStoreS3(logger, store, events) {
 
   const log = logger.child({
     name: 'wuffle:dump-store-s3'
@@ -88,5 +88,3 @@ function DumpStoreS3(logger, store, events) {
   this.restoreStore = restoreStore;
   this.dumpStore = dumpStore;
 }
-
-module.exports = DumpStoreS3;

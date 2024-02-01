@@ -1,5 +1,5 @@
-const Search = require('./Search');
+import Search from './Search.js';
 
-module.exports = {
+export default {
   search: [ 'type', Search ]
 };

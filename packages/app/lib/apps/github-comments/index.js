@@ -1,6 +1,6 @@
-const GithubComments = require('./GithubComments');
+import GithubComments from './GithubComments.js';
 
-module.exports = {
+export default {
   __init__: [ 'githubComments' ],
   githubComments: [ 'type', GithubComments ]
 };

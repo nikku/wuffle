@@ -1,8 +1,6 @@
-const {
-  AsyncInjector
-} = require('async-didi');
+import { AsyncInjector } from 'async-didi';
 
-const Columns = require('../../lib/columns');
+import Columns from 'wuffle/lib/columns.js';
 
 function FakeLogger() {
 
@@ -35,7 +33,7 @@ const fakeModule = {
   columns: [ 'type', Columns ]
 };
 
-async function bootstrap(options) {
+export async function bootstrap(options) {
 
   const modules = [
     fakeModule,
@@ -58,5 +56,3 @@ async function bootstrap(options) {
 
   return injector;
 }
-
-module.exports.bootstrap = bootstrap;

@@ -1,30 +1,20 @@
-const {
-  groupBy
-} = require('min-dash');
-
-const pDefer = require('p-defer');
-
-const {
-  issueIdent
-} = require('./util');
-
-const {
-  findLinks
-} = require('./util/links');
-
-const { Links } = require('./links');
+import { groupBy } from 'min-dash';
+import pDefer from 'p-defer';
+import { issueIdent } from './util/index.js';
+import { findLinks } from './util/links.js';
+import { Links } from './links.js';
 
 
 /**
  * The store that holds all board data
  * and makes it accessible.
  */
-class Store {
+export default class Store {
 
   /**
-   * @param {import('./columns')} columns
-   * @param {import('./types').Logger} logger
-   * @param {import('./events')} events
+   * @param {import('./columns.js').default} columns
+   * @param {import('./types.js').Logger} logger
+   * @param {import('./events.js').default} events
    *
    * @constructor
    */
@@ -1021,5 +1011,3 @@ class Updates {
   }
 
 }
-
-module.exports = Store;

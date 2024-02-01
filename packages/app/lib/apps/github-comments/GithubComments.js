@@ -1,13 +1,6 @@
-const {
-  repoAndOwner
-} = require('../../util');
-
-const {
-  filterUser,
-  filterIssue
-} = require('../../filters');
-
-const gql = require('fake-tag');
+import { repoAndOwner } from '../../util/index.js';
+import { filterUser, filterIssue } from '../../filters.js';
+import gql from 'fake-tag';
 
 
 /**
@@ -15,12 +8,12 @@ const gql = require('fake-tag');
  *
  * @constructor
  *
- * @param {import('../webhook-events/WebhookEvents')} webhookEvents
- * @param {import('../../events')} events
- * @param {import('../github-client/GithubClient')} githubClient
- * @param {import('../../store')} store
+ * @param {import('../webhook-events/WebhookEvents.js').default} webhookEvents
+ * @param {import('../../events.js').default} events
+ * @param {import('../github-client/GithubClient.js').default} githubClient
+ * @param {import('../../store.js').default} store
  */
-function GithubComments(webhookEvents, events, githubClient, store) {
+export default function GithubComments(webhookEvents, events, githubClient, store) {
 
   // issues /////////////////////
 
@@ -179,8 +172,6 @@ function GithubComments(webhookEvents, events, githubClient, store) {
   });
 
 }
-
-module.exports = GithubComments;
 
 
 function filterComment(comment) {

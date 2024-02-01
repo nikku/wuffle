@@ -1,7 +1,7 @@
 /**
  * A cache that allows tree-like keys
  */
-class TreeCache {
+export default class TreeCache {
 
   constructor(ttl = -1) {
     this._cache = {};
@@ -106,8 +106,6 @@ class TreeCache {
   }
 
 }
-
-module.exports = TreeCache;
 
 
 // helpers ///////////////

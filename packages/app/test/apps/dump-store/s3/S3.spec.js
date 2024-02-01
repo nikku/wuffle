@@ -1,8 +1,6 @@
-const S3 = require('../../../../lib/apps/dump-store/s3/S3');
+import { expect } from 'chai';
 
-const {
-  expect
-} = require('chai');
+import S3 from 'wuffle/lib/apps/dump-store/s3/S3.js';
 
 const configured = [
   process.env.AWS_ACCESS_KEY_ID,

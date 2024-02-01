@@ -1,5 +1,5 @@
-const boardApiRoutes = require('./board-api-routes');
+import boardApiRoutes from './board-api-routes.js';
 
-module.exports = {
+export default {
   __init__: [ boardApiRoutes ]
 };

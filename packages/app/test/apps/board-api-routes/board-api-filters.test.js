@@ -1,10 +1,10 @@
-const {
-  filterIssueOrPull
-} = require('../../../lib/apps/board-api-routes/board-api-filters');
+import { expect } from 'chai';
 
-const { expect } = require('chai');
+import fs from 'node:fs';
 
-const fs = require('fs');
+import { relativePath } from 'wuffle/lib/util/index.js';
+
+import { filterIssueOrPull } from 'wuffle/lib/apps/board-api-routes/board-api-filters.js';
 
 
 describe('board-api-routes - board-api-filters', function() {
@@ -28,10 +28,10 @@ describe('board-api-routes - board-api-filters', function() {
 // helpers /////////////
 
 function loadFixture(name) {
-  return JSON.parse(fs.readFileSync(__dirname + '/' + name + '.json', 'utf-8'));
+  return JSON.parse(fs.readFileSync(relativePath(name + '.json', import.meta.url), 'utf-8'));
 }
 
 // eslint-disable-next-line
 function saveFixture(name, contents) {
-  return fs.writeFileSync(__dirname + '/' + name + '.json', JSON.stringify(contents, null, 2), 'utf-8');
+  return fs.writeFileSync(relativePath(name + '.json', import.meta.url), JSON.stringify(contents, null, 2), 'utf-8');
 }

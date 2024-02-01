@@ -1,10 +1,10 @@
 /**
  * @constructor
  *
- * @param {import('../../types').ProbotApp} app
- * @param {import('../github-app/GithubApp')} githubApp
+ * @param {import('../../types.js').ProbotApp} app
+ * @param {import('../github-app/GithubApp.js').default} githubApp
  */
-function WebhookEvents(app, githubApp) {
+export default function WebhookEvents(app, githubApp) {
 
   /**
    * @template {Function} T
@@ -59,5 +59,3 @@ function WebhookEvents(app, githubApp) {
   this.on = on;
   this.onAny = onAny;
 }
-
-module.exports = WebhookEvents;

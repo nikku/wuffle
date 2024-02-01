@@ -1,4 +1,4 @@
-const LinkTypes = {
+export const LinkTypes = {
   CLOSES: 'CLOSES',
   CLOSED_BY: 'CLOSED_BY',
   LINKED_TO: 'LINKED_TO',
@@ -9,7 +9,7 @@ const LinkTypes = {
   PARENT_OF: 'PARENT_OF'
 };
 
-const InverseLinkTypes = {
+export const InverseLinkTypes = {
   CLOSES: LinkTypes.CLOSED_BY,
   CLOSED_BY: LinkTypes.CLOSES,
   DEPENDS_ON: LinkTypes.REQUIRED_BY,
@@ -26,7 +26,7 @@ const InverseLinkTypes = {
 /**
  * A utility to maintain links
  */
-class Links {
+export class Links {
 
   constructor(data) {
     this.links = (data && data.links) || {};
@@ -37,11 +37,11 @@ class Links {
    * @param {string} sourceId
    * @param {string} targetId
    * @param {string} linkType
-   * @param {Record<string,any>} linkAttrs
+   * @param {Record<string,any>} [linkAttrs]
    *
    * @return {Link}
    */
-  createLink(sourceId, targetId, linkType, linkAttrs) {
+  createLink(sourceId, targetId, linkType, linkAttrs = {}) {
 
     const key = `${targetId}-${linkType}`;
 
@@ -108,7 +108,7 @@ class Links {
    *
    * @param {string} sourceId
    *
-   * @return {Link[]} links
+   * @return {Record<string, Link>} links
    */
   getBySource(sourceId) {
     const links = this.getDirect(sourceId);
@@ -121,10 +121,20 @@ class Links {
     };
   }
 
+  /**
+   * @param {string} sourceId
+   *
+   * @return {Record<string, Link>}
+   */
   getDirect(sourceId) {
     return this.links[sourceId] || {};
   }
 
+  /**
+   * @param {string} sourceId
+   *
+   * @return {Record<string, Link>}
+   */
   getInverse(sourceId) {
     return this.inverseLinks[sourceId] || {};
   }
@@ -190,8 +200,3 @@ class Links {
     this.inverseLinks = inverseLinks || {};
   }
 }
-
-
-module.exports.Links = Links;
-
-module.exports.LinkTypes = LinkTypes;

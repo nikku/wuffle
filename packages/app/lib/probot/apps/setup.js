@@ -1,18 +1,15 @@
-const bodyParser = require('body-parser');
-const updateDotenv = require('update-dotenv');
+import bodyParser from 'body-parser';
+import updateDotenv from 'update-dotenv';
 
-const { ManifestCreation } = require('probot/lib/manifest-creation');
+import { ManifestCreation } from 'probot/lib/manifest-creation.js';
+import { getLoggingMiddleware } from 'probot/lib/server/logging-middleware.js';
+import { getLog } from 'probot/lib/helpers/get-log.js';
+import { importView } from 'probot/lib/views/import.js';
+import { setupView } from 'probot/lib/views/setup.js';
 
-const { getLoggingMiddleware } = require('probot/lib/server/logging-middleware');
+import { randomString } from '../../util/index.js';
 
-const { getLog } = require('probot/lib/helpers/get-log');
-
-const { randomString } = require('../../util');
-
-const { importView } = require('probot/lib/views/import');
-const { setupView } = require('probot/lib/views/setup');
-
-function setupAppFactory(host, port) {
+export function setupAppFactory(host, port) {
 
   return async function setupApp(app, { getRouter }) {
     const setup = new ManifestCreation();
@@ -144,10 +141,6 @@ function setupAppFactory(host, port) {
     });
   };
 }
-
-module.exports = {
-  setupAppFactory
-};
 
 function getBaseUrl(req) {
   const protocols = req.headers['x-forwarded-proto'] || req.protocol;

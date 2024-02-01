@@ -1,1 +1,1 @@
-module.exports.CustomProbot = require('./CustomProbot');
+export * from './CustomProbot.js';

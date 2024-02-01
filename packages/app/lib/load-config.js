@@ -1,4 +1,4 @@
-const path = require('path');
+import path from 'node:path';
 
 const defaultColumns = [
   { name: 'Inbox', label: null },
@@ -9,7 +9,7 @@ const defaultColumns = [
   { name: 'Done', label: null, closed: true }
 ];
 
-module.exports = function loadConfig(log) {
+export default async function loadConfig(log) {
 
   if (process.env.BOARD_CONFIG) {
     try {
@@ -20,7 +20,11 @@ module.exports = function loadConfig(log) {
   }
 
   try {
-    return require(path.resolve('wuffle.config.js'));
+    const {
+      default: config
+    } = await import(path.resolve('wuffle.config.js'));
+
+    return config;
   } catch (err) {
     log.error(err, 'failed to load config from wuffle.config.js');
   }
@@ -29,4 +33,4 @@ module.exports = function loadConfig(log) {
     columns: defaultColumns
   };
 
-};
+}

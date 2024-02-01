@@ -1,11 +1,5 @@
-const {
-  filterIssueOrPull,
-  filterRepository
-} = require('../../filters');
-
-const {
-  issueIdent
-} = require('../../util');
+import { filterIssueOrPull, filterRepository } from '../../filters.js';
+import { issueIdent } from '../../util/index.js';
 
 function isInternalError(error) {
   return 'status' in error && error.status === 500;
@@ -17,14 +11,14 @@ function isInternalError(error) {
  *
  * @constructor
  *
- * @param {import('../../types').Logger} logger
+ * @param {import('../../types.js').Logger} logger
  * @param {Object} config
- * @param {import('../../store')} store
- * @param {import('../github-client/GithubClient')} githubClient
- * @param {import('../github-app/GithubApp')} githubApp
- * @param {import('../../events')} events
+ * @param {import('../../store.js').default} store
+ * @param {import('../github-client/GithubClient.js').default} githubClient
+ * @param {import('../github-app/GithubApp.js').default} githubApp
+ * @param {import('../../events.js').default} events
  */
-function BackgroundSync(logger, config, store, githubClient, githubApp, events) {
+export default function BackgroundSync(logger, config, store, githubClient, githubApp, events) {
 
   // 30 days
   const syncClosedLookback = (
@@ -530,5 +524,3 @@ We automatically synchronize all repositories you granted us access to via the G
   });
 
 }
-
-module.exports = BackgroundSync;

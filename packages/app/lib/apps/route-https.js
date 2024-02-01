@@ -1,13 +1,11 @@
-const {
-  useHttps
-} = require('../middleware');
+import { useHttps } from '../middleware/index.js';
 
 /**
  * Enables https redirects and strict transport security.
  *
  * @param {import('express').Router} router
  */
-module.exports = function(router) {
+export default function routeHttps(router) {
 
   if (!process.env.FORCE_HTTPS) {
     return;
@@ -24,4 +22,4 @@ module.exports = function(router) {
   }
 
   router.use(useHttps(baseUrl));
-};
+}
