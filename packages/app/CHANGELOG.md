@@ -6,6 +6,14 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 _**Note:** Yet to be released changes appear here._
 
+## 0.59.0
+
+* `FEAT`: turn into ES module
+* `CHORE`: correct various type hints
+* `DEPS`: update `fake-tag@5`
+* `DEPS`: update `p-defer@4`
+* `DEPS`: update to `prexit@2`
+
 ## 0.58.0
 
 * `FEAT`: improve guided setup steps
