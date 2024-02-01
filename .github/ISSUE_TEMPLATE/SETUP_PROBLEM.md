@@ -5,19 +5,19 @@ labels: question, installation
 ---
 
 
-__Please Acknowledge the Following__
+### Please Acknowledge the Following
 
 * [ ] I've followed the [setup and run instructions](https://github.com/nikku/wuffle/blob/main/docs/SETUP.md)
 
 We cannot help you, otherwise.
 
 
-__At which step in the setup are you stuck?__
+### At which step in the setup are you stuck?
 
 <!-- Please share how the setup problem manifests -->
 
 
-__Context Information__
+### Context Information
 
 <!-- Please share the following information -->
 
