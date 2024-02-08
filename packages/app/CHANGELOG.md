@@ -35,6 +35,10 @@ _**Note:** Yet to be released changes appear here._
 * `DEPS`: update to `probot@13`
 * `DEPS`: update dependencies
 
+### Breaking Changes
+
+* Webhook URL changed to `{BASE_URL}/api/github/webhooks`
+
 ## 0.57.0
 
 * `FEAT`: add `fifo` column ordering as an alternative to the default `lifo`
