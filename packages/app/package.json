@@ -54,7 +54,7 @@
     "p-defer": "^4.0.0",
     "prexit": "^2.2.0",
     "probot": "^13.0.2",
-    "smee-client": "^2.0.0"
+    "smee-client": "^2.0.1"
   },
   "devDependencies": {
     "@graphql-eslint/eslint-plugin": "^3.20.1",
@@ -65,8 +65,8 @@
     "chai": "^4",
     "graphql": "^16.6.0",
     "mocha": "^10.3.0",
-    "nock": "^13.5.1",
-    "nodemon": "^3.0.3",
+    "nock": "^13.5.4",
+    "nodemon": "^3.1.0",
     "npm-run-all2": "^6.0.0",
     "sinon": "^17.0.1",
     "sinon-chai": "^3.7.0",
