@@ -6,6 +6,12 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 _**Note:** Yet to be released changes appear here._
 
+## 0.61.0
+
+* `DEPS`: update to `probot@13.0.2`
+* `DEPS`: update to `@octokit/graphql-schema@15`
+* `DEPS`: update to `@aws-sdk/client-s3@3.525.0`
+
 ## 0.60.0
 
 * `FEAT`: use native `fetch`
