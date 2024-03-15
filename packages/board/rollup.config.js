@@ -8,7 +8,6 @@ const terser = require('@rollup/plugin-terser');
 const copy = require('rollup-plugin-copy');
 const css = require('rollup-plugin-css-only');
 const svelte = require('rollup-plugin-svelte');
-const livereload = require('rollup-plugin-livereload');
 
 const { string } = require('rollup-plugin-string');
 
@@ -58,9 +57,6 @@ module.exports = [
         extensions: [ '.svelte' ]
       }),
       commonjs(),
-
-      // live reload in development mode
-      !production && livereload(distDirectory),
 
       // minify in production
       production && terser()
