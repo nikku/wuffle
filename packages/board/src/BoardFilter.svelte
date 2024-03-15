@@ -46,7 +46,13 @@
 
   export let onChange;
 
-  let temporalPresets = [
+  const assigneePresets = [
+    [ '@me', '@me' ]
+  ].map(([ name, value ]) => {
+    return { name, value };
+  });
+
+  const temporalPresets = [
     [ 'today', '@today' ],
     [ 'last week', '@last_week' ],
     [ 'last month', '@last_month' ]
@@ -54,7 +60,7 @@
     return { name, value };
   });
 
-  let staticValues = {
+  const staticValues = {
     is: [
       'assigned',
       'unassigned',
@@ -68,7 +74,8 @@
       return { name, value: `${name} ` };
     }),
     created: temporalPresets,
-    updated: temporalPresets
+    updated: temporalPresets,
+    assignee: assigneePresets
   };
 
   $: dynamicValues = Object.entries(completionOptions).reduce((values, entry) => {
@@ -112,10 +119,14 @@
   let keyboardSelectedHint;
   let mouseSelectedHint;
 
-  $: categoryValues = {
+  $: categoryValues = Object.keys({
     ...staticValues,
     ...dynamicValues
-  };
+  }).reduce((values, key) => {
+    values[key] = [].concat(staticValues[key] || [], dynamicValues[key] || []);
+
+    return values;
+  }, {});
 
   $: selectedHint = mouseSelectedHint || keyboardSelectedHint;
 
