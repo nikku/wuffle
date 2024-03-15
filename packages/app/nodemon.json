@@ -1,0 +1,13 @@
+{
+  "exec": "./bin/wuffle",
+  "verbose": true,
+  "watch": [
+    ".env",
+    "."
+  ],
+  "ignore": [
+    "public/*",
+    "tmp/*",
+    "test/*"
+  ]
+}
