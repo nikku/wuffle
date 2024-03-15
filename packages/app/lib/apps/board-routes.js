@@ -60,11 +60,11 @@ export default async function BoardRoutes(config, router) {
           .replace(/>/g, '&gt;') +
       '</script>'
     );
+
+    return indexPage;
   }
 
   router.get('/board', (req, res, next) => {
-    indexPage = getIndexPage();
-
     res.type('html').status(200).send(getIndexPage());
   });
 
