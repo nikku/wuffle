@@ -6,6 +6,16 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 _**Note:** Yet to be released changes appear here._
 
+## 0.62.0
+
+* `FEAT`: suggest `assignee:@me` filter
+* `FIX`: avatars get properly cached
+* `FIX`: click on filter suggestion applies it again ([#190](https://github.com/nikku/wuffle/issues/190))
+* `FIX`: prevent blank page after login/logout
+* `FIX`: correctly handle connection errors during login check
+* `FIX`: make help menu keyboard accessible
+* `FIX`: turn example config into ES module
+
 ## 0.61.0
 
 * `DEPS`: update to `probot@13.0.2`
