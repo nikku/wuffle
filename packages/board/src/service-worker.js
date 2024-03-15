@@ -115,7 +115,7 @@ self.addEventListener('fetch', function(event) {
 
   const { url } = request;
 
-  if (/^https:\/\/avatars[\d]+\.githubusercontent\.com/.test(url)) {
+  if (/^https:\/\/avatars[\d]*\.githubusercontent\.com/.test(url)) {
     event.respondWith(
       fromCache(event, request)
         .catch(() => fromNetwork(event, request))
