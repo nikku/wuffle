@@ -31,7 +31,7 @@ export default class Api {
   getLoggedInUser() {
     const url = this.appURL('/login_check');
 
-    return fetchJSON(url).catch(err => null);
+    return fetchJSON(url);
   }
 
   listUpdates(filter, cursor) {
