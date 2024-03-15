@@ -75,21 +75,6 @@
   "engines": {
     "node": ">= 18"
   },
-  "nodemonConfig": {
-    "exec": "node ./bin/wuffle",
-    "env": {
-      "NODE_ENV": "development"
-    },
-    "watch": [
-      ".env",
-      "."
-    ],
-    "ignore": [
-      "public/*",
-      "tmp/*",
-      "test/*"
-    ]
-  },
   "files": [
     "bin",
     "lib",
