@@ -125,10 +125,10 @@
   }
 
   function handleWarning(action, error, options) {
-    console.warn('%s failed', action, error);
+    console.error(`[action] [${action}] failed`, error);
 
-    if (options.display === false) {
-      throw error;
+    if (options.verbose === false) {
+      return;
     }
 
     const index = warnings.findIndex(w => w.action === action);
@@ -336,7 +336,7 @@
   }
 
   function loginCheck() {
-    return action('User login check')(
+    return action('Login check')(
       () => api.getLoggedInUser().then(newUser => {
 
         if (user && !newUser) {
@@ -475,7 +475,7 @@
 
     const currentFilter = filter;
 
-    return action('Checking for updates', { display: false })(
+    return action('Update check')(
       () => api.listUpdates(currentFilter, cursor).then(updates => {
 
         if (!updates.length) {
