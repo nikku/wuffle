@@ -91,6 +91,7 @@
         class:active={ selectedHint === hint }
         on:mouseenter={ () => onHover(hint) }
         on:mouseleave={ () => onBlur(hint) }
+        on:mousedown={ (event) => handleMousedown(event, hint) }
         on:click|preventDefault={ (event) => handleMousedown(event, hint) }
         href
       >{#each hint.parts as part}<span class:matched={ part.matched }>{ part.text }</span>{/each}</a>
