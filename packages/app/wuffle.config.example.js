@@ -28,7 +28,7 @@
  * You may define a default filter to apply to the board if
  * there is no user-defined search query.
  */
-module.exports = {
+export default {
 
   name: 'My Wuffle Board',
 
