@@ -21,11 +21,12 @@
       display: inline-flex;
     }
 
-    &:not(:hover) .logo {
+    &:not(:hover, :focus-within) .logo {
       color: #999;
     }
 
-    &:hover {
+    &:hover,
+    &:focus-within {
       opacity: 1;
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
       background: white;
