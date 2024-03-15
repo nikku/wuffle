@@ -17,8 +17,8 @@
 
     display: flex;
 
-    svg {
-      vertical-align: bottom;
+    .logo {
+      display: inline-flex;
     }
 
     &:not(:hover) .logo {
@@ -59,7 +59,7 @@
 </style>
 
 <div class="powered-by">
-  <div class="help">
+  <span class="help">
 
     <a class="help-item" href="https://wuffle.dev/docs"
        target="_blank" rel="noopener">
@@ -74,7 +74,7 @@
     <span class="help-item">
       Powered by
     </span>
-  </div>
+  </span>
 
   <a class="logo" href="https://wuffle.dev"
      target="_blank" rel="noopener" title="About Wuffle">
