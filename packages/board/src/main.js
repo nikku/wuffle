@@ -18,7 +18,7 @@ if ('serviceWorker' in navigator) {
 
   const triggerReload = debounce(() => {
     window.location.reload();
-  }, 500);
+  }, 1500);
 
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('/service-worker.js').catch((err) => {
