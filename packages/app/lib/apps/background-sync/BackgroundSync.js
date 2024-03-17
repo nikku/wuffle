@@ -472,8 +472,8 @@ We automatically synchronize all repositories you granted us access to via the G
     parseInt(process.env.BACKGROUND_SYNC_SYNC_INTERVAL, 10) || (
       process.env.NODE_ENV !== 'production'
 
-        // one minute
-        ? 1000 * 60
+        // five minutes
+        ? 1000 * 5 * 60
 
         // one hour
         : 1000 * 60 * 60
