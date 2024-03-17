@@ -6,6 +6,11 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 _**Note:** Yet to be released changes appear here._
 
+## 0.63.0
+
+* `FEAT`: suggest `@me` for all user filters ([#193](https://github.com/nikku/wuffle/pull/193))
+* `FIX`: prevent double commit of filter suggestion ([#194](https://github.com/nikku/wuffle/pull/194))
+
 ## 0.62.0
 
 * `FEAT`: suggest `assignee:@me` filter
