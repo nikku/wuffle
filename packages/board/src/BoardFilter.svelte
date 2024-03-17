@@ -46,7 +46,7 @@
 
   export let onChange;
 
-  const assigneePresets = [
+  const userPresets = [
     [ '@me', '@me' ]
   ].map(([ name, value ]) => {
     return { name, value };
@@ -75,7 +75,11 @@
     }),
     created: temporalPresets,
     updated: temporalPresets,
-    assignee: assigneePresets
+    assignee: userPresets,
+    author: userPresets,
+    reviewer: userPresets,
+    commented: userPresets,
+    involves: userPresets
   };
 
   $: dynamicValues = Object.entries(completionOptions).reduce((values, entry) => {
