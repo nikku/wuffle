@@ -83,7 +83,7 @@
 </style>
 
 <ul class={ [ className, 'hint-list', 'scroll-container-v' ].join(' ') }>
-  {#each hints as hint, idx}
+  {#each hints as hint(hint.name) }
     <li
       use:scrollIntoView={ [ hint, selectedHint ] }
     >
