@@ -62,7 +62,7 @@
     "@types/compression": "^1.7.2",
     "@types/express-session": "^1.17.10",
     "@types/mocha": "^10.0.6",
-    "chai": "^5.0.0",
+    "chai": "^4.4.1",
     "graphql": "^16.6.0",
     "mocha": "^10.3.0",
     "nock": "^13.5.4",
