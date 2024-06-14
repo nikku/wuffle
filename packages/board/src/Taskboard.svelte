@@ -1,5 +1,6 @@
 <script>
   import BoardFilter from './BoardFilter.svelte';
+  import QuickFilters from './QuickFilters.svelte';
 
   import Avatar from './components/Avatar.svelte';
   import Loader from './components/Loader.svelte';
@@ -798,6 +799,10 @@
   .taskboard {
     position: relative;
   }
+
+  .navbar-collapse {
+    justify-content: space-between;
+  }
 </style>
 
 <svelte:window on:keydown={ handleGlobalKey } />
@@ -867,6 +872,10 @@
           completionOptions={ filterOptions }
           onChange={ filterChanged }
           placeholder={ 'Filter board...' }
+        />
+        <QuickFilters
+          setFilter={ filterChanged }
+          currentFilter={ filter }
         />
       </form>
 
