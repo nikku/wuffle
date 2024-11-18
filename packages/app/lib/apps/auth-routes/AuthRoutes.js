@@ -134,12 +134,11 @@ export default function AuthRoutes(logger, router, securityContext) {
 
     const {
       access_token
-    } = await fetch('https://github.com/login/oauth/access_token', {
+    } = await fetch(`https://github.com/login/oauth/access_token?${params.toString()}`, {
       headers: {
         'Accept': 'application/json'
       },
-      method: 'POST',
-      body: params
+      method: 'POST'
     }).then(res => {
 
       if (res.status >= 400) {
