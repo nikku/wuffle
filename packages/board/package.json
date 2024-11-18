@@ -1,6 +1,6 @@
 {
   "name": "wuffle-board",
-  "version": "0.63.0",
+  "version": "0.63.1",
   "private": true,
   "devDependencies": {
     "@bpmn-io/draggle": "^4.0.0",
