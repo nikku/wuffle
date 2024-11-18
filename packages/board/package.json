@@ -14,7 +14,7 @@
     "min-dash": "^4.1.1",
     "npm-run-all2": "^7.0.1",
     "octicons": "^8.5.0",
-    "postcss": "^8.4.35",
+    "postcss": "^8.4.49",
     "rollup": "^4.27.3",
     "rollup-plugin-copy": "^3.5.0",
     "rollup-plugin-css-only": "^4.5.2",
