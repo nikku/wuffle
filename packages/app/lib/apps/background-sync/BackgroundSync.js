@@ -171,7 +171,7 @@ We automatically synchronize all repositories you granted us access to via the G
               response => response.data.filter(issue => !('pull_request' in issue))
             ),
 
-            // open pulls
+            // open pulls, all
             octokit.paginate(
               octokit.pulls.list,
               {
@@ -324,8 +324,19 @@ We automatically synchronize all repositories you granted us access to via the G
       let expired = false;
       let removed = false;
 
+      // if an open issue or pull request links to
+      // a non-existing repository, then it must have been
+      // removed
       if (!repositories[issue.repository.id]) {
         log.debug({ issue: key }, 'cleanup -> repository removed');
+
+        removed = true;
+      }
+
+      // if an open pull request was not found (we always
+      // fetch all), then it must have been deleted
+      if (issue.pull_request && issue.state === 'open') {
+        log.debug({ issue: key }, 'cleanup -> pull request deleted');
 
         removed = true;
       }
