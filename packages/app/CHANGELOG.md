@@ -6,6 +6,12 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 _**Note:** Yet to be released changes appear here._
 
+## 0.63.1
+
+* `FIX`: clean up open PRs that were not found on GitHub ([#216](https://github.com/nikku/wuffle/issues/216))
+* `DEPS`: update to `compression@1.7.1`
+* `DEPS`: update to `express-session@1.18.1`
+
 ## 0.63.0
 
 * `FEAT`: suggest `@me` for all user filters ([#193](https://github.com/nikku/wuffle/pull/193))
