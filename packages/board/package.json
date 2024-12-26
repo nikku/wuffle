@@ -9,7 +9,6 @@
     "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-url": "^8.0.2",
     "bootstrap": "^4.6.1",
-    "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-svelte": "^2.46.1",
     "min-dash": "^4.2.2",
     "npm-run-all2": "^7.0.2",
@@ -29,7 +28,7 @@
   },
   "scripts": {
     "test": "echo \"no tests\"",
-    "lint": "eslint --ext js,svelte .",
+    "lint": "eslint .",
     "build": "run-p build:*:prod",
     "build:watch": "run-p build:*:watch",
     "build:js": "rollup -c",

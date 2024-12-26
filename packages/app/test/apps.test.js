@@ -15,7 +15,7 @@ function enableConnect() {
 }
 
 
-describe('apps', () => {
+describe('apps', function() {
 
   before(disableConnect);
 
