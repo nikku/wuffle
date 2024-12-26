@@ -60,8 +60,8 @@
     "@graphql-eslint/eslint-plugin": "^3.20.1",
     "@octokit/graphql-schema": "^15.0.0",
     "@types/compression": "^1.7.2",
-    "@types/express-session": "^1.18.0",
-    "@types/mocha": "^10.0.9",
+    "@types/express-session": "^1.18.1",
+    "@types/mocha": "^10.0.10",
     "chai": "^4.5.0",
     "graphql": "^16.6.0",
     "mocha": "^10.8.2",
@@ -70,7 +70,7 @@
     "npm-run-all2": "^7.0.1",
     "sinon": "^18.0.1",
     "sinon-chai": "^3.7.0",
-    "typescript": "^5.6.3"
+    "typescript": "^5.7.2"
   },
   "engines": {
     "node": ">= 18"
