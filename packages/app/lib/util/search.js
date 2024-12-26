@@ -9,7 +9,7 @@ export function parseTemporalFilter(str) {
   }
 
   const [
-    _, // eslint-disable-line
+    _,
     qualifier,
     dateString,
     range
@@ -75,7 +75,7 @@ export function parseSearch(str) {
   while ((match = regexp.exec(str))) {
 
     const [
-      _, // eslint-disable-line
+      _,
       text,
       textEscaped,
       negated,
