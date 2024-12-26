@@ -2,6 +2,8 @@ import { parseSearch, parseTemporalFilter } from '../../util/index.js';
 import { issueIdent } from '../../util/index.js';
 import { LinkTypes } from '../../links.js';
 
+import Fuse from 'fuse.js';
+
 const CHILD_LINK_TYPES = {
   [ LinkTypes.CHILD_OF ]: true,
   [ LinkTypes.CLOSES ]: true
@@ -24,6 +26,16 @@ export default function Search(config, logger, store) {
 
   const log = logger.child({
     name: 'wuffle:search'
+  });
+
+  let cursor = store.getUpdateCursor();
+
+  const index = Fuse.createIndex([], []);
+
+  index.create();
+
+  store.on('updated', () => {
+
   });
 
   function filterNoop(issue) {
@@ -334,12 +346,12 @@ export default function Search(config, logger, store) {
   }
 
   /**
-   * Retrieve a filter function from the given search string.
+   * Retrieve a issues that match a certain search criteria.
    *
    * @param {string} search
    * @param {import('../../types.js').GitHubUser} [user]
    *
-   * @return {Function}
+   * @return {Issue[]}
    */
   function getSearchFilter(search, user) {
 
@@ -366,5 +378,5 @@ export default function Search(config, logger, store) {
 
   // api ///////////////////////
 
-  this.getSearchFilter = getSearchFilter;
+  this.search = search;
 }

@@ -183,8 +183,10 @@ export default class Store {
       }
 
       // ensure board is re-computed on next request
-
       this.boardCache = null;
+
+      // allow others to hook into updates
+      await this.emit('updated');
     }, 250);
 
   }
