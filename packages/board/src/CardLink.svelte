@@ -9,28 +9,27 @@
     isAddFilterClick
   } from './shortcuts';
 
-  export let item;
+  let {
+    children,
+    item,
+    ref,
+    onSelect,
+    hovered = false,
+    type
+  } = $props();
 
-  export let ref;
+  const number = $derived(item.number);
+  const title = $derived(item.title);
+  const repository = $derived(item.repository);
+  const pull_request = $derived(item.pull_request);
+  const state = $derived(item.state);
+  const state_reason = $derived(item.state_reason);
 
-  export let onSelect;
+  const repositoryName = $derived(`${repository.owner.login}/${repository.name}`);
 
-  export let hovered = false;
+  const cardUrl = $derived(`https://github.com/${ repositoryName }/issues/${ number }${ ref || '' }`);
 
-  export let type;
-
-  $: number = item.number;
-  $: title = item.title;
-  $: repository = item.repository;
-  $: pull_request = item.pull_request;
-  $: state = item.state;
-  $: state_reason = item.state_reason;
-
-  $: repositoryName = `${repository.owner.login}/${repository.name}`;
-
-  $: cardUrl = `https://github.com/${ repositoryName }/issues/${ number }${ ref || '' }`;
-
-  $: linkTitle = ({
+  const linkTitle = $derived(({
     CHILD_OF: 'Child of',
     DEPENDS_ON: 'Depends on',
     PARENT_OF: 'Parent of',
@@ -39,7 +38,7 @@
     CLOSES: 'Closes',
     LINKED_TO: 'Linked to',
     LINKED_BY: 'Linked by'
-  })[type] || type;
+  })[type] || type);
 
   function handleSelection(qualifier, value) {
 
@@ -56,38 +55,18 @@
   }
 </script>
 
-<style lang="scss">
-  @import "./Card";
-
-  .card-link {
-    border-top: solid 1px #F0F0F0;
-    margin-top: 2px;
-    padding-top: 2px;
-  }
-
-  .card-link .short-title {
-    flex: 1;
-  }
-
-  :global {
-    .card-link .epic {
-      color: #1d76db;
-    }
-  }
-</style>
-
 <div class="card-link"
   class:hovered={ hovered }
-  on:mouseenter={ () => hovered = true }
-  on:mouseleave={ () => hovered = false }
-  aria-hidden="true"
+  onmouseenter={ () => hovered = true }
+  onmouseleave={ () => hovered = false }
+  role="paragraph"
 >
   <div class="header">
     <a href={ cardUrl }
        target="_blank"
        rel="noopener noreferrer"
        class="issue-number"
-       on:click={ handleSelection('ref', item.key) }
+       onclick={ handleSelection('ref', item.key) }
        title="{ linkTitle } { repositoryName }#{ number }"
      >
       {#if pull_request }
@@ -122,5 +101,25 @@
     </span>
   </div>
 
-  <slot></slot>
+  {@render children?.()}
 </div>
+
+<style lang="scss">
+  @import "./Card";
+
+  .card-link {
+    border-top: solid 1px #F0F0F0;
+    margin-top: 2px;
+    padding-top: 2px;
+  }
+
+  .card-link .short-title {
+    flex: 1;
+  }
+
+  :global {
+    .card-link .epic {
+      color: #1d76db;
+    }
+  }
+</style>

@@ -1,3 +1,17 @@
+<script>
+  let {
+    className = '',
+    shown = true,
+    children
+  } = $props();
+</script>
+
+<div class="loader { className }" class:shown={ shown }>
+  <div class="content">
+    {@render children?.() }
+  </div>
+</div>
+
 <style lang="scss">
   .loader {
 
@@ -26,7 +40,6 @@
     }
   }
 
-
   @keyframes pulsate {
     0% {
       transform: scale(1);
@@ -44,14 +57,3 @@
     }
   }
 </style>
-
-<script>
-  export let className = '';
-  export let shown = true;
-</script>
-
-<div class="loader { className }" class:shown={ shown }>
-  <div class="content">
-    <slot></slot>
-  </div>
-</div>

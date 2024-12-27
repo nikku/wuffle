@@ -1,10 +1,24 @@
 <script>
   import { fly } from 'svelte/transition';
 
-  export let message;
-
-  export let type = 'info';
+  let {
+    message,
+    type = 'info',
+    children
+  } = $props();
 </script>
+
+<div
+  class="notification"
+  class:error={ type === 'error' }
+  class:warning={ type === 'warning' }
+  transition:fly
+>
+  <div class="heading">{ message }</div>
+  <div class="detail">
+    {@render children?.() }
+  </div>
+</div>
 
 <style lang="scss">
 
@@ -49,15 +63,3 @@
     margin-bottom: 5px;
   }
 </style>
-
-<div
-  class="notification"
-  class:error={ type === 'error' }
-  class:warning={ type === 'warning' }
-  transition:fly
->
-  <div class="heading">{ message }</div>
-  <div class="detail">
-    <slot></slot>
-  </div>
-</div>

@@ -1,28 +1,3 @@
-<style lang="scss">
-
-  @import "variables";
-
-  @import "./HelpDropdown";
-
-  .board-filter {
-    &.expanded {
-      width: 500px;
-      max-width: 100%;
-    }
-
-    > input {
-      width: 100%;
-    }
-
-    width: 300px;
-  }
-
-  .icon {
-    color: $gray-300;
-  }
-</style>
-
-
 <script>
   import { Id } from './util';
 
@@ -38,13 +13,13 @@
     debounce
   } from './util';
 
-  export let className = '';
-  export let value = '';
-  export let placeholder;
-
-  export let completionOptions = {};
-
-  export let onChange;
+  let {
+    className,
+    value,
+    placeholder,
+    completionOptions = {},
+    onChange
+  } = $props();
 
   const userPresets = [
     [ '@me', '@me' ]
@@ -82,19 +57,21 @@
     involves: userPresets
   };
 
-  $: dynamicValues = Object.entries(completionOptions).reduce((values, entry) => {
+  const dynamicValues = $derived(
+    Object.entries(completionOptions).reduce((values, entry) => {
 
-    const [ key, value ] = entry;
+      const [ key, value ] = entry;
 
-    values[key] = value.slice().sort().map(name => {
+      values[key] = value.slice().sort().map(name => {
 
-      const separator = !name.startsWith('"') ? '"' : '';
+        const separator = !name.startsWith('"') ? '"' : '';
 
-      return { name, value: `${separator}${name}${separator} ` };
-    });
+        return { name, value: `${separator}${name}${separator} ` };
+      });
 
-    return values;
-  }, {});
+      return values;
+    }, {})
+  );
 
   const qualifierCategories = [
     {
@@ -120,51 +97,50 @@
     }
   ];
 
-  let keyboardSelectedHint;
-  let mouseSelectedHint;
-
-  $: categoryValues = Object.keys({
-    ...staticValues,
-    ...dynamicValues
-  }).reduce((values, key) => {
-    values[key] = [].concat(staticValues[key] || [], dynamicValues[key] || []);
-
-    return values;
-  }, {});
-
-  $: selectedHint = mouseSelectedHint || keyboardSelectedHint;
-
   let input;
 
-  let focussed = false;
-  let match;
-  let allHints;
+  let focussed = $state(false);
 
-  let position = 0;
+  let position = $state(0);
 
-  $: expanded = focussed || value;
-  $: {
-    console.time('BoardFilter#computeMatch');
+  let keyboardSelectedHint = $state.raw(null);
+  let mouseSelectedHint = $state.raw(null);
 
-    let opts = computeMatch(value, position, categoryValues);
+  const selectedHint = $derived(
+    mouseSelectedHint || keyboardSelectedHint
+  );
 
-    console.timeEnd('BoardFilter#computeMatch');
+  const categoryValues = $derived(
+    Object.keys({
+      ...staticValues,
+      ...dynamicValues
+    }).reduce((values, key) => {
+      values[key] = [].concat(staticValues[key] || [], dynamicValues[key] || []);
 
-    match = opts.match;
-    allHints = opts.allHints;
+      return values;
+    }, {})
+  );
 
-    keyboardSelectedHint = (
-      allHints && keyboardSelectedHint && allHints.find(
-        hint => hint.name === keyboardSelectedHint.name
-      ) || opts.keyboardSelectedHint
-    );
+  const expanded = $derived(focussed || value);
+
+  const {
+    match,
+    allHints
+  } = $derived(computeMatch(value, position, categoryValues));
+
+  $effect(() => {
+    keyboardSelectedHint = keyboardSelectedHint && allHints.find(
+      hint => hint.name === keyboardSelectedHint.name
+    ) || allHints[0];
 
     mouseSelectedHint = null;
-  }
+  });
 
   const searchId = Id();
 
   function computeMatch(value, searchEnd, categoryValues) {
+
+    console.time('BoardFilter#computeMatch');
 
     const beforeCursor = value.substring(0, searchEnd);
 
@@ -175,10 +151,22 @@
     const match = /^([-!]?)(?:([\w]+)(?:(:)(?:"([\w-]+)"?|([\w-]+))?)?)$/.exec(value);
 
     if (!match) {
-      return {};
+      console.timeEnd('BoardFilter#computeMatch');
+
+      return {
+        allHints: [],
+        match: null
+      };
     }
 
-    let [ _, negator, qualifier, sep, qualifierText, qualifierTextEscaped ] = match;
+    let [
+      _,
+      negator,
+      qualifier,
+      sep,
+      qualifierText,
+      qualifierTextEscaped
+    ] = match;
 
     const search = sep ? (qualifierText || qualifierTextEscaped || '') : qualifier;
 
@@ -238,7 +226,6 @@
         return matchedValues;
       }, []);
 
-
       if (matchedValues.length) {
         matchedCategories.push({
           name: category.name,
@@ -249,18 +236,20 @@
       return matchedCategories;
     }, []);
 
+    console.timeEnd('BoardFilter#computeMatch');
+
     if (matchedCategories.length) {
 
       return {
-        match: { categories: matchedCategories },
-        keyboardSelectedHint: matchedCategories[0].values[0],
+        match: {
+          categories: matchedCategories
+        },
         allHints
       };
     }
 
     return {
       match: null,
-      keyboardSelectedHint: null,
       allHints: []
     };
   }
@@ -360,7 +349,7 @@
   }
 </script>
 
-<svelte:window on:keydown={ handleGlobalKey } />
+<svelte:window onkeydown={ handleGlobalKey } />
 
 <div class="board-filter { className } dropdown-parent { expanded && 'expanded' }">
   <input
@@ -373,10 +362,10 @@
     title={ placeholder + ' (ctrl + k, f)'}
     bind:this={ input }
     bind:value={ value }
-    on:input={ handleInput }
-    on:keydown={ handleInputKey }
-    on:focus={ () => focussed = true }
-    on:blur={ () => focussed = false }
+    oninput={ handleInput }
+    onkeydown={ handleInputKey }
+    onfocus={ () => focussed = true }
+    onblur={ () => focussed = false }
   />
 
   {#if focussed && value && match}
@@ -410,3 +399,27 @@
     </div>
   {/if}
 </div>
+
+<style lang="scss">
+
+  @import "variables";
+
+  @import "./HelpDropdown";
+
+  .board-filter {
+    &.expanded {
+      width: 500px;
+      max-width: 100%;
+    }
+
+    > input {
+      width: 100%;
+    }
+
+    width: 300px;
+  }
+
+  .icon {
+    color: $gray-300;
+  }
+</style>

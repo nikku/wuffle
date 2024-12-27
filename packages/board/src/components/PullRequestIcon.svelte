@@ -1,34 +1,13 @@
 <script>
-  export let item;
+  let {
+    item
+  } = $props();
 
-  $: merged = item.merged;
-  $: _open = item.state === 'open';
-  $: closed = item.state === 'closed';
-  $: draft = item.draft || false;
+  const merged = $derived(item.merged);
+  const _open = $derived(item.state === 'open');
+  const closed = $derived(item.state === 'closed');
+  const draft = $derived(item.draft || false);
 </script>
-
-<style lang="scss">
-
-  .pull-request-icon {
-    margin-right: 3px;
-
-    &.open {
-      color: #1a7f37;
-    }
-
-    &.closed {
-      color: #cf222e;
-    }
-
-    &.merged {
-      color: #8250df;
-    }
-
-    &.draft {
-      color: #57606a;
-    }
-  }
-</style>
 
 {#if closed}
 
@@ -53,3 +32,26 @@
   {/if}
 
 {/if}
+
+<style lang="scss">
+
+  .pull-request-icon {
+    margin-right: 3px;
+
+    &.open {
+      color: #1a7f37;
+    }
+
+    &.closed {
+      color: #cf222e;
+    }
+
+    &.merged {
+      color: #8250df;
+    }
+
+    &.draft {
+      color: #57606a;
+    }
+  }
+</style>

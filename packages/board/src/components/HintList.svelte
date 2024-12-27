@@ -1,12 +1,12 @@
 <script>
-  export let className = '';
-
-  export let hints;
-  export let selectedHint;
-
-  export let onHover;
-  export let onBlur;
-  export let onSelect;
+  let {
+    className = '',
+    hints,
+    selectedHint,
+    onHover,
+    onBlur,
+    onSelect
+  } = $props();
 
   function handleMousedown(event, hint) {
 
@@ -36,6 +36,23 @@
     return hook;
   }
 </script>
+
+<ul class={ [ className, 'hint-list', 'scroll-container-v' ].join(' ') }>
+  {#each hints as hint(hint.name) }
+    <li
+      use:scrollIntoView={ [ hint, selectedHint ] }
+    >
+      <a
+        class:active={ selectedHint === hint }
+        onmouseenter={ () => onHover(hint) }
+        onmouseleave={ () => onBlur(hint) }
+        onmousedown={ (e) => handleMousedown(e, hint) }
+        onclick={ (e) => e.preventDefault() || handleMousedown(e, hint) }
+        href
+      >{#each hint.parts as part}<span class:matched={ part.matched }>{ part.text }</span>{/each}</a>
+    </li>
+  {/each}
+</ul>
 
 <style lang="scss">
 
@@ -81,20 +98,3 @@
     color: darken($primary, 10%);
   }
 </style>
-
-<ul class={ [ className, 'hint-list', 'scroll-container-v' ].join(' ') }>
-  {#each hints as hint(hint.name) }
-    <li
-      use:scrollIntoView={ [ hint, selectedHint ] }
-    >
-      <a
-        class:active={ selectedHint === hint }
-        on:mouseenter={ () => onHover(hint) }
-        on:mouseleave={ () => onBlur(hint) }
-        on:mousedown={ (event) => handleMousedown(event, hint) }
-        on:click|preventDefault={ (event) => handleMousedown(event, hint) }
-        href
-      >{#each hint.parts as part}<span class:matched={ part.matched }>{ part.text }</span>{/each}</a>
-    </li>
-  {/each}
-</ul>
