@@ -608,6 +608,8 @@
             ? nextOrder - 811231.691
             : -71271.88455;
 
+    drake.cancel(true);
+
     handleCardDrop(
       itemsById[cardId],
       {
