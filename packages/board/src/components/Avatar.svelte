@@ -1,6 +1,15 @@
 <script>
-  export let rounded = false;
+  let {
+    rounded = false,
+    children
+  } = $props();
 </script>
+
+<span class="avatar" class:avatar-rounded={ rounded }>
+  {@render children?.()}
+
+  <div class="avatar-shadow"></div>
+</span>
 
 <style lang="scss">
   .avatar {
@@ -35,9 +44,3 @@
     }
   }
 </style>
-
-<span class="avatar" class:avatar-rounded={ rounded }>
-  <slot></slot>
-
-  <div class="avatar-shadow"></div>
-</span>

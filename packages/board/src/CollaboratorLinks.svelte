@@ -5,52 +5,58 @@
     isApplyFilterClick
   } from './shortcuts';
 
-  export let item;
-  export let onSelect;
+  let {
+    item,
+    onSelect
+  } = $props();
 
-  $: number = item.number;
-  $: repository = item.repository;
-  $: repositoryName = `${repository.owner.login}/${repository.name}`;
-  $: repoUrl = `https://github.com/${ repositoryName }`;
+  const number = $derived(item.number);
+  const repository = $derived(item.repository);
+  const repositoryName = $derived(`${repository.owner.login}/${repository.name}`);
+  const repoUrl = $derived(`https://github.com/${ repositoryName }`);
 
-  $: assignees = item.assignees;
+  const assignees = $derived(item.assignees);
 
-  $: comments = (
-    Array.isArray(item.comments) ? item.comments : []
-  ).map(comment => {
-    const {
-      user,
-      html_url
-    } = comment;
+  const comments = $derived(
+    (
+      Array.isArray(item.comments) ? item.comments : []
+    ).map(comment => {
+      const {
+        user,
+        html_url
+      } = comment;
 
-    return {
-      state: 'commented',
-      user,
-      html_url
-    };
-  });
+      return {
+        state: 'commented',
+        user,
+        html_url
+      };
+    })
+  );
 
-  $: requested_reviewers = item.requested_reviewers || [];
+  const requested_reviewers = $derived(item.requested_reviewers || []);
 
-  $: reviews = Object.values(
-    [].concat(comments, item.reviews || [])
-      .filter(review => !requested_reviewers.find(reviewer => reviewer.login === review.user.login))
-      .reduce((byUser, review) => {
+  const reviews = $derived(
+    Object.values(
+      [].concat(comments, item.reviews || [])
+        .filter(review => !requested_reviewers.find(reviewer => reviewer.login === review.user.login))
+        .reduce((byUser, review) => {
 
-        const existingReview = byUser[review.user.login];
+          const existingReview = byUser[review.user.login];
 
-        // keep last definitive review (approved, changes_requested)
-        // to match GitHub display and behavior
-        if (
-          !existingReview ||
-          existingReview.state === 'commented' ||
-          review.state !== 'commented'
-        ) {
-          byUser[review.user.login] = review;
-        }
+          // keep last definitive review (approved, changes_requested)
+          // to match GitHub display and behavior
+          if (
+            !existingReview ||
+            existingReview.state === 'commented' ||
+            review.state !== 'commented'
+          ) {
+            byUser[review.user.login] = review;
+          }
 
-        return byUser;
-      }, {})
+          return byUser;
+        }, {})
+    )
   );
 
   const stateToVerb = {
@@ -74,6 +80,50 @@
     };
   }
 </script>
+
+{#each requested_reviewers as reviewer}
+  <a
+    class="assignee requested-reviewer"
+    title="{ reviewer.login } requested for review"
+    href={ reviewer.html_url }
+    onclick={ handleSelection('involves', reviewer.login) }
+    target="_blank"
+    rel="noopener noreferrer">
+    <img src="{ reviewer.avatar_url }&s=40" alt="{ reviewer.login } avatar" />
+    <div class="icon-shadow"></div>
+  </a>
+{/each}
+
+{#each reviews as review}
+  <a
+    class="assignee reviewer"
+    class:approved={ review.state === 'approved' }
+    class:requested-changes={ review.state === 'changes_requested' }
+    class:commented={ review.state === 'commented' || review.state === 'dismissed' }
+    title="{ review.user.login } { stateToVerb[review.state] }"
+    href={ review.html_url || `${repoUrl}/pull/${number}#pullrequestreview-${review.id}` }
+    onclick={ handleSelection('involves', review.user.login) }
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    <img src="{ review.user.avatar_url }&s=40" alt="{ review.user.login } avatar" />
+    <div class="icon-shadow"></div>
+  </a>
+{/each}
+
+{#each assignees as assignee}
+  <a
+    class="assignee"
+    title="{ assignee.login } assigned"
+    onclick={ handleSelection('involves', assignee.login) }
+    href={ assignee.html_url }
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    <img src="{ assignee.avatar_url }&s=40" alt="{ assignee.login } avatar" />
+    <div class="icon-shadow"></div>
+  </a>
+{/each}
 
 <style lang="scss">
   @import "variables";
@@ -160,47 +210,3 @@
     }
   }
 </style>
-
-{#each requested_reviewers as reviewer}
-  <a
-    class="assignee requested-reviewer"
-    title="{ reviewer.login } requested for review"
-    href={ reviewer.html_url }
-    on:click={ handleSelection('involves', reviewer.login) }
-    target="_blank"
-    rel="noopener noreferrer">
-    <img src="{ reviewer.avatar_url }&s=40" alt="{ reviewer.login } avatar" />
-    <div class="icon-shadow"></div>
-  </a>
-{/each}
-
-{#each reviews as review}
-  <a
-    class="assignee reviewer"
-    class:approved={ review.state === 'approved' }
-    class:requested-changes={ review.state === 'changes_requested' }
-    class:commented={ review.state === 'commented' || review.state === 'dismissed' }
-    title="{ review.user.login } { stateToVerb[review.state] }"
-    href={ review.html_url || `${repoUrl}/pull/${number}#pullrequestreview-${review.id}` }
-    on:click={ handleSelection('involves', review.user.login) }
-    target="_blank"
-    rel="noopener noreferrer"
-  >
-    <img src="{ review.user.avatar_url }&s=40" alt="{ review.user.login } avatar" />
-    <div class="icon-shadow"></div>
-  </a>
-{/each}
-
-{#each assignees as assignee}
-  <a
-    class="assignee"
-    title="{ assignee.login } assigned"
-    on:click={ handleSelection('involves', assignee.login) }
-    href={ assignee.html_url }
-    target="_blank"
-    rel="noopener noreferrer"
-  >
-    <img src="{ assignee.avatar_url }&s=40" alt="{ assignee.login } avatar" />
-    <div class="icon-shadow"></div>
-  </a>
-{/each}

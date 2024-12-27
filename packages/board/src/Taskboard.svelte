@@ -48,65 +48,73 @@
 
   const navId = Id();
 
-  let name = '';
-  let columns = [];
-  let items = {};
+  let name = $state('');
+  let columns = $state([]);
+  let items = $state({});
 
-  let itemsById = {};
+  let itemsById = $state({});
 
-  let loading = true;
-  let updating = 0;
-  let error = null;
-  let warnings = [];
+  let loading = $state(true);
+  let updating = $state(0);
+  let error = $state(null);
+  let warnings = $state([]);
 
-  let user = null;
-  let cursor = null;
+  let user = $state(null);
+  let cursor = $state(null);
 
-  let accessNotification = false;
+  let accessNotification = $state(false);
 
-  let showCreate = false;
+  let showCreate = $state(false);
 
-  let renderCountByColumn = {};
+  let renderCountByColumn = $state({});
 
-  let filterOptions = {};
+  let filterOptions = $state({});
 
-  $: defaultCollapsed = columns.reduce((defaultCollapsed, column) => {
-    defaultCollapsed[column.name] = column.collapsed;
+  const defaultCollapsed = $derived(
+    columns.reduce((defaultCollapsed, column) => {
+      defaultCollapsed[column.name] = column.collapsed;
 
-    return defaultCollapsed;
-  }, {});
+      return defaultCollapsed;
+    }, {})
+  );
 
-  let filter = parseSearchFilter();
+  let filter = $state(parseSearchFilter());
 
-  let localCollapsed = parseCollapsedColumns();
+  let localCollapsed = $state(parseCollapsedColumns());
 
-  $: collapsed = {
-    ...defaultCollapsed,
-    ...localCollapsed
-  };
+  const collapsed = $derived(
+    {
+      ...defaultCollapsed,
+      ...localCollapsed
+    }
+  );
 
-  $: updateBoardLocation(filter, localCollapsed);
+  $effect(() => updateBoardLocation(filter, localCollapsed));
 
   // shown items
-  $: shownItems = Object.keys(items).reduce((shownItems, column) => {
+  const shownItems = $derived(
+    Object.keys(items).reduce((shownItems, column) => {
 
-    const columnItems = items[column];
+      const columnItems = items[column];
 
-    shownItems[column] = columnItems.filter(item => !isClosingPull(item));
+      shownItems[column] = columnItems.filter(item => !isClosingPull(item));
 
-    return shownItems;
-  }, {});
+      return shownItems;
+    }, {})
+  );
 
   // actually rendered items
-  $: renderedItems = Object.keys(shownItems).reduce((renderedItems, column) => {
+  const renderedItems = $derived(
+    Object.keys(shownItems).reduce((renderedItems, column) => {
 
-    const renderCount = renderCountByColumn[column] || DEFAULT_PER_COLUMN_RENDER_COUNT;
-    const items = shownItems[column];
+      const renderCount = renderCountByColumn[column] || DEFAULT_PER_COLUMN_RENDER_COUNT;
+      const items = shownItems[column];
 
-    renderedItems[column] = items.slice(0, renderCount);
+      renderedItems[column] = items.slice(0, renderCount);
 
-    return renderedItems;
-  }, {});
+      return renderedItems;
+    }, {})
+  );
 
   function action(name, options = {}) {
 
@@ -786,21 +794,7 @@
   }
 </script>
 
-<style lang="scss">
-  @import "variables";
-
-  @import "./Taskboard";
-
-  .muted {
-    color:  $gray-600;
-  }
-
-  .taskboard {
-    position: relative;
-  }
-</style>
-
-<svelte:window on:keydown={ handleGlobalKey } />
+<svelte:window onkeydown={ handleGlobalKey } />
 
 <div class="taskboard">
 
@@ -822,7 +816,7 @@
 
       <p>We could not load the board.</p>
 
-      <button class="btn btn-primary" on:click={ () => loadBoard() }>
+      <button class="btn btn-primary" onclick={ () => loadBoard() }>
         Retry
       </button>
     </div>
@@ -861,7 +855,7 @@
 
     <div class="collapse navbar-collapse" id={navId}>
 
-      <form class="form-inline board-filter-parent my-2 my-lg-0" on:submit|preventDefault={ () => {} }>
+      <form class="form-inline board-filter-parent my-2 my-lg-0" onsubmit={ (e) => e.preventDefault() }>
         <BoardFilter
           value={ filter }
           completionOptions={ filterOptions }
@@ -870,8 +864,8 @@
         />
       </form>
 
-      <form class="form-inline mx-3 my-2 my-sm-0" on:submit|preventDefault={ openCreateIssue }>
-        <button class="btn btn-outline-primary" type="submit" title="Create new issue (n)">
+      <form class="form-inline mx-3 my-2 my-sm-0" onsubmit={ (e) => e.preventDefault() || openCreateIssue() }>
+        <button class="btn btn-outline-primary" type="submit" title="Create new issue (n)" aria-label="Create new issue (n)">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" height="16" fill="currentColor"><path fill-rule="evenodd" d="M7.75 2a.75.75 0 01.75.75V7h4.25a.75.75 0 110 1.5H8.5v4.25a.75.75 0 11-1.5 0V8.5H2.75a.75.75 0 010-1.5H7V2.75A.75.75 0 017.75 2z"></path></svg>
         </button>
       </form>
@@ -903,7 +897,7 @@
             <button
               class="taskboard-column-collapse btn btn-link"
               title="{ collapsed[column.name] ? 'Expand' : 'Collapse' } column"
-              on:click={ (e) => e.preventDefault() || toggleCollapse(column) }
+              oncclick={ (e) => e.preventDefault() || toggleCollapse(column) }
             >
               {#if collapsed[column.name] }
                 <svg viewBox="64 64 896 896" height="1em" aria-hidden="true" fill="currentColor"><path d="M602 548c0 4 4 8 8 8h186v74c0 6 7 9 11 6l150-120c3-3 3-8 0-11L807 386c-4-4-11-1-11 5v75H609c-4 0-7 3-7 7zM68 514l149 122c4 3 11 0 11-6v-76h186c4 0 8-2 8-6v-77c0-4-4-7-8-7H228v-75c0-6-7-9-11-5L68 503c-4 3-4 8 0 11z"/></svg>
@@ -922,7 +916,7 @@
           {#if !collapsed[column.name] }
             <div class="taskboard-column-items scroll-container-v"
                  data-column-id={ column.name }
-                 on:scroll={ checkRender(column.name) }>
+                 onscroll={ checkRender(column.name) }>
 
               {#each (renderedItems[column.name] || []) as item, index (item.id) }
                 <div
@@ -944,3 +938,17 @@
     {/if}
   </main>
 </div>
+
+<style lang="scss">
+  @import "variables";
+
+  @import "./Taskboard";
+
+  .muted {
+    color:  $gray-600;
+  }
+
+  .taskboard {
+    position: relative;
+  }
+</style>

@@ -1,5 +1,4 @@
 <script>
-
   import { onMount } from 'svelte';
 
   import { HintList } from './components';
@@ -8,40 +7,33 @@
 
   const inputId = Id();
 
-  export let onClose;
+  let {
+    repositories,
+    header,
+    onClose,
+    onSelect
+  } = $props();
 
-  export let repositories;
+  let input = null;
 
-  export let onSelect;
+  let value = $state('');
 
-  let matchedHints;
+  let mouseSelectedHint = $state.raw(null);
+  let keyboardSelectedHint = $state.raw(null);
 
-  let keyboardSelectedHint;
-  let mouseSelectedHint;
+  const matchedHints = $derived(computeMatch(value, repositories));
 
-  let value = '';
+  $effect(() => {
+    keyboardSelectedHint = keyboardSelectedHint && matchedHints.find(
+      hint => hint.name === keyboardSelectedHint.name
+    ) || matchedHints[0];
+  });
 
-  let input;
-
-  $: {
-    console.time('RepositorySelect#computeMatch');
-
-    let opts = computeMatch(value, repositories);
-
-    console.timeEnd('RepositorySelect#computeMatch');
-
-    matchedHints = opts.matchedHints;
-
-    keyboardSelectedHint = (
-      matchedHints && keyboardSelectedHint && matchedHints.find(
-        hint => hint.name === keyboardSelectedHint.name
-      ) || opts.keyboardSelectedHint
-    );
-  }
-
-  $: selectedHint = mouseSelectedHint || keyboardSelectedHint;
+  const selectedHint = $derived(mouseSelectedHint || keyboardSelectedHint);
 
   function computeMatch(search, repositories) {
+
+    console.time('RepositorySelect#computeMatch');
 
     const matchedHints = repositories.reduce((matchedHints, name) => {
 
@@ -79,10 +71,9 @@
       return matchedHints;
     }, []);
 
-    return {
-      keyboardSelectedHint: matchedHints[0],
-      matchedHints
-    };
+    console.timeEnd('RepositorySelect#computeMatch');
+
+    return matchedHints;
   }
 
   function applyHint(hint) {
@@ -98,10 +89,6 @@
     const [ owner, repo ] = val.split('/');
 
     return onSelect(owner, repo);
-  }
-
-  function handleInput(event) {
-    value = event.target.value;
   }
 
   function nextHint(currentHint, direction) {
@@ -181,6 +168,46 @@
   }
 </script>
 
+<svelte:window onkeydown={ checkClose } />
+
+<div class="repository-select">
+  <div aria-hidden="true" class="overlay" onclick={ onClose }></div>
+
+  <form class="issue-creator px-4 py-2" onsubmit={ checkSubmit }>
+
+    {@render header()}
+
+    <div class="form-group dropdown-parent">
+
+      <input
+        id={ inputId }
+        bind:this={ input }
+        bind:value={ value }
+        onkeydown={ handleInputKey }
+        placeholder="Choose repository"
+        autocomplete="off"
+        spellcheck="false"
+        aria-label="Repository name input"
+        class="form-control form-control-lg"
+        type="text"
+      />
+
+      {#if value && matchedHints.length }
+        <div class="help-dropdown">
+          <HintList
+            hints={ matchedHints }
+            selectedHint={ selectedHint }
+            onHover={ hint => mouseSelectedHint = hint }
+            onBlur={ () => mouseSelectedHint = null }
+            onSelect={ applyHint }
+          />
+        </div>
+      {/if}
+    </div>
+  </form>
+
+</div>
+
 <style lang="scss">
 
   @import './HelpDropdown';
@@ -219,44 +246,3 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   }
 </style>
-
-<svelte:window on:keydown={ checkClose } />
-
-<div class="repository-select">
-  <div aria-hidden="true" class="overlay" on:click={ onClose }></div>
-
-  <form class="issue-creator px-4 py-2" on:submit={ checkSubmit }>
-
-    <slot name="header"></slot>
-
-    <div class="form-group dropdown-parent">
-
-      <input
-        id={ inputId }
-        bind:this={ input }
-        value={ value }
-        on:input={ handleInput }
-        on:keydown={ handleInputKey }
-        placeholder="Choose repository"
-        autocomplete="off"
-        spellcheck="false"
-        aria-label="Repository name input"
-        class="form-control form-control-lg"
-        type="text"
-      />
-
-      {#if value && matchedHints.length }
-        <div class="help-dropdown">
-          <HintList
-            hints={ matchedHints }
-            selectedHint={ selectedHint }
-            onHover={ hint => mouseSelectedHint = hint }
-            onBlur={ () => mouseSelectedHint = null }
-            onSelect={ applyHint }
-          />
-        </div>
-      {/if}
-    </div>
-  </form>
-
-</div>

@@ -1,26 +1,10 @@
-<style lang="scss">
-  .icon {
-    margin-right: 3px;
-
-    &.closed {
-      color: #8250df;
-    }
-
-    &.open {
-      color: #1a7f37;
-    }
-
-    &.not-planned {
-      color: #6e7781
-    }
-  }
-</style>
-
 <script>
-  export let name;
-  export let state = '';
-  export let state_reason = '';
-  export let className = '';
+  let {
+    name,
+    state = '',
+    state_reason = '',
+    className = ''
+  } = $props();
 </script>
 
 {#if name === 'issue' || name === 'linked-to' }
@@ -65,10 +49,26 @@
 
 {/if}
 
-
 {#if name === 'epic'}
   <svg class="icon epic { state_reason === 'not_planned' ? 'not-planned' : '' } { className }" width="1em" height="1em" viewBox="0 0 16 16" version="1.1" aria-hidden="true" fill="currentColor">
     <path d="M8.006 1.078a.748.748 0 0 0-.477.172L3.64 4.36l-.002.002-.088.07h.012c-.344.32-.561.773-.561 1.28v8.538a.75.75 0 0 0 1.227.578L8 11.723l3.773 3.105A.75.75 0 0 0 13 14.25V5.711c0-.527-.234-1-.604-1.32h-.002l-.01-.008a1.76 1.76 0 0 0-.075-.062L8.482 1.25a.748.748 0 0 0-.476-.173Zm0 1.723.002.002L11.4 5.516h.002a.246.246 0 0 1 .098.195v6.95l-3.023-2.49a.749.749 0 0 0-.954 0L4.5 12.662V5.71c0-.082.04-.152.102-.197h.002c1.135-.903 3.402-2.713 3.402-2.713Z"/>
   </svg>
 {/if}
 
+<style lang="scss">
+  .icon {
+    margin-right: 3px;
+
+    &.closed {
+      color: #8250df;
+    }
+
+    &.open {
+      color: #1a7f37;
+    }
+
+    &.not-planned {
+      color: #6e7781
+    }
+  }
+</style>

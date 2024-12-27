@@ -1,3 +1,13 @@
+<script>
+  let {
+    children
+  } = $props();
+</script>
+
+<div class="notifications">
+  {@render children?.() }
+</div>
+
 <style lang="scss">
   .notifications {
     position: fixed;
@@ -6,7 +16,3 @@
     right: 24px;
   }
 </style>
-
-<div class="notifications">
-  <slot></slot>
-</div>

@@ -1,11 +1,12 @@
 <script>
   import RepositorySelect from './RepositorySelect.svelte';
 
-  export let repositories;
-
-  export let open;
-  export let onCreate;
-  export let onClose;
+  let {
+    repositories,
+    open,
+    onCreate,
+    onClose
+  } = $props();
 </script>
 
 {#if open}
@@ -14,8 +15,10 @@
     onClose={ onClose }
     onSelect={ onCreate }
   >
-    <h4 slot="header" class="chooser-header my-3">
-      Create new Issue
-    </h4>
+    {#snippet header()}
+      <h4 class="chooser-header my-3">
+        Create new Issue
+      </h4>
+    {/snippet}
   </RepositorySelect>
 {/if}

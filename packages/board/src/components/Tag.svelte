@@ -17,15 +17,16 @@
     return hsp > 145;
   }
 
-  export let title = '';
-  export let name;
-  export let color = '';
-  export let className = '';
+  let {
+    title = '',
+    name,
+    color = null,
+    className = '',
+    onclick,
+    href = null
+  } = $props();
 
-  export let onClick;
-  export let href = null;
-
-  $: inverted = color && isLight(color);
+  const inverted = $derived(color && isLight(color));
 </script>
 
 {#if href}
@@ -37,15 +38,15 @@
     class:inverted={ inverted }
     class="tag { className }"
     style="background-color: { color }"
-    on:click={ onClick }
+    onclick={ onclick }
   >{ name }</a>
 {:else}
   <button
     class:inverted={ inverted }
     class="tag { className }"
-    class:clickable={ onClick }
+    class:clickable={ onclick }
     style="background-color: { color }"
-    on:click={ onClick }
+    onclick={ onclick }
     title={ title || name }
   >{ name }</button>
 {/if}
