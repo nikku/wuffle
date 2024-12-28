@@ -1,4 +1,9 @@
 <script>
+  import { onMount } from 'svelte';
+
+  import Dragula from '@bpmn-io/draggle';
+
+
   import BoardFilter from './BoardFilter.svelte';
 
   import Avatar from './components/Avatar.svelte';
@@ -14,8 +19,6 @@
   import CreateIssue from './CreateIssue.svelte';
 
   import Api from './Api';
-
-  import Dragula from '@bpmn-io/draggle';
 
   import {
     isNewIssueShortcut,
@@ -35,8 +38,6 @@
 
   import loaderImage from './logo-gray.svg';
   import errorImage from './error.svg';
-
-  import { onMount } from 'svelte';
 
   const DEFAULT_PER_COLUMN_RENDER_COUNT = 15;
 
