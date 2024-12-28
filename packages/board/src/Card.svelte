@@ -171,7 +171,7 @@
     <div class="footer">
       {#if milestone}
         <Tag
-          class="tag milestone"
+          clazz="tag milestone"
           name={ milestone.title }
           href={ milestoneUrl }
           title={ milestone.title }
@@ -181,7 +181,7 @@
 
       {#each labels as { name, color }}
         <Tag
-          class="tag label"
+          clazz="tag label"
           color="#{ color }"
           name={ name }
           title={ name }

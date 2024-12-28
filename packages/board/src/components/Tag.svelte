@@ -20,8 +20,8 @@
   let {
     title = '',
     name,
-    color = null,
-    className = '',
+    color,
+    clazz = '',
     onclick,
     href = null
   } = $props();
@@ -36,14 +36,14 @@
     title={ title || name }
     rel="noopener noreferrer"
     class:inverted={ inverted }
-    class="tag { className }"
+    class="tag { clazz }"
     style="background-color: { color }"
     onclick={ onclick }
   >{ name }</a>
 {:else}
   <button
     class:inverted={ inverted }
-    class="tag { className }"
+    class="tag { clazz }"
     class:clickable={ onclick }
     style="background-color: { color }"
     onclick={ onclick }
