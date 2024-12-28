@@ -84,5 +84,21 @@ module.exports = [
       // minify in production
       production && terser()
     ]
+  },
+  {
+    input: 'src/register-service-worker.js',
+    output: {
+      sourcemap: true,
+      format: 'iife',
+      name: 'registerServiceWorker',
+      file: distDirectory + '/register-service-worker.js'
+    },
+    plugins: [
+      resolve(),
+      commonjs(),
+
+      // minify in production
+      production && terser()
+    ]
   }
 ];
