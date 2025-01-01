@@ -46,6 +46,7 @@
   overflow-x: auto;
 
   margin-top: 0;
+  padding: 0 var(--container-gap);
   gap: var(--container-gap);
 }
 
@@ -57,13 +58,13 @@
   border-radius: .25rem;
   background: #ebecf0;
 
-  --container-gap: .7rem;
-
   &.collapsed {
     min-width: 3rem;
 
     flex: 0;
   }
+
+  margin-bottom: var(--container-gap);
 }
 
 .taskboard-column-items {
@@ -143,6 +144,10 @@
   padding: 0 .25em;
 }
 
-.card-container + .card-container {
-  margin-top: var(--container-gap);
+.card-container {
+  margin: var(--container-gap);
+}
+
+.card-container:first-child {
+  margin-top: 0;
 }

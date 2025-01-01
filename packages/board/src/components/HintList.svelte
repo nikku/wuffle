@@ -64,6 +64,7 @@
     max-height: 200px;
     overflow-y: auto;
     padding: 0;
+    margin: 0;
   }
 
   .hint-list:not(:first-child) {
@@ -71,11 +72,19 @@
   }
 
   .hint-list li {
-    margin: 0;
+    margin: 0 var(--container-gap);
+  }
+
+  .hint-list li:first-child {
+    margin-top: var(--container-gap);
+  }
+
+  .hint-list li:last-child {
+    margin-bottom: var(--container-gap);
   }
 
   .hint-list li a {
-    padding: .25rem .35rem;
+    padding: calc(var(--container-gap) / 2) var(--container-gap);
     width: 100%;
     display: block;
     border-radius: 5px;
