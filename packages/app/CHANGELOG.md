@@ -6,6 +6,15 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 _**Note:** Yet to be released changes appear here._
 
+## 0.64.0
+
+* `FIX`: correct scrollable container styling
+* `CHORE`: migrate board to use `svelte@5`
+* `CHORE`: register service worker outside of main bundle
+* `DEPS`: update to `p-defer@4.0.1`
+* `DEPS`: update to `probot@13.4.1`
+* `DEPS`: update to `prexit@2.3.0`
+
 ## 0.63.1
 
 * `FIX`: clean up open PRs that were not found on GitHub ([#216](https://github.com/nikku/wuffle/issues/216))
