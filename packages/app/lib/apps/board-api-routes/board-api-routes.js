@@ -174,17 +174,17 @@ export default async function BoardApiRoutes(
 
     return filterBoardItems(req, items).then(filteredItems => {
 
-      res.type('json').json({
+      return res.type('json').json({
         items: filteredItems,
         cursor
-      });
+      }) && null;
     }).catch(err => {
       log.error({
         err,
         cursor
       }, 'failed to retrieve cards');
 
-      res.status(500).json({ error : true });
+      return res.status(500).json({ error : true }) && null;
     });
   });
 
@@ -206,7 +206,7 @@ export default async function BoardApiRoutes(
         };
       }),
       name: name || 'Wuffle Board'
-    });
+    }) && null;
 
   });
 
@@ -236,7 +236,7 @@ export default async function BoardApiRoutes(
     const user = authRoutes.getGitHubUser(req);
 
     if (!user) {
-      return res.status(401).json({});
+      return res.status(401).json({}) && null;
     }
 
     const body = JSON.parse(req.body);
@@ -251,13 +251,13 @@ export default async function BoardApiRoutes(
     const issue = await store.getIssueById(id);
 
     if (!issue) {
-      return res.status(404).json({});
+      return res.status(404).json({}) && null;
     }
 
     const column = columns.getByName(columnName);
 
     if (!column) {
-      return res.status(404).json({});
+      return res.status(404).json({}) && null;
     }
 
     const repo = repoAndOwner(issue);
@@ -265,7 +265,7 @@ export default async function BoardApiRoutes(
     const canWrite = await userAccess.canWrite(user, repo);
 
     if (!canWrite) {
-      return res.status(403).json({});
+      return res.status(403).json({}) && null;
     }
 
     const octokit = await githubClient.getUserScoped(user);
@@ -288,7 +288,7 @@ export default async function BoardApiRoutes(
 
         res.status(500).json({ error : true });
       })
-    );
+    ) && null;
 
   });
 

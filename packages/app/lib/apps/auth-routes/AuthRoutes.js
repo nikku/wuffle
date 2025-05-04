@@ -83,7 +83,7 @@ export default function AuthRoutes(logger, router, securityContext) {
 
     return req.session.destroy(function(err) {
       return res.redirect(redirectTo);
-    });
+    }) && null;
 
   });
 
@@ -185,7 +185,7 @@ export default function AuthRoutes(logger, router, securityContext) {
     } = session;
 
     if (!githubUser) {
-      return res.type('json').json(null);
+      return res.type('json').json(null) && null;
     }
 
     const {
@@ -218,14 +218,14 @@ export default function AuthRoutes(logger, router, securityContext) {
         // access is not granted anymore, clear current session
         return req.session.destroy(function(err) {
           return res.type('json').json(null);
-        });
+        }) && null;
       }
     }
 
     return res.type('json').json({
       login,
       avatar_url
-    });
+    }) && null;
 
   });
 
