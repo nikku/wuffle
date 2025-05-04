@@ -57,13 +57,13 @@
     "smee-client": "^3.0.0"
   },
   "devDependencies": {
-    "@graphql-eslint/eslint-plugin": "^4.3.0",
+    "@graphql-eslint/eslint-plugin": "^4.4.0",
     "@octokit/graphql-schema": "^15.25.0",
     "@types/compression": "^1.7.2",
     "@types/express-session": "^1.18.1",
     "@types/mocha": "^10.0.10",
     "chai": "^4.5.0",
-    "graphql": "^16.10.0",
+    "graphql": "^16.11.0",
     "mocha": "^10.8.2",
     "nock": "^14.0.0",
     "nodemon": "^3.1.9",
