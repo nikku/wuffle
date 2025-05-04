@@ -6,6 +6,13 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 _**Note:** Yet to be released changes appear here._
 
+## 0.65.0
+
+* `DEPS`: update to `compression@1.8.0`
+* `DEPS`: update to `smee-client@3.1.1`
+* `DEPS`: update to `probot@13.4.5`
+* `DEPS`: update to `body-parser@2.2.0`
+
 ## 0.64.0
 
 * `FIX`: correct scrollable container styling
