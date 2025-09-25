@@ -21,7 +21,7 @@
   "devDependencies": {
     "eslint": "^9.26.0",
     "eslint-plugin-bpmn-io": "^2.2.0",
-    "lerna": "^8.2.2",
+    "lerna": "^9.0.0",
     "npm-run-all2": "^8.0.1"
   },
   "engines": {
