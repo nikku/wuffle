@@ -44,7 +44,7 @@ export default function GithubChecks(webhookEvents, events, githubClient, store)
 
       const {
         data: result
-      } = await github.checks.listForRef({
+      } = await github.rest.checks.listForRef({
         owner,
         repo,
         ref: sha,

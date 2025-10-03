@@ -39,7 +39,7 @@ export default function GithubReviews(webhookEvents, events, githubClient, store
 
     const {
       data: reviews
-    } = await github.pulls.listReviews({
+    } = await github.rest.pulls.listReviews({
       owner,
       repo,
       pull_number: issue.number

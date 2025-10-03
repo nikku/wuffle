@@ -77,7 +77,7 @@ export default function GithubIssues(config, logger, columns) {
 
     const params = context.repo({ issue_number });
 
-    return context.octokit.issues.get(params)
+    return context.octokit.rest.issues.get(params)
       .then(response => response.data)
       .catch(err => {
 
@@ -156,7 +156,7 @@ export default function GithubIssues(config, logger, columns) {
       log.info(addLabelParams, 'add labels');
 
       invocations.push(
-        context.octokit.issues.addLabels(addLabelParams)
+        context.octokit.rest.issues.addLabels(addLabelParams)
       );
     }
 
@@ -170,7 +170,7 @@ export default function GithubIssues(config, logger, columns) {
       log.info(params, 'update');
 
       invocations.push(
-        context.octokit.issues.update(params)
+        context.octokit.rest.issues.update(params)
       );
     }
 
@@ -187,7 +187,7 @@ export default function GithubIssues(config, logger, columns) {
       }, 'remove label');
 
       invocations.push(
-        context.octokit.issues.removeLabel(removeLabelParams).catch(err => {
+        context.octokit.rest.issues.removeLabel(removeLabelParams).catch(err => {
 
           // gracefully handle non-existing label
           // may have been already removed by other
