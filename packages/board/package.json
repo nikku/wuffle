@@ -3,7 +3,7 @@
   "version": "0.65.0",
   "private": true,
   "devDependencies": {
-    "@bpmn-io/draggle": "^4.0.0",
+    "@bpmn-io/draggle": "^4.1.2",
     "@rollup/plugin-commonjs": "^28.0.6",
     "@rollup/plugin-node-resolve": "^16.0.1",
     "@rollup/plugin-terser": "^0.4.4",
