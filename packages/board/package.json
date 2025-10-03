@@ -9,7 +9,7 @@
     "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-url": "^8.0.2",
     "bootstrap": "^4.6.1",
-    "eslint-plugin-svelte": "^2.46.1",
+    "eslint-plugin-svelte": "^3.12.4",
     "min-dash": "^4.2.2",
     "npm-run-all2": "^8.0.4",
     "octicons": "^8.5.0",
