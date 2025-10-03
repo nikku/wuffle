@@ -370,7 +370,7 @@
 
   {#if focussed && value && match}
     <div class="help-dropdown">
-      {#each match.categories as category, idx}
+      {#each match.categories as category, idx (category)}
         {#if idx > 0}
         <hr />
         {/if}

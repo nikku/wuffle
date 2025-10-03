@@ -827,7 +827,7 @@
 
   <Notifications>
     {#if !error}
-      {#each warnings as warning}
+      {#each warnings as warning (warning)}
         <Notification type="warning" message="{ warning.action } failed">
           Could not reach the board back-end. <a href>Reload board.</a>
         </Notification>
@@ -863,7 +863,7 @@
           value={ filter }
           completionOptions={ filterOptions }
           onChange={ filterChanged }
-          placeholder={ 'Filter board...' }
+          placeholder="Filter board..."
         />
       </form>
 
@@ -894,7 +894,7 @@
   <main class="taskboard-board scroll-container-h">
 
     {#if !error}
-      {#each columns as column }
+      {#each columns as column(column.name)}
         <div class="taskboard-column" class:collapsed={ collapsed[column.name] }>
           <div class="taskboard-column-header">
             <button

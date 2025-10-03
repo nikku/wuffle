@@ -49,7 +49,7 @@
         onmousedown={ (e) => handleMousedown(e, hint) }
         onclick={ (e) => e.preventDefault() || handleMousedown(e, hint) }
         href
-      >{#each hint.parts as part}<span class:matched={ part.matched }>{ part.text }</span>{/each}</a>
+      >{#each hint.parts as part (part.text)}<span class:matched={ part.matched }>{ part.text }</span>{/each}</a>
     </li>
   {/each}
 </ul>

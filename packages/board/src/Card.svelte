@@ -179,13 +179,13 @@
         />
       {/if}
 
-      {#each labels as { name, color }}
+      {#each labels as label (label.name)}
         <Tag
           clazz="tag label"
-          color="#{ color }"
-          name={ name }
-          title={ name }
-          onclick={ handleSelection('label', name) }
+          color="#{ label.color }"
+          name={ label.name }
+          title={ label.name }
+          onclick={ handleSelection('label', label.name) }
         />
       {/each}
 
@@ -200,7 +200,7 @@
 
     {#if shownLinks.length}
       <div class="board-card-links embedded">
-        {#each shownLinks as link}
+        {#each shownLinks as link (link)}
           <CardLink item={ link.target } type={ link.type } ref={ link.ref } onSelect={ onSelect } />
         {/each}
       </div>
@@ -211,7 +211,7 @@
 
   {#if prLinks.length}
     <div class="board-card-links attached">
-      {#each prLinks as link}
+      {#each prLinks as link (link)}
         <CardLink item={ link.target } type={ link.type } ref={ link.ref } onSelect={ onSelect }>
           <CardStatus item={ link.target } />
         </CardLink>

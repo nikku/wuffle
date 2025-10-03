@@ -81,7 +81,7 @@
   }
 </script>
 
-{#each requested_reviewers as reviewer}
+{#each requested_reviewers as reviewer (reviewer)}
   <a
     class="assignee requested-reviewer"
     title="{ reviewer.login } requested for review"
@@ -94,7 +94,7 @@
   </a>
 {/each}
 
-{#each reviews as review}
+{#each reviews as review (review)}
   <a
     class="assignee reviewer"
     class:approved={ review.state === 'approved' }
@@ -111,7 +111,7 @@
   </a>
 {/each}
 
-{#each assignees as assignee}
+{#each assignees as assignee (assignee.login)}
   <a
     class="assignee"
     title="{ assignee.login } assigned"

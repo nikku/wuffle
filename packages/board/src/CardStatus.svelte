@@ -18,7 +18,7 @@
 {#if check_runs.length || statuses.length}
   <div class="card-status">
 
-    {#each check_runs as check_run}
+    {#each check_runs as check_run (check_run)}
       <a
         class="state"
         class:success={ check_run.conclusion === 'success' || check_run.status === 'in_progress' }
@@ -32,7 +32,7 @@
       ><span>{check_run.name} — {check_run_result_map[check_run.conclusion] || check_run_result_map[check_run.status] }</span></a>
     {/each}
 
-    {#each statuses as status}
+    {#each statuses as status (status)}
       <a
         class="state"
         class:success={ status.state === 'success' || status.state === 'pending' }
