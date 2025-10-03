@@ -45,7 +45,7 @@
     "@aws-sdk/client-s3": "^3.525.0",
     "async-didi": "^0.3.1",
     "body-parser": "^2.0.0",
-    "compression": "^1.8.0",
+    "compression": "^1.8.1",
     "express-session": "^1.18.2",
     "fake-tag": "^5.0.0",
     "memorystore": "^1.6.7",
@@ -59,7 +59,7 @@
   "devDependencies": {
     "@graphql-eslint/eslint-plugin": "^4.4.0",
     "@octokit/graphql-schema": "^15.25.0",
-    "@types/compression": "^1.7.2",
+    "@types/compression": "^1.8.1",
     "@types/express-session": "^1.18.2",
     "@types/mocha": "^10.0.10",
     "chai": "^6.0.0",
