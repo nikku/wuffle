@@ -1,6 +1,8 @@
-import { Server, Probot } from 'probot';
+import Express from "express";
+import { createNodeMiddleware, createProbot } from "probot";
 
-import { getLog } from 'probot/lib/helpers/get-log.js';
+import { getLog } from 'probot';
+
 import { isProduction } from 'probot/lib/helpers/is-production.js';
 import { ManifestCreation } from 'probot/lib/manifest-creation.js';
 import { readEnvOptions } from 'probot/lib/bin/read-env-options.js';
@@ -70,24 +72,37 @@ async function run(appFn, additionalOptions) {
     appFn = setupAppFactory(host, port);
   }
 
-  const server = new Server({
+  const express = Express();
+
+  const middleware = await createNodeMiddleware(appFn, {
     ...serverOptions,
-    Probot: Probot.defaults({
-      ...probotOptions
+    probot: createProbot({
+      overrides: {
+        ...probotOptions
+      }
     })
   });
 
+  express.use((req, res) => {
+    middleware(req, res, () => {
+      res.writeHead(404);
+      res.end();
+    });
+  });
+
   // log all unhandled rejections
-  process.on('unhandledRejection', getErrorHandler(server.log));
+  process.on('unhandledRejection', getErrorHandler(serverOptions.log));
 
   // load apps
   for (const fn of [ appFn ]) {
-    await server.load(fn);
+    await express.use(fn);
   }
 
-  await server.start();
+  express.listen(serverOptions.port, () => {
+    console.log(`Server is running at <http://localhost:${serverOptions.port}`);
+  });
 
-  return server;
+  return express;
 }
 
 function isSetup(options) {
