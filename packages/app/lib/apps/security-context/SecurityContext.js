@@ -17,7 +17,7 @@ export default function SecurityContext(githubClient) {
 
     const {
       data: user
-    } = await github.users.getAuthenticated();
+    } = await github.rest.users.getAuthenticated();
 
     return user;
   };

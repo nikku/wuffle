@@ -104,7 +104,7 @@ We automatically synchronize all repositories you granted us access to via the G
       const octokit = await githubClient.getOrgScoped(owner);
 
       const repositories = await octokit.paginate(
-        octokit.apps.listReposAccessibleToInstallation,
+        octokit.rest.apps.listReposAccessibleToInstallation,
         {
           per_page: 100
         }
@@ -152,7 +152,7 @@ We automatically synchronize all repositories you granted us access to via the G
 
             // open issues
             octokit.paginate(
-              octokit.issues.listForRepo,
+              octokit.rest.issues.listForRepo,
               {
                 ...params,
                 state: 'open'
@@ -162,7 +162,7 @@ We automatically synchronize all repositories you granted us access to via the G
 
             // closed issues, updated last 30 days
             octokit.paginate(
-              octokit.issues.listForRepo,
+              octokit.rest.issues.listForRepo,
               {
                 ...params,
                 state: 'closed',
@@ -173,7 +173,7 @@ We automatically synchronize all repositories you granted us access to via the G
 
             // open pulls, all
             octokit.paginate(
-              octokit.pulls.list,
+              octokit.rest.pulls.list,
               {
                 ...params,
                 state: 'open'
@@ -182,7 +182,7 @@ We automatically synchronize all repositories you granted us access to via the G
 
             // closed pulls, updated last 30 days
             octokit.paginate(
-              octokit.pulls.list,
+              octokit.rest.pulls.list,
               {
                 ...params,
                 state: 'closed'

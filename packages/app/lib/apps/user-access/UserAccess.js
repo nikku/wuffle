@@ -46,7 +46,7 @@ export default function UserAccess(
     const octokit = await githubClient.getUserScoped(user);
 
     return octokit.paginate(
-      octokit.apps.listInstallationsForAuthenticatedUser
+      octokit.rest.apps.listInstallationsForAuthenticatedUser
     );
   }
 
@@ -65,7 +65,7 @@ export default function UserAccess(
     const octokit = await githubClient.getUserScoped(user);
 
     return octokit.paginate(
-      octokit.apps.listInstallationReposForAuthenticatedUser,
+      octokit.rest.apps.listInstallationReposForAuthenticatedUser,
       {
         installation_id: installation.id,
         per_page: 100
@@ -184,7 +184,7 @@ export default function UserAccess(
 
     return githubClient.getOrgScoped(owner)
       .then(octokit => {
-        return octokit.repos.getCollaboratorPermissionLevel({
+        return octokit.rest.repos.getCollaboratorPermissionLevel({
           repo,
           owner,
           username: login

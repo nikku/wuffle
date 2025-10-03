@@ -46,7 +46,7 @@ export default function GithubStates(webhookEvents, events, githubClient, store)
 
       const {
         data: response
-      } = await github.repos.getCombinedStatusForRef({
+      } = await github.rest.repos.getCombinedStatusForRef({
         owner,
         repo,
         ref: sha

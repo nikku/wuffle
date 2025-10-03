@@ -245,7 +245,7 @@ export default function GithubApp(config, app, logger, injector) {
   function fetchInstallations() {
     return /** @type Promise<Array<Installation>> */ (getAppScopedClient().then(
       octokit => octokit.paginate(
-        octokit.apps.listInstallations,
+        octokit.rest.apps.listInstallations,
         { per_page: 100 }
       )
     ));
