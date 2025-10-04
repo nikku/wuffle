@@ -3,7 +3,6 @@
 
   import Dragula from '@bpmn-io/draggle';
 
-
   import BoardFilter from './BoardFilter.svelte';
 
   import Avatar from './components/Avatar.svelte';
@@ -98,7 +97,7 @@
 
       const columnItems = items[column];
 
-      shownItems[column] = columnItems.filter(item => !isClosingPull(item));
+      shownItems[column] = columnItems.filter(isShown);
 
       return shownItems;
     }, {})
@@ -729,9 +728,39 @@
     };
   }
 
-  function isClosingPull(item) {
-    return isPull(item) && isOpenOrMerged(item) && item.links.some(link => {
-      return isClosingLink(link) && itemsById[link.target.id];
+  /**
+   * Test whether the item should be shown on the board, because they are not
+   *
+   *   * pull requests
+   *   * linked to an issue via <Closes #ISSUE_NR>
+   *   * in the same column as the issue
+   *
+   * @param {any} item
+   *
+   * @return {boolean}
+   */
+  function isShown(item) {
+
+    if (!isPull(item)) {
+      return true;
+    }
+
+    if (!isOpenOrMerged(item)) {
+      return true;
+    }
+
+    if (!isAttachedInSameColumn(item)) {
+      return true;
+    }
+
+    return false;
+  }
+
+  function isAttachedInSameColumn(item) {
+    return item.links.some(link => {
+      const closedItem = isClosingLink(link) && itemsById[link.target.id];
+
+      return closedItem && closedItem.column === item.column;
     });
   }
 
