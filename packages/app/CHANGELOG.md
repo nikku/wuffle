@@ -6,7 +6,14 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 _**Note:** Yet to be released changes appear here._
 
+## 0.66.0
+
+* `FIX`: show PRs linked to issues, if they are in separate columns ([#245](https://github.com/nikku/wuffle/issues/245))
 * `CHORE`: require `node >= 20`
+* `DEPS`: update to `compression@1.8.1`
+* `DEPS`: update to `express-session@1.18.2`
+* `DEPS`: update to `@bpmn-io/draggle@4.1.2`
+* `DEPS`: update to `min-dash@4.2.3`
 
 ## 0.65.0
 
