@@ -2,12 +2,13 @@
   "exec": "./bin/wuffle",
   "verbose": true,
   "watch": [
+    "bin",
+    "lib",
     ".env",
-    "."
-  ],
-  "ignore": [
-    "public/*",
-    "tmp/*",
-    "test/*"
+    "app.yml",
+    "index.js",
+    "nodemon.json",
+    "package.json",
+    "wuffle.config.js"
   ]
 }
