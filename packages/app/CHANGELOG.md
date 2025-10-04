@@ -6,6 +6,10 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 _**Note:** Yet to be released changes appear here._
 
+## 0.66.1
+
+* `FIX`: de-duplicate displayed warnings
+
 ## 0.66.0
 
 * `FIX`: show PRs linked to issues, if they are in separate columns ([#245](https://github.com/nikku/wuffle/issues/245))
