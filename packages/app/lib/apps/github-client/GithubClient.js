@@ -1,4 +1,4 @@
-import { ProbotOctokit } from 'probot/lib/octokit/probot-octokit.js';
+import { ProbotOctokit } from 'probot';
 import { Cache } from '../../util/index.js';
 
 
