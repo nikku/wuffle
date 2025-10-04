@@ -111,7 +111,7 @@
   </a>
 {/each}
 
-{#each assignees as assignee (assignee.login)}
+{#each assignees as assignee (assignee)}
   <a
     class="assignee"
     title="{ assignee.login } assigned"

@@ -38,7 +38,7 @@
 </script>
 
 <ul class={ [ className, 'hint-list', 'scroll-container-v' ].join(' ') }>
-  {#each hints as hint(hint.name) }
+  {#each hints as hint (hint) }
     <li
       use:scrollIntoView={ [ hint, selectedHint ] }
     >
@@ -49,7 +49,7 @@
         onmousedown={ (e) => handleMousedown(e, hint) }
         onclick={ (e) => e.preventDefault() || handleMousedown(e, hint) }
         href
-      >{#each hint.parts as part (part.text)}<span class:matched={ part.matched }>{ part.text }</span>{/each}</a>
+      >{#each hint.parts as part (part)}<span class:matched={ part.matched }>{ part.text }</span>{/each}</a>
     </li>
   {/each}
 </ul>
