@@ -6,6 +6,8 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 _**Note:** Yet to be released changes appear here._
 
+* `CHORE`: require `node >= 20`
+
 ## 0.65.0
 
 * `DEPS`: update to `compression@1.8.0`
