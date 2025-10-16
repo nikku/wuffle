@@ -58,6 +58,14 @@ export default function Search(config, logger, store) {
     return pattern && actual.toLowerCase().includes(pattern.toLowerCase());
   }
 
+  function isPull(issue) {
+    return issue.pull_request;
+  }
+
+  function isApproved(issue) {
+    return (issue.reviews || []).some(r => r.state === 'approved');
+  }
+
   const filters = {
 
     text: function textFilter(text, exact) {
@@ -103,17 +111,25 @@ export default function Search(config, logger, store) {
         return function filterClosed(issue) {
           return issue.state === 'closed';
         };
+      case 'approved':
+        return function filterApproved(issue) {
+          return (
+            isPull(issue) && isApproved(issue)
+          ) || (
+            (issue.links || []).some(link => link.type === LinkTypes.CLOSED_BY && isApproved(link.target))
+          );
+        };
       case 'open':
         return function filterOpen(issue) {
           return issue.state === 'open';
         };
       case 'issue':
         return function filterIssue(issue) {
-          return !issue.pull_request;
+          return !isPull(issue);
         };
       case 'pull':
         return function filterPull(issue) {
-          return issue.pull_request;
+          return isPull(issue);
         };
       case 'milestoned':
         return function filterMilestoned(issue) {

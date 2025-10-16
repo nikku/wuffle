@@ -39,6 +39,7 @@
     is: [
       'assigned',
       'unassigned',
+      'approved',
       'epic',
       'milestoned',
       'open',
