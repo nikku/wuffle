@@ -40,6 +40,7 @@
       'assigned',
       'unassigned',
       'approved',
+      'reviewed',
       'epic',
       'milestoned',
       'open',

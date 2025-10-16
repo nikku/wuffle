@@ -66,6 +66,10 @@ export default function Search(config, logger, store) {
     return (issue.reviews || []).some(r => r.state === 'approved');
   }
 
+  function isReviewed(issue) {
+    return (issue.reviews || []).length > 0;
+  }
+
   const filters = {
 
     text: function textFilter(text, exact) {
@@ -117,6 +121,14 @@ export default function Search(config, logger, store) {
             isPull(issue) && isApproved(issue)
           ) || (
             (issue.links || []).some(link => link.type === LinkTypes.CLOSED_BY && isApproved(link.target))
+          );
+        };
+      case 'reviewed':
+        return function filterReviewed(issue) {
+          return (
+            isPull(issue) && isReviewed(issue)
+          ) || (
+            (issue.links || []).some(link => link.type === LinkTypes.CLOSED_BY && isReviewed(link.target))
           );
         };
       case 'open':
