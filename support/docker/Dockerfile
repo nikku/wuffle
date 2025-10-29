@@ -1,4 +1,4 @@
-FROM node:20-alpine as builder
+FROM node:24-alpine as builder
 WORKDIR /build
 
 # install dependencies + cache them
@@ -12,7 +12,7 @@ COPY . /build
 RUN npm run build
 
 
-FROM node:20-alpine as prod-builder
+FROM node:24-alpine as prod-builder
 WORKDIR /prod-build
 
 # copy production assets
@@ -22,7 +22,7 @@ COPY --from=builder /build/packages/app ./packages/app
 RUN (cd packages/app && npm prune --omit=dev)
 
 
-FROM node:20-alpine
+FROM node:24-alpine
 WORKDIR /app
 EXPOSE 3000
 ENV NODE_ENV=production
