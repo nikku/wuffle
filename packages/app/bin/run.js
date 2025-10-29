@@ -249,11 +249,11 @@ async function start() {
   const { default: app } = await import('../index.js');
 
   const {
-    expressApp
+    express
   } = await CustomProbot.run(app);
 
   if (process.env.TRUST_PROXY) {
-    expressApp.set('trust proxy', true);
+    express.set('trust proxy', true);
   }
 }
 
