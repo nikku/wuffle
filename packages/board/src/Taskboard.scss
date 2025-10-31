@@ -151,3 +151,18 @@
 .card-container:first-child {
   margin-top: 0;
 }
+
+@media (prefers-color-scheme: dark) {
+  .taskboard-column {
+    background: #1b1d25;
+  }
+
+  .taskboard-column-name {
+    color: #f8f8f2;
+  }
+
+  :global(.navbar) {
+    background-color: #0e1117 !important;
+    border-bottom: 1px solid #444;
+  }
+}

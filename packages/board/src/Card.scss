@@ -128,3 +128,15 @@
 .links a:hover {
   color: $gray-600;
 }
+
+@media (prefers-color-scheme: dark) {
+  .board-card {
+    background: #0e1117;
+    color: #f8f8f2;
+    border: 1px solid #3d444d;
+  }
+
+  .title {
+    color: #f8f8f2;
+  }
+}

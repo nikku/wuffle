@@ -106,4 +106,10 @@
     background: scale-color($primary, $alpha: -80%);
     color: darken($primary, 10%);
   }
+
+  @media (prefers-color-scheme: dark) {
+  .hint-list li a {
+    color: #e0e0e0
+  }
+}
 </style>

@@ -245,4 +245,26 @@
     border-radius: 5px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   }
+
+  @media (prefers-color-scheme: dark) {
+    .overlay {
+      background: rgba(0, 0, 0, .60);
+    }
+
+    .issue-creator {
+      background: #1a1a1a;
+      color: #e0e0e0;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    }
+
+    .issue-creator input {
+      background-color: #04070a;
+      border: 1px solid #444;
+      color: #e0e0e0;
+    }
+
+    .chooser-header {
+      color: #e0e0e0;
+    }
+  }
 </style>
