@@ -51,3 +51,19 @@
   }
 
 }
+
+@media (prefers-color-scheme: dark) {
+  .help-dropdown {
+    background-color: $darker;
+    border-color: $dark;
+
+    .note {
+      color: darken($light, 30%);
+
+      code {
+        background-color: $dark;
+        color: $light;
+      }
+    }
+  }
+}

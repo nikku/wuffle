@@ -25,6 +25,8 @@
 </div>
 
 <style lang="scss">
+  @import "variables";
+
   .powered-by {
     position: absolute;
     bottom: 10px;
@@ -81,6 +83,21 @@
 
     .help-item {
       display: inline-block;
+    }
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .powered-by {
+      color: $light;
+
+      &:not(:hover, :focus-within) .logo {
+        color: $dark;
+      }
+
+      &:hover,
+      &:focus-within {
+        background: $darker;
+      }
     }
   }
 </style>
