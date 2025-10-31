@@ -151,3 +151,18 @@
 .card-container:first-child {
   margin-top: 0;
 }
+
+@media (prefers-color-scheme: dark) {
+  .taskboard-column {
+    background: #1b1d25;
+  }
+
+  .taskboard-column-name {
+    color: $light;
+  }
+
+  :global(.navbar) {
+    background-color: $darker;
+    border-color: $dark;
+  }
+}

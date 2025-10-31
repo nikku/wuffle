@@ -137,3 +137,20 @@
 .links a:hover {
   color: $gray-600;
 }
+
+@media (prefers-color-scheme: dark) {
+  .board-card {
+    background-color: $darker;
+    color: $light;
+    border-color: $dark;
+  }
+
+  .title{
+    color: $light;
+  }
+
+  .repository,
+  .short-title {
+    color: darken($light, 30%);
+  }
+}

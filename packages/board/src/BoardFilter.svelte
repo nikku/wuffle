@@ -424,4 +424,12 @@
   .icon {
     color: $gray-300;
   }
+
+  @media (prefers-color-scheme: dark) {
+    .board-filter input {
+      background-color: $darker;
+      border-color: $dark;
+      color: $light;
+    }
+  }
 </style>

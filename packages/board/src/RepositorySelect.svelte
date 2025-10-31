@@ -245,4 +245,25 @@
     border-radius: 5px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   }
+
+  @media (prefers-color-scheme: dark) {
+    .overlay {
+      background: rgba(0, 0, 0, .60);
+    }
+
+    .issue-creator {
+      background: $darker;
+      color: $light;
+    }
+
+    .issue-creator input {
+      background-color: $darker;
+      border-color: $dark;
+      color: $light;
+    }
+
+    .chooser-header {
+      color: $light;
+    }
+  }
 </style>
