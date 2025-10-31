@@ -83,4 +83,20 @@
       display: inline-block;
     }
   }
+
+  @media (prefers-color-scheme: dark) {
+    .powered-by {
+      color: #e0e0e0;
+
+      &:not(:hover, :focus-within) .logo {
+        color: #666;
+      }
+
+      &:hover,
+      &:focus-within {
+        background: #1a1a1a;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+      }
+    }
+  }
 </style>

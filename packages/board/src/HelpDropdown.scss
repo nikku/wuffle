@@ -51,3 +51,23 @@
   }
 
 }
+
+@media (prefers-color-scheme: dark) {
+  .help-dropdown {
+    background-color: #1a1a1a;
+    border: 1px solid #444;
+
+    .category {
+      color: $primary;
+    }
+
+    .note {
+      color: #b0b0b0;
+
+      code {
+        background: #2a2a2a;
+        color: #e0e0e0;
+      }
+    }
+  }
+}
