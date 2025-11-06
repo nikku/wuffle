@@ -6,6 +6,10 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 _**Note:** Yet to be released changes appear here._
 
+## 0.68.0
+
+* `FEAT`: add a dark mode ([#254](https://github.com/nikku/wuffle/pull/254))
+
 ## 0.67.0
 
 * `FEAT`: add `is:approved` filter ([#251](https://github.com/nikku/wuffle/pull/251))
