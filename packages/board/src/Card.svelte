@@ -246,15 +246,6 @@
     }
   }
 
-  .board-card-links.attached {
-    background: #F9F9F9;
-    border-radius: 0 0 4px 4px;
-    box-shadow: inset 0 3px 5px -2px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.1);
-    margin-top: -6px;
-    position: relative;
-    padding: 7px 8px 4px 8px;
-  }
-
   .progress {
     display: flex;
     flex-direction: row;
