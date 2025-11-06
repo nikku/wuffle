@@ -147,6 +147,7 @@
   }
 
   .board-card-links.attached {
+    background: darken($darker, 5%);
     border: solid 1px $dark;
     box-shadow: none;
   }
