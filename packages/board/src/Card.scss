@@ -142,7 +142,13 @@
   .board-card {
     background-color: $darker;
     color: $light;
-    border-color: $dark;
+    border: solid 1px $dark;
+    box-shadow: none;
+  }
+
+  .board-card-links.attached {
+    border: solid 1px $dark;
+    box-shadow: none;
   }
 
   .title{
