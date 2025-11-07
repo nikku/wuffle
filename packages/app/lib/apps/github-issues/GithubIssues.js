@@ -4,6 +4,8 @@ const {
   CLOSES
 } = linkTypes;
 
+const gql = require('fake-tag');
+
 
 /**
  * @constructor
@@ -73,6 +75,20 @@ export default function GithubIssues(config, logger, columns) {
     };
   }
 
+  function getDraftUpdate(issue, newColumn) {
+    if ('draft' in issue) {
+      const draft = columns.getByState('IN_PROGRESS') === newColumn;
+
+      if (draft !== issue.draft) {
+        return {
+          draft
+        };
+      }
+    }
+
+    return {};
+  }
+
   function findIssue(context, issue_number) {
 
     const params = context.repo({ issue_number });
@@ -128,11 +144,50 @@ export default function GithubIssues(config, logger, columns) {
     }));
   }
 
+  function updateDraftState(context, pullRequest, draft) {
+
+    const convertToDraftQuery = gql`
+      mutation ConvertToDraft($pull_id: ID!) {
+        convertPullRequestToDraft(input: { pullRequestId: $pull_id }) {
+          pullRequest {
+            updatedAt
+          }
+        }
+      }
+    `;
+
+    const markReadyForReviewQuery = gql`
+      mutation MarkReadyForReview($pull_id: ID!) {
+        markPullRequestReadyForReview(input: { pullRequestId: $pull_id }) {
+          pullRequest {
+            updatedAt
+          }
+        }
+      }
+    `;
+
+    const ctx = context.repo({
+      issue_number: pullRequest.number,
+      draft
+    });
+
+    log.info(ctx, 'set draft');
+
+    return context.octokit.graphql(
+      draft ? convertToDraftQuery : markReadyForReviewQuery,
+      {
+        pull_id: pullRequest.pull_request_node_id
+      }
+    ).catch(error => log.error(error, 'failed to set draft', ctx));
+  }
+
   function moveIssue(context, issue, newColumn, newAssignee) {
 
     const {
       number: issue_number
     } = issue;
+
+    const draftUpdate = getDraftUpdate(issue, newColumn);
 
     const update = {
       ...getAssigneeUpdate(issue, newAssignee),
@@ -157,6 +212,14 @@ export default function GithubIssues(config, logger, columns) {
 
       invocations.push(
         context.octokit.rest.issues.addLabels(addLabelParams)
+      );
+    }
+
+    if (hasKeys(draftUpdate)) {
+      const { draft } = draftUpdate;
+
+      invocations.push(
+        updateDraftState(context, issue, draft)
       );
     }
 
