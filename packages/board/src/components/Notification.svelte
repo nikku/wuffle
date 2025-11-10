@@ -52,7 +52,7 @@
     }
   }
 
-  .notification + .notification {
+  .notification + :global(.notification) {
     margin-top: 16px;
   }
 
