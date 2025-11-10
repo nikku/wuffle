@@ -38,7 +38,7 @@
     padding: 16px 24px;
     overflow: hidden;
     line-height: 1.5;
-    background: #fff;
+    background: $white;
     border-radius: 3px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     border-left: solid 4px $info;
@@ -61,5 +61,16 @@
     font-weight: normal;
     font-size: 1.2em;
     margin-bottom: 5px;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .notification {
+      color: $light;
+      background-color: $dark;
+    }
+
+    .heading {
+      color: $light;
+    }
   }
 </style>
