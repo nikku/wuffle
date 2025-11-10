@@ -6,6 +6,12 @@
  * The name of your board, displayed in the board header.
  *
  *
+ * ### Description
+ *
+ * Optional description of the board, will be served with the board front-end
+ * for SEO purposes.
+ *
+ *
  * ### Columns
  *
  * Valid fields for columns are
@@ -31,6 +37,7 @@
 export default {
 
   name: 'My Wuffle Board',
+  description: 'This board organizes all my tasks',
 
   columns: [
     { name: 'Inbox', label: null },
