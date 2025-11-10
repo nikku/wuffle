@@ -23,6 +23,7 @@ export default async function BoardRoutes(config, router) {
 
   const {
     name,
+    description,
     columns
   } = config;
 
@@ -51,6 +52,13 @@ export default async function BoardRoutes(config, router) {
       '<title>Wuffle Board</title>',
       '<title>' + boardConfig.name + ' · Wuffle Board</title>'
     );
+
+    if (description) {
+      indexPage = indexPage.replace(
+        '<meta name="description" content="Multi repository taskboard for GitHub issues, powered by Wuffle (https://wuffle.dev)." />',
+        '<meta name="description" content="' + description + '" />'
+      );
+    }
 
     indexPage = indexPage.replace(
       '<script type="application/json+config"></script>',
