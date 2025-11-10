@@ -6,6 +6,13 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 _**Note:** Yet to be released changes appear here._
 
+## 0.69.0
+
+* `FEAT`: allow custom board description ([#255](https://github.com/nikku/wuffle/pull/255))
+* `FIX`: correct notification spacing ([#256](https://github.com/nikku/wuffle/pull/256))
+* `FIX`: correct notification theming in dark mode ([#256](https://github.com/nikku/wuffle/pull/256))
+* `CHORE`: update to `node@24`
+
 ## 0.68.0
 
 * `FEAT`: add a dark mode ([#254](https://github.com/nikku/wuffle/pull/254))
