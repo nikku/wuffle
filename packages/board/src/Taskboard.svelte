@@ -976,10 +976,6 @@
 
   @import "./Taskboard";
 
-  .muted {
-    color:  $gray-600;
-  }
-
   .taskboard {
     position: relative;
   }
