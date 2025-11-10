@@ -48,10 +48,12 @@ export default async function BoardRoutes(config, router) {
 
     indexPage = fs.readFileSync(relativePath('index.html', staticDirectory), 'utf8');
 
-    indexPage = indexPage.replace(
-      '<title>Wuffle Board</title>',
-      '<title>' + boardConfig.name + ' · Wuffle Board</title>'
-    );
+    if (name) {
+      indexPage = indexPage.replace(
+        '<title>Wuffle Board</title>',
+        '<title>' + boardConfig.name + ' · Wuffle Board</title>'
+      );
+    }
 
     if (description) {
       indexPage = indexPage.replace(
