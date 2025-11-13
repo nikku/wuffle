@@ -54,7 +54,7 @@
     "p-defer": "^4.0.1",
     "prexit": "^2.3.0",
     "probot": "^13.4.5",
-    "smee-client": "^4.0.0"
+    "smee-client": "^5.0.0"
   },
   "devDependencies": {
     "@graphql-eslint/eslint-plugin": "^4.4.0",
