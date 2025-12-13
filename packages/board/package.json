@@ -10,7 +10,7 @@
     "@rollup/plugin-url": "^8.0.2",
     "bootstrap": "^4.6.1",
     "eslint-plugin-svelte": "^3.12.5",
-    "min-dash": "^4.2.3",
+    "min-dash": "^5.0.0",
     "npm-run-all2": "^8.0.4",
     "octicons": "^8.5.0",
     "postcss": "^8.5.6",
