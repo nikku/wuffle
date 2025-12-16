@@ -14,7 +14,10 @@ import type {
 
 export type Octokit = InstanceType<typeof ProbotOctokit>;
 
-import type { Injector } from 'async-didi';
+import type {
+  AsyncInjector as Injector,
+  ModuleDefinition as DidiModule
+} from 'async-didi';
 
 export {
   Logger,
@@ -22,13 +25,8 @@ export {
   Router,
   Octokit,
   Injector,
-  ProbotApp
-};
-
-export type DidiModule = {
-  __init__?: Array<String>,
-  __depends__?: Array<String>,
-  [propName: string]: any,
+  ProbotApp,
+  DidiModule
 };
 
 export type GitHubUser = {
