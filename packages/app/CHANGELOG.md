@@ -6,6 +6,9 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 _**Note:** Yet to be released changes appear here._
 
+* `DEPS`: update to `async-didi@1.0.0`
+* `DEPS`: update to `min-dash@5.0.0`
+
 ## 0.69.0
 
 * `FEAT`: allow custom board description ([#255](https://github.com/nikku/wuffle/pull/255))
