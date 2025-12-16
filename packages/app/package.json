@@ -70,7 +70,7 @@
     "npm-run-all2": "^8.0.4",
     "sinon": "^21.0.0",
     "sinon-chai": "^4.0.0",
-    "typescript": "^5.7.2"
+    "typescript": "^5.9.3"
   },
   "engines": {
     "node": ">= 20"
