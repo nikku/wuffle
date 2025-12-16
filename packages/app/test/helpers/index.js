@@ -42,17 +42,7 @@ export async function bootstrap(options) {
 
   const injector = new AsyncInjector(modules);
 
-  // initialize modules ////////////
-
-  for (const module of modules) {
-
-    const init = module.__init__ || [];
-
-    for (const component of init) {
-      await injector[typeof component === 'function' ? 'invoke' : 'get'](component);
-    }
-
-  }
+  await injector.init();
 
   return injector;
 }

@@ -93,15 +93,7 @@ export default function Wuffle(app, { getRouter }) {
 
     // initialize modules ////////////
 
-    for (const module of modules) {
-
-      const init = /** @type {import('./types.js').DidiModule} */ (module).__init__ || [];
-
-      for (const component of init) {
-        await injector[typeof component === 'function' ? 'invoke' : 'get'](component);
-      }
-
-    }
+    await injector.init();
 
     await events.emit('wuffle.start');
 
