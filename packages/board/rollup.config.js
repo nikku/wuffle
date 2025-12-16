@@ -1,5 +1,3 @@
-/* eslint-env node */
-
 const resolve = require('@rollup/plugin-node-resolve');
 const commonjs = require('@rollup/plugin-commonjs');
 const url = require('@rollup/plugin-url');

@@ -1,5 +1,3 @@
-/* eslint-env node */
-
 const sveltePreprocess = require('svelte-preprocess');
 
 const path = require('path');
