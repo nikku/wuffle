@@ -19,7 +19,7 @@
     "af": "npm audit fix"
   },
   "devDependencies": {
-    "eslint": "^9.38.0",
+    "eslint": "^9.39.2",
     "eslint-plugin-bpmn-io": "^2.2.0",
     "lerna": "^9.0.0",
     "npm-run-all2": "^8.0.4"
