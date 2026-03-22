@@ -48,7 +48,7 @@ export default [
     plugins: {
       '@graphql-eslint': graphqlPlugin
     },
-    rules: graphqlPlugin.configs['schema-recommended'].rules
+    rules: graphqlPlugin.configs['flat/schema-recommended'].rules
   },
 
   // build + test
