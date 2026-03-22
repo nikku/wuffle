@@ -46,7 +46,7 @@
     "async-didi": "^1.0.0",
     "body-parser": "^2.2.2",
     "compression": "^1.8.1",
-    "express-session": "^1.18.2",
+    "express-session": "^1.19.0",
     "fake-tag": "^5.0.0",
     "memorystore": "^1.6.7",
     "min-dash": "^5.0.0",
