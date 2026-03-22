@@ -1,6 +1,5 @@
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
-import { mkdirp } from 'mkdirp';
 
 
 /**
@@ -27,7 +26,7 @@ export default function DumpStoreLocal(logger, store, events) {
   // io helpers
 
   function upload(dump) {
-    return mkdirp(path.dirname(storeLocation)).then(
+    return fs.mkdir(path.dirname(storeLocation), { recursive: true }).then(
       () => fs.writeFile(storeLocation, dump, 'utf8')
     );
   }

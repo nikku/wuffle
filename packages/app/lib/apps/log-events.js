@@ -1,5 +1,3 @@
-import { mkdirp } from 'mkdirp';
-
 import path from 'node:path';
 import { promises as fs } from 'node:fs';
 
@@ -39,7 +37,7 @@ export default function LogEvents(logger, webhookEvents) {
 
     const data = JSON.stringify({ event, payload }, null, '  ');
 
-    return mkdirp(eventsDir).then(() => {
+    return fs.mkdir(eventsDir, { recursive: true }).then(() => {
       const fileName = path.join(eventsDir, `${Date.now()}-${counter++}-${name}.json`);
 
       return fs.writeFile(fileName, data, 'utf8');
