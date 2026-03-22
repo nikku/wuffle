@@ -6,6 +6,10 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 _**Note:** Yet to be released changes appear here._
 
+## 0.70.1
+
+* `DEPS`: remove `mkdirp` dependency
+
 ## 0.70.0
 
 * `DEPS`: update to `express-session@1.19.0`
