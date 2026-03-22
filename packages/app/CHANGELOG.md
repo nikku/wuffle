@@ -6,6 +6,11 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 _**Note:** Yet to be released changes appear here._
 
+## 0.70.0
+
+* `DEPS`: update to `express-session@1.19.0`
+* `DEPS`: update to `body-parser@2.2.2`
+* `DEPS`: update to `@aws-sdk/client-s3@3.1014.0`
 * `DEPS`: update to `async-didi@1.0.0`
 * `DEPS`: update to `min-dash@5.0.0`
 
