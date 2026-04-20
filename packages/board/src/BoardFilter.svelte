@@ -396,7 +396,7 @@
       </p>
 
       <p class="note">
-        Use additional operator such as <code>created</code>, <code>updated</code>, <code>milestone</code>, <code>repo</code>, <code>assignee</code>, <code>label</code> and <code>is</code> to refine your search.
+        Use additional operator such as <code>created</code>, <code>updated</code>, <code>milestone</code>, <code>repo</code>, <code>assignee</code>, <code>label</code> and <code>is</code> to refine your search. Use <code>OR</code> to combine filter groups.
       </p>
     </div>
   {/if}

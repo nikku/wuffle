@@ -318,47 +318,65 @@ export default function Search(config, logger, store) {
     };
   }
 
-  function buildFilterFns(search, user) {
+  /**
+   * Build a filter function for a given search term.
+   *
+   * @param {import('../../util/search.js').SearchTerm} term
+   * @param {import('../../types.js').GitHubUser} [user]
+   * @returns {Function}
+   */
+  function buildTermFilterFn(term, user) {
+    let {
+      qualifier,
+      value,
+      negated,
+      exact
+    } = term;
 
-    const terms = search ? parseSearch(search) : [];
+    if (!value) {
+      return noopFilter();
+    }
 
-    return terms.map(term => {
-      let {
-        qualifier,
-        value,
-        negated,
-        exact
-      } = term;
-
-      if (!value) {
-        return noopFilter();
+    if (value === '@me') {
+      if (!user) {
+        return noneFilter();
       }
 
-      if (value === '@me') {
-        if (!user) {
-          return noneFilter();
-        }
+      value = user.login;
+      exact = true;
+    }
 
-        value = user.login;
-        exact = true;
-      }
+    const factoryFn = filters[qualifier];
 
-      const factoryFn = filters[qualifier];
+    if (!factoryFn) {
+      return noopFilter();
+    }
 
-      if (!factoryFn) {
-        return noopFilter();
-      }
+    const fn = factoryFn(value, exact);
 
-      const fn = factoryFn(value, exact);
+    if (negated) {
+      return function(arg) {
+        return !fn(arg);
+      };
+    }
 
-      if (negated) {
-        return function(arg) {
-          return !fn(arg);
-        };
-      }
+    return fn;
+  }
 
-      return fn;
-    });
+  /**
+   * Build filter functions for each group of search terms.
+   *
+   * @param {string} search
+   * @param {import('../../types.js').GitHubUser} [user]
+   * @returns {Function[][]}
+   */
+  function buildFilterGroups(search, user) {
+
+    const groups = search ? parseSearch(search) : [];
+
+    return groups.map(
+      terms => terms.map(term => buildTermFilterFn(term, user))
+    );
   }
 
   /**
@@ -371,17 +389,21 @@ export default function Search(config, logger, store) {
    */
   function getSearchFilter(search, user) {
 
-    const filterFns = buildFilterFns(search, user);
+    const filterGroups = buildFilterGroups(search, user);
 
-    const ignoreFilterFns = buildFilterFns(config.defaultFilter, user);
+    const ignoreFilterGroups = buildFilterGroups(config.defaultFilter, user);
 
     return function(issue) {
       try {
-        if (filterFns.length) {
-          return filterFns.every(fn => fn(issue));
+        if (filterGroups.some(group => group.length > 0)) {
+          return filterGroups.some(
+            group => group.every(fn => fn(issue))
+          );
         } else {
 
-          return ignoreFilterFns.every(fn => fn(issue));
+          return ignoreFilterGroups.some(
+            group => group.every(fn => fn(issue))
+          );
         }
       } catch (err) {
         log.warn({ issue: issueIdent(issue), err }, 'filter failed');

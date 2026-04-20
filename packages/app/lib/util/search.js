@@ -55,24 +55,32 @@ function startOfDay(time) {
 }
 
 /**
- * @param {string} str
- *
- * @return { {
+ * @typedef { {
  *   qualifier: string,
  *   value: string|undefined,
  *   exact: boolean,
  *   negated?: boolean
- * }[] }
+ * } } SearchTerm
+ */
+
+/**
+ * @typedef {SearchTerm[]} SearchGroup
+ */
+
+/**
+ * @param {string} str
+ *
+ * @return {SearchGroup[]}
  */
 export function parseSearch(str) {
 
   const regexp = /(?:([\w#/&]+)|"([\w#/&\s-.]+)"|([-!]?)([\w]+):(?:([\w-#/&@<>=.]+)|"([\w-#/&@:.,; ]+)")?)(?:\s|$)/g;
 
-  const terms = [];
+  const groups = [ [] ];
 
   let match;
 
-  while ((match = regexp.exec(str))) {
+  while ((match = regexp.exec(str || ''))) {
 
     const [
       _,
@@ -84,11 +92,15 @@ export function parseSearch(str) {
       qualifierTextEscaped
     ] = match;
 
-
     const textValue = text || textEscaped;
 
+    if (textValue === 'OR' && !textEscaped) {
+      groups.push([]);
+      continue;
+    }
+
     if (textValue) {
-      terms.push({
+      groups[groups.length - 1].push({
         qualifier: 'text',
         value: textValue,
         exact: !!textEscaped
@@ -98,7 +110,7 @@ export function parseSearch(str) {
     const qualifierValue = qualifierText || qualifierTextEscaped;
 
     if (qualifier) {
-      terms.push({
+      groups[groups.length - 1].push({
         qualifier,
         value: qualifierValue,
         negated: !!negated,
@@ -107,5 +119,5 @@ export function parseSearch(str) {
     }
   }
 
-  return terms;
+  return groups;
 }

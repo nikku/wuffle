@@ -17,7 +17,13 @@ The board supports the following filters:
 | `label` | Filter by [label](https://docs.github.com/en/github/managing-your-work-on-github/managing-labels) | `label:critical` |
 | `repo` | Filter by repository | `repo:"nikku/wuffle"` |
 
-Filters get chained together by the board with _and_ semantics.
+Filters get chained together by the board with _and_ semantics. Use the `OR` keyword to combine groups with _or_ semantics:
+
+```
+repo:foo/bar label:bug OR -repo:baz/qux
+```
+
+This matches issues that either belong to `foo/bar` with label `bug`, or do not belong to `baz/qux`. Within each group, filters are combined with _and_. Between groups, it is _or_.
 
 
 ## Applying Filters
