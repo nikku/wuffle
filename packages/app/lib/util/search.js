@@ -55,18 +55,22 @@ function startOfDay(time) {
 }
 
 /**
+ * @typedef { {
+ *   qualifier: string,
+ *   exact?: boolean,
+ *   negated?: boolean,
+ *   value?: string|SearchTerm[],
+ * } } SearchTerm
+ */
+
+/**
  * @param {string} str
  *
- * @return { {
- *   qualifier: string,
- *   value: string|undefined,
- *   exact: boolean,
- *   negated?: boolean
- * }[] }
+ * @return {SearchTerm[]}
  */
 export function parseSearch(str) {
 
-  const regexp = /(?:([\w#/&]+)|"([\w#/&\s-.]+)"|([-!]?)([\w]+):(?:([\w-#/&@<>=.]+)|"([\w-#/&@:.,; ]+)")?)(?:\s|$)/g;
+  const regexp = /([-!])?(?:"([^"]+)"|([\w#/&]+)(?:(:)(?:([\w-#/&@<>=.]+)|"([^"]+)")?)?)/g;
 
   const terms = [];
 
@@ -76,33 +80,29 @@ export function parseSearch(str) {
 
     const [
       _,
-      text,
-      textEscaped,
       negated,
+      textEscaped,
+      text,
       qualifier,
       qualifierText,
       qualifierTextEscaped
     ] = match;
 
-
     const textValue = text || textEscaped;
-
-    if (textValue) {
-      terms.push({
-        qualifier: 'text',
-        value: textValue,
-        exact: !!textEscaped
-      });
-    }
-
     const qualifierValue = qualifierText || qualifierTextEscaped;
 
     if (qualifier) {
       terms.push({
-        qualifier,
+        qualifier: textValue,
         value: qualifierValue,
         negated: !!negated,
         exact: !!qualifierTextEscaped
+      });
+    } else {
+      terms.push({
+        qualifier: 'text',
+        value: textValue,
+        exact: !!textEscaped
       });
     }
   }
