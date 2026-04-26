@@ -146,7 +146,10 @@
 
     const beforeCursor = value.substring(0, searchEnd);
 
-    const searchStart = beforeCursor.lastIndexOf(' ') + 1;
+    const searchStart = Math.max(
+      beforeCursor.lastIndexOf(' '),
+      beforeCursor.lastIndexOf('(')
+    ) + 1;
 
     value = value.substring(searchStart, searchEnd).toLowerCase();
 
