@@ -6,6 +6,11 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 _**Note:** Yet to be released changes appear here._
 
+## 0.71.0
+
+* `FEAT`: support `AND`, `OR` and `NOT` search operators ([#283](https://github.com/nikku/wuffle/pull/283))
+* `FEAT`: support search grouping via `()` ([#283](https://github.com/nikku/wuffle/pull/283))
+* `CHORE`: rework `search` inner workings ([#283](https://github.com/nikku/wuffle/pull/283))
 * `DEPS`: update to `@aws-sdk/client-s3@3.1037.0`
 
 ## 0.70.1
