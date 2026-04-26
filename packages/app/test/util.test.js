@@ -666,41 +666,77 @@ describe('util', function() {
 
   describe('parseSearch', function() {
 
-    it('should parse terms', function() {
+    describe('should parse terms', function() {
 
-      const searchString = [
-        '"Copy& Paste"',
-        'is:open',
-        'asdsad',
-        'milestone:"FOO BAR"',
-        '"FOO BAR"',
-        'milestone:12asd',
-        'milestone:',
-        'author:walt',
-        'label:"in progress"',
-        'ref:foo/bar#80',
-        'assignee:@me',
-        'label:"some,stuff;yea"'
-      ].join(' ');
+      it('simple', function() {
 
-      // when
-      const search = parseSearch(searchString);
+        // given
+        const searchString = [
+          'is:open',
+          'asdsad',
+          'author:walt',
+          'ref:foo/bar#80',
+          'assignee:@me',
+        ].join(' ');
 
-      // then
-      expect(search).to.eql([
-        { qualifier: 'text', value: 'Copy& Paste', negated: false, exact: true },
-        { qualifier: 'is', value: 'open', negated: false, exact: false },
-        { qualifier: 'text', value: 'asdsad', negated: false, exact: false },
-        { qualifier: 'milestone', value: 'FOO BAR', negated: false, exact: true },
-        { qualifier: 'text', value: 'FOO BAR', negated: false, exact: true },
-        { qualifier: 'milestone', value: '12asd', negated: false, exact: false },
-        { qualifier: 'milestone', value: undefined, negated: false, exact: false },
-        { qualifier: 'author', value: 'walt', negated: false, exact: false },
-        { qualifier: 'label', value: 'in progress', negated: false, exact: true },
-        { qualifier: 'ref', value: 'foo/bar#80', negated: false, exact: false },
-        { qualifier: 'assignee', value: '@me', negated: false, exact: false },
-        { qualifier: 'label', value: 'some,stuff;yea', negated: false, exact: true }
-      ]);
+        // when
+        const search = parseSearch(searchString);
+
+        // then
+        expect(search).to.eql([
+          { qualifier: 'is', value: 'open', negated: false, exact: false },
+          { qualifier: 'text', value: 'asdsad', negated: false, exact: false },
+          { qualifier: 'author', value: 'walt', negated: false, exact: false },
+          { qualifier: 'ref', value: 'foo/bar#80', negated: false, exact: false },
+          { qualifier: 'assignee', value: '@me', negated: false, exact: false }
+        ]);
+
+      });
+
+
+      it('escaped / exact', function() {
+
+        // given
+        const searchString = [
+          '"Copy& Paste"',
+          'milestone:"FOO BAR"',
+          '"FOO BAR"',
+          'milestone:12asd',
+          'label:"in progress"',
+          'label:"some,stuff;yea"'
+        ].join(' ');
+
+        // when
+        const search = parseSearch(searchString);
+
+        // then
+        expect(search).to.eql([
+          { qualifier: 'text', value: 'Copy& Paste', negated: false, exact: true },
+          { qualifier: 'milestone', value: 'FOO BAR', negated: false, exact: true },
+          { qualifier: 'text', value: 'FOO BAR', negated: false, exact: true },
+          { qualifier: 'milestone', value: '12asd', negated: false, exact: false },
+          { qualifier: 'label', value: 'in progress', negated: false, exact: true },
+          { qualifier: 'label', value: 'some,stuff;yea', negated: false, exact: true }
+        ]);
+
+      });
+
+
+      it('partial', function() {
+
+        // given
+        const searchString = [
+          'milestone:'
+        ].join(' ');
+
+        // when
+        const search = parseSearch(searchString);
+
+        // then
+        expect(search).to.eql([
+          { qualifier: 'milestone', value: undefined, negated: false, exact: false }
+        ]);
+      });
 
     });
 
