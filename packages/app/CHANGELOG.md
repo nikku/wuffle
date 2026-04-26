@@ -6,6 +6,8 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 _**Note:** Yet to be released changes appear here._
 
+* `DEPS`: update to `@aws-sdk/client-s3@3.1037.0`
+
 ## 0.70.1
 
 * `DEPS`: remove `mkdirp` dependency
