@@ -683,14 +683,16 @@ describe('util', function() {
         const search = parseSearch(searchString);
 
         // then
-        expect(search).to.eql([
-          { qualifier: 'is', value: 'open', negated: false, exact: false },
-          { qualifier: 'text', value: 'asdsad', negated: false, exact: false },
-          { qualifier: 'author', value: 'walt', negated: false, exact: false },
-          { qualifier: 'ref', value: 'foo/bar#80', negated: false, exact: false },
-          { qualifier: 'assignee', value: '@me', negated: false, exact: false }
-        ]);
-
+        expect(search).to.eql({
+          qualifier: 'and',
+          value: [
+            { qualifier: 'is', value: 'open', negated: false, exact: false },
+            { qualifier: 'text', value: 'asdsad', negated: false, exact: false },
+            { qualifier: 'author', value: 'walt', negated: false, exact: false },
+            { qualifier: 'ref', value: 'foo/bar#80', negated: false, exact: false },
+            { qualifier: 'assignee', value: '@me', negated: false, exact: false }
+          ]
+        });
       });
 
 
@@ -710,15 +712,17 @@ describe('util', function() {
         const search = parseSearch(searchString);
 
         // then
-        expect(search).to.eql([
-          { qualifier: 'text', value: 'Copy& Paste', negated: false, exact: true },
-          { qualifier: 'milestone', value: 'FOO BAR', negated: false, exact: true },
-          { qualifier: 'text', value: 'FOO BAR', negated: false, exact: true },
-          { qualifier: 'milestone', value: '12asd', negated: false, exact: false },
-          { qualifier: 'label', value: 'in progress', negated: false, exact: true },
-          { qualifier: 'label', value: 'some,stuff;yea', negated: false, exact: true }
-        ]);
-
+        expect(search).to.eql({
+          qualifier: 'and',
+          value: [
+            { qualifier: 'text', value: 'Copy& Paste', negated: false, exact: true },
+            { qualifier: 'milestone', value: 'FOO BAR', negated: false, exact: true },
+            { qualifier: 'text', value: 'FOO BAR', negated: false, exact: true },
+            { qualifier: 'milestone', value: '12asd', negated: false, exact: false },
+            { qualifier: 'label', value: 'in progress', negated: false, exact: true },
+            { qualifier: 'label', value: 'some,stuff;yea', negated: false, exact: true }
+          ]
+        });
       });
 
 
@@ -733,9 +737,9 @@ describe('util', function() {
         const search = parseSearch(searchString);
 
         // then
-        expect(search).to.eql([
+        expect(search).to.eql(
           { qualifier: 'milestone', value: undefined, negated: false, exact: false }
-        ]);
+        );
       });
 
     });
@@ -747,9 +751,9 @@ describe('util', function() {
       const search = parseSearch('is:"open:b"');
 
       // then
-      expect(search).to.eql([
+      expect(search).to.eql(
         { qualifier: 'is', value: 'open:b', negated: false, exact: true }
-      ]);
+      );
 
     });
 
@@ -769,17 +773,19 @@ describe('util', function() {
       ].join(' '));
 
       // then
-      expect(search).to.eql([
-        { qualifier: 'is', value: 'open:b', negated: true, exact: true },
-        { qualifier: 'is', value: 'FOO', negated: true, exact: false },
-        { qualifier: 'is', value: 'FOO', negated: true, exact: false },
-        { qualifier: 'is', value: 'FOO', negated: true, exact: false },
-        { qualifier: 'text', value: 'FOO', negated: true, exact: false },
-        { qualifier: 'text', value: 'FOO', negated: true, exact: true },
-        { qualifier: 'text', value: 'NOTARIZED', negated: true, exact: false },
-        { qualifier: 'text', value: 'NOTARIZED', negated: false, exact: false }
-      ]);
-
+      expect(search).to.eql({
+        qualifier: 'and',
+        value: [
+          { qualifier: 'is', value: 'open:b', negated: true, exact: true },
+          { qualifier: 'is', value: 'FOO', negated: true, exact: false },
+          { qualifier: 'is', value: 'FOO', negated: true, exact: false },
+          { qualifier: 'is', value: 'FOO', negated: true, exact: false },
+          { qualifier: 'text', value: 'FOO', negated: true, exact: false },
+          { qualifier: 'text', value: 'FOO', negated: true, exact: true },
+          { qualifier: 'text', value: 'NOTARIZED', negated: true, exact: false },
+          { qualifier: 'text', value: 'NOTARIZED', negated: false, exact: false }
+        ]
+      });
     });
 
 
@@ -792,11 +798,13 @@ describe('util', function() {
       ].join(' '));
 
       // then
-      expect(search).to.eql([
-        { qualifier: 'is', value: 'open-bar', negated: false, exact: false },
-        { qualifier: 'is', value: 'open-bar', negated: false, exact: true }
-      ]);
-
+      expect(search).to.eql({
+        qualifier: 'and',
+        value: [
+          { qualifier: 'is', value: 'open-bar', negated: false, exact: false },
+          { qualifier: 'is', value: 'open-bar', negated: false, exact: true }
+        ]
+      });
     });
 
 
@@ -809,11 +817,13 @@ describe('util', function() {
       ].join(' '));
 
       // then
-      expect(search).to.eql([
-        { qualifier: 'is', value: 'open.bar', negated: false, exact: false },
-        { qualifier: 'is', value: 'open.bar', negated: false, exact: true }
-      ]);
-
+      expect(search).to.eql({
+        qualifier: 'and',
+        value: [
+          { qualifier: 'is', value: 'open.bar', negated: false, exact: false },
+          { qualifier: 'is', value: 'open.bar', negated: false, exact: true }
+        ]
+      });
     });
 
 
@@ -826,11 +836,13 @@ describe('util', function() {
       ].join(' '));
 
       // then
-      expect(search).to.eql([
-        { qualifier: 'is', value: 'open_bar', negated: false, exact: false },
-        { qualifier: 'is', value: 'open_bar', negated: false, exact: true }
-      ]);
-
+      expect(search).to.eql({
+        qualifier: 'and',
+        value: [
+          { qualifier: 'is', value: 'open_bar', negated: false, exact: false },
+          { qualifier: 'is', value: 'open_bar', negated: false, exact: true }
+        ]
+      });
     });
 
 
@@ -843,10 +855,13 @@ describe('util', function() {
       ].join(' '));
 
       // then
-      expect(search).to.eql([
-        { qualifier: 'created', value: '<2020-09-14', negated: false, exact: false },
-        { qualifier: 'updated', value: '>=2020-09-14', negated: false, exact: false }
-      ]);
+      expect(search).to.eql({
+        qualifier: 'and',
+        value: [
+          { qualifier: 'created', value: '<2020-09-14', negated: false, exact: false },
+          { qualifier: 'updated', value: '>=2020-09-14', negated: false, exact: false }
+        ]
+      });
     });
 
 
@@ -858,26 +873,19 @@ describe('util', function() {
         const search = parseSearch('repo:foo/bar label:bug OR -repo:baz/qux');
 
         // then
-        expect(search).to.eql([
-          {
-            qualifier: 'or',
-            value: [
-              {
-                qualifier: 'and',
-                value: [
-                  { qualifier: 'repo', value: 'foo/bar', negated: false, exact: false },
-                  { qualifier: 'label', value: 'bug', negated: false, exact: false }
-                ]
-              },
-              {
-                qualifier: 'and',
-                value: [
-                  { qualifier: 'repo', value: 'baz/qux', negated: true, exact: false }
-                ]
-              }
-            ]
-          }
-        ]);
+        expect(search).to.eql({
+          qualifier: 'or',
+          value: [
+            {
+              qualifier: 'and',
+              value: [
+                { qualifier: 'repo', value: 'foo/bar', negated: false, exact: false },
+                { qualifier: 'label', value: 'bug', negated: false, exact: false }
+              ]
+            },
+            { qualifier: 'repo', value: 'baz/qux', negated: true, exact: false }
+          ]
+        });
       });
 
 
@@ -887,41 +895,19 @@ describe('util', function() {
         const search = parseSearch('label:bug OR label:feature OR is:closed');
 
         // then
-        expect(search).to.eql([
-          {
-            qualifier: 'or',
-            value: [
-              {
-                qualifier: 'and',
-                value: [
-                  { qualifier: 'label', value: 'bug', negated: false, exact: false }
-                ]
-              },
-              {
-                qualifier: 'and',
-                value: [
-                  {
-                    qualifier: 'or',
-                    value: [
-                      {
-                        qualifier: 'and',
-                        value: [
-                          { qualifier: 'label', value: 'feature', negated: false, exact: false }
-                        ]
-                      },
-                      {
-                        qualifier: 'and',
-                        value: [
-                          { qualifier: 'is', value: 'closed', negated: false, exact: false }
-                        ]
-                      }
-                    ]
-                  }
-                ]
-              }
-            ]
-          }
-        ]);
+        expect(search).to.eql({
+          qualifier: 'or',
+          value: [
+            { qualifier: 'label', value: 'bug', negated: false, exact: false },
+            {
+              qualifier: 'or',
+              value: [
+                { qualifier: 'label', value: 'feature', negated: false, exact: false },
+                { qualifier: 'is', value: 'closed', negated: false, exact: false }
+              ]
+            }
+          ]
+        });
       });
 
 
@@ -931,10 +917,13 @@ describe('util', function() {
         const search = parseSearch('"FOO OR BAR" label:feature');
 
         // then
-        expect(search).to.eql([
-          { qualifier: 'text', value: 'FOO OR BAR', negated: false, exact: true },
-          { qualifier: 'label', value: 'feature', negated: false, exact: false }
-        ]);
+        expect(search).to.eql({
+          qualifier: 'and',
+          value: [
+            { qualifier: 'text', value: 'FOO OR BAR', negated: false, exact: true },
+            { qualifier: 'label', value: 'feature', negated: false, exact: false }
+          ]
+        });
       });
 
 
@@ -944,11 +933,14 @@ describe('util', function() {
         const search = parseSearch('label:bug or label:feature');
 
         // then
-        expect(search).to.eql([
-          { qualifier: 'label', value: 'bug', negated: false, exact: false },
-          { qualifier: 'text', value: 'or', negated: false, exact: false },
-          { qualifier: 'label', value: 'feature', negated: false, exact: false }
-        ]);
+        expect(search).to.eql({
+          qualifier: 'and',
+          value: [
+            { qualifier: 'label', value: 'bug', negated: false, exact: false },
+            { qualifier: 'text', value: 'or', negated: false, exact: false },
+            { qualifier: 'label', value: 'feature', negated: false, exact: false }
+          ]
+        });
       });
 
     });
@@ -962,11 +954,14 @@ describe('util', function() {
         const search = parseSearch('repo:foo/bar label:bug AND -repo:baz/qux');
 
         // then
-        expect(search).to.eql([
-          { qualifier: 'repo', value: 'foo/bar', negated: false, exact: false },
-          { qualifier: 'label', value: 'bug', negated: false, exact: false },
-          { qualifier: 'repo', value: 'baz/qux', negated: true, exact: false }
-        ]);
+        expect(search).to.eql({
+          qualifier: 'and',
+          value: [
+            { qualifier: 'repo', value: 'foo/bar', negated: false, exact: false },
+            { qualifier: 'label', value: 'bug', negated: false, exact: false },
+            { qualifier: 'repo', value: 'baz/qux', negated: true, exact: false }
+          ]
+        });
       });
 
 
@@ -976,11 +971,14 @@ describe('util', function() {
         const search = parseSearch('label:bug AND label:feature AND is:closed');
 
         // then
-        expect(search).to.eql([
-          { qualifier: 'label', value: 'bug', negated: false, exact: false },
-          { qualifier: 'label', value: 'feature', negated: false, exact: false },
-          { qualifier: 'is', value: 'closed', negated: false, exact: false }
-        ]);
+        expect(search).to.eql({
+          qualifier: 'and',
+          value: [
+            { qualifier: 'label', value: 'bug', negated: false, exact: false },
+            { qualifier: 'label', value: 'feature', negated: false, exact: false },
+            { qualifier: 'is', value: 'closed', negated: false, exact: false }
+          ]
+        });
       });
 
 
@@ -990,10 +988,13 @@ describe('util', function() {
         const search = parseSearch('"FOO AND BAR" label:feature');
 
         // then
-        expect(search).to.eql([
-          { qualifier: 'text', value: 'FOO AND BAR', negated: false, exact: true },
-          { qualifier: 'label', value: 'feature', negated: false, exact: false }
-        ]);
+        expect(search).to.eql({
+          qualifier: 'and',
+          value: [
+            { qualifier: 'text', value: 'FOO AND BAR', negated: false, exact: true },
+            { qualifier: 'label', value: 'feature', negated: false, exact: false }
+          ]
+        });
       });
 
 
@@ -1003,11 +1004,14 @@ describe('util', function() {
         const search = parseSearch('label:bug and label:feature');
 
         // then
-        expect(search).to.eql([
-          { qualifier: 'label', value: 'bug', negated: false, exact: false },
-          { qualifier: 'text', value: 'and', negated: false, exact: false },
-          { qualifier: 'label', value: 'feature', negated: false, exact: false }
-        ]);
+        expect(search).to.eql({
+          qualifier: 'and',
+          value: [
+            { qualifier: 'label', value: 'bug', negated: false, exact: false },
+            { qualifier: 'text', value: 'and', negated: false, exact: false },
+            { qualifier: 'label', value: 'feature', negated: false, exact: false }
+          ]
+        });
       });
 
     });
@@ -1020,42 +1024,25 @@ describe('util', function() {
 
       // then
       // parsed as ( label:bug OR ( (label:feature AND "bug") OR "other" ) )
-      expect(search).to.eql([
-        {
-          qualifier: 'or',
-          value: [
-            {
-              qualifier: 'and',
-              value: [
-                { qualifier: 'label', value: 'bug', negated: false, exact: false }
-              ]
-            },
-            {
-              qualifier: 'and',
-              value: [
-                {
-                  qualifier: 'or',
-                  value: [
-                    {
-                      qualifier: 'and',
-                      value: [
-                        { qualifier: 'label', value: 'feature', negated: false, exact: false },
-                        { qualifier: 'text', value: 'bug', exact: true, negated: false }
-                      ]
-                    },
-                    {
-                      qualifier: 'and',
-                      value: [
-                        { qualifier: 'text', value: 'other', exact: true, negated: false }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]);
+      expect(search).to.eql({
+        qualifier: 'or',
+        value: [
+          { qualifier: 'label', value: 'bug', negated: false, exact: false },
+          {
+            qualifier: 'or',
+            value: [
+              {
+                qualifier: 'and',
+                value: [
+                  { qualifier: 'label', value: 'feature', negated: false, exact: false },
+                  { qualifier: 'text', value: 'bug', exact: true, negated: false }
+                ]
+              },
+              { qualifier: 'text', value: 'other', exact: true, negated: false }
+            ]
+          }
+        ]
+      });
     });
 
 
@@ -1067,15 +1054,12 @@ describe('util', function() {
         const search = parseSearch('(label:feature)');
 
         // then
-        expect(search).to.eql([
-          {
-            qualifier: 'and',
-            group: true,
-            value: [
-              { exact: false, negated: false, qualifier: 'label', value: 'feature' }
-            ]
-          }
-        ]);
+        expect(search).to.eql({
+          exact: false,
+          negated: false,
+          qualifier: 'label',
+          value: 'feature'
+        });
       });
 
 
@@ -1085,16 +1069,14 @@ describe('util', function() {
         const search = parseSearch('(a b)');
 
         // then
-        expect(search).to.eql([
-          {
-            qualifier: 'and',
-            group: true,
-            value: [
-              { exact: false, negated: false, qualifier: 'text', value: 'a' },
-              { exact: false, negated: false, qualifier: 'text', value: 'b' }
-            ]
-          }
-        ]);
+        expect(search).to.eql({
+          qualifier: 'and',
+          group: true,
+          value: [
+            { exact: false, negated: false, qualifier: 'text', value: 'a' },
+            { exact: false, negated: false, qualifier: 'text', value: 'b' }
+          ]
+        });
       });
 
 
@@ -1104,31 +1086,13 @@ describe('util', function() {
         const search = parseSearch('(a OR b)');
 
         // then
-        expect(search).to.eql([
-          {
-            qualifier: 'and',
-            group: true,
-            value: [
-              {
-                qualifier: 'or',
-                value: [
-                  {
-                    qualifier: 'and',
-                    value: [
-                      { exact: false, negated: false, qualifier: 'text', value: 'a' }
-                    ]
-                  },
-                  {
-                    qualifier: 'and',
-                    value: [
-                      { exact: false, negated: false, qualifier: 'text', value: 'b' }
-                    ]
-                  }
-                ]
-              }
-            ]
-          }
-        ]);
+        expect(search).to.eql({
+          qualifier: 'or',
+          value: [
+            { exact: false, negated: false, qualifier: 'text', value: 'a' },
+            { exact: false, negated: false, qualifier: 'text', value: 'b' }
+          ]
+        });
       });
 
 
@@ -1138,54 +1102,25 @@ describe('util', function() {
         const search = parseSearch('(label:bug OR label:feature) AND ("bug" OR "other")');
 
         // then
-        expect(search).to.eql([
-          {
-            qualifier: 'and',
-            group: true,
-            value: [
-              {
-                qualifier: 'or',
-                value: [
-                  {
-                    qualifier: 'and',
-                    value: [
-                      { qualifier: 'label', value: 'bug', negated: false, exact: false }
-                    ]
-                  },
-                  {
-                    qualifier: 'and',
-                    value: [
-                      { qualifier: 'label', value: 'feature', negated: false, exact: false }
-                    ]
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            qualifier: 'and',
-            group: true,
-            value: [
-              {
-                qualifier: 'or',
-                value: [
-                  {
-                    qualifier: 'and',
-                    value: [
-                      { qualifier: 'text', value: 'bug', exact: true, negated: false }
-                    ]
-                  },
-                  {
-                    qualifier: 'and',
-                    value: [
-                      { qualifier: 'text', value: 'other', exact: true, negated: false }
-                    ]
-                  }
-                ]
-              }
-            ]
-          }
-        ]);
+        expect(search).to.eql({
+          qualifier: 'and',
+          value: [
+            {
+              qualifier: 'or',
+              value: [
+                { qualifier: 'label', value: 'bug', negated: false, exact: false },
+                { qualifier: 'label', value: 'feature', negated: false, exact: false }
+              ]
+            },
+            {
+              qualifier: 'or',
+              value: [
+                { qualifier: 'text', value: 'bug', exact: true, negated: false },
+                { qualifier: 'text', value: 'other', exact: true, negated: false }
+              ]
+            }
+          ]
+        });
       });
 
     });

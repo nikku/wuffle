@@ -66,7 +66,7 @@ function startOfDay(time) {
 /**
  * @param {string} str
  *
- * @return {SearchTerm[]}
+ * @return {SearchTerm}
  */
 export function parseSearch(str) {
 
@@ -74,7 +74,7 @@ export function parseSearch(str) {
 
   const stack = [ {
     qualifier: 'and',
-    value: []
+    value: /** @type {SearchTerm[]} */ ([])
   } ];
 
   let match;
@@ -173,5 +173,30 @@ export function parseSearch(str) {
     }
   }
 
-  return stack[0].value;
+  return collapseSearch(stack[0]);
+}
+
+/**
+ * @param {SearchTerm} term
+ *
+ * @return {SearchTerm}
+ */
+export function collapseSearch(term) {
+
+  if (![ 'and', 'or' ].includes(term.qualifier)) {
+    return term;
+  }
+
+  const nestedTerms = /** @type {SearchTerm[]} */ (term.value);
+
+  const nestedTermsCollapsed = nestedTerms.map(collapseSearch);
+
+  if (term.qualifier === 'and' && nestedTermsCollapsed.length === 1) {
+    return nestedTermsCollapsed[0];
+  }
+
+  return {
+    ...term,
+    value: nestedTermsCollapsed
+  };
 }
