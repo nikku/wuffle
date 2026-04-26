@@ -9,6 +9,11 @@ const CHILD_LINK_TYPES = {
 
 /**
  * @typedef { { defaultFilter?: string } } SearchConfig
+ * @typedef { import('../../util/search.js').SearchTerm } SearchTerm
+ *
+ * @typedef { import('../../types.js').GitHubUser } GitHubUser
+ *
+ * @typedef { (issue: any) => boolean } FilterFn
  */
 
 /**
@@ -318,71 +323,95 @@ export default function Search(config, logger, store) {
     };
   }
 
-  function buildFilterFns(search, user) {
+  /**
+   * @param {SearchTerm} term
+   * @param {any} user
+   *
+   * @return {FilterFn}
+   */
+  function buildTermFn(term, user) {
+    let {
+      qualifier,
+      value,
+      negated,
+      exact
+    } = term;
 
-    const terms = search ? parseSearch(search) : [];
+    const wrap = (fn) => negated ? ((issue) => !fn(issue)) : fn;
 
-    return terms.map(term => {
-      let {
-        qualifier,
-        value,
-        negated,
-        exact
-      } = term;
+    if ([ 'or', 'and' ].includes(qualifier)) {
 
-      if (!value) {
-        return noopFilter();
+      const childTerms = /** @type {SearchTerm[]} */ (value);
+
+      const filterFns = childTerms.map(childTerm => buildTermFn(childTerm, user));
+
+      return wrap(
+        (issue) => filterFns[qualifier === 'or' ? 'some' : 'every'](
+          filterFn => filterFn(issue)
+        )
+      );
+    }
+
+    if (!value) {
+      return noopFilter();
+    }
+
+    if (value === '@me') {
+      if (!user) {
+        return noneFilter();
       }
 
-      if (value === '@me') {
-        if (!user) {
-          return noneFilter();
-        }
+      value = user.login;
+      exact = true;
+    }
 
-        value = user.login;
-        exact = true;
-      }
+    const factoryFn = filters[qualifier];
 
-      const factoryFn = filters[qualifier];
+    if (!factoryFn) {
+      return noopFilter();
+    }
 
-      if (!factoryFn) {
-        return noopFilter();
-      }
+    return wrap(factoryFn(value, exact));
+  }
 
-      const fn = factoryFn(value, exact);
+  function buildFilterFn(search, user) {
 
-      if (negated) {
-        return function(arg) {
-          return !fn(arg);
-        };
-      }
+    const term = search && parseSearch(search);
 
-      return fn;
-    });
+    if (!term) {
+      return null;
+    }
+
+    return buildTermFn(term);
   }
 
   /**
    * Retrieve a filter function from the given search string.
    *
    * @param {string} search
-   * @param {import('../../types.js').GitHubUser} [user]
+   * @param {GitHubUser} [user]
    *
-   * @return {Function}
+   * @return {FilterFn}
    */
   function getSearchFilter(search, user) {
 
-    const filterFns = buildFilterFns(search, user);
+    const filterFn = buildFilterFn(search, user);
 
-    const ignoreFilterFns = buildFilterFns(config.defaultFilter, user);
+    const ignoreFilterFn = buildFilterFn(config.defaultFilter, user);
 
     return function(issue) {
       try {
-        if (filterFns.length) {
-          return filterFns.every(fn => fn(issue));
-        } else {
-
-          return ignoreFilterFns.every(fn => fn(issue));
+        if (filterFn) {
+          return filterFn(issue);
         }
+
+        if (ignoreFilterFn) {
+          return ignoreFilterFn(issue);
+        }
+
+        // no user search, no ignore filter,
+        // show all issues
+        return true;
       } catch (err) {
         log.warn({ issue: issueIdent(issue), err }, 'filter failed');
 
