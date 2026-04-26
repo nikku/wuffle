@@ -70,16 +70,25 @@ function startOfDay(time) {
  */
 export function parseSearch(str) {
 
-  const regexp = /([-!]|NOT\s+)?(?:"([^"]+)"|([\w#/&]+)(?:(:)(?:([\w-#/&@<>=.]+)|"([^"]+)")?)?)/g;
+  const regexp = /(\()|(\))|(OR)\s*|(AND)\s|([-!]|NOT\s+)?(?:"([^"]+)"|([\w#/&]+)(?:(:)(?:([\w-#/&@<>=.]+)|"([^"]+)")?)?)/g;
 
-  const terms = [];
+  const stack = [ {
+    qualifier: 'and',
+    value: []
+  } ];
 
   let match;
 
   while ((match = regexp.exec(str))) {
 
+    const term = stack[stack.length - 1];
+
     const [
       _,
+      openGroup,
+      closeGroup,
+      or,
+      and,
       negated,
       textEscaped,
       text,
@@ -88,18 +97,74 @@ export function parseSearch(str) {
       qualifierTextEscaped
     ] = match;
 
+    if (openGroup) {
+      const groupTerm = {
+        qualifier: 'and',
+        value: [],
+        group: true
+      };
+
+      stack.push(groupTerm);
+      term.value.push(groupTerm);
+
+      continue;
+    }
+
+    if (closeGroup) {
+
+      let lastTerm;
+
+      do {
+        lastTerm = stack.pop();
+      } while (!lastTerm.group);
+
+      continue;
+    }
+
+    if (and) {
+
+      // default semantics
+      continue;
+    }
+
+    if (or) {
+      const nextTerm = {
+        qualifier: 'and',
+        value: []
+      };
+
+      const groupTerm = {
+        qualifier: 'or',
+        value: [
+          {
+            qualifier: 'and',
+            value: term.value.slice()
+          },
+          nextTerm
+        ]
+      };
+
+      // replace existing terms with <OR> term
+      term.value.length = 0;
+      term.value.push(groupTerm);
+
+      stack.push(nextTerm);
+
+      continue;
+    }
+
     const textValue = text || textEscaped;
     const qualifierValue = qualifierText || qualifierTextEscaped;
 
     if (qualifier) {
-      terms.push({
+      term.value.push({
         qualifier: textValue,
         value: qualifierValue,
         negated: !!negated,
         exact: !!qualifierTextEscaped
       });
     } else {
-      terms.push({
+      term.value.push({
         qualifier: 'text',
         value: textValue,
         exact: !!textEscaped,
@@ -108,5 +173,5 @@ export function parseSearch(str) {
     }
   }
 
-  return terms;
+  return stack[0].value;
 }
