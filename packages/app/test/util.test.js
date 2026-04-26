@@ -1017,6 +1017,26 @@ describe('util', function() {
     });
 
 
+    it('should parse AND over OR', function() {
+
+      const search = parseSearch('foo bar OR woop');
+
+      expect(search).to.eql({
+        qualifier: 'or',
+        value: [
+          {
+            qualifier: 'and',
+            value: [
+              { qualifier: 'text', value: 'foo', negated: false, exact: false },
+              { qualifier: 'text', value: 'bar', negated: false, exact: false }
+            ]
+          },
+          { qualifier: 'text', value: 'woop', negated: false, exact: false },
+        ]
+      });
+    });
+
+
     it('should parse mixed AND + OR', function() {
 
       // when
