@@ -70,7 +70,7 @@ function startOfDay(time) {
  */
 export function parseSearch(str) {
 
-  const regexp = /([-!])?(?:"([^"]+)"|([\w#/&]+)(?:(:)(?:([\w-#/&@<>=.]+)|"([^"]+)")?)?)/g;
+  const regexp = /([-!]|NOT\s+)?(?:"([^"]+)"|([\w#/&]+)(?:(:)(?:([\w-#/&@<>=.]+)|"([^"]+)")?)?)/g;
 
   const terms = [];
 
@@ -102,7 +102,8 @@ export function parseSearch(str) {
       terms.push({
         qualifier: 'text',
         value: textValue,
-        exact: !!textEscaped
+        exact: !!textEscaped,
+        negated: !!negated
       });
     }
   }

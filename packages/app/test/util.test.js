@@ -688,11 +688,11 @@ describe('util', function() {
 
       // then
       expect(search).to.eql([
-        { qualifier: 'text', value: 'Copy& Paste', exact: true },
+        { qualifier: 'text', value: 'Copy& Paste', negated: false, exact: true },
         { qualifier: 'is', value: 'open', negated: false, exact: false },
-        { qualifier: 'text', value: 'asdsad', exact: false },
+        { qualifier: 'text', value: 'asdsad', negated: false, exact: false },
         { qualifier: 'milestone', value: 'FOO BAR', negated: false, exact: true },
-        { qualifier: 'text', value: 'FOO BAR', exact: true },
+        { qualifier: 'text', value: 'FOO BAR', negated: false, exact: true },
         { qualifier: 'milestone', value: '12asd', negated: false, exact: false },
         { qualifier: 'milestone', value: undefined, negated: false, exact: false },
         { qualifier: 'author', value: 'walt', negated: false, exact: false },
@@ -718,20 +718,30 @@ describe('util', function() {
     });
 
 
-    it('should parse negated (-) value', function() {
+    it('should parse negated value', function() {
 
       // when
       const search = parseSearch([
         '-is:"open:b"',
         '-is:FOO',
-        '!is:FOO'
+        '!is:FOO',
+        'NOT is:FOO',
+        '!FOO',
+        '!"FOO"',
+        'NOT NOTARIZED',
+        'NOTARIZED'
       ].join(' '));
 
       // then
       expect(search).to.eql([
         { qualifier: 'is', value: 'open:b', negated: true, exact: true },
         { qualifier: 'is', value: 'FOO', negated: true, exact: false },
-        { qualifier: 'is', value: 'FOO', negated: true, exact: false }
+        { qualifier: 'is', value: 'FOO', negated: true, exact: false },
+        { qualifier: 'is', value: 'FOO', negated: true, exact: false },
+        { qualifier: 'text', value: 'FOO', negated: true, exact: false },
+        { qualifier: 'text', value: 'FOO', negated: true, exact: true },
+        { qualifier: 'text', value: 'NOTARIZED', negated: true, exact: false },
+        { qualifier: 'text', value: 'NOTARIZED', negated: false, exact: false }
       ]);
 
     });
