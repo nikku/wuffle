@@ -17,8 +17,25 @@ The board supports the following filters:
 | `label` | Filter by [label](https://docs.github.com/en/github/managing-your-work-on-github/managing-labels) | `label:critical` |
 | `repo` | Filter by repository | `repo:"nikku/wuffle"` |
 
-Filters get chained together by the board with _and_ semantics.
+### Using Boolean Operations
 
+Per default, filters get chained together by the board with _and_ semantics. To change this use the operators `AND`, `OR`, and `NOT` to combine search terms.
+
+As an example, use the `OR` keyword to combine groups with _or_ semantics:
+
+```
+repo:foo/bar label:bug OR repo:baz/qux
+```
+
+This matches issues that either belong to repository `foo/bar` with label `bug`, or to repository `baz/qux`.
+
+In addition, you can use `()` to group searches:
+
+```
+(is:closed OR label:bug) AND repo:foo/bar
+```
+
+This matches issues that belong to the repository `foo/bar` that are either closed or have the label `bug`.
 
 ## Applying Filters
 
