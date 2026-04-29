@@ -12,7 +12,8 @@
       "node_id": "MDQ6VXNlcjU4NjAx",
       "login": "nikku",
       "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-      "html_url": "https://github.com/nikku"
+      "html_url": "https://github.com/nikku",
+      "type": "User"
     },
     "body": "YEA.\r\n\r\nCloses https://github.com/nikku/testtest-checks/issues/6",
     "created_at": "2019-10-11T09:30:35Z",
@@ -39,7 +40,8 @@
         "node_id": "MDQ6VXNlcjU4NjAx",
         "login": "nikku",
         "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-        "html_url": "https://github.com/nikku"
+        "html_url": "https://github.com/nikku",
+        "type": "User"
       },
       "repo": {
         "id": 159565926,
@@ -51,7 +53,8 @@
           "node_id": "MDQ6VXNlcjU4NjAx",
           "login": "nikku",
           "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-          "html_url": "https://github.com/nikku"
+          "html_url": "https://github.com/nikku",
+          "type": "User"
         },
         "html_url": "https://github.com/nikku/testtest-checks"
       }
@@ -64,7 +67,8 @@
         "node_id": "MDQ6VXNlcjU4NjAx",
         "login": "nikku",
         "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-        "html_url": "https://github.com/nikku"
+        "html_url": "https://github.com/nikku",
+        "type": "User"
       },
       "repo": {
         "id": 159565926,
@@ -76,7 +80,8 @@
           "node_id": "MDQ6VXNlcjU4NjAx",
           "login": "nikku",
           "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-          "html_url": "https://github.com/nikku"
+          "html_url": "https://github.com/nikku",
+          "type": "User"
         },
         "html_url": "https://github.com/nikku/testtest-checks"
       }
@@ -94,7 +99,8 @@
         "node_id": "MDQ6VXNlcjU4NjAx",
         "login": "nikku",
         "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-        "html_url": "https://github.com/nikku"
+        "html_url": "https://github.com/nikku",
+        "type": "User"
       },
       "html_url": "https://github.com/nikku/testtest-checks"
     },
@@ -142,7 +148,8 @@
           "node_id": "MDQ6VXNlcjQzNjg0NTA1",
           "login": "waltaaa",
           "avatar_url": "https://avatars.githubusercontent.com/u/43684505?u=7d484e008242e75626e637ee648e2179ebe9368b&v=4",
-          "html_url": "https://github.com/waltaaa"
+          "html_url": "https://github.com/waltaaa",
+          "type": "User"
         },
         "html_url": "https://github.com/nikku/testtest-checks/pull/7#pullrequestreview-425035349"
       },
@@ -158,7 +165,8 @@
           "node_id": "MDQ6VXNlcjQzNjg0NTA1",
           "login": "waltaaa",
           "avatar_url": "https://avatars.githubusercontent.com/u/43684505?u=7d484e008242e75626e637ee648e2179ebe9368b&v=4",
-          "html_url": "https://github.com/waltaaa"
+          "html_url": "https://github.com/waltaaa",
+          "type": "User"
         },
         "html_url": "https://github.com/nikku/testtest-checks/pull/7#pullrequestreview-425035431"
       },
@@ -174,7 +182,8 @@
           "node_id": "MDQ6VXNlcjQzNjg0NTA1",
           "login": "waltaaa",
           "avatar_url": "https://avatars.githubusercontent.com/u/43684505?u=7d484e008242e75626e637ee648e2179ebe9368b&v=4",
-          "html_url": "https://github.com/waltaaa"
+          "html_url": "https://github.com/waltaaa",
+          "type": "User"
         },
         "html_url": "https://github.com/nikku/testtest-checks/pull/7#pullrequestreview-425039137"
       },
@@ -190,7 +199,8 @@
           "node_id": "MDQ6VXNlcjQzNjg0NTA1",
           "login": "waltaaa",
           "avatar_url": "https://avatars.githubusercontent.com/u/43684505?u=7d484e008242e75626e637ee648e2179ebe9368b&v=4",
-          "html_url": "https://github.com/waltaaa"
+          "html_url": "https://github.com/waltaaa",
+          "type": "User"
         },
         "html_url": "https://github.com/nikku/testtest-checks/pull/7#pullrequestreview-425039219"
       },
@@ -206,7 +216,8 @@
           "node_id": "MDQ6VXNlcjQzNjg0NTA1",
           "login": "waltaaa",
           "avatar_url": "https://avatars.githubusercontent.com/u/43684505?u=7d484e008242e75626e637ee648e2179ebe9368b&v=4",
-          "html_url": "https://github.com/waltaaa"
+          "html_url": "https://github.com/waltaaa",
+          "type": "User"
         },
         "html_url": "https://github.com/nikku/testtest-checks/pull/7#pullrequestreview-425040270"
       },
@@ -222,7 +233,8 @@
           "node_id": "MDQ6VXNlcjQzNjg0NTA1",
           "login": "waltaaa",
           "avatar_url": "https://avatars.githubusercontent.com/u/43684505?u=7d484e008242e75626e637ee648e2179ebe9368b&v=4",
-          "html_url": "https://github.com/waltaaa"
+          "html_url": "https://github.com/waltaaa",
+          "type": "User"
         },
         "html_url": "https://github.com/nikku/testtest-checks/pull/7#pullrequestreview-425040354"
       }
@@ -248,7 +260,8 @@
             "node_id": "MDQ6VXNlcjU4NjAx",
             "login": "nikku",
             "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-            "html_url": "https://github.com/nikku"
+            "html_url": "https://github.com/nikku",
+            "type": "User"
           },
           "body": "* [ ] #26, #25 ",
           "created_at": "2019-10-11T09:29:40Z",
@@ -260,7 +273,8 @@
               "node_id": "MDQ6VXNlcjU4NjAx",
               "login": "nikku",
               "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-              "html_url": "https://github.com/nikku"
+              "html_url": "https://github.com/nikku",
+              "type": "User"
             }
           ],
           "labels": [
@@ -289,7 +303,8 @@
               "node_id": "MDQ6VXNlcjU4NjAx",
               "login": "nikku",
               "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-              "html_url": "https://github.com/nikku"
+              "html_url": "https://github.com/nikku",
+              "type": "User"
             },
             "html_url": "https://github.com/nikku/testtest-checks"
           },
@@ -307,7 +322,8 @@
               "user": {
                 "login": "nikku",
                 "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-                "html_url": "https://github.com/nikku"
+                "html_url": "https://github.com/nikku",
+                "type": "User"
               }
             },
             {
@@ -319,7 +335,8 @@
               "user": {
                 "login": "nikku",
                 "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-                "html_url": "https://github.com/nikku"
+                "html_url": "https://github.com/nikku",
+                "type": "User"
               }
             },
             {
@@ -331,7 +348,8 @@
               "user": {
                 "login": "nikku",
                 "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-                "html_url": "https://github.com/nikku"
+                "html_url": "https://github.com/nikku",
+                "type": "User"
               }
             },
             {
@@ -343,7 +361,8 @@
               "user": {
                 "login": "nikku",
                 "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-                "html_url": "https://github.com/nikku"
+                "html_url": "https://github.com/nikku",
+                "type": "User"
               }
             }
           ]
@@ -392,7 +411,8 @@
         "node_id": "MDQ6VXNlcjU4NjAx",
         "login": "nikku",
         "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-        "html_url": "https://github.com/nikku"
+        "html_url": "https://github.com/nikku",
+        "type": "User"
       },
       "html_url": "https://github.com/nikku/wuffle"
     },
@@ -417,7 +437,8 @@
             "node_id": "MDQ6VXNlcjQyODAwMTE5",
             "login": "MaxTru",
             "avatar_url": "https://avatars.githubusercontent.com/u/42800119?v=4",
-            "html_url": "https://github.com/MaxTru"
+            "html_url": "https://github.com/MaxTru",
+            "type": "User"
           },
           "body": "__Describe the feature / what is the problem?__\r\n\r\nOnce an issue is transferred from a repo to another, it is displayed twice in the wuffle board. \r\n![Screenshot_20201014_105359](https://user-images.githubusercontent.com/42800119/95966560-91e40100-0e0b-11eb-8349-18c811fa0112.png)\r\n\r\nIn detail:\r\nThe original issue URI is still valid (e.g., https://github.com/bpmn-io/fake-join/issues/22) but will redirect to the new issue (https://github.com/bpmn-io/internal-docs/issues/178). The old issue cannot be found in the issues of the original repo (https://github.com/bpmn-io/fake-join/issues/). So it seems like that GitHub simply still provides the reference to the issue on API level. \r\n\r\nProbably we need to decide whether this is a bug or a feature. IMO we should filter transferred issues. \r\n\r\n\r\n__Steps to Reproduce__\r\n\r\n<!-- Clear steps that allow us to reproduce the error. -->\r\n\r\n1. Transfer an issue to a new repo which is also in scope of the respective wuffle instance\r\n2. Two cards will appear on wuffle both referencing (effectively) the same issue\r\n\r\n__Environment__\r\n\r\n- Host (Browser/Node version), if applicable: Brave (Chromium-based)\r\n- OS: Arch Manjaro Linux\r\n- Board version: 0.34.0",
           "created_at": "2020-10-14T08:58:35Z",
@@ -443,7 +464,8 @@
               "node_id": "MDQ6VXNlcjU4NjAx",
               "login": "nikku",
               "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-              "html_url": "https://github.com/nikku"
+              "html_url": "https://github.com/nikku",
+              "type": "User"
             },
             "html_url": "https://github.com/nikku/wuffle"
           },
@@ -461,7 +483,8 @@
               "user": {
                 "login": "nikku",
                 "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-                "html_url": "https://github.com/nikku"
+                "html_url": "https://github.com/nikku",
+                "type": "User"
               }
             }
           ]
@@ -482,7 +505,8 @@
       "node_id": "MDQ6VXNlcjU4NjAx",
       "login": "nikku",
       "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-      "html_url": "https://github.com/nikku"
+      "html_url": "https://github.com/nikku",
+      "type": "User"
     },
     "body": "Make it possible to select and move multiple cards at once, i.e. to batch move cards to a particular column or re-order them.",
     "created_at": "2019-04-25T20:17:43Z",
@@ -512,7 +536,8 @@
         "node_id": "MDQ6VXNlcjU4NjAx",
         "login": "nikku",
         "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-        "html_url": "https://github.com/nikku"
+        "html_url": "https://github.com/nikku",
+        "type": "User"
       },
       "html_url": "https://github.com/nikku/wuffle"
     },
@@ -535,7 +560,8 @@
       "node_id": "MDQ6VXNlcjU4NjAx",
       "login": "nikku",
       "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-      "html_url": "https://github.com/nikku"
+      "html_url": "https://github.com/nikku",
+      "type": "User"
     },
     "body": "It should be possible to drop cards onto a collapsed column, too.\r\n\r\nOnce the user does that the card should end up on top of the column.",
     "created_at": "2019-04-25T20:16:48Z",
@@ -571,7 +597,8 @@
         "node_id": "MDQ6VXNlcjU4NjAx",
         "login": "nikku",
         "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-        "html_url": "https://github.com/nikku"
+        "html_url": "https://github.com/nikku",
+        "type": "User"
       },
       "html_url": "https://github.com/nikku/wuffle"
     },
@@ -594,7 +621,8 @@
       "node_id": "MDQ6VXNlcjU4NjAx",
       "login": "nikku",
       "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-      "html_url": "https://github.com/nikku"
+      "html_url": "https://github.com/nikku",
+      "type": "User"
     },
     "body": "__Is your feature request related to a problem? Please describe__\r\n\r\nGitHub has [a mentions filter](https://docs.github.com/en/free-pro-team@latest/github/searching-for-information-on-github/searching-issues-and-pull-requests#search-by-mention) that allows me to get an overview over all attempts to pull me into a topic.\r\n\r\nThe filter is handy in certain situations, i.e. when I'm working with colleagues in a collaborative, asynchronous fashion.\r\n\r\n__Describe the solution you'd like__\r\n\r\n* `mentions:username` is available in search\r\n* `involves:username` includes mentions \r\n\r\n__Describe alternatives you've considered__\r\n\r\nNone.\r\n\r\n__Additional context__\r\n\r\nDepends on https://github.com/nikku/wuffle/issues/94.",
     "created_at": "2020-11-17T15:29:37Z",
@@ -630,7 +658,8 @@
         "node_id": "MDQ6VXNlcjU4NjAx",
         "login": "nikku",
         "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-        "html_url": "https://github.com/nikku"
+        "html_url": "https://github.com/nikku",
+        "type": "User"
       },
       "html_url": "https://github.com/nikku/wuffle"
     },
@@ -655,7 +684,8 @@
             "node_id": "MDQ6VXNlcjU4NjAx",
             "login": "nikku",
             "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-            "html_url": "https://github.com/nikku"
+            "html_url": "https://github.com/nikku",
+            "type": "User"
           },
           "body": "__Is your feature request related to a problem? Please describe__\r\n\r\nIssue comments should be synchronized with the board (similar to statuses and checks) to build additional features on top such as an `@mentions` feature or issue bumping (giving it higer priority on the board) if a new comment is being added.\r\n\r\n__Describe the solution you'd like__\r\n\r\n* Comments are synchronized along with the issue\r\n* Comments are available on an issue via `issue.comments`\r\n\r\n__Describe alternatives you've considered__\r\n\r\nNone.",
           "created_at": "2020-11-17T15:29:21Z",
@@ -681,7 +711,8 @@
               "node_id": "MDQ6VXNlcjU4NjAx",
               "login": "nikku",
               "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-              "html_url": "https://github.com/nikku"
+              "html_url": "https://github.com/nikku",
+              "type": "User"
             },
             "html_url": "https://github.com/nikku/wuffle"
           },
@@ -707,7 +738,8 @@
       "node_id": "MDQ6VXNlcjU4NjAx",
       "login": "nikku",
       "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-      "html_url": "https://github.com/nikku"
+      "html_url": "https://github.com/nikku",
+      "type": "User"
     },
     "body": "This ensures that PRs moved back to _in progress_ are coverted to drafts and PRs that are moved to _ready for review_ are _marked as ready_.\r\n\r\nCloses https://github.com/nikku/wuffle/issues/116.\r\n\r\n---\r\n\r\nNote that this PR does not work due to GitHub App limitations for the `convertPullRequestToDraft` and `markPullRequestReadyForReview` mutations. These are currently unavailable for GitHub apps.",
     "created_at": "2021-11-13T13:52:47Z",
@@ -735,7 +767,8 @@
         "node_id": "MDQ6VXNlcjU4NjAx",
         "login": "nikku",
         "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-        "html_url": "https://github.com/nikku"
+        "html_url": "https://github.com/nikku",
+        "type": "User"
       },
       "repo": {
         "id": 176821946,
@@ -747,7 +780,8 @@
           "node_id": "MDQ6VXNlcjU4NjAx",
           "login": "nikku",
           "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-          "html_url": "https://github.com/nikku"
+          "html_url": "https://github.com/nikku",
+          "type": "User"
         },
         "html_url": "https://github.com/nikku/wuffle"
       }
@@ -760,7 +794,8 @@
         "node_id": "MDQ6VXNlcjU4NjAx",
         "login": "nikku",
         "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-        "html_url": "https://github.com/nikku"
+        "html_url": "https://github.com/nikku",
+        "type": "User"
       },
       "repo": {
         "id": 176821946,
@@ -772,7 +807,8 @@
           "node_id": "MDQ6VXNlcjU4NjAx",
           "login": "nikku",
           "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-          "html_url": "https://github.com/nikku"
+          "html_url": "https://github.com/nikku",
+          "type": "User"
         },
         "html_url": "https://github.com/nikku/wuffle"
       }
@@ -790,7 +826,8 @@
         "node_id": "MDQ6VXNlcjU4NjAx",
         "login": "nikku",
         "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-        "html_url": "https://github.com/nikku"
+        "html_url": "https://github.com/nikku",
+        "type": "User"
       },
       "html_url": "https://github.com/nikku/wuffle"
     },
@@ -863,7 +900,8 @@
             "node_id": "MDQ6VXNlcjU4NjAx",
             "login": "nikku",
             "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-            "html_url": "https://github.com/nikku"
+            "html_url": "https://github.com/nikku",
+            "type": "User"
           },
           "body": "__Is your feature request related to a problem? Please describe__\r\n\r\nGiven our tight integration with GitHub flow, I'd expect draft PRs to automatically be converted to a \"ready for review\" PR if the user moves it to the review column. This is my intend as a user.\r\n\r\n\r\n__Describe the solution you'd like__\r\n\r\n* [ ] Draft PRs is converted to a \"ready for review\" PR if the user moves it to the review column.\r\n\r\n__Describe alternatives you've considered__\r\n\r\nNone.\r\n\r\n__Additional context__\r\n\r\nNot working in `wuffle@0.41.1`. \r\n\r\n---\r\n\r\nBlocked by GitHub limitations: It is currently not possible to use the GraphQL v4 mutations _convert to draft_ as well as _mark ready for review_ from GitHub apps with user scope (cf. [allowed user to server requests](https://docs.github.com/en/developers/apps/building-github-apps/identifying-and-authorizing-users-for-github-apps#user-to-server-requests)).\r\n\r\n---\r\n\r\nWill be closed via https://github.com/nikku/wuffle/pull/124 once support for the mutations from GitHub apps lands on GitHub side.",
           "created_at": "2021-03-19T11:06:40Z",
@@ -909,7 +947,8 @@
               "node_id": "MDQ6VXNlcjU4NjAx",
               "login": "nikku",
               "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-              "html_url": "https://github.com/nikku"
+              "html_url": "https://github.com/nikku",
+              "type": "User"
             },
             "html_url": "https://github.com/nikku/wuffle"
           },
@@ -935,7 +974,8 @@
       "node_id": "MDQ6VXNlcjU4NjAx",
       "login": "nikku",
       "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-      "html_url": "https://github.com/nikku"
+      "html_url": "https://github.com/nikku",
+      "type": "User"
     },
     "body": "__Is your feature request related to a problem? Please describe__\r\n\r\nGiven our tight integration with GitHub flow, I'd expect draft PRs to automatically be converted to a \"ready for review\" PR if the user moves it to the review column. This is my intend as a user.\r\n\r\n\r\n__Describe the solution you'd like__\r\n\r\n* [ ] Draft PRs is converted to a \"ready for review\" PR if the user moves it to the review column.\r\n\r\n__Describe alternatives you've considered__\r\n\r\nNone.\r\n\r\n__Additional context__\r\n\r\nNot working in `wuffle@0.41.1`. \r\n\r\n---\r\n\r\nBlocked by GitHub limitations: It is currently not possible to use the GraphQL v4 mutations _convert to draft_ as well as _mark ready for review_ from GitHub apps with user scope (cf. [allowed user to server requests](https://docs.github.com/en/developers/apps/building-github-apps/identifying-and-authorizing-users-for-github-apps#user-to-server-requests)).\r\n\r\n---\r\n\r\nWill be closed via https://github.com/nikku/wuffle/pull/124 once support for the mutations from GitHub apps lands on GitHub side.",
     "created_at": "2021-03-19T11:06:40Z",
@@ -981,7 +1021,8 @@
         "node_id": "MDQ6VXNlcjU4NjAx",
         "login": "nikku",
         "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-        "html_url": "https://github.com/nikku"
+        "html_url": "https://github.com/nikku",
+        "type": "User"
       },
       "html_url": "https://github.com/nikku/wuffle"
     },
@@ -1006,7 +1047,8 @@
             "node_id": "MDQ6VXNlcjU4NjAx",
             "login": "nikku",
             "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-            "html_url": "https://github.com/nikku"
+            "html_url": "https://github.com/nikku",
+            "type": "User"
           },
           "body": "This ensures that PRs moved back to _in progress_ are coverted to drafts and PRs that are moved to _ready for review_ are _marked as ready_.\r\n\r\nCloses https://github.com/nikku/wuffle/issues/116.\r\n\r\n---\r\n\r\nNote that this PR does not work due to GitHub App limitations for the `convertPullRequestToDraft` and `markPullRequestReadyForReview` mutations. These are currently unavailable for GitHub apps.",
           "created_at": "2021-11-13T13:52:47Z",
@@ -1033,7 +1075,8 @@
               "node_id": "MDQ6VXNlcjU4NjAx",
               "login": "nikku",
               "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-              "html_url": "https://github.com/nikku"
+              "html_url": "https://github.com/nikku",
+              "type": "User"
             },
             "repo": {
               "id": 176821946,
@@ -1045,7 +1088,8 @@
                 "node_id": "MDQ6VXNlcjU4NjAx",
                 "login": "nikku",
                 "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-                "html_url": "https://github.com/nikku"
+                "html_url": "https://github.com/nikku",
+                "type": "User"
               },
               "html_url": "https://github.com/nikku/wuffle"
             }
@@ -1058,7 +1102,8 @@
               "node_id": "MDQ6VXNlcjU4NjAx",
               "login": "nikku",
               "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-              "html_url": "https://github.com/nikku"
+              "html_url": "https://github.com/nikku",
+              "type": "User"
             },
             "repo": {
               "id": 176821946,
@@ -1070,7 +1115,8 @@
                 "node_id": "MDQ6VXNlcjU4NjAx",
                 "login": "nikku",
                 "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-                "html_url": "https://github.com/nikku"
+                "html_url": "https://github.com/nikku",
+                "type": "User"
               },
               "html_url": "https://github.com/nikku/wuffle"
             }
@@ -1088,7 +1134,8 @@
               "node_id": "MDQ6VXNlcjU4NjAx",
               "login": "nikku",
               "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-              "html_url": "https://github.com/nikku"
+              "html_url": "https://github.com/nikku",
+              "type": "User"
             },
             "html_url": "https://github.com/nikku/wuffle"
           },
@@ -1162,7 +1209,8 @@
       "node_id": "MDQ6VXNlcjU4NjAx",
       "login": "nikku",
       "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-      "html_url": "https://github.com/nikku"
+      "html_url": "https://github.com/nikku",
+      "type": "User"
     },
     "body": "__Is your feature request related to a problem? Please describe.__\r\n\r\nGitHub API `v4` is a GraphQL one, cf. [GraphQL v4](https://developer.github.com/v4/guides/using-global-node-ids/).\r\n\r\nUsing it reduces bandwidth and safeguards us from accidential API miss-use (core feature in GraphQL).\r\n \r\n__Describe the solution you'd like__\r\n\r\n* [ ] Current usages of the REST API are replaced with GraphQL calls\r\n* [ ] We are as good with regards to rate limits as we are with the current REST API calls\r\n\r\n__Describe alternatives you've considered__\r\n\r\nKeep things untouched. The REST API will probably stay around for a long time.",
     "created_at": "2019-10-19T21:10:40Z",
@@ -1205,7 +1253,8 @@
         "node_id": "MDQ6VXNlcjU4NjAx",
         "login": "nikku",
         "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-        "html_url": "https://github.com/nikku"
+        "html_url": "https://github.com/nikku",
+        "type": "User"
       },
       "html_url": "https://github.com/nikku/wuffle"
     },
@@ -1228,7 +1277,8 @@
       "node_id": "MDQ6VXNlcjU4NjAx",
       "login": "nikku",
       "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-      "html_url": "https://github.com/nikku"
+      "html_url": "https://github.com/nikku",
+      "type": "User"
     },
     "body": "ADS",
     "created_at": "2019-10-10T19:59:03Z",
@@ -1243,7 +1293,8 @@
         "node_id": "MDQ6VXNlcjQzNjg0NTA1",
         "login": "waltaaa",
         "avatar_url": "https://avatars.githubusercontent.com/u/43684505?v=4",
-        "html_url": "https://github.com/waltaaa"
+        "html_url": "https://github.com/waltaaa",
+        "type": "User"
       }
     ],
     "labels": [
@@ -1273,7 +1324,8 @@
         "node_id": "MDQ6VXNlcjU4NjAx",
         "login": "nikku",
         "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-        "html_url": "https://github.com/nikku"
+        "html_url": "https://github.com/nikku",
+        "type": "User"
       },
       "repo": {
         "id": 159565926,
@@ -1285,7 +1337,8 @@
           "node_id": "MDQ6VXNlcjU4NjAx",
           "login": "nikku",
           "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-          "html_url": "https://github.com/nikku"
+          "html_url": "https://github.com/nikku",
+          "type": "User"
         },
         "html_url": "https://github.com/nikku/testtest-checks"
       }
@@ -1298,7 +1351,8 @@
         "node_id": "MDQ6VXNlcjU4NjAx",
         "login": "nikku",
         "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-        "html_url": "https://github.com/nikku"
+        "html_url": "https://github.com/nikku",
+        "type": "User"
       },
       "repo": {
         "id": 159565926,
@@ -1310,7 +1364,8 @@
           "node_id": "MDQ6VXNlcjU4NjAx",
           "login": "nikku",
           "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-          "html_url": "https://github.com/nikku"
+          "html_url": "https://github.com/nikku",
+          "type": "User"
         },
         "html_url": "https://github.com/nikku/testtest-checks"
       }
@@ -1328,7 +1383,8 @@
         "node_id": "MDQ6VXNlcjU4NjAx",
         "login": "nikku",
         "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-        "html_url": "https://github.com/nikku"
+        "html_url": "https://github.com/nikku",
+        "type": "User"
       },
       "html_url": "https://github.com/nikku/testtest-checks"
     },
@@ -1350,7 +1406,8 @@
       "node_id": "MDQ6VXNlcjU4NjAx",
       "login": "nikku",
       "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-      "html_url": "https://github.com/nikku"
+      "html_url": "https://github.com/nikku",
+      "type": "User"
     },
     "body": "",
     "created_at": "2019-10-10T21:18:54Z",
@@ -1381,7 +1438,8 @@
         "node_id": "MDQ6VXNlcjU4NjAx",
         "login": "nikku",
         "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-        "html_url": "https://github.com/nikku"
+        "html_url": "https://github.com/nikku",
+        "type": "User"
       },
       "repo": {
         "id": 159565926,
@@ -1393,7 +1451,8 @@
           "node_id": "MDQ6VXNlcjU4NjAx",
           "login": "nikku",
           "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-          "html_url": "https://github.com/nikku"
+          "html_url": "https://github.com/nikku",
+          "type": "User"
         },
         "html_url": "https://github.com/nikku/testtest-checks"
       }
@@ -1406,7 +1465,8 @@
         "node_id": "MDQ6VXNlcjU4NjAx",
         "login": "nikku",
         "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-        "html_url": "https://github.com/nikku"
+        "html_url": "https://github.com/nikku",
+        "type": "User"
       },
       "repo": {
         "id": 159565926,
@@ -1418,7 +1478,8 @@
           "node_id": "MDQ6VXNlcjU4NjAx",
           "login": "nikku",
           "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-          "html_url": "https://github.com/nikku"
+          "html_url": "https://github.com/nikku",
+          "type": "User"
         },
         "html_url": "https://github.com/nikku/testtest-checks"
       }
@@ -1436,7 +1497,8 @@
         "node_id": "MDQ6VXNlcjU4NjAx",
         "login": "nikku",
         "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-        "html_url": "https://github.com/nikku"
+        "html_url": "https://github.com/nikku",
+        "type": "User"
       },
       "html_url": "https://github.com/nikku/testtest-checks"
     },
@@ -1458,7 +1520,8 @@
       "node_id": "MDQ6VXNlcjU4NjAx",
       "login": "nikku",
       "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-      "html_url": "https://github.com/nikku"
+      "html_url": "https://github.com/nikku",
+      "type": "User"
     },
     "body": "Required by #76\r\n\r\nDepends on #92",
     "created_at": "2019-06-02T17:49:21Z",
@@ -1472,7 +1535,8 @@
         "node_id": "MDQ6VXNlcjU4NjAx",
         "login": "nikku",
         "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-        "html_url": "https://github.com/nikku"
+        "html_url": "https://github.com/nikku",
+        "type": "User"
       }
     ],
     "requested_reviewers": [
@@ -1481,7 +1545,8 @@
         "node_id": "MDQ6VXNlcjQzNjg0NTA1",
         "login": "waltaaa",
         "avatar_url": "https://avatars.githubusercontent.com/u/43684505?v=4",
-        "html_url": "https://github.com/waltaaa"
+        "html_url": "https://github.com/waltaaa",
+        "type": "User"
       }
     ],
     "labels": [
@@ -1505,7 +1570,8 @@
         "node_id": "MDQ6VXNlcjU4NjAx",
         "login": "nikku",
         "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-        "html_url": "https://github.com/nikku"
+        "html_url": "https://github.com/nikku",
+        "type": "User"
       },
       "repo": {
         "id": 150751504,
@@ -1517,7 +1583,8 @@
           "node_id": "MDQ6VXNlcjU4NjAx",
           "login": "nikku",
           "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-          "html_url": "https://github.com/nikku"
+          "html_url": "https://github.com/nikku",
+          "type": "User"
         },
         "html_url": "https://github.com/nikku/testtest"
       }
@@ -1530,7 +1597,8 @@
         "node_id": "MDQ6VXNlcjU4NjAx",
         "login": "nikku",
         "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-        "html_url": "https://github.com/nikku"
+        "html_url": "https://github.com/nikku",
+        "type": "User"
       },
       "repo": {
         "id": 150751504,
@@ -1542,7 +1610,8 @@
           "node_id": "MDQ6VXNlcjU4NjAx",
           "login": "nikku",
           "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-          "html_url": "https://github.com/nikku"
+          "html_url": "https://github.com/nikku",
+          "type": "User"
         },
         "html_url": "https://github.com/nikku/testtest"
       }
@@ -1560,7 +1629,8 @@
         "node_id": "MDQ6VXNlcjU4NjAx",
         "login": "nikku",
         "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-        "html_url": "https://github.com/nikku"
+        "html_url": "https://github.com/nikku",
+        "type": "User"
       },
       "html_url": "https://github.com/nikku/testtest"
     },
@@ -1583,7 +1653,8 @@
             "node_id": "MDQ6VXNlcjU4NjAx",
             "login": "nikku",
             "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-            "html_url": "https://github.com/nikku"
+            "html_url": "https://github.com/nikku",
+            "type": "User"
           },
           "body": "Related to #81 ",
           "created_at": "2019-06-02T17:13:46Z",
@@ -1613,7 +1684,8 @@
               "node_id": "MDQ6VXNlcjU4NjAx",
               "login": "nikku",
               "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-              "html_url": "https://github.com/nikku"
+              "html_url": "https://github.com/nikku",
+              "type": "User"
             },
             "html_url": "https://github.com/nikku/testtest"
           },
@@ -1638,7 +1710,8 @@
             "node_id": "MDQ6VXNlcjU4NjAx",
             "login": "nikku",
             "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-            "html_url": "https://github.com/nikku"
+            "html_url": "https://github.com/nikku",
+            "type": "User"
           },
           "body": "Closes #74",
           "created_at": "2019-07-05T17:15:19Z",
@@ -1669,7 +1742,8 @@
               "node_id": "MDQ6VXNlcjU4NjAx",
               "login": "nikku",
               "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-              "html_url": "https://github.com/nikku"
+              "html_url": "https://github.com/nikku",
+              "type": "User"
             },
             "repo": {
               "id": 150751504,
@@ -1681,7 +1755,8 @@
                 "node_id": "MDQ6VXNlcjU4NjAx",
                 "login": "nikku",
                 "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-                "html_url": "https://github.com/nikku"
+                "html_url": "https://github.com/nikku",
+                "type": "User"
               },
               "html_url": "https://github.com/nikku/testtest"
             }
@@ -1694,7 +1769,8 @@
               "node_id": "MDQ6VXNlcjU4NjAx",
               "login": "nikku",
               "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-              "html_url": "https://github.com/nikku"
+              "html_url": "https://github.com/nikku",
+              "type": "User"
             },
             "repo": {
               "id": 150751504,
@@ -1706,7 +1782,8 @@
                 "node_id": "MDQ6VXNlcjU4NjAx",
                 "login": "nikku",
                 "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-                "html_url": "https://github.com/nikku"
+                "html_url": "https://github.com/nikku",
+                "type": "User"
               },
               "html_url": "https://github.com/nikku/testtest"
             }
@@ -1724,7 +1801,8 @@
               "node_id": "MDQ6VXNlcjU4NjAx",
               "login": "nikku",
               "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-              "html_url": "https://github.com/nikku"
+              "html_url": "https://github.com/nikku",
+              "type": "User"
             },
             "html_url": "https://github.com/nikku/testtest"
           },
@@ -1748,7 +1826,8 @@
       "node_id": "MDQ6VXNlcjQzNjg0NTA1",
       "login": "waltaaa",
       "avatar_url": "https://avatars.githubusercontent.com/u/43684505?v=4",
-      "html_url": "https://github.com/waltaaa"
+      "html_url": "https://github.com/waltaaa",
+      "type": "User"
     },
     "body": "",
     "created_at": "2020-11-21T15:36:11Z",
@@ -1779,7 +1858,8 @@
         "node_id": "MDQ6VXNlcjQzNjg0NTA1",
         "login": "waltaaa",
         "avatar_url": "https://avatars.githubusercontent.com/u/43684505?v=4",
-        "html_url": "https://github.com/waltaaa"
+        "html_url": "https://github.com/waltaaa",
+        "type": "User"
       },
       "repo": {
         "id": 314843772,
@@ -1791,7 +1871,8 @@
           "node_id": "MDQ6VXNlcjQzNjg0NTA1",
           "login": "waltaaa",
           "avatar_url": "https://avatars.githubusercontent.com/u/43684505?v=4",
-          "html_url": "https://github.com/waltaaa"
+          "html_url": "https://github.com/waltaaa",
+          "type": "User"
         },
         "html_url": "https://github.com/waltaaa/testtest"
       }
@@ -1804,7 +1885,8 @@
         "node_id": "MDQ6VXNlcjU4NjAx",
         "login": "nikku",
         "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-        "html_url": "https://github.com/nikku"
+        "html_url": "https://github.com/nikku",
+        "type": "User"
       },
       "repo": {
         "id": 150751504,
@@ -1816,7 +1898,8 @@
           "node_id": "MDQ6VXNlcjU4NjAx",
           "login": "nikku",
           "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-          "html_url": "https://github.com/nikku"
+          "html_url": "https://github.com/nikku",
+          "type": "User"
         },
         "html_url": "https://github.com/nikku/testtest"
       }
@@ -1834,7 +1917,8 @@
         "node_id": "MDQ6VXNlcjU4NjAx",
         "login": "nikku",
         "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-        "html_url": "https://github.com/nikku"
+        "html_url": "https://github.com/nikku",
+        "type": "User"
       },
       "html_url": "https://github.com/nikku/testtest"
     },
@@ -1856,7 +1940,8 @@
       "node_id": "MDQ6VXNlcjU4NjAx",
       "login": "nikku",
       "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-      "html_url": "https://github.com/nikku"
+      "html_url": "https://github.com/nikku",
+      "type": "User"
     },
     "body": "Child of #94 ",
     "created_at": "2019-07-10T17:03:50Z",
@@ -1886,7 +1971,8 @@
         "node_id": "MDQ6VXNlcjU4NjAx",
         "login": "nikku",
         "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-        "html_url": "https://github.com/nikku"
+        "html_url": "https://github.com/nikku",
+        "type": "User"
       },
       "html_url": "https://github.com/nikku/testtest"
     },
@@ -1910,7 +1996,8 @@
             "node_id": "MDQ6VXNlcjU4NjAx",
             "login": "nikku",
             "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-            "html_url": "https://github.com/nikku"
+            "html_url": "https://github.com/nikku",
+            "type": "User"
           },
           "body": "",
           "created_at": "2019-07-10T17:03:35Z",
@@ -1943,7 +2030,8 @@
               "node_id": "MDQ6VXNlcjU4NjAx",
               "login": "nikku",
               "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-              "html_url": "https://github.com/nikku"
+              "html_url": "https://github.com/nikku",
+              "type": "User"
             },
             "html_url": "https://github.com/nikku/testtest"
           },
@@ -1968,7 +2056,8 @@
       "node_id": "MDQ6VXNlcjU4NjAx",
       "login": "nikku",
       "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-      "html_url": "https://github.com/nikku"
+      "html_url": "https://github.com/nikku",
+      "type": "User"
     },
     "body": "Related to #81 ",
     "created_at": "2019-06-02T17:13:46Z",
@@ -1998,7 +2087,8 @@
         "node_id": "MDQ6VXNlcjU4NjAx",
         "login": "nikku",
         "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-        "html_url": "https://github.com/nikku"
+        "html_url": "https://github.com/nikku",
+        "type": "User"
       },
       "html_url": "https://github.com/nikku/testtest"
     },
@@ -2022,7 +2112,8 @@
             "node_id": "MDQ6VXNlcjU4NjAx",
             "login": "nikku",
             "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-            "html_url": "https://github.com/nikku"
+            "html_url": "https://github.com/nikku",
+            "type": "User"
           },
           "body": "---\r\nChild of #80 \r\n\r\nRequired by #78 \r\n\r\nRelated to https://github.com/nikku/testtest/issues/77",
           "created_at": "2019-06-02T17:15:07Z",
@@ -2034,7 +2125,8 @@
               "node_id": "MDQ6VXNlcjU4NjAx",
               "login": "nikku",
               "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-              "html_url": "https://github.com/nikku"
+              "html_url": "https://github.com/nikku",
+              "type": "User"
             }
           ],
           "labels": [
@@ -2060,7 +2152,8 @@
               "node_id": "MDQ6VXNlcjU4NjAx",
               "login": "nikku",
               "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-              "html_url": "https://github.com/nikku"
+              "html_url": "https://github.com/nikku",
+              "type": "User"
             },
             "html_url": "https://github.com/nikku/testtest"
           },
@@ -2078,7 +2171,8 @@
               "user": {
                 "login": "nikku",
                 "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-                "html_url": "https://github.com/nikku"
+                "html_url": "https://github.com/nikku",
+                "type": "User"
               }
             },
             {
@@ -2090,7 +2184,8 @@
               "user": {
                 "login": "nikku",
                 "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-                "html_url": "https://github.com/nikku"
+                "html_url": "https://github.com/nikku",
+                "type": "User"
               }
             },
             {
@@ -2102,7 +2197,8 @@
               "user": {
                 "login": "nikku",
                 "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-                "html_url": "https://github.com/nikku"
+                "html_url": "https://github.com/nikku",
+                "type": "User"
               }
             }
           ]
@@ -2123,7 +2219,8 @@
             "node_id": "MDQ6VXNlcjU4NjAx",
             "login": "nikku",
             "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-            "html_url": "https://github.com/nikku"
+            "html_url": "https://github.com/nikku",
+            "type": "User"
           },
           "body": "Related to #76 \r\nDepends on #78 \r\nCloses #77\r\n",
           "created_at": "2019-05-23T12:30:11Z",
@@ -2135,7 +2232,8 @@
               "node_id": "MDQ6VXNlcjQzNjg0NTA1",
               "login": "waltaaa",
               "avatar_url": "https://avatars.githubusercontent.com/u/43684505?v=4",
-              "html_url": "https://github.com/waltaaa"
+              "html_url": "https://github.com/waltaaa",
+              "type": "User"
             }
           ],
           "labels": [
@@ -2161,7 +2259,8 @@
               "node_id": "MDQ6VXNlcjU4NjAx",
               "login": "nikku",
               "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-              "html_url": "https://github.com/nikku"
+              "html_url": "https://github.com/nikku",
+              "type": "User"
             },
             "html_url": "https://github.com/nikku/testtest"
           },
@@ -2186,7 +2285,8 @@
             "node_id": "MDQ6VXNlcjU4NjAx",
             "login": "nikku",
             "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-            "html_url": "https://github.com/nikku"
+            "html_url": "https://github.com/nikku",
+            "type": "User"
           },
           "body": "Required by #76\r\n\r\nDepends on #92",
           "created_at": "2019-06-02T17:49:21Z",
@@ -2200,7 +2300,8 @@
               "node_id": "MDQ6VXNlcjU4NjAx",
               "login": "nikku",
               "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-              "html_url": "https://github.com/nikku"
+              "html_url": "https://github.com/nikku",
+              "type": "User"
             }
           ],
           "requested_reviewers": [
@@ -2209,7 +2310,8 @@
               "node_id": "MDQ6VXNlcjQzNjg0NTA1",
               "login": "waltaaa",
               "avatar_url": "https://avatars.githubusercontent.com/u/43684505?v=4",
-              "html_url": "https://github.com/waltaaa"
+              "html_url": "https://github.com/waltaaa",
+              "type": "User"
             }
           ],
           "labels": [
@@ -2233,7 +2335,8 @@
               "node_id": "MDQ6VXNlcjU4NjAx",
               "login": "nikku",
               "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-              "html_url": "https://github.com/nikku"
+              "html_url": "https://github.com/nikku",
+              "type": "User"
             },
             "repo": {
               "id": 150751504,
@@ -2245,7 +2348,8 @@
                 "node_id": "MDQ6VXNlcjU4NjAx",
                 "login": "nikku",
                 "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-                "html_url": "https://github.com/nikku"
+                "html_url": "https://github.com/nikku",
+                "type": "User"
               },
               "html_url": "https://github.com/nikku/testtest"
             }
@@ -2258,7 +2362,8 @@
               "node_id": "MDQ6VXNlcjU4NjAx",
               "login": "nikku",
               "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-              "html_url": "https://github.com/nikku"
+              "html_url": "https://github.com/nikku",
+              "type": "User"
             },
             "repo": {
               "id": 150751504,
@@ -2270,7 +2375,8 @@
                 "node_id": "MDQ6VXNlcjU4NjAx",
                 "login": "nikku",
                 "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-                "html_url": "https://github.com/nikku"
+                "html_url": "https://github.com/nikku",
+                "type": "User"
               },
               "html_url": "https://github.com/nikku/testtest"
             }
@@ -2288,7 +2394,8 @@
               "node_id": "MDQ6VXNlcjU4NjAx",
               "login": "nikku",
               "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-              "html_url": "https://github.com/nikku"
+              "html_url": "https://github.com/nikku",
+              "type": "User"
             },
             "html_url": "https://github.com/nikku/testtest"
           },
@@ -2312,7 +2419,8 @@
       "node_id": "MDQ6VXNlcjU4NjAx",
       "login": "nikku",
       "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-      "html_url": "https://github.com/nikku"
+      "html_url": "https://github.com/nikku",
+      "type": "User"
     },
     "body": "",
     "created_at": "2019-07-29T19:49:27Z",
@@ -2342,7 +2450,8 @@
         "node_id": "MDQ6VXNlcjU4NjAx",
         "login": "nikku",
         "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-        "html_url": "https://github.com/nikku"
+        "html_url": "https://github.com/nikku",
+        "type": "User"
       },
       "html_url": "https://github.com/nikku/testtest"
     },
@@ -2365,7 +2474,8 @@
       "node_id": "MDQ6VXNlcjU4NjAx",
       "login": "nikku",
       "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-      "html_url": "https://github.com/nikku"
+      "html_url": "https://github.com/nikku",
+      "type": "User"
     },
     "body": "Child of #80 \r\nRelated to #70 ",
     "created_at": "2019-06-02T17:13:54Z",
@@ -2395,7 +2505,8 @@
         "node_id": "MDQ6VXNlcjU4NjAx",
         "login": "nikku",
         "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-        "html_url": "https://github.com/nikku"
+        "html_url": "https://github.com/nikku",
+        "type": "User"
       },
       "html_url": "https://github.com/nikku/testtest"
     },
@@ -2419,7 +2530,8 @@
             "node_id": "MDQ6VXNlcjU4NjAx",
             "login": "nikku",
             "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-            "html_url": "https://github.com/nikku"
+            "html_url": "https://github.com/nikku",
+            "type": "User"
           },
           "body": "",
           "created_at": "2019-06-02T17:14:44Z",
@@ -2451,7 +2563,8 @@
               "node_id": "MDQ6VXNlcjU4NjAx",
               "login": "nikku",
               "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-              "html_url": "https://github.com/nikku"
+              "html_url": "https://github.com/nikku",
+              "type": "User"
             },
             "html_url": "https://github.com/nikku/testtest"
           },
@@ -2476,7 +2589,8 @@
             "node_id": "MDQ6VXNlcjU4NjAx",
             "login": "nikku",
             "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-            "html_url": "https://github.com/nikku"
+            "html_url": "https://github.com/nikku",
+            "type": "User"
           },
           "body": "Related to #76 \r\nDepends on #78 \r\nCloses #77\r\n",
           "created_at": "2019-05-23T12:30:11Z",
@@ -2488,7 +2602,8 @@
               "node_id": "MDQ6VXNlcjQzNjg0NTA1",
               "login": "waltaaa",
               "avatar_url": "https://avatars.githubusercontent.com/u/43684505?v=4",
-              "html_url": "https://github.com/waltaaa"
+              "html_url": "https://github.com/waltaaa",
+              "type": "User"
             }
           ],
           "labels": [
@@ -2514,7 +2629,8 @@
               "node_id": "MDQ6VXNlcjU4NjAx",
               "login": "nikku",
               "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-              "html_url": "https://github.com/nikku"
+              "html_url": "https://github.com/nikku",
+              "type": "User"
             },
             "html_url": "https://github.com/nikku/testtest"
           },
@@ -2539,7 +2655,8 @@
             "node_id": "MDQ6VXNlcjU4NjAx",
             "login": "nikku",
             "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-            "html_url": "https://github.com/nikku"
+            "html_url": "https://github.com/nikku",
+            "type": "User"
           },
           "body": "---\r\nChild of #80 \r\n\r\nRequired by #78 \r\n\r\nRelated to https://github.com/nikku/testtest/issues/77",
           "created_at": "2019-06-02T17:15:07Z",
@@ -2551,7 +2668,8 @@
               "node_id": "MDQ6VXNlcjU4NjAx",
               "login": "nikku",
               "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-              "html_url": "https://github.com/nikku"
+              "html_url": "https://github.com/nikku",
+              "type": "User"
             }
           ],
           "labels": [
@@ -2577,7 +2695,8 @@
               "node_id": "MDQ6VXNlcjU4NjAx",
               "login": "nikku",
               "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-              "html_url": "https://github.com/nikku"
+              "html_url": "https://github.com/nikku",
+              "type": "User"
             },
             "html_url": "https://github.com/nikku/testtest"
           },
@@ -2595,7 +2714,8 @@
               "user": {
                 "login": "nikku",
                 "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-                "html_url": "https://github.com/nikku"
+                "html_url": "https://github.com/nikku",
+                "type": "User"
               }
             },
             {
@@ -2607,7 +2727,8 @@
               "user": {
                 "login": "nikku",
                 "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-                "html_url": "https://github.com/nikku"
+                "html_url": "https://github.com/nikku",
+                "type": "User"
               }
             },
             {
@@ -2619,7 +2740,8 @@
               "user": {
                 "login": "nikku",
                 "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-                "html_url": "https://github.com/nikku"
+                "html_url": "https://github.com/nikku",
+                "type": "User"
               }
             }
           ]

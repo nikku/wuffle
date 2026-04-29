@@ -33,6 +33,9 @@
  *
  * You may define a default filter to apply to the board if
  * there is no user-defined search query.
+ *
+ * You may also configure whether bots are counted as
+ * legitimate reviewers (for both review and approval).
  */
 export default {
 
@@ -48,5 +51,7 @@ export default {
     { name: 'Done', label: null, closed: true }
   ],
 
-  defaultFilter: '!repo:"some/ignored-repository"'
+  defaultFilter: '!repo:"some/ignored-repository"',
+
+  treatBotsAsReviewers: false
 };

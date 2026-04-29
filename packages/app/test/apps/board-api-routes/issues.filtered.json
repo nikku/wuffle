@@ -8,7 +8,8 @@
     "user": {
       "login": "nikku",
       "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-      "html_url": "https://github.com/nikku"
+      "html_url": "https://github.com/nikku",
+      "type": "User"
     },
     "assignees": [],
     "requested_reviewers": [],
@@ -28,7 +29,8 @@
         "user": {
           "login": "waltaaa",
           "avatar_url": "https://avatars.githubusercontent.com/u/43684505?u=7d484e008242e75626e637ee648e2179ebe9368b&v=4",
-          "html_url": "https://github.com/waltaaa"
+          "html_url": "https://github.com/waltaaa",
+          "type": "User"
         }
       },
       {
@@ -37,7 +39,8 @@
         "user": {
           "login": "waltaaa",
           "avatar_url": "https://avatars.githubusercontent.com/u/43684505?u=7d484e008242e75626e637ee648e2179ebe9368b&v=4",
-          "html_url": "https://github.com/waltaaa"
+          "html_url": "https://github.com/waltaaa",
+          "type": "User"
         }
       },
       {
@@ -46,7 +49,8 @@
         "user": {
           "login": "waltaaa",
           "avatar_url": "https://avatars.githubusercontent.com/u/43684505?u=7d484e008242e75626e637ee648e2179ebe9368b&v=4",
-          "html_url": "https://github.com/waltaaa"
+          "html_url": "https://github.com/waltaaa",
+          "type": "User"
         }
       },
       {
@@ -55,7 +59,8 @@
         "user": {
           "login": "waltaaa",
           "avatar_url": "https://avatars.githubusercontent.com/u/43684505?u=7d484e008242e75626e637ee648e2179ebe9368b&v=4",
-          "html_url": "https://github.com/waltaaa"
+          "html_url": "https://github.com/waltaaa",
+          "type": "User"
         }
       },
       {
@@ -64,7 +69,8 @@
         "user": {
           "login": "waltaaa",
           "avatar_url": "https://avatars.githubusercontent.com/u/43684505?u=7d484e008242e75626e637ee648e2179ebe9368b&v=4",
-          "html_url": "https://github.com/waltaaa"
+          "html_url": "https://github.com/waltaaa",
+          "type": "User"
         }
       },
       {
@@ -73,7 +79,8 @@
         "user": {
           "login": "waltaaa",
           "avatar_url": "https://avatars.githubusercontent.com/u/43684505?u=7d484e008242e75626e637ee648e2179ebe9368b&v=4",
-          "html_url": "https://github.com/waltaaa"
+          "html_url": "https://github.com/waltaaa",
+          "type": "User"
         }
       }
     ],
@@ -84,7 +91,8 @@
       "owner": {
         "login": "nikku",
         "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-        "html_url": "https://github.com/nikku"
+        "html_url": "https://github.com/nikku",
+        "type": "User"
       },
       "html_url": "https://github.com/nikku/testtest-checks"
     },
@@ -103,13 +111,15 @@
           "user": {
             "login": "nikku",
             "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-            "html_url": "https://github.com/nikku"
+            "html_url": "https://github.com/nikku",
+            "type": "User"
           },
           "assignees": [
             {
               "login": "nikku",
               "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-              "html_url": "https://github.com/nikku"
+              "html_url": "https://github.com/nikku",
+              "type": "User"
             }
           ],
           "labels": [
@@ -129,7 +139,8 @@
             "owner": {
               "login": "nikku",
               "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-              "html_url": "https://github.com/nikku"
+              "html_url": "https://github.com/nikku",
+              "type": "User"
             },
             "html_url": "https://github.com/nikku/testtest-checks"
           },
@@ -138,7 +149,8 @@
               "user": {
                 "login": "nikku",
                 "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-                "html_url": "https://github.com/nikku"
+                "html_url": "https://github.com/nikku",
+                "type": "User"
               },
               "html_url": "https://github.com/nikku/testtest-checks/issues/6#issuecomment-950318447"
             },
@@ -146,7 +158,8 @@
               "user": {
                 "login": "nikku",
                 "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-                "html_url": "https://github.com/nikku"
+                "html_url": "https://github.com/nikku",
+                "type": "User"
               },
               "html_url": "https://github.com/nikku/testtest-checks/issues/6#issuecomment-950320839"
             },
@@ -154,7 +167,8 @@
               "user": {
                 "login": "nikku",
                 "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-                "html_url": "https://github.com/nikku"
+                "html_url": "https://github.com/nikku",
+                "type": "User"
               },
               "html_url": "https://github.com/nikku/testtest-checks/issues/6#issuecomment-950321108"
             },
@@ -162,7 +176,8 @@
               "user": {
                 "login": "nikku",
                 "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-                "html_url": "https://github.com/nikku"
+                "html_url": "https://github.com/nikku",
+                "type": "User"
               },
               "html_url": "https://github.com/nikku/testtest-checks/issues/6#issuecomment-950321306"
             }
@@ -220,7 +235,8 @@
       "owner": {
         "login": "nikku",
         "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-        "html_url": "https://github.com/nikku"
+        "html_url": "https://github.com/nikku",
+        "type": "User"
       },
       "html_url": "https://github.com/nikku/wuffle"
     },
@@ -240,7 +256,8 @@
           "user": {
             "login": "MaxTru",
             "avatar_url": "https://avatars.githubusercontent.com/u/42800119?v=4",
-            "html_url": "https://github.com/MaxTru"
+            "html_url": "https://github.com/MaxTru",
+            "type": "User"
           },
           "assignees": [],
           "labels": [
@@ -255,7 +272,8 @@
             "owner": {
               "login": "nikku",
               "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-              "html_url": "https://github.com/nikku"
+              "html_url": "https://github.com/nikku",
+              "type": "User"
             },
             "html_url": "https://github.com/nikku/wuffle"
           },
@@ -264,7 +282,8 @@
               "user": {
                 "login": "nikku",
                 "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-                "html_url": "https://github.com/nikku"
+                "html_url": "https://github.com/nikku",
+                "type": "User"
               },
               "html_url": "https://github.com/nikku/wuffle/issues/90#issuecomment-711173624"
             }
@@ -290,7 +309,8 @@
     "user": {
       "login": "nikku",
       "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-      "html_url": "https://github.com/nikku"
+      "html_url": "https://github.com/nikku",
+      "type": "User"
     },
     "assignees": [],
     "labels": [
@@ -306,7 +326,8 @@
       "owner": {
         "login": "nikku",
         "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-        "html_url": "https://github.com/nikku"
+        "html_url": "https://github.com/nikku",
+        "type": "User"
       },
       "html_url": "https://github.com/nikku/wuffle"
     },
@@ -327,7 +348,8 @@
     "user": {
       "login": "nikku",
       "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-      "html_url": "https://github.com/nikku"
+      "html_url": "https://github.com/nikku",
+      "type": "User"
     },
     "assignees": [],
     "labels": [
@@ -347,7 +369,8 @@
       "owner": {
         "login": "nikku",
         "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-        "html_url": "https://github.com/nikku"
+        "html_url": "https://github.com/nikku",
+        "type": "User"
       },
       "html_url": "https://github.com/nikku/wuffle"
     },
@@ -368,7 +391,8 @@
     "user": {
       "login": "nikku",
       "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-      "html_url": "https://github.com/nikku"
+      "html_url": "https://github.com/nikku",
+      "type": "User"
     },
     "assignees": [],
     "labels": [
@@ -388,7 +412,8 @@
       "owner": {
         "login": "nikku",
         "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-        "html_url": "https://github.com/nikku"
+        "html_url": "https://github.com/nikku",
+        "type": "User"
       },
       "html_url": "https://github.com/nikku/wuffle"
     },
@@ -408,7 +433,8 @@
           "user": {
             "login": "nikku",
             "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-            "html_url": "https://github.com/nikku"
+            "html_url": "https://github.com/nikku",
+            "type": "User"
           },
           "assignees": [],
           "labels": [
@@ -423,7 +449,8 @@
             "owner": {
               "login": "nikku",
               "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-              "html_url": "https://github.com/nikku"
+              "html_url": "https://github.com/nikku",
+              "type": "User"
             },
             "html_url": "https://github.com/nikku/wuffle"
           },
@@ -448,7 +475,8 @@
     "user": {
       "login": "nikku",
       "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-      "html_url": "https://github.com/nikku"
+      "html_url": "https://github.com/nikku",
+      "type": "User"
     },
     "assignees": [],
     "requested_reviewers": [],
@@ -469,7 +497,8 @@
       "owner": {
         "login": "nikku",
         "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-        "html_url": "https://github.com/nikku"
+        "html_url": "https://github.com/nikku",
+        "type": "User"
       },
       "html_url": "https://github.com/nikku/wuffle"
     },
@@ -488,7 +517,8 @@
           "user": {
             "login": "nikku",
             "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-            "html_url": "https://github.com/nikku"
+            "html_url": "https://github.com/nikku",
+            "type": "User"
           },
           "assignees": [],
           "labels": [
@@ -517,7 +547,8 @@
             "owner": {
               "login": "nikku",
               "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-              "html_url": "https://github.com/nikku"
+              "html_url": "https://github.com/nikku",
+              "type": "User"
             },
             "html_url": "https://github.com/nikku/wuffle"
           },
@@ -576,7 +607,8 @@
     "user": {
       "login": "nikku",
       "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-      "html_url": "https://github.com/nikku"
+      "html_url": "https://github.com/nikku",
+      "type": "User"
     },
     "assignees": [],
     "labels": [
@@ -605,7 +637,8 @@
       "owner": {
         "login": "nikku",
         "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-        "html_url": "https://github.com/nikku"
+        "html_url": "https://github.com/nikku",
+        "type": "User"
       },
       "html_url": "https://github.com/nikku/wuffle"
     },
@@ -624,7 +657,8 @@
           "user": {
             "login": "nikku",
             "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-            "html_url": "https://github.com/nikku"
+            "html_url": "https://github.com/nikku",
+            "type": "User"
           },
           "assignees": [],
           "requested_reviewers": [],
@@ -645,7 +679,8 @@
             "owner": {
               "login": "nikku",
               "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-              "html_url": "https://github.com/nikku"
+              "html_url": "https://github.com/nikku",
+              "type": "User"
             },
             "html_url": "https://github.com/nikku/wuffle"
           },
@@ -703,7 +738,8 @@
     "user": {
       "login": "nikku",
       "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-      "html_url": "https://github.com/nikku"
+      "html_url": "https://github.com/nikku",
+      "type": "User"
     },
     "assignees": [],
     "labels": [
@@ -728,7 +764,8 @@
       "owner": {
         "login": "nikku",
         "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-        "html_url": "https://github.com/nikku"
+        "html_url": "https://github.com/nikku",
+        "type": "User"
       },
       "html_url": "https://github.com/nikku/wuffle"
     },
@@ -748,14 +785,16 @@
     "user": {
       "login": "nikku",
       "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-      "html_url": "https://github.com/nikku"
+      "html_url": "https://github.com/nikku",
+      "type": "User"
     },
     "assignees": [],
     "requested_reviewers": [
       {
         "login": "waltaaa",
         "avatar_url": "https://avatars.githubusercontent.com/u/43684505?v=4",
-        "html_url": "https://github.com/waltaaa"
+        "html_url": "https://github.com/waltaaa",
+        "type": "User"
       }
     ],
     "labels": [
@@ -779,7 +818,8 @@
       "owner": {
         "login": "nikku",
         "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-        "html_url": "https://github.com/nikku"
+        "html_url": "https://github.com/nikku",
+        "type": "User"
       },
       "html_url": "https://github.com/nikku/testtest-checks"
     },
@@ -800,7 +840,8 @@
     "user": {
       "login": "nikku",
       "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-      "html_url": "https://github.com/nikku"
+      "html_url": "https://github.com/nikku",
+      "type": "User"
     },
     "assignees": [],
     "requested_reviewers": [],
@@ -821,7 +862,8 @@
       "owner": {
         "login": "nikku",
         "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-        "html_url": "https://github.com/nikku"
+        "html_url": "https://github.com/nikku",
+        "type": "User"
       },
       "html_url": "https://github.com/nikku/testtest-checks"
     },
@@ -842,20 +884,23 @@
     "user": {
       "login": "nikku",
       "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-      "html_url": "https://github.com/nikku"
+      "html_url": "https://github.com/nikku",
+      "type": "User"
     },
     "assignees": [
       {
         "login": "nikku",
         "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-        "html_url": "https://github.com/nikku"
+        "html_url": "https://github.com/nikku",
+        "type": "User"
       }
     ],
     "requested_reviewers": [
       {
         "login": "waltaaa",
         "avatar_url": "https://avatars.githubusercontent.com/u/43684505?v=4",
-        "html_url": "https://github.com/waltaaa"
+        "html_url": "https://github.com/waltaaa",
+        "type": "User"
       }
     ],
     "labels": [
@@ -875,7 +920,8 @@
       "owner": {
         "login": "nikku",
         "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-        "html_url": "https://github.com/nikku"
+        "html_url": "https://github.com/nikku",
+        "type": "User"
       },
       "html_url": "https://github.com/nikku/testtest"
     },
@@ -894,7 +940,8 @@
           "user": {
             "login": "nikku",
             "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-            "html_url": "https://github.com/nikku"
+            "html_url": "https://github.com/nikku",
+            "type": "User"
           },
           "assignees": [],
           "labels": [
@@ -910,7 +957,8 @@
             "owner": {
               "login": "nikku",
               "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-              "html_url": "https://github.com/nikku"
+              "html_url": "https://github.com/nikku",
+              "type": "User"
             },
             "html_url": "https://github.com/nikku/testtest"
           },
@@ -933,7 +981,8 @@
           "user": {
             "login": "nikku",
             "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-            "html_url": "https://github.com/nikku"
+            "html_url": "https://github.com/nikku",
+            "type": "User"
           },
           "assignees": [],
           "requested_reviewers": [],
@@ -954,7 +1003,8 @@
             "owner": {
               "login": "nikku",
               "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-              "html_url": "https://github.com/nikku"
+              "html_url": "https://github.com/nikku",
+              "type": "User"
             },
             "html_url": "https://github.com/nikku/testtest"
           },
@@ -982,7 +1032,8 @@
     "user": {
       "login": "waltaaa",
       "avatar_url": "https://avatars.githubusercontent.com/u/43684505?v=4",
-      "html_url": "https://github.com/waltaaa"
+      "html_url": "https://github.com/waltaaa",
+      "type": "User"
     },
     "assignees": [],
     "requested_reviewers": [],
@@ -1003,7 +1054,8 @@
       "owner": {
         "login": "nikku",
         "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-        "html_url": "https://github.com/nikku"
+        "html_url": "https://github.com/nikku",
+        "type": "User"
       },
       "html_url": "https://github.com/nikku/testtest"
     },
@@ -1025,7 +1077,8 @@
     "user": {
       "login": "nikku",
       "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-      "html_url": "https://github.com/nikku"
+      "html_url": "https://github.com/nikku",
+      "type": "User"
     },
     "assignees": [],
     "labels": [
@@ -1041,7 +1094,8 @@
       "owner": {
         "login": "nikku",
         "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-        "html_url": "https://github.com/nikku"
+        "html_url": "https://github.com/nikku",
+        "type": "User"
       },
       "html_url": "https://github.com/nikku/testtest"
     },
@@ -1061,7 +1115,8 @@
           "user": {
             "login": "nikku",
             "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-            "html_url": "https://github.com/nikku"
+            "html_url": "https://github.com/nikku",
+            "type": "User"
           },
           "assignees": [],
           "labels": [
@@ -1080,7 +1135,8 @@
             "owner": {
               "login": "nikku",
               "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-              "html_url": "https://github.com/nikku"
+              "html_url": "https://github.com/nikku",
+              "type": "User"
             },
             "html_url": "https://github.com/nikku/testtest"
           },
@@ -1106,7 +1162,8 @@
     "user": {
       "login": "nikku",
       "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-      "html_url": "https://github.com/nikku"
+      "html_url": "https://github.com/nikku",
+      "type": "User"
     },
     "assignees": [],
     "labels": [
@@ -1122,7 +1179,8 @@
       "owner": {
         "login": "nikku",
         "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-        "html_url": "https://github.com/nikku"
+        "html_url": "https://github.com/nikku",
+        "type": "User"
       },
       "html_url": "https://github.com/nikku/testtest"
     },
@@ -1142,13 +1200,15 @@
           "user": {
             "login": "nikku",
             "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-            "html_url": "https://github.com/nikku"
+            "html_url": "https://github.com/nikku",
+            "type": "User"
           },
           "assignees": [
             {
               "login": "nikku",
               "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-              "html_url": "https://github.com/nikku"
+              "html_url": "https://github.com/nikku",
+              "type": "User"
             }
           ],
           "labels": [
@@ -1164,7 +1224,8 @@
             "owner": {
               "login": "nikku",
               "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-              "html_url": "https://github.com/nikku"
+              "html_url": "https://github.com/nikku",
+              "type": "User"
             },
             "html_url": "https://github.com/nikku/testtest"
           },
@@ -1173,7 +1234,8 @@
               "user": {
                 "login": "nikku",
                 "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-                "html_url": "https://github.com/nikku"
+                "html_url": "https://github.com/nikku",
+                "type": "User"
               },
               "html_url": "https://github.com/nikku/testtest/issues/81#issuecomment-498141251"
             },
@@ -1181,7 +1243,8 @@
               "user": {
                 "login": "nikku",
                 "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-                "html_url": "https://github.com/nikku"
+                "html_url": "https://github.com/nikku",
+                "type": "User"
               },
               "html_url": "https://github.com/nikku/testtest/issues/81#issuecomment-498141419"
             },
@@ -1189,7 +1252,8 @@
               "user": {
                 "login": "nikku",
                 "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-                "html_url": "https://github.com/nikku"
+                "html_url": "https://github.com/nikku",
+                "type": "User"
               },
               "html_url": "https://github.com/nikku/testtest/issues/81#issuecomment-950323653"
             }
@@ -1213,13 +1277,15 @@
           "user": {
             "login": "nikku",
             "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-            "html_url": "https://github.com/nikku"
+            "html_url": "https://github.com/nikku",
+            "type": "User"
           },
           "assignees": [
             {
               "login": "waltaaa",
               "avatar_url": "https://avatars.githubusercontent.com/u/43684505?v=4",
-              "html_url": "https://github.com/waltaaa"
+              "html_url": "https://github.com/waltaaa",
+              "type": "User"
             }
           ],
           "labels": [
@@ -1235,7 +1301,8 @@
             "owner": {
               "login": "nikku",
               "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-              "html_url": "https://github.com/nikku"
+              "html_url": "https://github.com/nikku",
+              "type": "User"
             },
             "html_url": "https://github.com/nikku/testtest"
           },
@@ -1258,20 +1325,23 @@
           "user": {
             "login": "nikku",
             "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-            "html_url": "https://github.com/nikku"
+            "html_url": "https://github.com/nikku",
+            "type": "User"
           },
           "assignees": [
             {
               "login": "nikku",
               "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-              "html_url": "https://github.com/nikku"
+              "html_url": "https://github.com/nikku",
+              "type": "User"
             }
           ],
           "requested_reviewers": [
             {
               "login": "waltaaa",
               "avatar_url": "https://avatars.githubusercontent.com/u/43684505?v=4",
-              "html_url": "https://github.com/waltaaa"
+              "html_url": "https://github.com/waltaaa",
+              "type": "User"
             }
           ],
           "labels": [
@@ -1291,7 +1361,8 @@
             "owner": {
               "login": "nikku",
               "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-              "html_url": "https://github.com/nikku"
+              "html_url": "https://github.com/nikku",
+              "type": "User"
             },
             "html_url": "https://github.com/nikku/testtest"
           },
@@ -1318,7 +1389,8 @@
     "user": {
       "login": "nikku",
       "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-      "html_url": "https://github.com/nikku"
+      "html_url": "https://github.com/nikku",
+      "type": "User"
     },
     "assignees": [],
     "labels": [
@@ -1334,7 +1406,8 @@
       "owner": {
         "login": "nikku",
         "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-        "html_url": "https://github.com/nikku"
+        "html_url": "https://github.com/nikku",
+        "type": "User"
       },
       "html_url": "https://github.com/nikku/testtest"
     },
@@ -1355,7 +1428,8 @@
     "user": {
       "login": "nikku",
       "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-      "html_url": "https://github.com/nikku"
+      "html_url": "https://github.com/nikku",
+      "type": "User"
     },
     "assignees": [],
     "labels": [
@@ -1371,7 +1445,8 @@
       "owner": {
         "login": "nikku",
         "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-        "html_url": "https://github.com/nikku"
+        "html_url": "https://github.com/nikku",
+        "type": "User"
       },
       "html_url": "https://github.com/nikku/testtest"
     },
@@ -1391,7 +1466,8 @@
           "user": {
             "login": "nikku",
             "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-            "html_url": "https://github.com/nikku"
+            "html_url": "https://github.com/nikku",
+            "type": "User"
           },
           "assignees": [],
           "labels": [
@@ -1410,7 +1486,8 @@
             "owner": {
               "login": "nikku",
               "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-              "html_url": "https://github.com/nikku"
+              "html_url": "https://github.com/nikku",
+              "type": "User"
             },
             "html_url": "https://github.com/nikku/testtest"
           },
@@ -1434,13 +1511,15 @@
           "user": {
             "login": "nikku",
             "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-            "html_url": "https://github.com/nikku"
+            "html_url": "https://github.com/nikku",
+            "type": "User"
           },
           "assignees": [
             {
               "login": "waltaaa",
               "avatar_url": "https://avatars.githubusercontent.com/u/43684505?v=4",
-              "html_url": "https://github.com/waltaaa"
+              "html_url": "https://github.com/waltaaa",
+              "type": "User"
             }
           ],
           "labels": [
@@ -1456,7 +1535,8 @@
             "owner": {
               "login": "nikku",
               "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-              "html_url": "https://github.com/nikku"
+              "html_url": "https://github.com/nikku",
+              "type": "User"
             },
             "html_url": "https://github.com/nikku/testtest"
           },
@@ -1480,13 +1560,15 @@
           "user": {
             "login": "nikku",
             "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-            "html_url": "https://github.com/nikku"
+            "html_url": "https://github.com/nikku",
+            "type": "User"
           },
           "assignees": [
             {
               "login": "nikku",
               "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-              "html_url": "https://github.com/nikku"
+              "html_url": "https://github.com/nikku",
+              "type": "User"
             }
           ],
           "labels": [
@@ -1502,7 +1584,8 @@
             "owner": {
               "login": "nikku",
               "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-              "html_url": "https://github.com/nikku"
+              "html_url": "https://github.com/nikku",
+              "type": "User"
             },
             "html_url": "https://github.com/nikku/testtest"
           },
@@ -1511,7 +1594,8 @@
               "user": {
                 "login": "nikku",
                 "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-                "html_url": "https://github.com/nikku"
+                "html_url": "https://github.com/nikku",
+                "type": "User"
               },
               "html_url": "https://github.com/nikku/testtest/issues/81#issuecomment-498141251"
             },
@@ -1519,7 +1603,8 @@
               "user": {
                 "login": "nikku",
                 "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-                "html_url": "https://github.com/nikku"
+                "html_url": "https://github.com/nikku",
+                "type": "User"
               },
               "html_url": "https://github.com/nikku/testtest/issues/81#issuecomment-498141419"
             },
@@ -1527,7 +1612,8 @@
               "user": {
                 "login": "nikku",
                 "avatar_url": "https://avatars.githubusercontent.com/u/58601?v=4",
-                "html_url": "https://github.com/nikku"
+                "html_url": "https://github.com/nikku",
+                "type": "User"
               },
               "html_url": "https://github.com/nikku/testtest/issues/81#issuecomment-950323653"
             }

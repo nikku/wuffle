@@ -63,13 +63,15 @@ export function filterUser(user) {
   const {
     login,
     avatar_url,
-    html_url
+    html_url,
+    type
   } = user;
 
   return {
     login,
     avatar_url,
-    html_url
+    html_url,
+    type
   };
 }
 
