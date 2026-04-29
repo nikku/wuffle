@@ -71,7 +71,12 @@ export default function Search(config, logger, store) {
     return issue.pull_request;
   }
 
-  function isValidReviewer(user) {
+  function isValidReview(review) {
+
+    const {
+      user,
+      author_association
+    } = review;
 
     if (!user) {
       return false;
@@ -81,17 +86,19 @@ export default function Search(config, logger, store) {
       return treatBotsAsReviewers;
     }
 
-    return true;
+    // backwards compatibility - we did not have that
+    // data stored previously
+    return author_association ? [ 'COLLABORATOR', 'MEMBER', 'OWNER' ].includes(author_association) : true;
   }
 
   function isApproved(issue) {
     return (issue.reviews || []).some(
-      r => r.state === 'approved' && isValidReviewer(r.user)
+      r => r.state === 'approved' && isValidReview(r)
     );
   }
 
   function isReviewed(issue) {
-    return (issue.reviews || []).some(r => isValidReviewer(r.user));
+    return (issue.reviews || []).some(isValidReview);
   }
 
   const filters = {
