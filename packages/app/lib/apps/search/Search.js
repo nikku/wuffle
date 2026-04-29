@@ -158,6 +158,10 @@ export default function Search(config, logger, store) {
 
           return !links || !links.some(link => CHILD_LINK_TYPES[link.type]);
         };
+      case 'referenced':
+        return function filterReferenced(issue) {
+          return (issue.links || []).length > 0;
+        };
       default:
         return filterNoop;
       }
