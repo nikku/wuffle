@@ -149,7 +149,8 @@ export function filterPull(githubPull, githubRepository) {
     additions,
     deletions,
     changed_files,
-    html_url
+    html_url,
+    author_association
   } = githubPull;
 
   // stable ID that is independent from GitHubs internal issue/pr distinction
@@ -189,7 +190,8 @@ export function filterPull(githubPull, githubRepository) {
     changed_files,
     pull_request: true,
     repository: filterRepository(githubRepository),
-    html_url
+    html_url,
+    author_association
   };
 }
 
@@ -211,7 +213,8 @@ export function filterIssue(githubIssue, githubRepository) {
     labels,
     milestone,
     pull_request,
-    html_url
+    html_url,
+    author_association
   } = githubIssue;
 
   // stable ID that is independent from GitHubs internal issue/pr distinction
@@ -241,7 +244,8 @@ export function filterIssue(githubIssue, githubRepository) {
     milestone: milestone ? filterMilestone(milestone) : null,
     repository: filterRepository(githubRepository),
     pull_request: !!pull_request,
-    html_url
+    html_url,
+    author_association
   };
 
 }

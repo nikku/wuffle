@@ -140,13 +140,15 @@ export function filterReview(review) {
   const {
     state,
     user,
-    html_url
+    html_url,
+    author_association
   } = review;
 
   return {
     state,
     html_url,
-    user: filterUser(user)
+    user: filterUser(user),
+    author_association
   };
 }
 
@@ -175,7 +177,8 @@ export function filterPull(pullRequest) {
     order,
     column,
     check_runs = [],
-    statuses = []
+    statuses = [],
+    author_association
   } = pullRequest;
 
   return {
@@ -200,7 +203,8 @@ export function filterPull(pullRequest) {
     order,
     column,
     statuses: statuses.map(filterStatus),
-    check_runs: check_runs.map(filterCheckRun)
+    check_runs: check_runs.map(filterCheckRun),
+    author_association
   };
 }
 
@@ -224,7 +228,8 @@ export function filterIssue(issue) {
     comments = [],
     links = [],
     order,
-    column
+    column,
+    author_association
   } = issue;
 
   return {
@@ -244,7 +249,8 @@ export function filterIssue(issue) {
     html_url,
     links: links.map(filterLink),
     order,
-    column
+    column,
+    author_association
   };
 
 }

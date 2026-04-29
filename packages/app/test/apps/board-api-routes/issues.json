@@ -151,7 +151,8 @@
           "html_url": "https://github.com/waltaaa",
           "type": "User"
         },
-        "html_url": "https://github.com/nikku/testtest-checks/pull/7#pullrequestreview-425035349"
+        "html_url": "https://github.com/nikku/testtest-checks/pull/7#pullrequestreview-425035349",
+        "author_association": "COLLABORATOR"
       },
       {
         "id": 425035431,
@@ -168,7 +169,8 @@
           "html_url": "https://github.com/waltaaa",
           "type": "User"
         },
-        "html_url": "https://github.com/nikku/testtest-checks/pull/7#pullrequestreview-425035431"
+        "html_url": "https://github.com/nikku/testtest-checks/pull/7#pullrequestreview-425035431",
+        "author_association": "COLLABORATOR"
       },
       {
         "id": 425039137,
@@ -185,7 +187,8 @@
           "html_url": "https://github.com/waltaaa",
           "type": "User"
         },
-        "html_url": "https://github.com/nikku/testtest-checks/pull/7#pullrequestreview-425039137"
+        "html_url": "https://github.com/nikku/testtest-checks/pull/7#pullrequestreview-425039137",
+        "author_association": "COLLABORATOR"
       },
       {
         "id": 425039219,
@@ -202,7 +205,8 @@
           "html_url": "https://github.com/waltaaa",
           "type": "User"
         },
-        "html_url": "https://github.com/nikku/testtest-checks/pull/7#pullrequestreview-425039219"
+        "html_url": "https://github.com/nikku/testtest-checks/pull/7#pullrequestreview-425039219",
+        "author_association": "COLLABORATOR"
       },
       {
         "id": 425040270,
@@ -219,7 +223,8 @@
           "html_url": "https://github.com/waltaaa",
           "type": "User"
         },
-        "html_url": "https://github.com/nikku/testtest-checks/pull/7#pullrequestreview-425040270"
+        "html_url": "https://github.com/nikku/testtest-checks/pull/7#pullrequestreview-425040270",
+        "author_association": "COLLABORATOR"
       },
       {
         "id": 425040354,
@@ -236,7 +241,8 @@
           "html_url": "https://github.com/waltaaa",
           "type": "User"
         },
-        "html_url": "https://github.com/nikku/testtest-checks/pull/7#pullrequestreview-425040354"
+        "html_url": "https://github.com/nikku/testtest-checks/pull/7#pullrequestreview-425040354",
+        "author_association": "COLLABORATOR"
       }
     ],
     "statuses": [],
@@ -365,10 +371,12 @@
                 "type": "User"
               }
             }
-          ]
+          ],
+          "author_association": "OWNER"
         }
       }
-    ]
+    ],
+    "author_association": "OWNER"
   },
   {
     "id": "176821946-91",
@@ -487,10 +495,12 @@
                 "type": "User"
               }
             }
-          ]
+          ],
+          "author_association": "OWNER"
         }
       }
-    ]
+    ],
+    "author_association": "OWNER"
   },
   {
     "id": "176821946-16",
@@ -545,7 +555,8 @@
     "html_url": "https://github.com/nikku/wuffle/issues/16",
     "column": "Backlog",
     "order": -2432840.313590001,
-    "links": []
+    "links": [],
+    "author_association": "OWNER"
   },
   {
     "id": "176821946-15",
@@ -606,7 +617,8 @@
     "html_url": "https://github.com/nikku/wuffle/issues/15",
     "column": "Backlog",
     "order": -2354272.392170001,
-    "links": []
+    "links": [],
+    "author_association": "OWNER"
   },
   {
     "id": "176821946-95",
@@ -720,10 +732,12 @@
           "html_url": "https://github.com/nikku/wuffle/issues/94",
           "column": "Done",
           "order": -3454223.292050001,
-          "comments": []
+          "comments": [],
+          "author_association": "OWNER"
         }
       }
-    ]
+    ],
+    "author_association": "OWNER"
   },
   {
     "id": "176821946-124",
@@ -956,10 +970,12 @@
           "html_url": "https://github.com/nikku/wuffle/issues/116",
           "column": "Backlog",
           "order": -2040000.7064900007,
-          "comments": []
+          "comments": [],
+          "author_association": "OWNER"
         }
       }
-    ]
+    ],
+    "author_association": "OWNER"
   },
   {
     "id": "176821946-116",
@@ -1191,10 +1207,12 @@
             }
           ],
           "reviews": [],
-          "statuses": []
+          "statuses": [],
+          "author_association": "OWNER"
         }
       }
-    ]
+    ],
+    "author_association": "OWNER"
   },
   {
     "id": "176821946-74",
@@ -1262,7 +1280,8 @@
     "html_url": "https://github.com/nikku/wuffle/issues/74",
     "column": "Backlog",
     "order": -1961432.7850700007,
-    "links": []
+    "links": [],
+    "author_association": "OWNER"
   },
   {
     "id": "159565926-3",
@@ -1391,7 +1410,8 @@
     "html_url": "https://github.com/nikku/testtest-checks/pull/3",
     "column": "Backlog",
     "order": -1175753.5708700004,
-    "links": []
+    "links": [],
+    "author_association": "OWNER"
   },
   {
     "id": "159565926-4",
@@ -1505,7 +1525,8 @@
     "html_url": "https://github.com/nikku/testtest-checks/pull/4",
     "column": "Backlog",
     "order": -1097185.6494500004,
-    "links": []
+    "links": [],
+    "author_association": "OWNER"
   },
   {
     "id": "150751504-83",
@@ -1692,7 +1713,8 @@
           "pull_request": false,
           "html_url": "https://github.com/nikku/testtest/issues/76",
           "column": "Backlog",
-          "order": 2765.250429999898
+          "order": 2765.250429999898,
+          "author_association": "OWNER"
         }
       },
       {
@@ -1808,10 +1830,12 @@
           },
           "html_url": "https://github.com/nikku/testtest/pull/92",
           "column": "Needs Review",
-          "order": -782913.9637700003
+          "order": -782913.9637700003,
+          "author_association": "OWNER"
         }
       }
-    ]
+    ],
+    "author_association": "OWNER"
   },
   {
     "id": "150751504-110",
@@ -1925,7 +1949,8 @@
     "html_url": "https://github.com/nikku/testtest/pull/110",
     "column": "Backlog",
     "order": -547210.1995100002,
-    "links": []
+    "links": [],
+    "author_association": "OWNER"
   },
   {
     "id": "150751504-95",
@@ -2038,10 +2063,12 @@
           "pull_request": false,
           "html_url": "https://github.com/nikku/testtest/issues/94",
           "column": "Inbox",
-          "order": 474172.77894999995
+          "order": 474172.77894999995,
+          "author_association": "OWNER"
         }
       }
-    ]
+    ],
+    "author_association": "OWNER"
   },
   {
     "id": "150751504-76",
@@ -2201,7 +2228,8 @@
                 "type": "User"
               }
             }
-          ]
+          ],
+          "author_association": "OWNER"
         }
       },
       {
@@ -2267,7 +2295,8 @@
           "pull_request": false,
           "html_url": "https://github.com/nikku/testtest/issues/74",
           "column": "Needs Review",
-          "order": 631308.62179
+          "order": 631308.62179,
+          "author_association": "OWNER"
         }
       },
       {
@@ -2401,10 +2430,12 @@
           },
           "html_url": "https://github.com/nikku/testtest/pull/83",
           "column": "Backlog",
-          "order": -625778.1209300002
+          "order": -625778.1209300002,
+          "author_association": "OWNER"
         }
       }
-    ]
+    ],
+    "author_association": "OWNER"
   },
   {
     "id": "150751504-102",
@@ -2459,7 +2490,8 @@
     "html_url": "https://github.com/nikku/testtest/issues/102",
     "column": "Backlog",
     "order": 81333.1718499999,
-    "links": []
+    "links": [],
+    "author_association": "OWNER"
   },
   {
     "id": "150751504-77",
@@ -2571,7 +2603,8 @@
           "pull_request": false,
           "html_url": "https://github.com/nikku/testtest/issues/80",
           "column": "Inbox",
-          "order": 238469.0146899999
+          "order": 238469.0146899999,
+          "author_association": "OWNER"
         }
       },
       {
@@ -2637,7 +2670,8 @@
           "pull_request": false,
           "html_url": "https://github.com/nikku/testtest/issues/74",
           "column": "Needs Review",
-          "order": 631308.62179
+          "order": 631308.62179,
+          "author_association": "OWNER"
         }
       },
       {
@@ -2744,9 +2778,11 @@
                 "type": "User"
               }
             }
-          ]
+          ],
+          "author_association": "OWNER"
         }
       }
-    ]
+    ],
+    "author_association": "OWNER"
   }
 ]
