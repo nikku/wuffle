@@ -27,7 +27,7 @@
 
   const repositoryName = $derived(`${repository.owner.login}/${repository.name}`);
 
-  const cardUrl = $derived(`https://github.com/${ repositoryName }/issues/${ number }${ ref || '' }`);
+  const cardUrl = $derived((item.html_url || `https://github.com/${ repositoryName }/${ pull_request ? 'pull' : 'issues' }/${ number }${ ref || '' }`));
 
   const linkTitle = $derived(({
     CHILD_OF: 'Child of',

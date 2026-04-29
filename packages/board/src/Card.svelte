@@ -101,7 +101,7 @@
 
   const repoUrl = $derived(`https://github.com/${ repositoryName }`);
   const milestoneUrl = $derived(milestone && (milestone.html_url || `${repoUrl}/milestone/${milestone.number}`));
-  const cardUrl = $derived(item.html_url || `${repoUrl}/issues/${number}`);
+  const cardUrl = $derived(item.html_url || `${repoUrl}/${pull_request ? 'pull' : 'issues'}/${number}`);
 
   function isClosingPull(link) {
     const {
