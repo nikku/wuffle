@@ -196,8 +196,9 @@ describe('search - Search', function() {
 
   describe('is:approved', function() {
 
-    const botReview = { user: { login: 'copilot[bot]', type: 'Bot' }, state: 'approved' };
-    const humanReview = { user: { login: 'nikku', type: 'User' }, state: 'approved' };
+    const botReview = { user: { login: 'copilot[bot]', type: 'Bot' }, author_association: 'COLLABORATOR', state: 'approved' };
+    const collaboratorReview = { user: { login: 'nikku', type: 'User' }, author_association: 'COLLABORATOR', state: 'approved' };
+    const nonCollaboratorReview = { user: { login: 'outsider', type: 'User' }, author_association: 'NONE', state: 'approved' };
 
 
     it('should NOT count bot approvals', function() {
@@ -213,13 +214,26 @@ describe('search - Search', function() {
     });
 
 
-    it('should count human approved', function() {
+    it('should NOT count non-collaborator approvals', function() {
 
       // given
-      const search = createSearch({ treatBotsAsReviewers: false });
+      const search = createSearch();
       const filter = search.getSearchFilter('is:approved');
 
-      const pr = createIssue({ pull_request: true, reviews: [ botReview, humanReview ] });
+      const pr = createIssue({ pull_request: true, reviews: [ nonCollaboratorReview ] });
+
+      // when + then
+      expect(filter(pr)).to.be.false;
+    });
+
+
+    it('should count collaborator approvals', function() {
+
+      // given
+      const search = createSearch();
+      const filter = search.getSearchFilter('is:approved');
+
+      const pr = createIssue({ pull_request: true, reviews: [ collaboratorReview ] });
 
       // when + then
       expect(filter(pr)).to.be.true;
@@ -228,7 +242,7 @@ describe('search - Search', function() {
 
     describe('with treatBotsAsReviewers=true', function() {
 
-      it('should count bot approved', function() {
+      it('should count bot approvals', function() {
 
         // given
         const search = createSearch({ treatBotsAsReviewers: true });
@@ -247,8 +261,9 @@ describe('search - Search', function() {
 
   describe('is:reviewed', function() {
 
-    const botReview = { user: { login: 'copilot[bot]', type: 'Bot' }, state: 'approved' };
-    const humanReview = { user: { login: 'nikku', type: 'User' }, state: 'approved' };
+    const botReview = { user: { login: 'copilot[bot]', type: 'Bot' }, author_association: 'COLLABORATOR', state: 'changes_requested' };
+    const collaboratorReview = { user: { login: 'nikku', type: 'User' }, author_association: 'COLLABORATOR', state: 'changes_requested' };
+    const nonCollaboratorReview = { user: { login: 'outsider', type: 'User' }, author_association: 'NONE', state: 'changes_requested' };
 
 
     it('should NOT count bot reviews', function() {
@@ -264,13 +279,26 @@ describe('search - Search', function() {
     });
 
 
-    it('should count human reviews', function() {
+    it('should NOT count non-collaborator reviews', function() {
 
       // given
-      const search = createSearch({ treatBotsAsReviewers: false });
+      const search = createSearch();
       const filter = search.getSearchFilter('is:reviewed');
 
-      const pr = createIssue({ pull_request: true, reviews: [ botReview, humanReview ] });
+      const pr = createIssue({ pull_request: true, reviews: [ nonCollaboratorReview ] });
+
+      // when + then
+      expect(filter(pr)).to.be.false;
+    });
+
+
+    it('should count collaborator reviews', function() {
+
+      // given
+      const search = createSearch();
+      const filter = search.getSearchFilter('is:reviewed');
+
+      const pr = createIssue({ pull_request: true, reviews: [ collaboratorReview ] });
 
       // when + then
       expect(filter(pr)).to.be.true;
