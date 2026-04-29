@@ -47,7 +47,8 @@ export function filterUser(githubUser) {
     node_id,
     login,
     avatar_url,
-    html_url
+    html_url,
+    type
   } = githubUser;
 
   return {
@@ -55,7 +56,8 @@ export function filterUser(githubUser) {
     node_id,
     login,
     avatar_url,
-    html_url
+    html_url,
+    type
   };
 }
 

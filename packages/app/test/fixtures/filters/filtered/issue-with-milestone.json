@@ -12,7 +12,8 @@
     "node_id": "MDQ6VXNlcjU4NjAx",
     "login": "nikku",
     "avatar_url": "https://avatars2.githubusercontent.com/u/58601?v=4",
-    "html_url": "https://github.com/nikku"
+    "html_url": "https://github.com/nikku",
+    "type": "User"
   },
   "body": "",
   "created_at": "2019-06-01T08:39:35Z",
@@ -45,7 +46,8 @@
       "node_id": "MDQ6VXNlcjU4NjAx",
       "login": "nikku",
       "avatar_url": "https://avatars2.githubusercontent.com/u/58601?v=4",
-      "html_url": "https://github.com/nikku"
+      "html_url": "https://github.com/nikku",
+      "type": "User"
     },
     "html_url": "https://github.com/nikku/testtest"
   },

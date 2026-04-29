@@ -4,7 +4,7 @@ import Search from 'wuffle/lib/apps/search/Search.js';
 
 import { LinkTypes } from 'wuffle/lib/links.js';
 
-function createSearch() {
+function createSearch(config = {}) {
 
   const logger = {
     child() { return this; },
@@ -19,7 +19,7 @@ function createSearch() {
   };
 
   // @ts-ignore-error mocked logger, store
-  return new Search({}, logger, store);
+  return new Search(config, logger, store);
 }
 
 
@@ -187,6 +187,110 @@ describe('search - Search', function() {
       // when + then
       expect(filter(linked)).to.be.false;
       expect(filter(unlinked)).to.be.true;
+    });
+
+  });
+
+
+
+
+  describe('is:approved', function() {
+
+    const botReview = { user: { login: 'copilot[bot]', type: 'Bot' }, state: 'approved' };
+    const humanReview = { user: { login: 'nikku', type: 'User' }, state: 'approved' };
+
+
+    it('should NOT count bot approvals', function() {
+
+      // given
+      const search = createSearch();
+      const filter = search.getSearchFilter('is:approved');
+
+      const pr = createIssue({ pull_request: true, reviews: [ botReview ] });
+
+      // when + then
+      expect(filter(pr)).to.be.false;
+    });
+
+
+    it('should count human approved', function() {
+
+      // given
+      const search = createSearch({ treatBotsAsReviewers: false });
+      const filter = search.getSearchFilter('is:approved');
+
+      const pr = createIssue({ pull_request: true, reviews: [ botReview, humanReview ] });
+
+      // when + then
+      expect(filter(pr)).to.be.true;
+    });
+
+
+    describe('with treatBotsAsReviewers=true', function() {
+
+      it('should count bot approved', function() {
+
+        // given
+        const search = createSearch({ treatBotsAsReviewers: true });
+        const filter = search.getSearchFilter('is:approved');
+
+        const pr = createIssue({ pull_request: true, reviews: [ botReview ] });
+
+        // when + then
+        expect(filter(pr)).to.be.true;
+      });
+
+    });
+
+  });
+
+
+  describe('is:reviewed', function() {
+
+    const botReview = { user: { login: 'copilot[bot]', type: 'Bot' }, state: 'approved' };
+    const humanReview = { user: { login: 'nikku', type: 'User' }, state: 'approved' };
+
+
+    it('should NOT count bot reviews', function() {
+
+      // given
+      const search = createSearch();
+      const filter = search.getSearchFilter('is:reviewed');
+
+      const pr = createIssue({ pull_request: true, reviews: [ botReview ] });
+
+      // when + then
+      expect(filter(pr)).to.be.false;
+    });
+
+
+    it('should count human reviews', function() {
+
+      // given
+      const search = createSearch({ treatBotsAsReviewers: false });
+      const filter = search.getSearchFilter('is:reviewed');
+
+      const pr = createIssue({ pull_request: true, reviews: [ botReview, humanReview ] });
+
+      // when + then
+      expect(filter(pr)).to.be.true;
+    });
+
+
+    describe('with treatBotsAsReviewers=true', function() {
+
+      it('should count bot reviews', function() {
+
+        // given
+        const search = createSearch({ treatBotsAsReviewers: true });
+        const filter = search.getSearchFilter('is:reviewed');
+
+        const pr = createIssue({ pull_request: true, reviews: [ botReview ] });
+
+        // when + then
+        expect(filter(pr)).to.be.true;
+      });
+
     });
 
   });

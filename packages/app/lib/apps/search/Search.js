@@ -8,7 +8,7 @@ const CHILD_LINK_TYPES = {
 };
 
 /**
- * @typedef { { defaultFilter?: string } } SearchConfig
+ * @typedef { { defaultFilter?: string, treatBotsAsReviewers?: boolean } } SearchConfig
  * @typedef { import('../../util/search.js').SearchTerm } SearchTerm
  *
  * @typedef { import('../../types.js').GitHubUser } GitHubUser
@@ -30,6 +30,10 @@ export default function Search(config, logger, store) {
   const log = logger.child({
     name: 'wuffle:search'
   });
+
+  const {
+    treatBotsAsReviewers = false
+  } = config;
 
   function filterNoop(issue) {
     return true;
@@ -67,12 +71,27 @@ export default function Search(config, logger, store) {
     return issue.pull_request;
   }
 
+  function isValidReviewer(user) {
+
+    if (!user) {
+      return false;
+    }
+
+    if (user.type === 'Bot') {
+      return treatBotsAsReviewers;
+    }
+
+    return true;
+  }
+
   function isApproved(issue) {
-    return (issue.reviews || []).some(r => r.state === 'approved');
+    return (issue.reviews || []).some(
+      r => r.state === 'approved' && isValidReviewer(r.user)
+    );
   }
 
   function isReviewed(issue) {
-    return (issue.reviews || []).length > 0;
+    return (issue.reviews || []).some(r => isValidReviewer(r.user));
   }
 
   const filters = {
