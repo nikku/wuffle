@@ -44,7 +44,7 @@ npx wuffle
 
 Open the app on [`localhost:3000`](http://localhost:3000).
 
-The first time setup guides you through the installation process and helps you to [create a GitHub app](#configure-the-github-app). It also creates several assets in your local working directory: The `.env` file contains all environment variables required to run the app. The `wuffle.config.js` contains the [board configuration](#configure-board).
+The first time setup guides you through the installation process and helps you to [create a GitHub app](#configure-the-github-app). It also creates several assets in your local working directory: The `.env` file contains all environment variables required to run the app. The `wuffle.config.js` contains the [board configuration](#configure-the-board).
 
 Once re-started and properly configured, [connect your GitHub repositories](#connect-github-repositories). Periodic background sync will pickup repositories, fetch issues from GitHub, and populate your board.
 
