@@ -192,8 +192,6 @@ describe('search - Search', function() {
   });
 
 
-
-
   describe('is:approved', function() {
 
     const botReview = { user: { login: 'copilot[bot]', type: 'Bot' }, author_association: 'COLLABORATOR', state: 'approved' };
