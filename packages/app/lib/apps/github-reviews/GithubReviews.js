@@ -117,7 +117,8 @@ function filterReview(review) {
     submitted_at,
     state,
     user,
-    html_url
+    html_url,
+    author_association
   } = review;
 
   return {
@@ -128,6 +129,7 @@ function filterReview(review) {
     submitted_at,
     state: state.toLowerCase(),
     user: filterUser(user),
-    html_url
+    html_url,
+    author_association
   };
 }
