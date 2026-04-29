@@ -36,7 +36,7 @@ function createIssue(overrides = {}) {
 }
 
 
-describe('search - Search', function() {
+describe('apps/search - Search', function() {
 
   describe('is:referenced', function() {
 
@@ -317,6 +317,46 @@ describe('search - Search', function() {
         expect(filter(pr)).to.be.true;
       });
 
+    });
+
+  });
+
+
+  describe('OR', function() {
+
+    const collaboratorReview = { user: { login: 'nikku', type: 'User' }, author_association: 'COLLABORATOR', state: 'changes_requested' };
+
+
+    it('should join terms', function() {
+
+      // given
+      const search = createSearch();
+      const filter = search.getSearchFilter('!is:reviewed OR is:pull');
+
+      const pr = createIssue({ pull_request: true, reviews: [ collaboratorReview ] });
+
+      // when + then
+      expect(filter(pr)).to.be.true;
+    });
+
+  });
+
+
+  describe('AND', function() {
+
+    const collaboratorReview = { user: { login: 'nikku', type: 'User' }, author_association: 'COLLABORATOR', state: 'changes_requested' };
+
+
+    it('should join terms', function() {
+
+      // given
+      const search = createSearch();
+      const filter = search.getSearchFilter('is:reviewed AND !is:pull');
+
+      const pr = createIssue({ pull_request: true, reviews: [ collaboratorReview ] });
+
+      // when + then
+      expect(filter(pr)).to.be.false;
     });
 
   });

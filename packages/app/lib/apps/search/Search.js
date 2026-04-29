@@ -316,7 +316,29 @@ export default function Search(config, logger, store) {
       return function filterCreated(issue) {
         return matchTemporal(issue.updated_at);
       };
-    })
+    }),
+
+    'or': function orFilter(value, _exact, user) {
+
+      const childTerms = /** @type {SearchTerm[]} */ (value);
+
+      const filterFns = childTerms.map(childTerm => buildTermFn(childTerm, user));
+
+      return (issue) => filterFns.some(
+        filterFn => filterFn(issue)
+      );
+    },
+
+    'and': function andFilter(value, _exact, user) {
+
+      const childTerms = /** @type {SearchTerm[]} */ (value);
+
+      const filterFns = childTerms.map(childTerm => buildTermFn(childTerm, user));
+
+      return (issue) => filterFns.every(
+        filterFn => filterFn(issue)
+      );
+    }
   };
 
   function temporalFilter(fn) {
@@ -369,19 +391,6 @@ export default function Search(config, logger, store) {
 
     const wrap = (fn) => negated ? ((issue) => !fn(issue)) : fn;
 
-    if ([ 'or', 'and' ].includes(qualifier)) {
-
-      const childTerms = /** @type {SearchTerm[]} */ (value);
-
-      const filterFns = childTerms.map(childTerm => buildTermFn(childTerm, user));
-
-      return wrap(
-        (issue) => filterFns[qualifier === 'or' ? 'some' : 'every'](
-          filterFn => filterFn(issue)
-        )
-      );
-    }
-
     if (!value) {
       return noopFilter();
     }
@@ -401,7 +410,7 @@ export default function Search(config, logger, store) {
       return noopFilter();
     }
 
-    return wrap(factoryFn(value, exact));
+    return wrap(factoryFn(value, exact, user));
   }
 
   function buildFilterFn(search, user) {
