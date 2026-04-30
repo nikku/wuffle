@@ -330,6 +330,120 @@ describe('store', function() {
   });
 
 
+  describe('ignore filter', function() {
+
+    it('should not add issue if ignored on create', async function() {
+
+      // given
+      const store = createStore();
+
+      store.setIgnoreFilter(issue => issue.state === 'closed');
+
+      // when
+      const update = await store.updateIssue(createIssue({ state: 'closed' }));
+
+      // then
+      expect(store.getIssues()).to.be.empty;
+
+      expect(update).to.be.undefined;
+    });
+
+
+    it('should remove existing issue if ignored on update', async function() {
+
+      // given
+      const store = createStore();
+
+      const { id } = await store.updateIssue(createIssue({ state: 'open' }));
+
+      store.setIgnoreFilter(issue => issue.state === 'closed');
+
+      // when
+      const update = await store.updateIssue({ id, state: 'closed' });
+
+      // then
+      expect(store.getIssues()).to.be.empty;
+
+      expect(update).to.be.undefined;
+    });
+
+
+    it('should keep issue if not ignored', async function() {
+
+      // given
+      const store = createStore();
+
+      store.setIgnoreFilter(issue => issue.state === 'closed');
+
+      // when
+      const issue = await store.updateIssue(createIssue({ state: 'open' }));
+
+      // then
+      expect(store.getIssues()).to.eql([ issue ]);
+    });
+
+
+    describe('updates', function() {
+
+      it('should not include ignored issue during creation', async function() {
+
+        // given
+        const store = createStore();
+
+        store.setIgnoreFilter(issue => issue.state === 'closed');
+
+        // when
+        await store.updateIssue(createIssue({ state: 'closed' }));
+
+        // then
+        expect(store.updates.getSince()).to.have.length(0);
+      });
+
+
+      it('should include ignored issue during removal', async function() {
+
+        // given
+        const store = createStore();
+
+        store.setIgnoreFilter(issue => issue.state === 'closed');
+
+        const [
+          issue1,
+          issue2,
+          issue3
+        ] = await Promise.all([
+          store.updateIssue(createIssue({ state: 'open' })),
+          store.updateIssue(createIssue({ state: 'open' })),
+          store.updateIssue(createIssue({ state: 'open' }))
+        ]);
+
+        // when
+        await Promise.all([
+          store.updateIssue({ id: issue1.id, state: 'closed' }),
+          store.updateIssue({ id: issue2.id }),
+          store.updateIssue({ id: issue3.id, state: 'closed' })
+        ]);
+
+        const updates = store.updates.getSince();
+
+        // then
+        const results = updates.map(update => ({
+          issueId: update.issue.id,
+          type: update.type
+        }));
+
+        expect(results).to.eql([
+          { issueId: issue1.id, type: 'remove' },
+          { issueId: issue3.id, type: 'remove' },
+          { issueId: issue2.id, type: 'update' }
+        ]);
+      });
+
+    });
+
+  });
+
+
   describe('updates', function() {
 
     it('should always return cursor', function() {

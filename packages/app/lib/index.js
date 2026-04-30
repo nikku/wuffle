@@ -27,7 +27,8 @@ const appModules = [
   import('./apps/auth-routes/index.js'),
   import('./apps/board-api-routes/index.js'),
   import('./apps/board-routes.js'),
-  import('./apps/reindex-store.js')
+  import('./apps/reindex-store.js'),
+  import('./apps/store-filter.js')
 ];
 
 import loadConfig from './load-config.js';

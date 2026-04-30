@@ -4,6 +4,9 @@ import { issueIdent } from './util/index.js';
 import { findLinks } from './util/links.js';
 import { Links } from './links.js';
 
+/**
+ * @typedef { import('./apps/search/Search.js').FilterFn } FilterFn
+ */
 
 /**
  * The store that holds all board data
@@ -39,6 +42,10 @@ export default class Store {
     this.updateContext = null;
     this.queuedUpdates = [];
 
+    /**
+     * @type { FilterFn }
+     */
+    this.ignoreFilter = (issue) => false;
 
     this.on('updateIssue', async event => {
 
@@ -303,7 +310,9 @@ export default class Store {
   /**
    * Update issue, tagging it as updated.
    *
-   * @return {Promise<Object>} promise to updated issue
+   * If issue matches the ignore filter it will be removed as part of the update.
+   *
+   * @return {Promise<Object|undefined>} a promise to the updated issue or undefined in case the update triggered issue deletion
    */
   updateIssue(update) {
 
@@ -373,6 +382,14 @@ export default class Store {
     }
 
     const ident = issueIdent(updatedIssue);
+
+    if (this.ignoreFilter(updatedIssue)) {
+      this.log.debug({ issue: ident }, 'issue matching ignore filter');
+
+      await this.removeIssueById(id);
+
+      return null;
+    }
 
     this.log.debug({
       issue: ident
@@ -859,6 +876,13 @@ export default class Store {
       issues: issues.length,
       lastSync
     }, 'load JSON complete');
+  }
+
+  /**
+   * @param { FilterFn } ignoreFilter
+   */
+  setIgnoreFilter(ignoreFilter) {
+    this.ignoreFilter = ignoreFilter;
   }
 
 }
