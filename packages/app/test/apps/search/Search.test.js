@@ -519,7 +519,6 @@ describe('apps/search - Search', function() {
       });
 
 
-
       it('should match issue if ONE some closing PR is reviewed', function() {
 
         // given
