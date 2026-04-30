@@ -477,4 +477,6 @@ export default function Search(config, logger, store) {
   // api ///////////////////////
 
   this.getSearchFilter = getSearchFilter;
+
+  this.buildFilterFn = buildFilterFn;
 }

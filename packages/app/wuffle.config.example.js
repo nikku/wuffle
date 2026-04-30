@@ -34,6 +34,11 @@
  * You may define a default filter to apply to the board if
  * there is no user-defined search query.
  *
+ * You may choose to ignore certain issues from connected repositories
+ * through an ignore filter. Matching issues will not be added (saved) to
+ * the board. If they matched previously (before an update) they will be
+ * removed as part of an update.
+ *
  * You may also configure whether bots are counted as
  * legitimate reviewers (for both review and approval).
  */
@@ -52,6 +57,8 @@ export default {
   ],
 
   defaultFilter: '!repo:"some/ignored-repository"',
+
+  ignoreFilter: 'label:"invalid"',
 
   treatBotsAsReviewers: false
 };
