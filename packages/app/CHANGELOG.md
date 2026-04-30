@@ -6,6 +6,16 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 _**Note:** Yet to be released changes appear here._
 
+## 0.72.0
+
+* `FEAT`: compute `is:approved` from effective reviews ([#292](https://github.com/nikku/wuffle/pull/292))
+* `FEAT`: count only collaborators as reviewers ([#291](https://github.com/nikku/wuffle/pull/291))
+* `FEAT`: count only humans as reviewers per default ([#281](https://github.com/nikku/wuffle/issues/281), [#290](https://github.com/nikku/wuffle/pull/290))
+* `FEAT`: synchronize user `type` ([#290](https://github.com/nikku/wuffle/pull/290))
+* `FEAT`: synchronize issue/pr/review `author_association` ([#291](https://github.com/nikku/wuffle/pull/291))
+* `FIX`: correct links to always reference respective pull request or issue URL ([#288](https://github.com/nikku/wuffle/pull/288))
+* `DEPS`: update to `memorystore@1.6.8`
+
 ## 0.71.0
 
 * `FEAT`: support `AND`, `OR` and `NOT` search operators ([#283](https://github.com/nikku/wuffle/pull/283))
