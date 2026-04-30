@@ -46,7 +46,8 @@
       'open',
       'closed',
       'issue',
-      'pull'
+      'pull',
+      'referenced'
     ].map(name => {
       return { name, value: `${name} ` };
     }),
