@@ -599,4 +599,69 @@ describe('apps/search - Search', function() {
 
   });
 
+
+  describe('user and default filter', function() {
+
+    const openIssue = createIssue({ state: 'open' });
+    const closedIssue = createIssue({ state: 'closed' });
+
+
+    describe('no default filter', function() {
+
+      it('should handle no user search', function() {
+
+        // given
+        const search = createSearch();
+        const filter = search.getSearchFilter('');
+
+        // when + then
+        expect(filter(openIssue)).to.be.true;
+        expect(filter(closedIssue)).to.be.true;
+      });
+
+
+      it('should apply user search', function() {
+
+        // given
+        const search = createSearch();
+        const filter = search.getSearchFilter('is:closed');
+
+        // when + then
+        expect(filter(openIssue)).to.be.false;
+        expect(filter(closedIssue)).to.be.true;
+      });
+
+    });
+
+
+    describe('with default filter', function() {
+
+      it('should apply default filter if no user search', function() {
+
+        // given
+        const search = createSearch({ defaultFilter: 'is:open' });
+        const filter = search.getSearchFilter('');
+
+        // when + then
+        expect(filter(openIssue)).to.be.true;
+        expect(filter(closedIssue)).to.be.false;
+      });
+
+
+      it('should apply user search over default filter', function() {
+
+        // given
+        const search = createSearch({ defaultFilter: 'is:open' });
+        const filter = search.getSearchFilter('is:closed');
+
+        // when + then
+        // user filter wins over default filter
+        expect(filter(openIssue)).to.be.false;
+        expect(filter(closedIssue)).to.be.true;
+      });
+
+    });
+
+  });
+
 });
