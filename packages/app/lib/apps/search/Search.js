@@ -446,9 +446,11 @@ export default function Search(config, logger, store) {
    */
   function getSearchFilter(search, user) {
 
-    const filterFn = buildFilterFn(search, user);
+    if (!search) {
+      search = config.defaultFilter;
+    }
 
-    const ignoreFilterFn = buildFilterFn(config.defaultFilter, user);
+    const filterFn = buildFilterFn(search, user);
 
     return function(issue) {
       try {
@@ -456,12 +458,7 @@ export default function Search(config, logger, store) {
           return filterFn(issue);
         }
 
-        if (ignoreFilterFn) {
-          return ignoreFilterFn(issue);
-        }
-
-        // no user search, no ignore filter,
-        // show all issues
+        // no search, show all issues
         return true;
       } catch (err) {
         log.warn({ issue: issueIdent(issue), err }, 'filter failed');
