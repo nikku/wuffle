@@ -7,7 +7,7 @@
     "url": "https://github.com/nikku"
   },
   "bin": {
-    "wuffle": "./bin/wuffle"
+    "wuffle": "bin/wuffle"
   },
   "exports": {
     ".": "./index.js",
