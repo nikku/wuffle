@@ -8,7 +8,11 @@ const CHILD_LINK_TYPES = {
 };
 
 /**
- * @typedef { { defaultFilter?: string, treatBotsAsReviewers?: boolean } } SearchConfig
+ * @typedef { {
+ *   defaultFilter?: string,
+ *   treatBotsAsReviewers?: boolean
+ * } } SearchConfig
+ *
  * @typedef { import('../../util/search.js').SearchTerm } SearchTerm
  *
  * @typedef { import('../../types.js').GitHubUser } GitHubUser
@@ -32,7 +36,8 @@ export default function Search(config, logger, store) {
   });
 
   const {
-    treatBotsAsReviewers = false
+    treatBotsAsReviewers = false,
+    defaultFilter
   } = config;
 
   function filterNoop(issue) {
@@ -447,7 +452,7 @@ export default function Search(config, logger, store) {
   function getSearchFilter(search, user) {
 
     if (!search) {
-      search = config.defaultFilter;
+      search = defaultFilter;
     }
 
     const filterFn = buildFilterFn(search, user);
