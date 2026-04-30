@@ -238,6 +238,44 @@ describe('apps/search - Search', function() {
     });
 
 
+    it('should NOT count approval superseded by changes_requested', function() {
+
+      // given
+      const search = createSearch();
+      const filter = search.getSearchFilter('is:approved');
+
+      const pr = createIssue({
+        pull_request: true,
+        reviews: [
+          { ...collaboratorReview, state: 'approved' },
+          { ...collaboratorReview, state: 'changes_requested' }
+        ]
+      });
+
+      // when + then
+      expect(filter(pr)).to.be.false;
+    });
+
+
+    it('should count approval after changes_requested', function() {
+
+      // given
+      const search = createSearch();
+      const filter = search.getSearchFilter('is:approved');
+
+      const pr = createIssue({
+        pull_request: true,
+        reviews: [
+          { ...collaboratorReview, state: 'changes_requested' },
+          { ...collaboratorReview, state: 'approved' }
+        ]
+      });
+
+      // when + then
+      expect(filter(pr)).to.be.true;
+    });
+
+
     describe('with treatBotsAsReviewers=true', function() {
 
       it('should count bot approvals', function() {
@@ -300,6 +338,38 @@ describe('apps/search - Search', function() {
 
       // when + then
       expect(filter(pr)).to.be.true;
+    });
+
+
+    it('should NOT count comment-only review', function() {
+
+      // given
+      const search = createSearch();
+      const filter = search.getSearchFilter('is:reviewed');
+
+      const pr = createIssue({
+        pull_request: true,
+        reviews: [ { ...collaboratorReview, state: 'commented' } ]
+      });
+
+      // when + then
+      expect(filter(pr)).to.be.false;
+    });
+
+
+    it('should count approval', function() {
+
+      // given
+      const search = createSearch();
+      const reviewedFilter = search.getSearchFilter('is:reviewed');
+
+      const pr = createIssue({
+        pull_request: true,
+        reviews: [ { ...collaboratorReview, state: 'approved' } ]
+      });
+
+      // when + then
+      expect(reviewedFilter(pr)).to.be.true;
     });
 
 

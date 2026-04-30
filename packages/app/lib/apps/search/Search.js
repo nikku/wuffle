@@ -91,14 +91,26 @@ export default function Search(config, logger, store) {
     return author_association ? [ 'COLLABORATOR', 'MEMBER', 'OWNER' ].includes(author_association) : true;
   }
 
+  function getEffectiveReviews(reviews) {
+    const byReviewer = new Map();
+
+    for (const review of reviews) {
+      if (review.state === 'commented' || !isValidReview(review)) continue;
+
+      byReviewer.set(review.user?.login, review);
+    }
+
+    return [ ...byReviewer.values() ];
+  }
+
   function isApproved(issue) {
-    return (issue.reviews || []).some(
-      r => r.state === 'approved' && isValidReview(r)
+    return getEffectiveReviews(issue.reviews || []).some(
+      r => r.state === 'approved'
     );
   }
 
   function isReviewed(issue) {
-    return (issue.reviews || []).some(isValidReview);
+    return getEffectiveReviews(issue.reviews || []).length > 0;
   }
 
   const filters = {
