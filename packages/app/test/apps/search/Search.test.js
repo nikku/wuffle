@@ -292,6 +292,90 @@ describe('apps/search - Search', function() {
 
     });
 
+
+    describe('via CLOSED_BY link', function() {
+
+      it('should match issue if closing PR is approved', function() {
+
+        // given
+        const search = createSearch();
+        const filter = search.getSearchFilter('is:approved');
+
+        const issue = createIssue({
+          links: [
+            {
+              type: LinkTypes.CLOSED_BY,
+              target: createIssue({ pull_request: true, reviews: [ collaboratorReview ] })
+            }
+          ]
+        });
+
+        // when + then
+        expect(filter(issue)).to.be.true;
+      });
+
+
+      it('should NOT match issue if closing PR is not approved', function() {
+
+        // given
+        const search = createSearch();
+        const filter = search.getSearchFilter('is:approved');
+
+        const issue = createIssue({
+          links: [
+            {
+              type: LinkTypes.CLOSED_BY,
+              target: createIssue({ pull_request: true, reviews: [] })
+            }
+          ]
+        });
+
+        // when + then
+        expect(filter(issue)).to.be.false;
+      });
+
+
+      it('should match issue if ONE closing PR is approved', function() {
+
+        // given
+        const search = createSearch();
+        const filter = search.getSearchFilter('is:approved');
+
+        const issue = createIssue({
+          links: [
+            {
+              type: LinkTypes.CLOSED_BY,
+              target: createIssue({
+                pull_request: true,
+                reviews: [ collaboratorReview ]
+              })
+            },
+            {
+              type: LinkTypes.CLOSED_BY,
+              target: createIssue({ pull_request: true, reviews: [] })
+            }
+          ]
+        });
+
+        // when + then
+        expect(filter(issue)).to.be.true;
+      });
+
+
+      it('should NOT match issue with no CLOSED_BY links', function() {
+
+        // given
+        const search = createSearch();
+        const filter = search.getSearchFilter('is:approved');
+
+        const issue = createIssue({ links: [] });
+
+        // when + then
+        expect(filter(issue)).to.be.false;
+      });
+
+    });
+
   });
 
 
@@ -385,6 +469,91 @@ describe('apps/search - Search', function() {
 
         // when + then
         expect(filter(pr)).to.be.true;
+      });
+
+    });
+
+
+    describe('via CLOSED_BY link', function() {
+
+      it('should match issue if closing PR is reviewed', function() {
+
+        // given
+        const search = createSearch();
+        const filter = search.getSearchFilter('is:reviewed');
+
+        const issue = createIssue({
+          links: [
+            {
+              type: LinkTypes.CLOSED_BY,
+              target: createIssue({
+                pull_request: true,
+                reviews: [ collaboratorReview ]
+              })
+            }
+          ]
+        });
+
+        // when + then
+        expect(filter(issue)).to.be.true;
+      });
+
+
+      it('should NOT match issue if closing PR is not reviewed', function() {
+
+        // given
+        const search = createSearch();
+        const filter = search.getSearchFilter('is:reviewed');
+
+        const issue = createIssue({
+          links: [
+            {
+              type: LinkTypes.CLOSED_BY,
+              target: createIssue({ pull_request: true, reviews: [] })
+            }
+          ]
+        });
+
+        // when + then
+        expect(filter(issue)).to.be.false;
+      });
+
+
+
+      it('should match issue if ONE some closing PR is reviewed', function() {
+
+        // given
+        const search = createSearch();
+        const filter = search.getSearchFilter('is:reviewed');
+
+        const issue = createIssue({
+          links: [
+            {
+              type: LinkTypes.CLOSED_BY,
+              target: createIssue({ pull_request: true, reviews: [ collaboratorReview ] })
+            },
+            {
+              type: LinkTypes.CLOSED_BY,
+              target: createIssue({ pull_request: true, reviews: [] })
+            }
+          ]
+        });
+
+        // when + then
+        expect(filter(issue)).to.be.true;
+      });
+
+
+      it('should NOT match issue with no CLOSED_BY links', function() {
+
+        // given
+        const search = createSearch();
+        const filter = search.getSearchFilter('is:reviewed');
+
+        const issue = createIssue({ links: [] });
+
+        // when + then
+        expect(filter(issue)).to.be.false;
       });
 
     });
