@@ -6,6 +6,10 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 _**Note:** Yet to be released changes appear here._
 
+## 0.73.0
+
+* `FEAT`: allow to ignore (not store) certain issues ([#293](https://github.com/nikku/wuffle/pull/293), [#287](https://github.com/nikku/wuffle/issues/287))
+
 ## 0.72.0
 
 * `FEAT`: compute `is:approved` from effective reviews ([#292](https://github.com/nikku/wuffle/pull/292))
