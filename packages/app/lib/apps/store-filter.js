@@ -10,13 +10,22 @@
  *
  * @param { import('../store.js').default } store
  * @param { import('./search/Search.js').default } search
+ * @param { import('../types.js').Logger } logger
  */
-export default function StoreFilter(config, store, search) {
+export default function StoreFilter(config, store, search, logger) {
+
+  const log = logger.child({
+    name: 'wuffle:store-filter'
+  });
 
   if ('ignoreFilter' in config) {
     const ignoreFilterFn = search.buildFilterFn(config.ignoreFilter);
 
-    store.setIgnoreFilter(ignoreFilterFn);
+    if (ignoreFilterFn) {
+      store.setIgnoreFilter(ignoreFilterFn);
+    } else {
+      log.warn('unparseable <ignoreFilter> - please correct your board configuration');
+    }
   }
 
 }
