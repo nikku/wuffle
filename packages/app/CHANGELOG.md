@@ -6,6 +6,10 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 _**Note:** Yet to be released changes appear here._
 
+## 0.73.1
+
+* `FIX`: correct filtering with user scope (`@me`) ([#294](https://github.com/nikku/wuffle/pull/294))
+
 ## 0.73.0
 
 * `FEAT`: allow to ignore (not store) certain issues ([#293](https://github.com/nikku/wuffle/pull/293), [#287](https://github.com/nikku/wuffle/issues/287))
