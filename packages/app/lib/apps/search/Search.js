@@ -438,7 +438,7 @@ export default function Search(config, logger, store) {
       return null;
     }
 
-    return buildTermFn(term);
+    return buildTermFn(term, user);
   }
 
   /**

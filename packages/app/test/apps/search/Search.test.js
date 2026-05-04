@@ -560,6 +560,58 @@ describe('apps/search - Search', function() {
   });
 
 
+  describe('assignee', function() {
+
+    const user = { login: 'nikku', last_checked: 0, access_token: 'token', avatar_url: 'url' };
+    const anotherUser = { login: 'outsider', last_checked: 0, access_token: 'token', avatar_url: 'url' };
+
+
+    it('should support assignee filter', function() {
+
+      // given
+      const search = createSearch();
+      const filter = search.getSearchFilter('assignee:nikku');
+
+      const issue = createIssue({ assignees: [ user ] });
+      const anotherAssigneeIssue = createIssue({ assignees: [ anotherUser ] });
+
+      // when + then
+      expect(filter(issue)).to.be.true;
+      expect(filter(anotherAssigneeIssue)).to.be.false;
+    });
+
+
+    it('should support assignee:@me filter', function() {
+
+      // given
+      const search = createSearch();
+      const filter = search.getSearchFilter('assignee:@me', user);
+
+      const issue = createIssue({ assignees: [ user ] });
+      const anotherAssigneeIssue = createIssue({ assignees: [ anotherUser ] });
+
+      // when + then
+      expect(filter(issue)).to.be.true;
+      expect(filter(anotherAssigneeIssue)).to.be.false;
+    });
+
+
+    it('should filter out if no user is provided for assignee:@me filter', function() {
+
+      // given
+      const search = createSearch();
+      const filter = search.getSearchFilter('assignee:@me');
+
+      const issue = createIssue({ assignees: [ user ] });
+      const anotherAssigneeIssue = createIssue({ assignees: [ anotherUser ] });
+
+      // when + then
+      expect(filter(issue)).to.be.false;
+      expect(filter(anotherAssigneeIssue)).to.be.false;
+    });
+  });
+
+
   describe('OR', function() {
 
     const collaboratorReview = { user: { login: 'nikku', type: 'User' }, author_association: 'COLLABORATOR', state: 'changes_requested' };
