@@ -12,8 +12,16 @@ import gql from 'fake-tag';
  * @param {import('../../events.js').default} events
  * @param {import('../github-client/GithubClient.js').default} githubClient
  * @param {import('../../store.js').default} store
+ * @param {import('../issue-filter/IssueFilter.js').default} issueFilter
+ * @param {import('../../types.js').Logger } logger
  */
-export default function GithubComments(webhookEvents, events, githubClient, store) {
+export default function GithubComments(webhookEvents, events, githubClient, store, issueFilter, logger) {
+
+  const log = logger.child({
+    name: 'wuffle:github-comments'
+  });
+
+  const ifEnabled = issueFilter.createWebhookFilter(log);
 
   // issues /////////////////////
 
@@ -108,7 +116,7 @@ export default function GithubComments(webhookEvents, events, githubClient, stor
 
   webhookEvents.on([
     'issue_comment'
-  ], async ({ payload }) => {
+  ], ifEnabled(async ({ payload }) => {
     const {
       action,
       comment: _comment,
@@ -169,7 +177,7 @@ export default function GithubComments(webhookEvents, events, githubClient, stor
       ...commentedIssue,
       comments
     });
-  });
+  }));
 
 }
 

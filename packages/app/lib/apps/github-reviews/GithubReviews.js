@@ -11,8 +11,16 @@ import { filterUser, filterPull } from '../../filters.js';
  * @param {import('../../events.js').default} events
  * @param {import('../github-client/GithubClient.js').default} githubClient
  * @param {import('../../store.js').default} store
+ * @param {import('../issue-filter/IssueFilter.js').default} issueFilter
+ * @param {import('../../types.js').Logger } logger
  */
-export default function GithubReviews(webhookEvents, events, githubClient, store) {
+export default function GithubReviews(webhookEvents, events, githubClient, store, issueFilter, logger) {
+
+  const log = logger.child({
+    name: 'wuffle:github-reviews'
+  });
+
+  const ifEnabled = issueFilter.createWebhookFilter(log);
 
   // issues /////////////////////
 
@@ -54,7 +62,7 @@ export default function GithubReviews(webhookEvents, events, githubClient, store
 
   webhookEvents.on([
     'pull_request_review'
-  ], async ({ payload }) => {
+  ], ifEnabled(async ({ payload }) => {
     const {
       action,
       review: _review,
@@ -102,7 +110,7 @@ export default function GithubReviews(webhookEvents, events, githubClient, store
       ...pull_request,
       reviews
     });
-  });
+  }));
 
 }
 
