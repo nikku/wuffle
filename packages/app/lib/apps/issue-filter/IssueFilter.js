@@ -21,16 +21,16 @@ export default function IssueFilter(config, store, search, logger) {
   /**
    * @type { import('../search/Search.js').FilterFn }
    */
-  let ignoreFilter = (issue) => false;
+  let isIgnored = (issue) => false;
 
 
   if ('ignoreFilter' in config) {
     const ignoreFilterFn = search.buildFilterFn(config.ignoreFilter);
 
     if (ignoreFilterFn) {
-      ignoreFilter = ignoreFilterFn;
+      isIgnored = ignoreFilterFn;
 
-      store.setIgnoreFilter(ignoreFilter);
+      store.setIgnoreFilter(isIgnored);
     } else {
       log.warn('unparseable <ignoreFilter> - please correct your board configuration');
     }
@@ -43,8 +43,6 @@ export default function IssueFilter(config, store, search, logger) {
    *
    * @return {boolean} true, if issue shall be ignored
    */
-  this.isIgnored = function(issue) {
-    return ignoreFilter(issue);
-  };
+  this.isIgnored = isIgnored;
 
 }
