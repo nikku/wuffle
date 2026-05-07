@@ -19,6 +19,7 @@ const appModules = [
   import('./apps/github-checks/index.js'),
   import('./apps/github-reviews/index.js'),
   import('./apps/github-statuses/index.js'),
+  import('./apps/issue-filter/index.js'),
   import('./apps/security-context/index.js'),
   import('./apps/user-access/index.js'),
   import('./apps/search/index.js'),
@@ -27,8 +28,7 @@ const appModules = [
   import('./apps/auth-routes/index.js'),
   import('./apps/board-api-routes/index.js'),
   import('./apps/board-routes.js'),
-  import('./apps/reindex-store.js'),
-  import('./apps/store-filter.js')
+  import('./apps/reindex-store.js')
 ];
 
 import loadConfig from './load-config.js';
