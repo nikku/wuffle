@@ -6,6 +6,11 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 _**Note:** Yet to be released changes appear here._
 
+## 0.73.3
+
+* `FEAT`: only background sync details for updated issues ([#299](https://github.com/nikku/wuffle/pull/299))
+* `FIX`: ensure details sync adheres to `ignoreFilter` ([#299](https://github.com/nikku/wuffle/pull/299), [#298](https://github.com/nikku/wuffle/issues/298))
+
 ## 0.73.2
 
 * `FIX`: ensure automatic dev flow adheres to `ignoreFilter` ([#296](https://github.com/nikku/wuffle/issues/296), [#297](https://github.com/nikku/wuffle/pull/297))
