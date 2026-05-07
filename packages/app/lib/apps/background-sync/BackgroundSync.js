@@ -395,12 +395,21 @@ We automatically synchronize all repositories you granted us access to via the G
 
     // update changed issues
 
-    await Promise.all(pendingUpdates.map(update => store.updateIssue(update)));
+    const updateTasks = pendingUpdates.map(
+      update => store.updateIssue(update)
+    );
 
-    // emit background sync event for all found issues
+    // returns the update for updated issues or undefined
+    // where issues were not stored (filtered out) - we only filter
+    // for actual updated issues
+    const updatedIssues = await Promise.all(updateTasks).then(updates => {
+      return updates.filter(update => update);
+    });
+
+    // emit background sync event for all updated issues
 
     await syncDetails(
-      Object.keys(foundIssues),
+      updatedIssues,
       getSyncClosedDetailsSince(),
       getSyncOpenDetailsSince()
     );
@@ -437,10 +446,12 @@ We automatically synchronize all repositories you granted us access to via the G
     );
   }
 
-  function syncDetails(issueIds, syncClosedSince, syncOpenSince) {
+  function syncDetails(updatedIssues, syncClosedSince, syncOpenSince) {
 
-    const jobs = issueIds.map(async id => {
-      const issue = await store.getIssueById(id);
+    const jobs = updatedIssues.map(async updatedIssue => {
+
+      // ensure we fetch latest version of issue (to prevent de-sync)
+      const issue = await store.getIssueById(updatedIssue.id);
 
       if (!issue) {
         return;
