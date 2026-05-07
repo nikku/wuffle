@@ -44,6 +44,8 @@ export default class Store {
 
     /**
      * @type { FilterFn }
+     *
+     * @private
      */
     this.ignoreFilter = (issue) => false;
 
