@@ -6,6 +6,10 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 _**Note:** Yet to be released changes appear here._
 
+## 0.73.2
+
+* `FIX`: ensure automatic dev flow adheres to `ignoreFilter` ([#296](https://github.com/nikku/wuffle/issues/296), [#297](https://github.com/nikku/wuffle/pull/297))
+
 ## 0.73.1
 
 * `FIX`: correct filtering with user scope (`@me`) ([#294](https://github.com/nikku/wuffle/pull/294))
