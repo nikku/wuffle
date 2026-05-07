@@ -1,3 +1,6 @@
+import { filterIssueOrPull } from '../filters.js';
+import { issueIdent } from '../util/meta.js';
+
 const DONE = 'DONE';
 const EXTERNAL_CONTRIBUTION = 'EXTERNAL_CONTRIBUTION';
 const IN_PROGRESS = 'IN_PROGRESS';
@@ -15,13 +18,40 @@ const CHANGES_REQUESTED = 'changes_requested';
  * @param {import('./webhook-events/WebhookEvents.js').default} webhookEvents
  * @param {import('./github-issues/GithubIssues.js').default} githubIssues
  * @param {import('../columns.js').default} columns
+ * @param {import('./issue-filter/IssueFilter.js').default} issueFilter
+ * @param {import('../types.js').Logger } logger
  */
-export default function(webhookEvents, githubIssues, columns) {
+export default function(webhookEvents, githubIssues, columns, issueFilter, logger) {
+
+  const log = logger.child({
+    name: 'wuffle:automatic-dev-flow'
+  });
+
+  function ifEnabled(webhookHandlerFn) {
+
+    return (context) => {
+
+      const payload = context.payload;
+
+      const issueOrPull = filterIssueOrPull(
+        payload.issue || payload.pull_request,
+        payload.repository
+      );
+
+      if (issueFilter.isIgnored(issueOrPull)) {
+        log.debug({ issue: issueIdent(issueOrPull) }, 'issue matching ignore filter');
+
+        return;
+      }
+
+      return webhookHandlerFn(context);
+    };
+  }
 
   webhookEvents.on([
     'issues.closed',
     'pull_request.closed'
-  ], async (context) => {
+  ], ifEnabled(async (context) => {
 
     const {
       pull_request,
@@ -31,9 +61,9 @@ export default function(webhookEvents, githubIssues, columns) {
     const column = columns.getByState(DONE);
 
     await githubIssues.moveIssue(context, issue || pull_request, column);
-  });
+  }));
 
-  webhookEvents.on('pull_request.converted_to_draft', async (context) => {
+  webhookEvents.on('pull_request.converted_to_draft', ifEnabled(async (context) => {
 
     const {
       pull_request
@@ -47,12 +77,12 @@ export default function(webhookEvents, githubIssues, columns) {
       githubIssues.moveIssue(context, pull_request, column),
       githubIssues.moveReferencedIssues(context, pull_request, column)
     ]);
-  });
+  }));
 
   webhookEvents.on([
     'pull_request.ready_for_review',
     'pull_request.review_requested'
-  ], async (context) => {
+  ], ifEnabled(async (context) => {
 
     const {
       pull_request,
@@ -73,12 +103,12 @@ export default function(webhookEvents, githubIssues, columns) {
       githubIssues.moveIssue(context, pull_request, column),
       githubIssues.moveReferencedIssues(context, pull_request, column)
     ]);
-  });
+  }));
 
   webhookEvents.on([
     'pull_request.opened',
     'pull_request.reopened'
-  ], async (context) => {
+  ], ifEnabled(async (context) => {
 
     const {
       pull_request
@@ -105,9 +135,9 @@ export default function(webhookEvents, githubIssues, columns) {
       githubIssues.moveIssue(context, pull_request, column, newAssignee),
       githubIssues.moveReferencedIssues(context, pull_request, column, newAssignee)
     ]);
-  });
+  }));
 
-  webhookEvents.on('pull_request.edited', async (context) => {
+  webhookEvents.on('pull_request.edited', ifEnabled(async (context) => {
 
     const {
       pull_request
@@ -116,9 +146,9 @@ export default function(webhookEvents, githubIssues, columns) {
     const column = columns.getIssueColumn(pull_request);
 
     await githubIssues.moveReferencedIssues(context, pull_request, column);
-  });
+  }));
 
-  webhookEvents.on('pull_request_review.submitted', async (context) => {
+  webhookEvents.on('pull_request_review.submitted', ifEnabled(async (context) => {
 
     const {
       pull_request,
@@ -141,7 +171,7 @@ export default function(webhookEvents, githubIssues, columns) {
       githubIssues.moveIssue(context, pull_request, column),
       githubIssues.moveReferencedIssues(context, pull_request, column)
     ]);
-  });
+  }));
 
   webhookEvents.on('create', async (context) => {
 
