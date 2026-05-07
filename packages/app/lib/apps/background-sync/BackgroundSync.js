@@ -217,25 +217,11 @@ We automatically synchronize all repositories you granted us access to via the G
 
               const update = filterIssueOrPull(issueOrPull, repository);
 
-              const {
-                id
-              } = update;
+              foundIssues[update.id] = update;
 
-              const existingIssue = await store.getIssueById(id);
-
-              if (existingIssue && existingIssue.updated_at >= update.updated_at) {
-                foundIssues[id] = null;
-
-                log.debug({
-                  [type]: `${owner}/${repo}#${issueOrPull.number}`
-                }, 'skipping, as up-to-date');
-              } else {
-                foundIssues[id] = update;
-
-                log.debug({
-                  [type]: `${owner}/${repo}#${issueOrPull.number}`
-                }, 'scheduled for update');
-              }
+              log.debug({
+                [type]: `${owner}/${repo}#${issueOrPull.number}`
+              }, 'scheduled for update');
             } catch (err) {
               log.error({
                 err,
