@@ -11,8 +11,16 @@ import { filterPull } from '../../filters.js';
  * @param {import('../../events.js').default} events
  * @param {import('../github-client/GithubClient.js').default} githubClient
  * @param {import('../../store.js').default} store
+ * @param {import('../issue-filter/IssueFilter.js').default} issueFilter
+ * @param {import('../../types.js').Logger } logger
  */
-export default function GithubStates(webhookEvents, events, githubClient, store) {
+export default function GithubStatuses(webhookEvents, events, githubClient, store, issueFilter, logger) {
+
+  const log = logger.child({
+    name: 'wuffle:github-statuses'
+  });
+
+  const ifEnabled = issueFilter.createWebhookFilter(log);
 
   // issues /////////////////////
 
@@ -89,7 +97,7 @@ export default function GithubStates(webhookEvents, events, githubClient, store)
   webhookEvents.on([
     'pull_request.opened',
     'pull_request.synchronize'
-  ], async ({ payload }) => {
+  ], ifEnabled(async ({ payload }) => {
 
     const {
       pull_request: _pull_request,
@@ -108,7 +116,7 @@ export default function GithubStates(webhookEvents, events, githubClient, store)
       id,
       statuses
     });
-  });
+  }));
 
   webhookEvents.on([
     'status'
