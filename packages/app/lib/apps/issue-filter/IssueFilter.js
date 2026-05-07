@@ -2,12 +2,14 @@
  * @typedef { { ignoreFilter?: string } } StoreFilterConfig
  */
 
+import { filterIssueOrPull } from '../../filters.js';
+import { issueIdent } from '../../util/meta.js';
+
 /**
  * An component that configures the store to filter certain elements,
  * effectively making them invisible to the board and its users.
  *
  * @param { StoreFilterConfig } config
- *
  * @param { import('../../store.js').default } store
  * @param { import('../search/Search.js').default } search
  * @param { import('../../types.js').Logger } logger
@@ -37,6 +39,35 @@ export default function IssueFilter(config, store, search, logger) {
   }
 
   /**
+   * @param {import('../../types.js').Logger } log
+   *
+   * @return { (filterFn) => (any) => any }
+   */
+  function createWebhookFilter(log) {
+
+    return function ifEnabled(webhookHandlerFn) {
+
+      return (context) => {
+
+        const payload = context.payload;
+
+        const issueOrPull = filterIssueOrPull(
+          payload.issue || payload.pull_request,
+          payload.repository
+        );
+
+        if (isIgnored(issueOrPull)) {
+          log.debug({ issue: issueIdent(issueOrPull) }, 'issue matching ignore filter');
+
+          return;
+        }
+
+        return webhookHandlerFn(context);
+      };
+    };
+  };
+
+  /**
    * Figure whether the issue shall be ignored (by ignore filter rules)
    *
    * @param {any} issue
@@ -45,4 +76,10 @@ export default function IssueFilter(config, store, search, logger) {
    */
   this.isIgnored = isIgnored;
 
+  /**
+   * @param {import('../../types.js').Logger } log
+   *
+   * @return { (filterFn) => (any) => any }
+   */
+  this.createWebhookFilter = createWebhookFilter;
 }

@@ -1,6 +1,3 @@
-import { filterIssueOrPull } from '../filters.js';
-import { issueIdent } from '../util/meta.js';
-
 const DONE = 'DONE';
 const EXTERNAL_CONTRIBUTION = 'EXTERNAL_CONTRIBUTION';
 const IN_PROGRESS = 'IN_PROGRESS';
@@ -27,26 +24,7 @@ export default function(webhookEvents, githubIssues, columns, issueFilter, logge
     name: 'wuffle:automatic-dev-flow'
   });
 
-  function ifEnabled(webhookHandlerFn) {
-
-    return (context) => {
-
-      const payload = context.payload;
-
-      const issueOrPull = filterIssueOrPull(
-        payload.issue || payload.pull_request,
-        payload.repository
-      );
-
-      if (issueFilter.isIgnored(issueOrPull)) {
-        log.debug({ issue: issueIdent(issueOrPull) }, 'issue matching ignore filter');
-
-        return;
-      }
-
-      return webhookHandlerFn(context);
-    };
-  }
+  const ifEnabled = issueFilter.createWebhookFilter(log);
 
   webhookEvents.on([
     'issues.closed',
