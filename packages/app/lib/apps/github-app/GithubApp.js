@@ -28,6 +28,7 @@ const RequiredEvents = [
 
 /**
  * @typedef {import('./types.js').Installation} Installation
+ * @typedef {import('../../types.js').Octokit} Octokit
  */
 
 /**
@@ -53,8 +54,19 @@ export default function GithubApp(config, app, logger, injector) {
 
   // cached data //////////////////
 
+  /**
+   * @type {Promise<Installation[]> | null}
+   */
   let installations = null;
+
+  /**
+   * @type {Promise<Record<string, Installation>> | null}
+   */
   let installationsByLogin = null;
+
+  /**
+   * @type {Promise<Record<string, Installation>> | null}
+   */
   let installationsById = null;
 
   // reactivity ////////////////////
@@ -71,12 +83,17 @@ export default function GithubApp(config, app, logger, injector) {
   // functionality /////////////////
 
   /**
-   * @return {Promise<import('../../types.js').Octokit>}
+   * @return {Promise<Octokit>}
    */
   function getAppScopedClient() {
     return app.auth();
   }
 
+  /**
+   * Return installations
+   *
+   * @return {Promise<Installation[]>}
+   */
   function getInstallations() {
     installations = installations || fetchInstallations().then(installations => {
 
@@ -90,6 +107,11 @@ export default function GithubApp(config, app, logger, injector) {
     return installations;
   }
 
+  /**
+   * Return installations by ID
+   *
+   * @return {Promise<Record<string, Installation>>}
+   */
   function getInstallationsById() {
 
     installationsById = installationsById || getInstallations().then(
@@ -106,9 +128,9 @@ export default function GithubApp(config, app, logger, injector) {
   /**
    * Get an installation for the given id.
    *
-   * @param {string} id
+   * @param {string|number} id
    *
-   * @return {Promise<Installation?>}
+   * @return {Promise<Installation | undefined>}
    */
   function getInstallationById(id) {
     return getInstallationsById().then(byId => {
@@ -119,7 +141,7 @@ export default function GithubApp(config, app, logger, injector) {
   /**
    * Return map of installations, grouped by org / login.
    *
-   * @return {Promise<Object<String, Installation>>}
+   * @return {Promise<Record<string, Installation>>}
    */
   function getInstallationsByLogin() {
 
@@ -155,6 +177,13 @@ export default function GithubApp(config, app, logger, injector) {
     });
   }
 
+  /**
+   * Return true if installation is enabled.
+   *
+   * @param {Installation} installation
+   *
+   * @return {Promise<boolean>}
+   */
   function isInstallationEnabled(installation) {
 
     const {
@@ -253,13 +282,47 @@ export default function GithubApp(config, app, logger, injector) {
 
   // api ///////////////////
 
+  /**
+   * Return an application-scoped octokit client.
+   *
+   * @return {Promise<Octokit>}
+   */
   this.getAppScopedClient = getAppScopedClient;
 
+  /**
+   * Return true if installation is enabled.
+   *
+   * @param {Installation} installation
+   *
+   * @return {Promise<boolean>}
+   */
   this.isInstallationEnabled = isInstallationEnabled;
 
+  /**
+   * Get an installation for the given login.
+   *
+   * This method throws if an installation for the given login does not exist.
+   *
+   * @param {string} login
+   *
+   * @return {Promise<Installation>}
+   */
   this.getInstallationByLogin = getInstallationByLogin;
+
+  /**
+   * Get an installation for the given id.
+   *
+   * @param {string} id
+   *
+   * @return {Promise<Installation | undefined>}
+   */
   this.getInstallationById = getInstallationById;
 
+  /**
+   * Return installations
+   *
+   * @return {Promise<Installation[]>}
+   */
   this.getInstallations = getInstallations;
 
 }
