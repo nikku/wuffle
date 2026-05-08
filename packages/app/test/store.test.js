@@ -7,7 +7,8 @@ import Events from 'wuffle/lib/events.js';
 import Store from 'wuffle/lib/store.js';
 
 import { getKey } from 'wuffle/lib/filters.js';
-import { FakeLogger } from './helpers/index.js';
+
+import FakeLogger from './helpers/FakeLogger.js';
 
 
 describe('store', function() {
