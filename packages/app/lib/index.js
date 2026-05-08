@@ -78,17 +78,25 @@ export default function Wuffle(app, { getRouter }) {
     });
 
     const coreModule = {
-      'app': [ 'value', app ],
       'config': [ 'value', config ],
-      'router': [ 'value', router ],
       'logger': [ 'value', logger ],
       'columns': [ 'type', Columns ],
       'store': [ 'type', Store ],
       'events': [ 'value', events ]
     };
 
+    const webModule = {
+      'router': [ 'value', router ]
+    };
+
+    const probotModule = {
+      'app': [ 'value', app ],
+    };
+
     const injector = new AsyncInjector([
       coreModule,
+      probotModule,
+      webModule,
       ...modules
     ]);
 
