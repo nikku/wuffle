@@ -1,6 +1,8 @@
 import { AsyncInjector } from 'async-didi';
 
 import Columns from 'wuffle/lib/columns.js';
+import AsyncEvents from 'wuffle/lib/events.js';
+import Store from 'wuffle/lib/store.js';
 
 function FakeLogger() {
 
@@ -15,7 +17,7 @@ function FakeLogger() {
   };
 }
 
-const fakeConfig = {
+const defaultConfig = {
   name: 'test',
   columns: [
     { name: 'Inbox', label: null },
@@ -27,20 +29,34 @@ const fakeConfig = {
   ]
 };
 
-const fakeModule = {
-  logger: [ 'type', FakeLogger ],
-  config: [ 'value', fakeConfig ],
-  columns: [ 'type', Columns ]
-};
-
 export async function bootstrap(options) {
 
-  const modules = [
-    fakeModule,
-    ...options.modules
-  ];
+  const {
+    config: extraConfig = {},
+    additionalModules: additionalModules = []
+  } = options;
 
-  const injector = new AsyncInjector(modules);
+  const config = {
+    ...defaultConfig,
+    ...extraConfig
+  };
+
+  const events = new AsyncEvents();
+
+  const coreModule = {
+    'config': [ 'value', config ],
+    'logger': [ 'type', FakeLogger ],
+    'columns': [ 'type', Columns ],
+    'store': [ 'type', Store ],
+    'events': [ 'value', events ]
+  };
+
+  const injector = new AsyncInjector([
+    coreModule,
+    ...additionalModules
+  ]);
+
+  // initialize modules ////////////
 
   await injector.init();
 
