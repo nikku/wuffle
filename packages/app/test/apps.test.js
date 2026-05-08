@@ -28,7 +28,9 @@ describe('apps', function() {
 
     beforeEach(async function() {
       app = await bootstrap({
-        modules: [ GithubIssues ]
+        additionalModules: [
+          GithubIssues
+        ]
       });
 
       githubIssues = await app.get('githubIssues');
