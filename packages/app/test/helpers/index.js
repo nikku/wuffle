@@ -4,18 +4,9 @@ import Columns from 'wuffle/lib/columns.js';
 import AsyncEvents from 'wuffle/lib/events.js';
 import Store from 'wuffle/lib/store.js';
 
-function FakeLogger() {
+import FakeLogger from './FakeLogger.js';
+import FakeWebhookEvents from './FakeWebhookEvents.js';
 
-  this.log = function() {};
-  this.error = function() {};
-  this.info = function() {};
-  this.warn = function() {};
-  this.debug = function() {};
-
-  this.child = function() {
-    return this;
-  };
-}
 
 const defaultConfig = {
   name: 'test',
@@ -45,10 +36,11 @@ export async function bootstrap(options) {
 
   const coreModule = {
     'config': [ 'value', config ],
-    'logger': [ 'type', FakeLogger ],
     'columns': [ 'type', Columns ],
     'store': [ 'type', Store ],
-    'events': [ 'value', events ]
+    'events': [ 'value', events ],
+    'logger': [ 'type', FakeLogger ],
+    'webhookEvents': [ 'type', FakeWebhookEvents ]
   };
 
   const injector = new AsyncInjector([
