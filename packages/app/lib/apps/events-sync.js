@@ -20,7 +20,7 @@ import {
 export default function EventsSync(webhookEvents, store, logger) {
 
   const log = logger.child({
-    name: 'wuffle:user-access'
+    name: 'wuffle:events-sync'
   });
 
   // issues /////////////////////
