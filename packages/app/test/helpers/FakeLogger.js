@@ -1,10 +1,25 @@
 export default function FakeLogger() {
 
-  this.log = function() {};
-  this.error = function() {};
-  this.info = function() {};
-  this.warn = function() {};
-  this.debug = function() {};
+  function createLog(level) {
+    return function(context, message) {
+
+      if (typeof context === 'string') {
+        message = context;
+        context = {};
+      }
+
+      message = `[${level}] ${message}`;
+
+      console.log(message, context);
+    };
+  }
+
+  this.log = createLog('_');
+
+  this.error = createLog('error');
+  this.info = createLog('info');
+  this.warn = createLog('warn');
+  this.debug = createLog('debug');
 
   this.child = function() {
     return this;
