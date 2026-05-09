@@ -12,11 +12,11 @@ const CHANGES_REQUESTED = 'changes_requested';
  *
  * @constructor
  *
- * @param {import('./webhook-events/WebhookEvents.js').default} webhookEvents
- * @param {import('./github-issues/GithubIssues.js').default} githubIssues
- * @param {import('../columns.js').default} columns
- * @param {import('./issue-filter/IssueFilter.js').default} issueFilter
- * @param {import('../types.js').Logger } logger
+ * @param {import('../webhook-events/WebhookEvents.js').default} webhookEvents
+ * @param {import('../github-issues/GithubIssues.js').default} githubIssues
+ * @param {import('../../columns.js').default} columns
+ * @param {import('../issue-filter/IssueFilter.js').default} issueFilter
+ * @param {import('../../types.js').Logger } logger
  */
 export default function(webhookEvents, githubIssues, columns, issueFilter, logger) {
 
