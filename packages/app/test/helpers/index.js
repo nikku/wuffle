@@ -4,6 +4,8 @@ import Columns from 'wuffle/lib/columns.js';
 import AsyncEvents from 'wuffle/lib/events.js';
 import Store from 'wuffle/lib/store.js';
 
+import { expect } from 'chai';
+
 import FakeLogger from './FakeLogger.js';
 import FakeWebhookEvents from './FakeWebhookEvents.js';
 
@@ -53,4 +55,24 @@ export async function bootstrap(options) {
   await injector.init();
 
   return injector;
+}
+
+/**
+ * @param {Store} store
+ * @param {any} issueMatcher
+ */
+export function expectIssue(store, issueMatcher) {
+  const issues = store.getIssues();
+
+  expect(issues).to.containSubset([ issueMatcher ]);
+}
+
+/**
+ * @param {Store} store
+ * @param {any} issueMatcher
+ */
+export function expectNoIssue(store, issueMatcher) {
+  const issues = store.getIssues();
+
+  expect(issues).not.to.containSubset([ issueMatcher ]);
 }
