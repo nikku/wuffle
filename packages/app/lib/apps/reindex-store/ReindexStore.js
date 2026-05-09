@@ -1,16 +1,16 @@
 import {
   getPackageVersion,
   hash
-} from '../util/index.js';
+} from '../../util/index.js';
 
 
 /**
  * @constructor
  *
  * @param {any} config
- * @param {import('../types.js').Logger} logger
- * @param {import('../events.js').default} events
- * @param {import('../store.js').default} store
+ * @param {import('../../types.js').Logger} logger
+ * @param {import('../../events.js').default} events
+ * @param {import('../../store.js').default} store
  */
 export default function ReindexStore(config, logger, events, store) {
 
