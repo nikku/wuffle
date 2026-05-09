@@ -24,7 +24,7 @@ const appModules = [
   import('./apps/user-access/index.js'),
   import('./apps/search/index.js'),
   import('./apps/background-sync/index.js'),
-  import('./apps/automatic-dev-flow.js'),
+  import('./apps/automatic-dev-flow/index.js'),
   import('./apps/auth-routes/index.js'),
   import('./apps/board-api-routes/index.js'),
   import('./apps/board-routes.js'),
