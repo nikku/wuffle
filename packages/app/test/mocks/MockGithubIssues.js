@@ -4,7 +4,7 @@ import { mock } from 'sinon';
 /**
  * Fake GithubIssues that records calls for test verification.
  */
-export default function FakeGithubIssues() {
+export default function MockGithubIssues() {
 
   /**
    * @param {any} context

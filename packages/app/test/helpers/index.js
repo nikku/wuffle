@@ -6,8 +6,8 @@ import Store from 'wuffle/lib/store.js';
 
 import { expect } from 'chai';
 
-import FakeLogger from './FakeLogger.js';
-import FakeWebhookEvents from './FakeWebhookEvents.js';
+import MockLogger from '../mocks/MockLogger.js';
+import MockWebhookEvents from '../mocks/MockWebhookEvents.js';
 
 
 const defaultConfig = {
@@ -41,8 +41,8 @@ export async function bootstrap(options) {
     'columns': [ 'type', Columns ],
     'store': [ 'type', Store ],
     'events': [ 'value', events ],
-    'logger': [ 'type', FakeLogger ],
-    'webhookEvents': [ 'type', FakeWebhookEvents ]
+    'logger': [ 'type', MockLogger ],
+    'webhookEvents': [ 'type', MockWebhookEvents ]
   };
 
   const injector = new AsyncInjector([
