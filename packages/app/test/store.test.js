@@ -8,7 +8,7 @@ import Store from 'wuffle/lib/store.js';
 
 import { getKey } from 'wuffle/lib/filters.js';
 
-import FakeLogger from './helpers/FakeLogger.js';
+import MockLogger from './mocks/MockLogger.js';
 
 
 describe('store', function() {
@@ -1057,7 +1057,7 @@ const defaultColumnConfig = [
 
 function createStore(columnConfig = defaultColumnConfig) {
 
-  const logger = new FakeLogger();
+  const logger = new MockLogger();
   const events = new Events();
   const columns = new Columns(columnConfig || defaultColumnConfig);
 

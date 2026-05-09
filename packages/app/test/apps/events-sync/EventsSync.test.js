@@ -4,7 +4,7 @@ import { bootstrap, expectIssue, expectNoIssue } from '../../helpers/index.js';
 import EventsSyncModule from '../../../lib/apps/events-sync/index.js';
 
 /**
- * @typedef {import('../../helpers/FakeWebhookEvents.js').default } FakeWebhookEvents
+ * @typedef {import('../../mocks/MockWebhookEvents.js').default } MockWebhookEvents
  * @typedef {import('../../../lib/store.js').default } Store
  */
 
@@ -14,7 +14,7 @@ describe('apps/events-sync', function() {
   let app;
 
   /**
-   * @type { FakeWebhookEvents }
+   * @type { MockWebhookEvents }
    */
   let webhookEvents;
 

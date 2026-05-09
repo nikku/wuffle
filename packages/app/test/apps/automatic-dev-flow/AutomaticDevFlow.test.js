@@ -2,13 +2,13 @@ import { expect } from 'chai';
 import { match } from 'sinon';
 
 import { bootstrap } from '../../helpers/index.js';
-import FakeGithubIssues from '../../helpers/FakeGithubIssues.js';
-import FakeIssueFilter from '../../helpers/FakeIssueFilter.js';
+import MockGithubIssues from '../../mocks/MockGithubIssues.js';
+import MockIssueFilter from '../../mocks/MockIssueFilter.js';
 
 import AutomaticDevFlowModule from '../../../lib/apps/automatic-dev-flow/index.js';
 
 /**
- * @typedef {import('../../helpers/FakeWebhookEvents.js').default} FakeWebhookEvents
+ * @typedef {import('../../mocks/MockWebhookEvents.js').default} FakeWebhookEvents
  */
 
 
@@ -22,19 +22,19 @@ describe('apps/automatic-dev-flow', function() {
   let webhookEvents;
 
   /**
-   * @type { FakeGithubIssues }
+   * @type { MockGithubIssues }
    */
   let githubIssues;
 
   /**
-   * @type { FakeIssueFilter }
+   * @type { MockIssueFilter }
    */
   let issueFilter;
 
 
   beforeEach(async function() {
-    githubIssues = new FakeGithubIssues();
-    issueFilter = new FakeIssueFilter();
+    githubIssues = new MockGithubIssues();
+    issueFilter = new MockIssueFilter();
 
     app = await bootstrap({
       additionalModules: [

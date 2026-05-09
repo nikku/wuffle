@@ -1,4 +1,4 @@
-export default function FakeLogger() {
+export default function MockLogger() {
 
   function createLog(level) {
     return function(context, message) {
