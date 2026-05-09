@@ -6,6 +6,15 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 _**Note:** Yet to be released changes appear here._
 
+## 0.74.0
+
+* `FEAT`: synchronize data on `pull_request.milestoned` and `pull_request.demilestoned`
+* `CHORE`: log events in original format
+* `CHORE`: reorganize core components into modules
+* `CHORE`: correct `EventsSync` logger name
+* `CHORE`: debug log skipped re-indexing
+* `CHORE`: improve `GithubApp` typings
+
 ## 0.73.3
 
 * `FEAT`: only background sync details for updated issues ([#299](https://github.com/nikku/wuffle/pull/299))
