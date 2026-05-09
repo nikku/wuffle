@@ -11,7 +11,7 @@ const appModules = [
       ? import('./apps/dump-store/s3/index.js')
       : import('./apps/dump-store/local/index.js')
   ),
-  import('./apps/events-sync.js'),
+  import('./apps/events-sync/index.js'),
   import('./apps/github-app/index.js'),
   import('./apps/github-issues/index.js'),
   import('./apps/github-comments/index.js'),
