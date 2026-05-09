@@ -11,14 +11,13 @@ function isInternalError(error) {
  *
  * @constructor
  *
- * @param {import('../../types.js').Logger} logger
  * @param {Object} config
+ * @param {import('../../types.js').Logger} logger
  * @param {import('../../store.js').default} store
- * @param {import('../github-client/GithubClient.js').default} githubClient
- * @param {import('../github-app/GithubApp.js').default} githubApp
  * @param {import('../../events.js').default} events
+ * @param {import('./BackgroundSyncBackend.js').default} backgroundSyncBackend
  */
-export default function BackgroundSync(logger, config, store, githubClient, githubApp, events) {
+export default function BackgroundSync(config, logger, store, events, backgroundSyncBackend) {
 
   // 30 days
   const syncClosedLookback = (
@@ -101,18 +100,14 @@ We automatically synchronize all repositories you granted us access to via the G
     log.debug({ installation: owner }, 'processing');
 
     try {
-      const octokit = await githubClient.getOrgScoped(owner);
-
-      const repositories = await octokit.paginate(
-        octokit.rest.apps.listReposAccessibleToInstallation,
-        {
-          per_page: 100
-        }
-      );
+      const repositories = await backgroundSyncBackend.getInstallationRepositories(installation);
 
       for (const repository of repositories) {
 
-        const owner = repository.owner.login;
+        if (repository.owner.login !== owner) {
+          throw new Error('repository.owner !== installation.owner');
+        }
+
         const repo = repository.name;
 
         // log found repository
@@ -135,74 +130,12 @@ We automatically synchronize all repositories you granted us access to via the G
             repo
           }, 'processing');
 
-          const params = {
-            sort: /** @type { 'updated' } */ ('updated'),
-            direction: /** @type { 'desc' } */ ('desc'),
-            per_page: 100,
-            owner,
-            repo
-          };
-
-          const [
+          const {
             open_issues,
             closed_issues,
             open_pull_requests,
             closed_pull_requests
-          ] = await Promise.all([
-
-            // open issues
-            octokit.paginate(
-              octokit.rest.issues.listForRepo,
-              {
-                ...params,
-                state: 'open'
-              },
-              response => response.data.filter(issue => !('pull_request' in issue))
-            ),
-
-            // closed issues, updated last 30 days
-            octokit.paginate(
-              octokit.rest.issues.listForRepo,
-              {
-                ...params,
-                state: 'closed',
-                since: new Date(syncClosedSince).toISOString()
-              },
-              response => response.data.filter(issue => !('pull_request' in issue))
-            ),
-
-            // open pulls, all
-            octokit.paginate(
-              octokit.rest.pulls.list,
-              {
-                ...params,
-                state: 'open'
-              }
-            ),
-
-            // closed pulls, updated last 30 days
-            octokit.paginate(
-              octokit.rest.pulls.list,
-              {
-                ...params,
-                state: 'closed'
-              },
-              (response, done) => {
-
-                const pulls = response.data;
-
-                const filtered = pulls.filter(
-                  pull => new Date(pull.updated_at).getTime() > syncClosedSince
-                );
-
-                if (filtered.length !== pulls.length) {
-                  done();
-                }
-
-                return filtered;
-              }
-            )
-          ]);
+          } = await backgroundSyncBackend.getRepositoryIssuesAndPulls(repository, syncClosedSince);
 
           for (const issueOrPull of [
             ...open_issues,
@@ -465,7 +398,7 @@ We automatically synchronize all repositories you granted us access to via the G
     log.info('start');
 
     try {
-      const installations = await githubApp.getInstallations();
+      const installations = await backgroundSyncBackend.getInstallations();
 
       await doSync(installations);
 
