@@ -1,15 +1,7 @@
-import sinon from 'sinon';
-import sinonChai from 'sinon-chai';
-
-import * as chai from 'chai';
-
-import {
-  expect
-} from 'chai';
+import { expect } from 'chai';
+import { spy } from 'sinon';
 
 import Events from 'wuffle/lib/events.js';
-
-chai.use(sinonChai);
 
 
 describe('Events', function() {
@@ -26,7 +18,7 @@ describe('Events', function() {
     it('should.emit listener', async function() {
 
       // given
-      var listener = sinon.spy(async () => {});
+      var listener = spy(async () => {});
 
       events.on('foo', listener);
 
@@ -41,7 +33,7 @@ describe('Events', function() {
     it('should.emit typed listener', async function() {
 
       // given
-      var listener = sinon.spy(async () => {});
+      var listener = spy(async () => {});
 
       events.on('foo', listener);
 
@@ -56,7 +48,7 @@ describe('Events', function() {
     it('should register multiple', async function() {
 
       // given
-      var listener = sinon.spy(async () => {});
+      var listener = spy(async () => {});
 
       events.on([ 'foo', 'foo' ], listener);
 
@@ -71,11 +63,11 @@ describe('Events', function() {
     it('should stopPropagation', async function() {
 
       // given
-      var listener1 = sinon.spy(async (event) => {
+      var listener1 = spy(async (event) => {
         event.stopPropagation();
       });
 
-      var listener2 = sinon.spy();
+      var listener2 = spy();
 
       events.on('foo', listener1);
       events.on('foo', listener2);
@@ -92,7 +84,7 @@ describe('Events', function() {
     it('should.emit event by name', async function() {
 
       // given
-      var listener = sinon.spy();
+      var listener = spy();
 
       // when
       events.on('foo', listener);
@@ -109,7 +101,7 @@ describe('Events', function() {
     it('should register to multiple events', async function() {
 
       // given
-      var listener1 = sinon.spy();
+      var listener1 = spy();
 
       events.on([ 'foo', 'bar' ], listener1);
 
@@ -124,7 +116,7 @@ describe('Events', function() {
     it('should remove multiple listeners', async function() {
 
       // given
-      var listener1 = sinon.spy();
+      var listener1 = spy();
 
       events.on([ 'foo', 'bar' ], listener1);
       events.off([ 'foo', 'bar' ], listener1);
@@ -145,9 +137,9 @@ describe('Events', function() {
     it('should call listeners after once listener', async function() {
 
       // given
-      var listenerBefore = sinon.spy();
-      var listenerOnce = sinon.spy();
-      var listenerAfter = sinon.spy();
+      var listenerBefore = spy();
+      var listenerOnce = spy();
+      var listenerAfter = spy();
 
       events.on('foo', listenerBefore);
       events.once('foo', listenerOnce);
@@ -177,7 +169,7 @@ describe('Events', function() {
     it('should call once listener only once', async function() {
 
       // given
-      var listener = sinon.spy();
+      var listener = spy();
 
       // when
       events.once('onceEvent', listener);
@@ -459,11 +451,11 @@ describe('Events', function() {
     it('should stop propagation to other listeners', async function() {
 
       // given
-      var listener1 = sinon.spy(function(event) {
+      var listener1 = spy(function(event) {
         return false;
       });
 
-      var listener2 = sinon.spy();
+      var listener2 = spy();
 
       events.on('foo', listener1);
       events.on('foo', listener2);
@@ -511,8 +503,8 @@ describe('Events', function() {
     it('should remove listeners by event type', async function() {
 
       // given
-      var listener1 = sinon.spy();
-      var listener2 = sinon.spy();
+      var listener1 = spy();
+      var listener2 = spy();
 
       events.on('foo', listener1);
       events.on('foo', listener2);
@@ -530,8 +522,8 @@ describe('Events', function() {
     it('should remove listener by callback', async function() {
 
       // given
-      var listener1 = sinon.spy();
-      var listener2 = sinon.spy();
+      var listener1 = spy();
+      var listener2 = spy();
 
       events.on('foo', listener1);
       events.on('foo', listener2);
@@ -549,8 +541,8 @@ describe('Events', function() {
     it('should remove once listener by callback', async function() {
 
       // given
-      var listener1 = sinon.spy();
-      var listener2 = sinon.spy();
+      var listener1 = spy();
+      var listener2 = spy();
 
       events.once('foo', listener1);
       events.on('foo', listener2);
@@ -568,8 +560,8 @@ describe('Events', function() {
     it('should remove bound listener by callback', async function() {
 
       // given
-      var listener1 = sinon.spy();
-      var listener2 = sinon.spy();
+      var listener1 = spy();
+      var listener2 = spy();
 
       events.on('foo', listener1);
       events.on('foo', listener2);
@@ -587,8 +579,8 @@ describe('Events', function() {
     it('should remove bound once listener by callback', async function() {
 
       // given
-      var listener1 = sinon.spy();
-      var listener2 = sinon.spy();
+      var listener1 = spy();
+      var listener2 = spy();
 
       events.once('foo', listener1);
       events.on('foo', listener2);
@@ -609,9 +601,9 @@ describe('Events', function() {
       var eventName = 'foo';
 
       var listener1,
-          listener2 = sinon.spy();
+          listener2 = spy();
 
-      listener1 = sinon.spy(function() {
+      listener1 = spy(function() {
         events.off(eventName, listener2);
         events.off(eventName, listener1);
       });
@@ -645,9 +637,9 @@ describe('Events', function() {
     it('should call lower priority listener', async function() {
 
       // given
-      var listenerAdded = sinon.spy();
+      var listenerAdded = spy();
 
-      var listenerOnce = sinon.spy(function() {
+      var listenerOnce = spy(function() {
         events.once('foo', listenerAdded, 500);
       });
 
@@ -673,9 +665,9 @@ describe('Events', function() {
     it('should NOT call higher priority listener', async function() {
 
       // given
-      var listenerAdded = sinon.spy();
+      var listenerAdded = spy();
 
-      var listenerOnce = sinon.spy(function() {
+      var listenerOnce = spy(function() {
         events.once('foo', listenerAdded, 5000);
       });
 
@@ -703,9 +695,9 @@ describe('Events', function() {
     it('should call same priority listener', async function() {
 
       // given
-      var listenerAdded = sinon.spy();
+      var listenerAdded = spy();
 
-      var listenerOnce = sinon.spy(function() {
+      var listenerOnce = spy(function() {
         events.once('foo', listenerAdded);
       });
 
@@ -727,7 +719,7 @@ describe('Events', function() {
     it('should propagate error via <error> event', async function() {
 
       // given
-      var errorListener = sinon.spy();
+      var errorListener = spy();
       var failingListener = function() {
         throw new Error('expected failure');
       };

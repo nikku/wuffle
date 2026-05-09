@@ -35,7 +35,7 @@
     "all": "run-s lint test",
     "dev": "nodemon",
     "start": "NODE_ENV=production node ./bin/wuffle",
-    "test": "mocha 'test/**/*.js' --exit",
+    "test": "mocha -r test/helpers/globals.js 'test/**/*.js' --exit",
     "lint": "run-s lint:*",
     "lint:eslint": "eslint .",
     "lint:types": "tsc --pretty",
