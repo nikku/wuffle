@@ -5,7 +5,7 @@ import {
   filterRepository,
   getIdentifier,
   getKey
-} from '../filters.js';
+} from '../../filters.js';
 
 
 /**
@@ -13,9 +13,9 @@ import {
  *
  * @constructor
  *
- * @param {import('./webhook-events/WebhookEvents.js').default} webhookEvents
- * @param {import('../store.js').default} store
- * @param {import('../types.js').Logger} logger
+ * @param {import('../webhook-events/WebhookEvents.js').default} webhookEvents
+ * @param {import('../../store.js').default} store
+ * @param {import('../../types.js').Logger} logger
  */
 export default function EventsSync(webhookEvents, store, logger) {
 
