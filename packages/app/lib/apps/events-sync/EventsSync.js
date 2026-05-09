@@ -104,6 +104,8 @@ export default function EventsSync(webhookEvents, store, logger) {
     'pull_request.converted_to_draft',
     'pull_request.assigned',
     'pull_request.unassigned',
+    'pull_request.milestoned',
+    'pull_request.demilestoned',
     'pull_request.synchronize',
     'pull_request.closed',
     'pull_request.review_requested',
