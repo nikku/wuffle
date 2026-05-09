@@ -48,6 +48,8 @@ export default function ReindexStore(config, logger, events, store) {
       log.info('config changed');
 
       await reindexStore();
+    } else {
+      log.debug('config unchanged - skipping reindexing');
     }
   });
 
