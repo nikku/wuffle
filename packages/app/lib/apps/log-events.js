@@ -27,18 +27,18 @@ export default function LogEvents(logger, webhookEvents) {
 
   log.info('dumping webhook events to %s', path.resolve(eventsDir));
 
-  function write(event, payload) {
+  function write(name, payload) {
 
     const {
       action
     } = payload;
 
-    const name = action ? `${event}.${action}` : event;
+    const eventName = action ? `${name}.${action}` : name;
 
-    const data = JSON.stringify({ event, payload }, null, '  ');
+    const data = JSON.stringify({ name, payload }, null, '  ');
 
     return fs.mkdir(eventsDir, { recursive: true }).then(() => {
-      const fileName = path.join(eventsDir, `${Date.now()}-${counter++}-${name}.json`);
+      const fileName = path.join(eventsDir, `${Date.now()}-${counter++}-${eventName}.json`);
 
       return fs.writeFile(fileName, data, 'utf8');
     });
