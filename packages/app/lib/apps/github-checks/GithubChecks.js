@@ -3,6 +3,8 @@ import { repoAndOwner, Cache } from '../../util/index.js';
 /**
  * This component updates the stored issues based on GitHub events.
  *
+ * It also hooks into `BackgroundSync` to fetch checks for a PR.
+ *
  * @constructor
  *
  * @param {import('../webhook-events/WebhookEvents.js').default} webhookEvents

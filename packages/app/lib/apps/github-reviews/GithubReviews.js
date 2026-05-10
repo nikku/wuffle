@@ -5,6 +5,8 @@ import { filterUser, filterPull } from '../../filters.js';
 /**
  * This component updates the stored issues based on GitHub events.
  *
+ * It also hooks into `BackgroundSync` to fetch reviews for a PR.
+ *
  * @constructor
  *
  * @param {import('../webhook-events/WebhookEvents.js').default} webhookEvents

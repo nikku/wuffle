@@ -5,6 +5,8 @@ import { filterPull } from '../../filters.js';
 /**
  * This component updates synchronizes GitHub statuses with pull requests.
  *
+ * It also hooks into `BackgroundSync` to fetch statuses for a PR.
+ *
  * @constructor
  *
  * @param {import('../webhook-events/WebhookEvents.js').default} webhookEvents

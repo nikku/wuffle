@@ -6,6 +6,8 @@ import gql from 'fake-tag';
 /**
  * This component updates the stored issues based on GitHub events.
  *
+ * It also hooks into `BackgroundSync` to fetch comments for issues/PRs.
+ *
  * @constructor
  *
  * @param {import('../webhook-events/WebhookEvents.js').default} webhookEvents
