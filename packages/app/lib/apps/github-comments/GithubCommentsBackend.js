@@ -11,9 +11,12 @@ import gql from 'fake-tag';
  *   authorAssociation: string,
  *   html_url: string,
  *   user: {
+ *     id: number,
+ *     node_id: string,
  *     login: string,
  *     avatar_url: string,
- *     html_url: string
+ *     html_url: string,
+ *     type: string
  *   }
  * } } GithubComment
  *
@@ -62,7 +65,16 @@ export default function GithubCommentsBackend(githubClient) {
         user: author {
           login
           avatar_url: avatarUrl,
-          html_url: url
+          html_url: url,
+          type: __typename
+          ... on User {
+            id: databaseId
+            node_id: id
+          }
+          ... on Bot {
+            id: databaseId
+            node_id: id
+          }
         }
       }
 
