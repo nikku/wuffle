@@ -9,6 +9,17 @@ function isInternalError(error) {
 /**
  * This component performs a periodic background sync of a project.
  *
+ * Unless disabled via `process.env.DISABLE_BACKGROUND_SYNC` it will
+ * register a recurring check.
+ *
+ * Background check performs various optimizations to ensure only relevant
+ * data is stored on the board:
+ *
+ *   * Closed issues/PRs on the board will be thrashed
+ *   * Closed issues/PRs wiil not be synchronized from GitHub
+ *   * Open but stale issues/PRs will not be synchronized to the board
+ *   * Open issue/PR details will only be synchronized for recent issues
+ *
  * @constructor
  *
  * @param {Object} config
@@ -393,6 +404,13 @@ We automatically synchronize all repositories you granted us access to via the G
     return Promise.all(jobs);
   }
 
+  /**
+   * Trigger background synchronization for all connected repositories.
+   *
+   * This ensures that data out-of-sync with the board is fetched from remote.
+   *
+   * @return {Promise<void>}
+   */
   async function backgroundSync() {
 
     log.info('start');
@@ -442,6 +460,13 @@ We automatically synchronize all repositories you granted us access to via the G
 
   // api ///////////////////
 
+  /**
+   * Trigger background synchronization for all connected repositories.
+   *
+   * This ensures that data out-of-sync with the board is fetched from remote.
+   *
+   * @return {Promise<void>}
+   */
   this.backgroundSync = backgroundSync;
 
 
