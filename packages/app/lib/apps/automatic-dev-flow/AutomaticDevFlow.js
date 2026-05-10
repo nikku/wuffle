@@ -172,7 +172,7 @@ export default function(webhookEvents, githubIssues, columns, issueFilter, logge
       return;
     }
 
-    const issue_number = match[1];
+    const issue_number = parseInt(match[1], 10);
 
     const column = columns.getByState(IN_PROGRESS);
 

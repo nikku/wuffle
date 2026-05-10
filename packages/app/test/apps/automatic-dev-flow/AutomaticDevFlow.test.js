@@ -450,7 +450,7 @@ describe('apps/automatic-dev-flow', function() {
       // issue #130 moved to In Progress
       expect(githubIssues.findAndMoveIssue).to.have.been.calledOnceWith(
         match.any,
-        '130',
+        130,
         match({ name: 'In Progress' }),
         'nikku',
         match.typeOf('function')
