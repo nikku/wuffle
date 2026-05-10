@@ -1,6 +1,4 @@
-import { repoAndOwner } from '../../util/index.js';
 import { filterUser, filterIssue } from '../../filters.js';
-import gql from 'fake-tag';
 
 
 /**
@@ -12,12 +10,12 @@ import gql from 'fake-tag';
  *
  * @param {import('../webhook-events/WebhookEvents.js').default} webhookEvents
  * @param {import('../../events.js').default} events
- * @param {import('../github-client/GithubClient.js').default} githubClient
  * @param {import('../../store.js').default} store
  * @param {import('../issue-filter/IssueFilter.js').default} issueFilter
  * @param {import('../../types.js').Logger } logger
+ * @param {import('./GithubCommentsBackend.js').default} githubCommentsBackend
  */
-export default function GithubComments(webhookEvents, events, githubClient, store, issueFilter, logger) {
+export default function GithubComments(webhookEvents, events, store, issueFilter, logger, githubCommentsBackend) {
 
   const log = logger.child({
     name: 'wuffle:github-comments'
@@ -34,81 +32,10 @@ export default function GithubComments(webhookEvents, events, githubClient, stor
     } = event;
 
     const {
-      id,
-      number
+      id
     } = issue;
 
-    const {
-      repo,
-      owner
-    } = repoAndOwner(issue);
-
-    const github = await githubClient.getOrgScoped(owner);
-
-    const result = await github.graphql(gql`
-
-      fragment CommentInfo on IssueComment {
-        id: databaseId
-        node_id: id
-        body: bodyText
-        created_at: publishedAt
-        authorAssociation,
-        html_url: url,
-        user: author {
-          login
-          avatar_url: avatarUrl,
-          html_url: url
-        }
-      }
-
-      query FetchComments(
-        $repo: String!,
-        $owner: String!,
-        $issue_number: Int!,
-        $after: String
-      ) {
-        repository(name: $repo, owner: $owner) {
-          issueOrPullRequest(number: $issue_number) {
-            ...on Issue {
-              comments(first: 100, after: $after) {
-                edges {
-                  node {
-                    ...CommentInfo
-                  }
-                }
-                pageInfo {
-                  endCursor
-                  hasNextPage
-                }
-                totalCount
-              }
-            }
-            ...on PullRequest {
-              comments(first: 100, after: $after) {
-                edges {
-                  node {
-                    ...CommentInfo
-                  }
-                }
-                pageInfo {
-                  endCursor
-                  hasNextPage
-                }
-                totalCount
-              }
-            }
-          }
-        }
-      }`,
-    {
-      owner,
-      repo,
-      issue_number: number
-    });
-
-    const comments = (
-      result.repository.issueOrPullRequest.comments.edges.map(e => e.node)
-    );
+    const comments = await githubCommentsBackend.getIssueComments(issue);
 
     await store.queueUpdate({
       id,
