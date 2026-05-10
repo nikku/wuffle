@@ -44,7 +44,9 @@ export default function GithubComments(webhookEvents, events, store, issueFilter
   });
 
   webhookEvents.on([
-    'issue_comment'
+    'issue_comment.created',
+    'issue_comment.edited',
+    'issue_comment.deleted'
   ], ifEnabled(async ({ payload }) => {
     const {
       action,
