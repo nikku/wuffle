@@ -312,7 +312,7 @@ export default function GithubApp(config, app, logger, injector) {
   /**
    * Get an installation for the given id.
    *
-   * @param {string} id
+   * @param {string|number} id
    *
    * @return {Promise<Installation | undefined>}
    */
