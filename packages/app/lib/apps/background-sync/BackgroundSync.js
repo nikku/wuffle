@@ -32,25 +32,25 @@ export default function BackgroundSync(config, logger, store, events, background
 
   // 30 days
   const syncClosedLookback = (
-    parseInt(process.env.BACKGROUND_SYNC_SYNC_CLOSED_LOOKBACK, 10) ||
+    parseInt(process.env.BACKGROUND_SYNC_SYNC_CLOSED_LOOKBACK || '', 10) ||
     1000 * 60 * 60 * 24 * 30
   );
 
   // 4 hours
   const syncClosedDetailsLookback = (
-    parseInt(process.env.BACKGROUND_SYNC_SYNC_CLOSED_DETAILS_LOOKBACK, 10) ||
+    parseInt(process.env.BACKGROUND_SYNC_SYNC_CLOSED_DETAILS_LOOKBACK || '', 10) ||
     1000 * 60 * 60 * 4
   );
 
   // 1 day
   const syncOpenDetailsLookback = (
-    parseInt(process.env.BACKGROUND_SYNC_SYNC_OPEN_DETAILS_LOOKBACK, 10) ||
+    parseInt(process.env.BACKGROUND_SYNC_SYNC_OPEN_DETAILS_LOOKBACK || '', 10) ||
     1000 * 60 * 60 * 24
   );
 
   // 60 days
   const removeClosedLookback = (
-    parseInt(process.env.BACKGROUND_SYNC_REMOVE_CLOSED_LOOKBACK, 10) ||
+    parseInt(process.env.BACKGROUND_SYNC_REMOVE_CLOSED_LOOKBACK || '', 10) ||
     1000 * 60 * 60 * 24 * 60
   );
 
@@ -428,7 +428,7 @@ We automatically synchronize all repositories you granted us access to via the G
   }
 
   const syncInterval = (
-    parseInt(process.env.BACKGROUND_SYNC_SYNC_INTERVAL, 10) || (
+    parseInt(process.env.BACKGROUND_SYNC_SYNC_INTERVAL || '', 10) || (
       process.env.NODE_ENV !== 'production'
 
         // five minutes

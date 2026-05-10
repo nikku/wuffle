@@ -116,7 +116,7 @@ export function parseSearch(str) {
 
       do {
         lastTerm = stack.pop();
-      } while (!lastTerm.group);
+      } while (lastTerm && !lastTerm.group);
 
       continue;
     }

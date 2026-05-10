@@ -172,7 +172,7 @@ export default async function BoardApiRoutes(
     const items = store.getBoard();
     const cursor = store.getUpdateCursor();
 
-    return filterBoardItems(req, items).then(filteredItems => {
+    filterBoardItems(req, items).then(filteredItems => {
 
       return res.type('json').json({
         items: filteredItems,
@@ -196,7 +196,7 @@ export default async function BoardApiRoutes(
       name
     } = config;
 
-    return res.type('json').json({
+    res.type('json').json({
       columns: columns.map(c => {
         const { name, collapsed } = c;
 
@@ -236,7 +236,9 @@ export default async function BoardApiRoutes(
     const user = authRoutes.getGitHubUser(req);
 
     if (!user) {
-      return res.status(401).json({}) && null;
+      res.status(401).json({});
+
+      return;
     }
 
     const body = JSON.parse(req.body);
@@ -251,13 +253,17 @@ export default async function BoardApiRoutes(
     const issue = await store.getIssueById(id);
 
     if (!issue) {
-      return res.status(404).json({}) && null;
+      res.status(404).json({});
+
+      return;
     }
 
     const column = columns.getByName(columnName);
 
     if (!column) {
-      return res.status(404).json({}) && null;
+      res.status(404).json({});
+
+      return;
     }
 
     const repo = repoAndOwner(issue);
@@ -265,7 +271,9 @@ export default async function BoardApiRoutes(
     const canWrite = await userAccess.canWrite(user, repo);
 
     if (!canWrite) {
-      return res.status(403).json({}) && null;
+      res.status(403).json({});
+
+      return;
     }
 
     const octokit = await githubClient.getUserScoped(user);
@@ -280,15 +288,13 @@ export default async function BoardApiRoutes(
       }
     };
 
-    return (
-      moveIssue(context, issue, column, { before, after }).then(() => {
-        res.type('json').json({});
-      }).catch(err => {
-        log.error(err, 'failed to move issue');
+    moveIssue(context, issue, column, { before, after }).then(() => {
+      res.type('json').json({});
+    }).catch(err => {
+      log.error(err, 'failed to move issue');
 
-        res.status(500).json({ error : true });
-      })
-    ) && null;
+      res.status(500).json({ error : true });
+    });
 
   });
 

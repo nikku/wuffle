@@ -16,6 +16,18 @@ export default function S3() {
     S3_ENDPOINT: endpoint
   } = process.env;
 
+  if (!accessKeyId) {
+    throw new Error('process.env.AWS_ACCESS_KEY_ID required');
+  }
+
+  if (!secretAccessKey) {
+    throw new Error('process.env.AWS_SECRET_ACCESS_KEY required');
+  }
+
+  if (!bucket) {
+    throw new Error('process.env.S3_BUCKET required');
+  }
+
   const s3client = new S3Client({
     region,
     endpoint,

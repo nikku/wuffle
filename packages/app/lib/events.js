@@ -139,8 +139,8 @@ Events.prototype.createEvent = function(data) {
  * @param {Object} [data] the event object
  * @param {...Object} additionalArgs to be passed to the callback functions
  *
- * @return {Promise<boolean>} the events return value, if specified or false if the
- *                            default action was prevented by listeners
+ * @return {Promise<boolean|undefined|any>} the events return value, if
+ *    specified or false if the default action was prevented by listeners
  */
 Events.prototype.emit = async function(type, data, ...additionalArgs) {
 

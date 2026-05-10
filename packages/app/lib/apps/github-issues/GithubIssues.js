@@ -33,7 +33,7 @@ export default function GithubIssues(config, logger, columns) {
    * provided.
    *
    * @param {Object} issue
-   * @param {string} [newAssignee]
+   * @param {string|null} newAssignee
    *
    * @return {{ assignees?: string[] }}
    */
@@ -94,14 +94,18 @@ export default function GithubIssues(config, logger, columns) {
    */
   function getLabelUpdate(issue, newColumn) {
 
-    const issueLabels = issue.labels.map(l => l.name);
+    const issueLabels = /** @type { string[] } */ (
+      issue.labels.map(l => l.name)
+    );
 
     const newLabel = newColumn.label;
 
     const addLabels = (!newLabel || issueLabels.includes(newLabel)) ? [] : [ newLabel ];
 
-    const removeLabels = columns.getAll().map(c => c.label).filter(
-      label => label && label !== newLabel && issueLabels.includes(label)
+    const removeLabels = /** @type { string[] } */ (
+      columns.getAll().map(c => c.label).filter(
+        label => label && label !== newLabel && issueLabels.includes(label)
+      )
     );
 
     return {
@@ -137,14 +141,19 @@ export default function GithubIssues(config, logger, columns) {
    * @param {ProbotContext} context
    * @param {number} number
    * @param {ColumnDefinition} newColumn
-   * @param {string} [newAssignee]
+   * @param {string|null} newAssignee
    * @param {(issue: Object) => boolean} [test]
    *
    * @return {Promise<void|false>}
    */
-  function findAndMoveIssue(context, number, newColumn, newAssignee, test = (issue) => true) {
-    return findIssue(context, number)
-      .then((issue) => issue && test(issue) && moveIssue(context, issue, newColumn, newAssignee));
+  async function findAndMoveIssue(context, number, newColumn, newAssignee, test = (issue) => true) {
+    const issue = await findIssue(context, number);
+
+    if (!issue || !test(issue)) {
+      return false;
+    }
+
+    return moveIssue(context, issue, newColumn, newAssignee);
   }
 
   /**
@@ -156,11 +165,11 @@ export default function GithubIssues(config, logger, columns) {
    * @param {ProbotContext} context
    * @param {Object} issue
    * @param {ColumnDefinition} newColumn
-   * @param {string} [newAssignee]
+   * @param {string|null} [newAssignee=null]
    *
    * @return {Promise<(void|false)[]>}
    */
-  async function moveReferencedIssues(context, issue, newColumn, newAssignee) {
+  async function moveReferencedIssues(context, issue, newColumn, newAssignee = null) {
 
     // TODO(nikku): do that lazily, i.e. react to PR label changes?
     // would slower the movement but support manual moving-issue with PR
@@ -202,11 +211,11 @@ export default function GithubIssues(config, logger, columns) {
    * @param {ProbotContext} context
    * @param {Object} issue
    * @param {ColumnDefinition} newColumn
-   * @param {string} [newAssignee]
+   * @param {string|null} [newAssignee=null]
    *
    * @return {Promise<void>}
    */
-  function moveIssue(context, issue, newColumn, newAssignee) {
+  function moveIssue(context, issue, newColumn, newAssignee = null) {
 
     const {
       number: issue_number
@@ -305,7 +314,7 @@ export default function GithubIssues(config, logger, columns) {
    * @param {ProbotContext} context
    * @param {Object} issue
    * @param {ColumnDefinition} newColumn
-   * @param {string} [newAssignee]
+   * @param {string|null} [newAssignee=null]
    *
    * @return {Promise<(void|false)[]>}
    */
@@ -353,7 +362,7 @@ export default function GithubIssues(config, logger, columns) {
    * @param {ProbotContext} context
    * @param {number} number
    * @param {ColumnDefinition} newColumn
-   * @param {string} [newAssignee]
+   * @param {string|null} newAssignee
    * @param {(issue: Object) => boolean} [test]
    *
    * @return {Promise<void|false>}

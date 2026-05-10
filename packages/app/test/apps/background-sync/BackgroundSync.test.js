@@ -6,6 +6,8 @@ import BackgroundSyncModule from '../../../lib/apps/background-sync/index.js';
 
 /**
  * @typedef { import('../../../lib/store.js').default } Store
+ *
+ * @typedef { import('../../../lib/apps/background-sync/BackgroundSyncBackend.js').default } BackgroundSyncBackend
  */
 
 
@@ -140,15 +142,20 @@ describe('apps/background-sync', function() {
     }
   };
 
+  /**
+   * @param {Object} options
+   * @param {Array} [options.installations]
+   * @param {Array} [options.repositories]
+   * @param {Object} [options.issuesAndPullsByRepo]
+   *
+   * @return { BackgroundSyncBackend }
+   */
   function createBackend({
     installations = [],
     repositories = [],
     issuesAndPullsByRepo = {}
   }) {
 
-    /**
-     * @type { import('../../../lib/apps/background-sync/BackgroundSyncBackend.js').default }
-     */
     return {
 
       getInstallations() {

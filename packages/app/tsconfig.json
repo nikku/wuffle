@@ -8,6 +8,7 @@
     "strict": false,
     "noEmit": true,
     "skipLibCheck": true,
+    "strictNullChecks": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "types": [

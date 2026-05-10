@@ -60,7 +60,7 @@ export default function AuthRoutes(logger, router, securityContext) {
     };
 
     const params = new URLSearchParams();
-    params.append('client_id', process.env.GITHUB_CLIENT_ID);
+    params.append('client_id', /** @type {string} */ (process.env.GITHUB_CLIENT_ID));
     params.append('state', state);
     params.append('redirect_uri', appUrl('/wuffle/login/callback'));
 
@@ -81,10 +81,9 @@ export default function AuthRoutes(logger, router, securityContext) {
 
     log.debug({ session_id }, 'logging out');
 
-    return req.session.destroy(function(err) {
-      return res.redirect(redirectTo);
-    }) && null;
-
+    req.session.destroy(function(err) {
+      res.redirect(redirectTo);
+    });
   });
 
 
@@ -128,8 +127,8 @@ export default function AuthRoutes(logger, router, securityContext) {
     const params = new URLSearchParams();
     params.append('code', /** @type {string} */ (code));
     params.append('state', /** @type {string} */ (state));
-    params.append('client_id', process.env.GITHUB_CLIENT_ID);
-    params.append('client_secret', process.env.GITHUB_CLIENT_SECRET);
+    params.append('client_id', /** @type {string} */ (process.env.GITHUB_CLIENT_ID));
+    params.append('client_secret', /** @type {string} */ (process.env.GITHUB_CLIENT_SECRET));
     params.append('redirect_uri', appUrl('/wuffle/login/callback'));
 
     const {
@@ -185,7 +184,9 @@ export default function AuthRoutes(logger, router, securityContext) {
     } = session;
 
     if (!githubUser) {
-      return res.type('json').json(null) && null;
+      res.type('json').json(null);
+
+      return;
     }
 
     const {
@@ -216,17 +217,18 @@ export default function AuthRoutes(logger, router, securityContext) {
         }, 'failed to check GitHub authentication');
 
         // access is not granted anymore, clear current session
-        return req.session.destroy(function(err) {
-          return res.type('json').json(null);
-        }) && null;
+        req.session.destroy(function(err) {
+          res.type('json').json(null);
+        });
+
+        return;
       }
     }
 
-    return res.type('json').json({
+    res.type('json').json({
       login,
       avatar_url
-    }) && null;
-
+    });
   });
 
 

@@ -103,7 +103,8 @@ function validateSetup() {
 
   const setup = new ManifestCreation();
 
-  const manifest = JSON.parse(setup.getManifest(setup.pkg, process.env.BASE_URL));
+  // TODO(nikku): process.env.BASE_URL may not be defined here
+  const manifest = JSON.parse(setup.getManifest(setup.pkg, /** @type { string } */ (process.env.BASE_URL)));
 
   return [
     !manifest.url && new Error('No <url> configured in app.yml'),

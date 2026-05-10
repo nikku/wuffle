@@ -37,7 +37,7 @@ export default function Search(config, logger, store) {
 
   const {
     treatBotsAsReviewers = false,
-    defaultFilter
+    defaultFilter = ''
   } = config;
 
   function filterNoop(issue) {
@@ -63,13 +63,17 @@ export default function Search(config, logger, store) {
    *
    * @return { boolean }
    */
-  function includes(actual, pattern, exact) {
+  function includes(actual, pattern, exact = false) {
 
-    if (exact) {
-      return pattern && actual === pattern;
+    if (!pattern) {
+      return false;
     }
 
-    return pattern && actual.toLowerCase().includes(pattern.toLowerCase());
+    if (exact) {
+      return actual === pattern;
+    }
+
+    return actual.toLowerCase().includes(pattern.toLowerCase());
   }
 
   function isPull(issue) {
@@ -445,7 +449,7 @@ export default function Search(config, logger, store) {
    * Retrieve a filter function from the given search string.
    *
    * @param {string} search
-   * @param {GitHubUser} [user]
+   * @param {GitHubUser|null} [user]
    *
    * @return {FilterFn}
    */
