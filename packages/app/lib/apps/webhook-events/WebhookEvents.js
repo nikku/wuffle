@@ -1,4 +1,11 @@
 /**
+ * @typedef { import('probot').Probot } Probot
+ * @typedef { import('@octokit/webhooks').EmitterWebhookEventName } WebhookEventName
+ */
+
+/**
+ * A lightweight wrapper around {@link Probot#on} and {@link Probot#onAny}.
+ *
  * @constructor
  *
  * @param {import('../../types.js').ProbotApp} app
@@ -7,8 +14,7 @@
 export default function WebhookEvents(app, githubApp) {
 
   /**
-   * @template {Function} T
-   * @param {T} fn
+   * @param {(context: import('probot').Context) => any} fn
    */
   function ifEnabled(fn) {
 
@@ -37,8 +43,9 @@ export default function WebhookEvents(app, githubApp) {
    * Register a event lister for a single
    * or a number of webhook events.
    *
-   * @param {any|any[]} events
-   * @param {Function} fn listener
+   * @template {WebhookEventName} E
+   * @param {E | E[]} events
+   * @param {(context: import('probot').Context<E>) => any} fn listener
    */
   function on(events, fn) {
     app.on(events, ifEnabled(fn));
@@ -48,7 +55,7 @@ export default function WebhookEvents(app, githubApp) {
    * Register an event listener for all
    * webhook events.
    *
-   * @param {Function} fn
+   * @param {(context: import('probot').Context) => any} fn
    */
   function onAny(fn) {
     app.onAny(ifEnabled(fn));
