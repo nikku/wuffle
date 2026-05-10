@@ -31,14 +31,13 @@ export default function(webhookEvents, githubIssues, columns, issueFilter, logge
     'pull_request.closed'
   ], ifEnabled(async (context) => {
 
-    const {
-      pull_request,
-      issue
-    } = context.payload;
-
     const column = columns.getByState(DONE);
 
-    await githubIssues.moveIssue(context, issue || pull_request, column);
+    const issueOrPull = 'issue' in context.payload
+      ? context.payload.issue
+      : context.payload.pull_request;
+
+    await githubIssues.moveIssue(context, issueOrPull, column);
   }));
 
   webhookEvents.on('pull_request.converted_to_draft', ifEnabled(async (context) => {
@@ -107,7 +106,7 @@ export default function(webhookEvents, githubIssues, columns, issueFilter, logge
     const newAssignee = (
       process.env.AUTO_ASSIGN_PULLS && !external &&
       author && author.type === 'User' && author.login
-    );
+    ) || null;
 
     await Promise.all([
       githubIssues.moveIssue(context, pull_request, column, newAssignee),

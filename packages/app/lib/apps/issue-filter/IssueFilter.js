@@ -1,5 +1,7 @@
 /**
  * @typedef { { ignoreFilter?: string } } StoreFilterConfig
+ *
+ * @typedef { Extract<import('@octokit/webhooks').EmitterWebhookEventName, 'issues' | `issues.${string}` | 'issue_comment' | `issue_comment.${string}` | 'pull_request' | `pull_request.${string}` | 'pull_request_review' | `pull_request_review.${string}` | 'pull_request_review_comment' | `pull_request_review_comment.${string}` | 'pull_request_review_thread' | `pull_request_review_thread.${string}`> } IssueOrPullWebhookEventName
  */
 
 import { filterIssueOrPull } from '../../filters.js';
@@ -41,7 +43,7 @@ export default function IssueFilter(config, store, search, logger) {
   /**
    * @param {import('../../types.js').Logger } log
    *
-   * @return { (filterFn) => (any) => any }
+   * @return {<E extends IssueOrPullWebhookEventName>(fn: (context: import('probot').Context<E>) => any) => (context: import('probot').Context<E>) => any}
    */
   function createWebhookFilter(log) {
 
@@ -49,7 +51,7 @@ export default function IssueFilter(config, store, search, logger) {
 
       return (context) => {
 
-        const payload = context.payload;
+        const payload = /** @type {any} */ (context.payload);
 
         const issueOrPull = filterIssueOrPull(
           payload.issue || payload.pull_request,
@@ -79,7 +81,7 @@ export default function IssueFilter(config, store, search, logger) {
   /**
    * @param {import('../../types.js').Logger } log
    *
-   * @return { (filterFn) => (any) => any }
+   * @return {<E extends IssueOrPullWebhookEventName>(fn: (context: import('probot').Context<E>) => any) => (context: import('probot').Context<E>) => any}
    */
   this.createWebhookFilter = createWebhookFilter;
 }
