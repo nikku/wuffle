@@ -4,8 +4,17 @@ const {
   CLOSES
 } = linkTypes;
 
+/**
+ * @typedef { import('probot').Context } ProbotContext
+ *
+ * @typedef { import('../../columns.js').ColumnDefinition } ColumnDefinition
+ */
 
 /**
+ * Moves GitHub issues between board columns by applying the
+ * corresponding state (open/closed), label, and assignee changes
+ * via the GitHub API.
+ *
  * @constructor
  *
  * @param {any} config
@@ -18,6 +27,16 @@ export default function GithubIssues(config, logger, columns) {
     name: 'wuffle:github-issues'
   });
 
+  /**
+   * Return the assignee update required to add `newAssignee` to the
+   * issue, or an empty object if the assignee is already set or not
+   * provided.
+   *
+   * @param {Object} issue
+   * @param {string} [newAssignee]
+   *
+   * @return {{ assignees?: string[] }}
+   */
   function getAssigneeUpdate(issue, newAssignee) {
 
     if (!newAssignee) {
@@ -39,6 +58,15 @@ export default function GithubIssues(config, logger, columns) {
 
   }
 
+  /**
+   * Return the state update (`open` / `closed`) required to reflect
+   * the new column, or an empty object if no change is needed.
+   *
+   * @param {Object} issue
+   * @param {ColumnDefinition} newColumn
+   *
+   * @return {{ state?: 'open'|'closed' }}
+   */
   function getStateUpdate(issue, newColumn) {
 
     let update = {};
@@ -55,6 +83,15 @@ export default function GithubIssues(config, logger, columns) {
     return update;
   }
 
+  /**
+   * Return the label changes required to reflect the new column:
+   * the column label to add and any other column labels to remove.
+   *
+   * @param {Object} issue
+   * @param {ColumnDefinition} newColumn
+   *
+   * @return {{ addLabels: string[], removeLabels: string[] }}
+   */
   function getLabelUpdate(issue, newColumn) {
 
     const issueLabels = issue.labels.map(l => l.name);
@@ -73,6 +110,10 @@ export default function GithubIssues(config, logger, columns) {
     };
   }
 
+  /**
+   * @param {ProbotContext} context
+   * @param {number} issue_number
+   */
   function findIssue(context, issue_number) {
 
     const params = context.repo({ issue_number });
@@ -88,11 +129,37 @@ export default function GithubIssues(config, logger, columns) {
       });
   }
 
+  /**
+   * Fetch an issue by number and move it to a new column if the
+   * optional predicate passes. Resolves to `false` if the issue is
+   * not found or the predicate rejects it.
+   *
+   * @param {ProbotContext} context
+   * @param {number} number
+   * @param {ColumnDefinition} newColumn
+   * @param {string} [newAssignee]
+   * @param {(issue: Object) => boolean} [test]
+   *
+   * @return {Promise<void|false>}
+   */
   function findAndMoveIssue(context, number, newColumn, newAssignee, test = (issue) => true) {
     return findIssue(context, number)
       .then((issue) => issue && test(issue) && moveIssue(context, issue, newColumn, newAssignee));
   }
 
+  /**
+   * Move all issues referenced via `closes` links in the given issue
+   * or pull request body to a new column.
+   *
+   * Only issues within the same repository are moved.
+   *
+   * @param {ProbotContext} context
+   * @param {Object} issue
+   * @param {ColumnDefinition} newColumn
+   * @param {string} [newAssignee]
+   *
+   * @return {Promise<(void|false)[]>}
+   */
   async function moveReferencedIssues(context, issue, newColumn, newAssignee) {
 
     // TODO(nikku): do that lazily, i.e. react to PR label changes?
@@ -128,6 +195,17 @@ export default function GithubIssues(config, logger, columns) {
     }));
   }
 
+  /**
+   * Move an issue to a new column, applying state, label, and
+   * assignee updates via the GitHub API.
+   *
+   * @param {ProbotContext} context
+   * @param {Object} issue
+   * @param {ColumnDefinition} newColumn
+   * @param {string} [newAssignee]
+   *
+   * @return {Promise<void>}
+   */
   function moveIssue(context, issue, newColumn, newAssignee) {
 
     const {
@@ -199,22 +277,87 @@ export default function GithubIssues(config, logger, columns) {
       );
     }
 
-    return Promise.all(invocations);
+    return Promise.all(invocations).then(() => {});
   }
 
 
   // api /////////////////////////////
 
+  /**
+   * Move an issue to a new column, applying state, label, and
+   * assignee updates via the GitHub API.
+   *
+   * @param {ProbotContext} context
+   * @param {Object} issue
+   * @param {ColumnDefinition} newColumn
+   * @param {string} [newAssignee]
+   *
+   * @return {Promise<void>}
+   */
   this.moveIssue = moveIssue;
 
+  /**
+   * Move all issues referenced via `closes` links in the given issue
+   * or pull request body to a new column.
+   *
+   * Only issues within the same repository are moved.
+   *
+   * @param {ProbotContext} context
+   * @param {Object} issue
+   * @param {ColumnDefinition} newColumn
+   * @param {string} [newAssignee]
+   *
+   * @return {Promise<(void|false)[]>}
+   */
   this.moveReferencedIssues = moveReferencedIssues;
 
+  /**
+   * Return the state update (`open` / `closed`) required to reflect
+   * the new column, or an empty object if no change is needed.
+   *
+   * @param {Object} issue
+   * @param {ColumnDefinition} newColumn
+   *
+   * @return {{ state?: 'open'|'closed' }}
+   */
   this.getStateUpdate = getStateUpdate;
 
+  /**
+   * Return the assignee update required to add `newAssignee` to the
+   * issue, or an empty object if the assignee is already set or not
+   * provided.
+   *
+   * @param {Object} issue
+   * @param {string} [newAssignee]
+   *
+   * @return {{ assignees?: string[] }}
+   */
   this.getAssigneeUpdate = getAssigneeUpdate;
 
+  /**
+   * Return the label changes required to reflect the new column:
+   * the column label to add and any other column labels to remove.
+   *
+   * @param {Object} issue
+   * @param {ColumnDefinition} newColumn
+   *
+   * @return {{ addLabels: string[], removeLabels: string[] }}
+   */
   this.getLabelUpdate = getLabelUpdate;
 
+  /**
+   * Fetch an issue by number and move it to a new column if the
+   * optional predicate passes. Resolves to `false` if the issue is
+   * not found or the predicate rejects it.
+   *
+   * @param {ProbotContext} context
+   * @param {number} number
+   * @param {ColumnDefinition} newColumn
+   * @param {string} [newAssignee]
+   * @param {(issue: Object) => boolean} [test]
+   *
+   * @return {Promise<void|false>}
+   */
   this.findAndMoveIssue = findAndMoveIssue;
 
 }
