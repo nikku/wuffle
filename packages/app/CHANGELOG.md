@@ -6,6 +6,11 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 _**Note:** Yet to be released changes appear here._
 
+## 0.75.0
+
+* `FEAT`: synchronize standard fields for comment authors
+* `CHORE`: various internal typing and documentation improvements
+
 ## 0.74.0
 
 * `FEAT`: synchronize data on `pull_request.milestoned` and `pull_request.demilestoned`
