@@ -9,7 +9,14 @@
     "noEmit": true,
     "skipLibCheck": true,
     "resolveJsonModule": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "types": [
+      "compression",
+      "express-session",
+      "mocha",
+      "sinon",
+      "mocha"
+    ]
   },
   "include": [
     "lib",
