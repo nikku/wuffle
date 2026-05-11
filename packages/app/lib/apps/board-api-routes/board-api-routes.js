@@ -172,19 +172,19 @@ export default async function BoardApiRoutes(
     const items = store.getBoard();
     const cursor = store.getUpdateCursor();
 
-    filterBoardItems(req, items).then(filteredItems => {
+    return filterBoardItems(req, items).then(filteredItems => {
 
-      return res.type('json').json({
+      res.type('json').json({
         items: filteredItems,
         cursor
-      }) && null;
+      });
     }).catch(err => {
       log.error({
         err,
         cursor
       }, 'failed to retrieve cards');
 
-      return res.status(500).json({ error : true }) && null;
+      res.status(500).json({ error : true });
     });
   });
 
@@ -206,7 +206,7 @@ export default async function BoardApiRoutes(
         };
       }),
       name: name || 'Wuffle Board'
-    }) && null;
+    });
 
   });
 
@@ -216,18 +216,16 @@ export default async function BoardApiRoutes(
 
     const updates = cursor ? store.getUpdates(cursor) : [];
 
-    return (
-      filterUpdates(req, updates).then(filteredUpdates => {
-        res.type('json').json(filteredUpdates);
-      }).catch(err => {
-        log.error({
-          err,
-          cursor
-        }, 'failed to retrieve card updates');
+    return filterUpdates(req, updates).then(filteredUpdates => {
+      res.type('json').json(filteredUpdates);
+    }).catch(err => {
+      log.error({
+        err,
+        cursor
+      }, 'failed to retrieve card updates');
 
-        res.status(500).json({ error : true });
-      })
-    );
+      res.status(500).json({ error : true });
+    });
   });
 
 
@@ -288,7 +286,7 @@ export default async function BoardApiRoutes(
       }
     };
 
-    moveIssue(context, issue, column, { before, after }).then(() => {
+    return moveIssue(context, issue, column, { before, after }).then(() => {
       res.type('json').json({});
     }).catch(err => {
       log.error(err, 'failed to move issue');
