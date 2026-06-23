@@ -924,6 +924,48 @@ describe('apps/events-sync', function() {
       });
     });
 
+
+    it('sub_issues.sub_issue_added', async function() {
+
+      // when
+      await webhookEvents.emit(
+        event('16-sub_issues.sub_issue_added')
+      );
+
+      // then
+      expectIssue(store, {
+        key: 'nikku/testtest#131',
+        number: 131,
+        title: 'Sub issue',
+        repository: {
+          name: 'testtest'
+        },
+        pull_request: false,
+        state: 'open',
+        parent_issue_url: 'https://api.github.com/repos/nikku/testtest/issues/130'
+      });
+    });
+
+
+    it('sub_issues.sub_issue_removed', async function() {
+
+      // given
+      await webhookEvents.emit(
+        event('16-sub_issues.sub_issue_added')
+      );
+
+      // when
+      await webhookEvents.emit(
+        event('17-sub_issues.sub_issue_removed')
+      );
+
+      // then
+      expectIssue(store, {
+        key: 'nikku/testtest#131',
+        parent_issue_url: null
+      });
+    });
+
   });
 
 });

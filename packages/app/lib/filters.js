@@ -214,7 +214,8 @@ export function filterIssue(githubIssue, githubRepository) {
     milestone,
     pull_request,
     html_url,
-    author_association
+    author_association,
+    parent_issue_url
   } = githubIssue;
 
   // stable ID that is independent from GitHubs internal issue/pr distinction
@@ -245,7 +246,8 @@ export function filterIssue(githubIssue, githubRepository) {
     repository: filterRepository(githubRepository),
     pull_request: !!pull_request,
     html_url,
-    author_association
+    author_association,
+    parent_issue_url: parent_issue_url || null
   };
 
 }

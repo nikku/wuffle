@@ -145,6 +145,22 @@ export function findLinks(issue, types) {
     links.push(link);
   }
 
+  // add CHILD_OF link from parent_issue_url (GitHub sub-issues)
+  const { parent_issue_url } = issue;
+
+  if (parent_issue_url) {
+    const parentMatch = parent_issue_url.match(/\/repos\/([^/]+)\/([^/]+)\/issues\/(\d+)/);
+
+    if (parentMatch) {
+      links.push({
+        type: CHILD_OF,
+        owner: parentMatch[1],
+        repo: parentMatch[2],
+        number: parseInt(parentMatch[3], 10)
+      });
+    }
+  }
+
   if (typeof types !== 'undefined') {
     return filterLinks(links, types);
   }
