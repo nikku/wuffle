@@ -6,6 +6,16 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 _**Note:** Yet to be released changes appear here._
 
+## 0.76.0
+
+* `FEAT`: support GitHub sub-issues ([#313](https://github.com/nikku/wuffle/pull/313))
+* `FEAT`: validate GitHub application on startup ([#313](https://github.com/nikku/wuffle/pull/313))
+* `DEPS`: update to `body-parser@2.3.0`
+
+### Breaking Changes
+
+* Application requires `sub_issues` events for full synchronization to work
+
 ## 0.75.0
 
 * `FEAT`: synchronize standard fields for comment authors
