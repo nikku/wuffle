@@ -227,12 +227,29 @@ export default function EventsSync(webhookEvents, store, logger) {
   });
 
 
-  // issues ///////////////////////////////
+  // sub-issues /////////////////////
+
+
+  // https://docs.github.com/en/webhooks/webhook-events-and-payloads#sub_issues
+  //
+  // update sub-issues on change - updating parent <> child relationship
+  webhookEvents.on(
+    /** @type {any} */ ([ 'sub_issues.sub_issue_added', 'sub_issues.sub_issue_removed' ]),
+    async ({ payload }) => {
+
+      const {
+        sub_issue,
+        repository
+      } = /** @type {any} */ (payload);
+
+      return store.updateIssue(filterIssue(sub_issue, repository));
+    }
+  );
+
 
   // https://docs.github.com/en/free-pro-team@latest/developers/webhooks-and-events/webhook-events-and-payloads#issues
-
-  // issue transfer is mapped to the following GitHub events
   //
+  // issue transfer is mapped to the following GitHub events:
   // -> issues.opened (new issue is being opened by GitHub)
   // -> issues.transferred (old issue was deleted by GitHub)
   //

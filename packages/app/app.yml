@@ -46,6 +46,7 @@ default_events:
 # - team
 # - team_add
 # - watch
+- sub_issues
 
 # The set of permissions needed by the GitHub App. The format of the object uses
 # the permission name for the key (for example, issues) and the access type for

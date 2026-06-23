@@ -482,40 +482,106 @@ describe('store', function() {
     };
 
 
-    it('should establish', async function() {
+    describe('should establish', function() {
 
-      // given
-      const store = createStore();
+      it('basic', async function() {
 
-      const issue_1 = await store.updateIssue(createIssue({
-        repository
-      }));
+        // given
+        const store = createStore();
 
-      const issue_2 = await store.updateIssue(createIssue({
-        repository: otherRepository
-      }));
+        const issue_1 = await store.updateIssue(createIssue({
+          repository
+        }));
 
-      // when
-      const issue = await store.updateIssue(createIssue({
-        title: `Closes #${issue_1.number}`,
-        repository,
-        body: `
-          Depends on ${issue_2.repository.owner.login}/${issue_2.repository.name}#${issue_2.number}
-        `
-      }));
+        const issue_2 = await store.updateIssue(createIssue({
+          repository: otherRepository
+        }));
 
-      // then
-      const updates = store.updates.getSince();
+        // when
+        const issue = await store.updateIssue(createIssue({
+          title: `Closes #${issue_1.number}`,
+          repository,
+          body: `
+            Depends on ${issue_2.repository.owner.login}/${issue_2.repository.name}#${issue_2.number}
+          `
+        }));
 
-      expect(updates).to.have.length(3);
+        // then
+        const updates = store.updates.getSince();
 
-      const issue_links = store.getIssueLinks(issue);
+        expect(updates).to.have.length(3);
 
-      expect(issue_links).to.have.length(2);
+        const issue_links = store.getIssueLinks(issue);
 
-      const issue_1_links = store.getIssueLinks(issue_1);
+        expect(issue_links).to.have.length(2);
 
-      expect(issue_1_links).to.have.length(1);
+        const issue_1_links = store.getIssueLinks(issue_1);
+
+        expect(issue_1_links).to.have.length(1);
+      });
+
+
+      it('CHILD_OF from parent_issue_url', async function() {
+
+        // given
+        const store = createStore();
+
+        const parentIssue = await store.updateIssue(createIssue({ repository }));
+
+        // when
+        const childIssue = await store.updateIssue(createIssue({
+          repository,
+          parent_issue_url: `https://api.github.com/repos/${repository.owner.login}/${repository.name}/issues/${parentIssue.number}`
+        }));
+
+        // then
+        const parentLinks = store.getIssueLinks(parentIssue);
+
+        expect(parentLinks).to.have.length(1);
+        expect(parentLinks[0].type).to.eql('PARENT_OF');
+        expect(parentLinks[0].target.id).to.eql(childIssue.id);
+
+        const childLinks = store.getIssueLinks(childIssue);
+
+        expect(childLinks).to.have.length(1);
+        expect(childLinks[0].type).to.eql('CHILD_OF');
+        expect(childLinks[0].target.id).to.eql(parentIssue.id);
+      });
+
+
+      it('deduplicating PARENT_OF / CHILD_OF', async function() {
+
+        // given
+        const store = createStore();
+
+        const childIssue = await store.updateIssue(createIssue({ repository }));
+
+        // parent references child both via task list body AND GitHub sub-issue
+        const parentIssue = await store.updateIssue(createIssue({
+          repository,
+          body: `* [ ] #${childIssue.number}`
+        }));
+
+        // when
+        await store.updateIssue({
+          ...childIssue,
+          parent_issue_url: `https://api.github.com/repos/${repository.owner.login}/${repository.name}/issues/${parentIssue.number}`
+        });
+
+        // then
+        // only one PARENT_OF link, not two
+        const parentLinks = store.getIssueLinks(parentIssue);
+
+        expect(parentLinks).to.have.length(1);
+        expect(parentLinks[0].type).to.eql('PARENT_OF');
+
+        // only one CHILD_OF link, not two
+        const childLinks = store.getIssueLinks(childIssue);
+
+        expect(childLinks).to.have.length(1);
+        expect(childLinks[0].type).to.eql('CHILD_OF');
+      });
+
     });
 
 

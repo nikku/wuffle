@@ -53,5 +53,6 @@
   },
   "pull_request": true,
   "html_url": "https://github.com/nikku/testtest/pull/75",
-  "author_association": "OWNER"
+  "author_association": "OWNER",
+  "parent_issue_url": null
 }

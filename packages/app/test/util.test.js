@@ -619,6 +619,32 @@ describe('util', function() {
     });
 
 
+    it('should recognize sub-issues via parent_issue_url', function() {
+
+      // given
+      const issue = createIssue(
+        'FOO',
+        null,
+        {
+          parent_issue_url: 'https://api.github.com/repos/foo/bar/issues/42'
+        }
+      );
+
+      // when
+      const links = findLinks(issue);
+
+      // then
+      expect(links).to.eql([
+        {
+          type: CHILD_OF,
+          owner: 'foo',
+          repo: 'bar',
+          number: 42
+        }
+      ]);
+    });
+
+
     it('should recognize task lists', function() {
 
       // given
@@ -1284,11 +1310,12 @@ describe('util', function() {
 // helpers /////////////////////////
 
 
-function createIssue(title, body) {
+function createIssue(title, body, extraFields = {}) {
 
   return {
     title,
-    body
+    body,
+    ...extraFields
   };
 
 }
