@@ -19,11 +19,13 @@ const RequiredEvents = [
   'issues',
   'issue_comment',
   'label',
+  'member',
   'milestone',
   'pull_request',
   'pull_request_review',
   'repository',
-  'status'
+  'status',
+  'sub_issues'
 ];
 
 /**
@@ -41,8 +43,9 @@ const RequiredEvents = [
  * @param {import('../../types.js').ProbotApp} app
  * @param {import('../../types.js').Logger} logger
  * @param {import('../../types.js').Injector} injector
+ * @param {import('../../events.js').default} events
  */
-export default function GithubApp(config, app, logger, injector) {
+export default function GithubApp(config, app, logger, injector, events) {
 
   const log = logger.child({
     name: 'wuffle:github-app'
@@ -265,6 +268,31 @@ export default function GithubApp(config, app, logger, injector) {
 
     log.debug('validated installations');
   }
+
+  async function validateApp() {
+    const octokit = await getAppScopedClient();
+    const { data: app } = await octokit.rest.apps.getAuthenticated();
+
+    // app may not be configured yet
+    if (!app) {
+      return;
+    }
+
+    const missingEvents = RequiredEvents.filter(
+      event => !app.events.includes(event)
+    );
+
+    if (missingEvents.length) {
+      log.error({
+        missingEvents,
+        events: app.events
+      }, 'app is missing required event subscriptions; update app settings on GitHub');
+    }
+  }
+
+  events.once('wuffle.start', async function() {
+    await validateApp().catch(err => log.warn({ err }, 'failed to validate app configuration'));
+  });
 
   /**
    * Fetch active installations.
