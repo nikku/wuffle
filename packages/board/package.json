@@ -4,7 +4,7 @@
   "private": true,
   "devDependencies": {
     "@bpmn-io/draggle": "^4.1.2",
-    "@rollup/plugin-commonjs": "^29.0.2",
+    "@rollup/plugin-commonjs": "^29.0.3",
     "@rollup/plugin-node-resolve": "^16.0.3",
     "@rollup/plugin-terser": "^1.0.0",
     "@rollup/plugin-url": "^8.0.2",
@@ -14,7 +14,7 @@
     "npm-run-all2": "^9.0.2",
     "octicons": "^8.5.0",
     "postcss": "^8.5.12",
-    "rollup": "^4.60.2",
+    "rollup": "^4.62.2",
     "rollup-plugin-copy": "^3.5.0",
     "rollup-plugin-css-only": "^4.5.5",
     "rollup-plugin-string": "^3.0.0",
