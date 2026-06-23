@@ -11,7 +11,7 @@
     "bootstrap": "^4.6.1",
     "eslint-plugin-svelte": "^3.17.1",
     "min-dash": "^5.0.0",
-    "npm-run-all2": "^9.0.0",
+    "npm-run-all2": "^9.0.2",
     "octicons": "^8.5.0",
     "postcss": "^8.5.12",
     "rollup": "^4.60.2",
