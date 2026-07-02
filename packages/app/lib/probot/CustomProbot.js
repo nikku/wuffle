@@ -31,7 +31,7 @@ import { randomString } from '../util/index.js';
  *
  * @return { Promise<void> }
  */
-async function run(appFn, additionalOptions) {
+export async function run(appFn, additionalOptions) {
 
   const env = additionalOptions?.env || process.env;
 
@@ -117,15 +117,15 @@ function withExpressRouter(appFn, env) {
   };
 }
 
-function isProduction(env = process.env) {
+export function isProduction(env = process.env) {
   return env.NODE_ENV === 'production';
 }
 
-function isSetup(env = process.env) {
+export function isSetup(env = process.env) {
   return !!(env.APP_ID && (env.PRIVATE_KEY || env.PRIVATE_KEY_PATH));
 }
 
-function validateSetup() {
+export function validateSetup() {
 
   const pkg = JSON.parse(
     fs.readFileSync(new URL('../../package.json', import.meta.url), 'utf8')
@@ -187,10 +187,3 @@ function updateEnv(env) {
 
   return env;
 }
-
-export {
-  run,
-  isSetup,
-  isProduction,
-  validateSetup
-};
