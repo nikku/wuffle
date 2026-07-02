@@ -297,10 +297,10 @@ export default function UserAccess(
   ], function(context) {
 
     const {
-      member: {
-        login
-      }
+      member
     } = context.payload;
+
+    const login = member?.login;
 
     cache.invalidate(`login=${login}:installations`);
     cache.invalidate(`login=${login}:installation_repositories=*`);
