@@ -9,7 +9,7 @@ import * as CustomProbot from '../lib/probot/index.js';
 import fs from 'node:fs';
 import path from 'node:path';
 
-import { getLog } from 'probot/lib/helpers/get-log.js';
+import { getLog } from '../lib/log.js';
 
 import {
   getPackageVersion,
@@ -24,7 +24,7 @@ const IS_PROD = CustomProbot.isProduction();
 
 const IS_SETUP = !IS_PROD && !CustomProbot.isSetup();
 
-const log = getLog().child({
+const log = (await getLog()).child({
   name: 'wuffle:run'
 });
 
@@ -248,13 +248,7 @@ async function start() {
 
   const { default: app } = await import('../index.js');
 
-  const {
-    expressApp
-  } = await CustomProbot.run(app);
-
-  if (process.env.TRUST_PROXY) {
-    expressApp.set('trust proxy', true);
-  }
+  await CustomProbot.run(app);
 }
 
 async function open() {
