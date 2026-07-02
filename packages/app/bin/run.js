@@ -29,11 +29,12 @@ const IS_PROD = isProduction();
 
 const IS_SETUP = !IS_PROD && !isSetup();
 
-const log = (await getLog()).child({
-  name: 'wuffle:run'
-});
-
-async function validate() {
+/**
+ * @param {import('pino').Logger} log
+ *
+ * @return { false | Error[] }
+ */
+async function validate(log) {
 
   log.info('Validating configuration');
 
@@ -214,7 +215,10 @@ async function validate() {
   }
 }
 
-async function performSetup() {
+/**
+ * @param { import('pino').Logger } log
+ */
+async function performSetup(log) {
 
   log.warn('Running first time setup');
 
@@ -256,7 +260,10 @@ async function start() {
   await probotRun(app);
 }
 
-async function open() {
+/**
+ * @param { import('pino').Logger } log
+ */
+async function open(log) {
 
   const url = process.env.BASE_URL || 'http://localhost:3000';
 
@@ -268,25 +275,45 @@ async function open() {
   }
 }
 
-async function run() {
+/**
+ * @param { import('pino').Logger } log
+ */
+async function run(log) {
 
   log.info(`Running Wuffle v${version} in ${process.cwd()}`);
 
-  if (IS_SETUP) {
-    await performSetup();
-  }
+  try {
+    if (IS_SETUP) {
+      await performSetup(log);
+    }
 
-  await validate();
-  await start();
-  await open();
+    await validate(log);
+    await start(log);
+    await open(log);
+
+  } catch (err) {
+    log.error(err);
+
+    process.exit(1);
+  }
 }
 
 function projectPath(file) {
   return relativePath(file, import.meta.url);
 }
 
-run().catch(err => {
-  log.error(err);
+async function createLog() {
 
-  process.exit(1);
+  const rootLog = await getLog();
+
+  return rootLog.child({
+    name: 'wuffle:run'
+  });
+}
+
+
+createLog().then(run).catch(err => {
+  console.error(err);
+
+  process.exit(2);
 });
