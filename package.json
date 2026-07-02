@@ -31,7 +31,8 @@
     "npm": ">= 11"
   },
   "workspaces": [
-    "packages/*"
+    "packages/board",
+    "packages/app"
   ],
   "allowScripts": {
     "svelte-preprocess": false,
