@@ -38,12 +38,16 @@ import Columns from './columns.js';
 
 
 /**
- *
- * @param {import('./types.js').ProbotApp} app
- *
- * @return {Promise<any>}
+ * @typedef { { router: import('express').Router } } WuffleOptions
  */
-export default function Wuffle(app, { getRouter }) {
+
+/**
+ * @param { import('./types.js').ProbotApp } app
+ * @param { WuffleOptions } options
+ *
+ * @return { Promise<any> }
+ */
+export default function Wuffle(app, { router }) {
 
   const logger = app.log;
 
@@ -55,8 +59,6 @@ export default function Wuffle(app, { getRouter }) {
   async function setup() {
 
     // intialize ///////////////////
-
-    const router = getRouter();
 
     const config = await loadConfig(log);
 
