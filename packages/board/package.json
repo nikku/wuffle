@@ -27,6 +27,7 @@
     "node": ">= 24"
   },
   "scripts": {
+    "all": "run-s lint test build",
     "test": "echo \"no tests\"",
     "lint": "eslint .",
     "build": "run-p build:*:prod",
