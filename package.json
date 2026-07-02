@@ -30,5 +30,8 @@
   },
   "workspaces": [
     "packages/*"
-  ]
+  ],
+  "allowScripts": {
+    "svelte-preprocess": false
+  }
 }
