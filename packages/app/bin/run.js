@@ -4,7 +4,12 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-import * as CustomProbot from '../lib/probot/index.js';
+import {
+  run as probotRun,
+  isProduction,
+  isSetup,
+  validateSetup
+} from '../lib/probot/index.js';
 
 import fs from 'node:fs';
 import path from 'node:path';
@@ -20,9 +25,9 @@ import Columns from '../lib/columns.js';
 
 const version = getPackageVersion();
 
-const IS_PROD = CustomProbot.isProduction();
+const IS_PROD = isProduction();
 
-const IS_SETUP = !IS_PROD && !CustomProbot.isSetup();
+const IS_SETUP = !IS_PROD && !isSetup();
 
 const log = (await getLog()).child({
   name: 'wuffle:run'
@@ -231,7 +236,7 @@ async function performSetup() {
 
   log.info('Validating setup');
 
-  const errors = CustomProbot.validateSetup();
+  const errors = validateSetup();
 
   if (errors.length) {
     for (const error of errors) {
@@ -248,7 +253,7 @@ async function start() {
 
   const { default: app } = await import('../index.js');
 
-  await CustomProbot.run(app);
+  await probotRun(app);
 }
 
 async function open() {
