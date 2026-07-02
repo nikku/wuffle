@@ -20,7 +20,7 @@
   },
   "devDependencies": {
     "eslint": "^9.39.4",
-    "eslint-plugin-bpmn-io": "^2.2.0",
+    "eslint-plugin-bpmn-io": "^2.3.1",
     "lerna": "^9.0.7",
     "npm-run-all2": "^9.0.0"
   },
@@ -32,6 +32,7 @@
     "packages/*"
   ],
   "allowScripts": {
-    "svelte-preprocess": false
+    "svelte-preprocess": false,
+    "unrs-resolver@1.12.2": true
   }
 }
