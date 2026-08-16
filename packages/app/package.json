@@ -73,7 +73,7 @@
     "mocha": "^11.7.6",
     "nock": "^14.0.16",
     "nodemon": "^3.1.14",
-    "npm-run-all2": "^9.0.2",
+    "npm-run-all2": "^9.0.3",
     "sinon": "^22.0.0",
     "sinon-chai": "^4.0.0",
     "typescript": "^5.9.3"
