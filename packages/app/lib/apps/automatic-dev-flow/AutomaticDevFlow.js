@@ -330,5 +330,6 @@ function isExternal(pull_request) {
     head
   } = pull_request;
 
-  return base.repo.id !== head.repo.id;
+  // head repo may be missing (deleted fork)
+  return !head.repo || base.repo.id !== head.repo.id;
 }

@@ -689,6 +689,25 @@ describe('apps/automatic-dev-flow', function() {
     });
 
 
+    it('pull_request.labeled (external, deleted fork)', async function() {
+
+      // given
+      // head repo is gone (deleted fork)
+      const testPr = pullRequest({ id: 1, head: { repo: null } });
+
+      givenReviews([
+        review({ login: 'reviewer-a', state: 'CHANGES_REQUESTED' })
+      ]);
+
+      // when
+      // then
+      // does not throw, no re-request
+      await emitLabeled(testPr);
+
+      expect(octokit.rest.pulls.requestReviewers).to.not.have.been.called;
+    });
+
+
     it('pull_request.labeled (disabled by default)', async function() {
 
       // given
