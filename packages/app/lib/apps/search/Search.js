@@ -233,6 +233,26 @@ export default function Search(config, logger, store) {
       };
     },
 
+    /**
+     * Match pull requests by commit status, given as `<context>`
+     * or `<context>=<state>`, e.g. `license/cla=pending`.
+     *
+     * Without a state, a status in any state matches.
+     */
+    status: function statusFilter(value, exact) {
+
+      const [ context, state ] = value.split('=');
+
+      return function filterStatus(issue) {
+
+        const { statuses } = issue;
+
+        return (statuses || []).some(status => {
+          return includes(status.context, context, exact) && (!state || status.state === state.toLowerCase());
+        });
+      };
+    },
+
     milestone: function milestoneFilter(name, exact) {
 
       return function filterMilestone(issue) {

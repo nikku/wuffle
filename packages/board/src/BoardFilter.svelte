@@ -90,7 +90,8 @@
         'created',
         'updated',
         'involves',
-        'is'
+        'is',
+        'status'
       ].map(name => {
         return {
           name,

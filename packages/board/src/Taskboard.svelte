@@ -392,7 +392,8 @@
           assignees,
           labels,
           repository,
-          requested_reviewers
+          requested_reviewers,
+          statuses
         } = item;
 
         const repoOptions = _filterOptions['repo'] = _filterOptions['repo'] || {};
@@ -432,6 +433,12 @@
 
             labelOptions[label.name] = true;
           }
+        });
+
+        (statuses || []).forEach(status => {
+          const statusOptions = _filterOptions['status'] = _filterOptions['status'] || {};
+
+          statusOptions[`${status.context}=${status.state}`] = true;
         });
 
         _itemsById[id] = item;

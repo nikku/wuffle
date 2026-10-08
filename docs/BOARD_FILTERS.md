@@ -16,6 +16,7 @@ The board supports the following filters:
 | `milestone` | Filter by [milestone](https://docs.github.com/en/github/managing-your-work-on-github/about-milestones) | `milestone:M1` |
 | `label` | Filter by [label](https://docs.github.com/en/github/managing-your-work-on-github/managing-labels) | `label:critical` |
 | `repo` | Filter by repository | `repo:"nikku/wuffle"` |
+| `status` | Filter pull requests by [commit status](https://docs.github.com/en/rest/commits/statuses), given as `<context>` or `<context>=<state>` | `status:license/cla`, `status:license/cla=pending` |
 
 ### Using Boolean Operations
 

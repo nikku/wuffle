@@ -6,6 +6,8 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 _**Note:** Yet to be released changes appear here._
 
+* `FEAT`: add `status` filter to match pull requests by commit status, e.g. `status:license/cla=pending`
+
 ## 0.78.0
 
 * `FEAT`: re-request reviews from reviewers with outstanding change requests as a PR moves back to the review column ([#345](https://github.com/nikku/wuffle/pull/345))
