@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { match } from 'sinon';
+import { match, mock } from 'sinon';
 
 import { bootstrap } from '../../helpers/index.js';
 import MockGithubIssues from '../../mocks/MockGithubIssues.js';
@@ -505,6 +505,233 @@ describe('apps/automatic-dev-flow', function() {
   });
 
 
+  describe('should re-request reviews', function() {
+
+    let octokit;
+
+    function emitLabeled(testPr, labelName = 'needs review') {
+
+      /** @type {any} */
+      const event = {
+        name: 'pull_request',
+        octokit,
+        repo(opts) {
+          return { owner: 'nikku', repo: 'test', ...opts };
+        },
+        payload: {
+          action: 'labeled',
+          label: { name: labelName },
+          pull_request: testPr,
+          repository: repo()
+        }
+      };
+
+      return webhookEvents.emit(event);
+    }
+
+    function givenReviews(reviews) {
+      octokit.graphql.resolves({
+        repository: {
+          pullRequest: {
+            latestOpinionatedReviews: {
+              nodes: reviews
+            }
+          }
+        }
+      });
+    }
+
+    beforeEach(function() {
+      process.env.AUTO_REREQUEST_REVIEW = 'true';
+
+      octokit = {
+        graphql: mock(),
+        rest: {
+          pulls: {
+            requestReviewers: mock().resolves({})
+          }
+        }
+      };
+
+      givenReviews([]);
+    });
+
+    afterEach(function() {
+      delete process.env.AUTO_REREQUEST_REVIEW;
+    });
+
+
+    it('pull_request.labeled (needs review)', async function() {
+
+      // given
+      const testPr = pullRequest({ id: 1 });
+
+      givenReviews([
+        review({ login: 'reviewer-a', state: 'CHANGES_REQUESTED' }),
+        review({ login: 'reviewer-b', state: 'CHANGES_REQUESTED' }),
+        review({ login: 'reviewer-c', state: 'APPROVED' })
+      ]);
+
+      // when
+      await emitLabeled(testPr);
+
+      // then
+      // reviewers with changes_requested as latest review re-requested
+      expect(octokit.graphql).to.have.been.calledOnceWith(
+        match(/latestOpinionatedReviews/)
+      );
+
+      expect(octokit.rest.pulls.requestReviewers).to.have.been.calledOnceWith(
+        match({
+          pull_number: testPr.number,
+          reviewers: [ 'reviewer-a', 'reviewer-b' ]
+        })
+      );
+    });
+
+
+    it('pull_request.labeled (needs review), skips approved', async function() {
+
+      // given
+      const testPr = pullRequest({ id: 1 });
+
+      givenReviews([
+        review({ login: 'reviewer-a', state: 'APPROVED' })
+      ]);
+
+      // when
+      await emitLabeled(testPr);
+
+      // then
+      // approval clears the re-request
+      expect(octokit.rest.pulls.requestReviewers).to.not.have.been.called;
+    });
+
+
+    it('pull_request.labeled (needs review), comment-only review does not clear change request', async function() {
+
+      // given
+      // latestOpinionatedReviews omits comment-only reviews, so the
+      // outstanding change request remains effective
+      const testPr = pullRequest({ id: 1 });
+
+      givenReviews([
+        review({ login: 'reviewer-a', state: 'CHANGES_REQUESTED' })
+      ]);
+
+      // when
+      await emitLabeled(testPr);
+
+      // then
+      expect(octokit.rest.pulls.requestReviewers).to.have.been.calledWith(
+        match({ reviewers: [ 'reviewer-a' ] })
+      );
+    });
+
+    it('pull_request.labeled (needs review), skips author and requested', async function() {
+
+      // given
+      const testPr = pullRequest({
+        id: 1,
+        requested_reviewers: [ { login: 'reviewer-b' } ]
+      });
+
+      givenReviews([
+        review({ login: 'nikku', state: 'CHANGES_REQUESTED' }),
+        review({ login: 'reviewer-a', state: 'CHANGES_REQUESTED' }),
+        review({ login: 'reviewer-b', state: 'CHANGES_REQUESTED' })
+      ]);
+
+      // when
+      await emitLabeled(testPr);
+
+      // then
+      // author (nikku) and already requested reviewer skipped
+      expect(octokit.rest.pulls.requestReviewers).to.have.been.calledOnceWith(
+        match({
+          reviewers: [ 'reviewer-a' ]
+        })
+      );
+    });
+
+
+    it('pull_request.labeled (other label)', async function() {
+
+      // given
+      const testPr = pullRequest({ id: 1 });
+
+      givenReviews([
+        review({ login: 'reviewer-a', state: 'CHANGES_REQUESTED' })
+      ]);
+
+      // when
+      await emitLabeled(testPr, 'in progress');
+
+      // then
+      expect(octokit.rest.pulls.requestReviewers).to.not.have.been.called;
+    });
+
+
+    it('pull_request.labeled (draft)', async function() {
+
+      // given
+      const testPr = pullRequest({ id: 1, draft: true });
+
+      givenReviews([
+        review({ login: 'reviewer-a', state: 'CHANGES_REQUESTED' })
+      ]);
+
+      // when
+      await emitLabeled(testPr);
+
+      // then
+      expect(octokit.rest.pulls.requestReviewers).to.not.have.been.called;
+    });
+
+
+    it('pull_request.labeled (disabled by default)', async function() {
+
+      // given
+      delete process.env.AUTO_REREQUEST_REVIEW;
+
+      const testPr = pullRequest({ id: 1 });
+
+      givenReviews([
+        review({ login: 'reviewer-a', state: 'CHANGES_REQUESTED' })
+      ]);
+
+      // when
+      await emitLabeled(testPr);
+
+      // then
+      expect(octokit.rest.pulls.requestReviewers).to.not.have.been.called;
+    });
+
+
+    it('pull_request.labeled (gracefully handles request failure)', async function() {
+
+      // given
+      const err = Object.assign(new Error('Validation failed'), { status: 422 });
+
+      octokit.rest.pulls.requestReviewers.rejects(err);
+
+      const testPr = pullRequest({ id: 1 });
+
+      givenReviews([
+        review({ login: 'reviewer-a', state: 'CHANGES_REQUESTED' })
+      ]);
+
+      // when
+      // then
+      // does not throw
+      await emitLabeled(testPr);
+
+      expect(octokit.rest.pulls.requestReviewers).to.have.been.calledOnce;
+    });
+
+  });
+
+
   describe('should respect ignore filter', function() {
 
     it('should skip ignored pull request', async function() {
@@ -586,5 +813,18 @@ function repo() {
     owner: {
       login: 'nikku'
     }
+  };
+}
+
+function review(overrides = {}) {
+  const {
+    login,
+    ...rest
+  } = overrides;
+
+  return {
+    state: 'APPROVED',
+    author: { login },
+    ...rest
   };
 }
