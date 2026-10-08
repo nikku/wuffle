@@ -6,6 +6,8 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 _**Note:** Yet to be released changes appear here._
 
+* `FEAT`: re-request reviews from reviewers with outstanding change requests as a PR moves back to the review column ([#345](https://github.com/nikku/wuffle/pull/345))
+
 ## 0.77.0
 
 * `DEPS`: update to `probot@14` ([#321](https://github.com/nikku/wuffle/pull/321))

@@ -16,5 +16,6 @@ The following table summarizes triggers and the card movements those cause.
 | Collaborator PR is marked as draft | PR and linked issue move to `IN_PROGRESS` column |
 | Collaborator PR is marked as ready-for-review | PR and linked issue move to `IN_REVIEW` column |
 | Collaborator PR receives `changes_requested` review | PR moves to `IN_PROGRESS` column |
+| PR moves to `IN_REVIEW` column | Reviews are re-requested from reviewers with outstanding change requests ([opt-in](./CONFIG.md#behavior)) |
 | PR is merged | PR and linked issue move to `DONE` column |
 | PR is closed unmerged | PR moves to `DONE` column, linked issue stays where it is |

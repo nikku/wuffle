@@ -62,6 +62,7 @@ Several aspects of [wuffle](https://wuffle.dev) are configured via environment v
 | Parameter | Required? | Description |
 | :--- | :---: | :--- |
 | `AUTO_ASSIGN_PULLS` | | If set, assign newly created collaborator PRs to the PR author |
+| `AUTO_REREQUEST_REVIEW` | | If set, re-request reviews from reviewers with outstanding change requests once a PR moves back to the review column |
 
 ### Misc
 
