@@ -22,7 +22,7 @@ Several aspects of [wuffle](https://wuffle.dev) are configured via environment v
 | `BASE_URL` | :ballot_box_with_check: | Base URL of your board `**` |
 | `BOARD_CONFIG` | | JSON encoded board configuration `***` |
 | `FORCE_HTTPS` | | Whether to enforce HTTPS on all routes |
-| `HOST` | | The host name to bind to |
+| `HOST` | | The host name to bind to, defaults to `locahost` |
 | `PORT` | | The port to bind to |
 | `SESSION_SECRET` | :ballot_box_with_check: | Session secret for encrypting app cookies |
 | `TRUST_PROXY` | | Whether to trust the proxy settings provided via an `X-Forwarded-*` header |
