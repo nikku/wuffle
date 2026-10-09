@@ -15,6 +15,10 @@ _**Note:** Yet to be released changes appear here._
 * `DEPS`: update to `probot@14` ([#321](https://github.com/nikku/wuffle/pull/321))
 * `CHORE`: require `node >= 24` to run
 
+### Breaking Changes
+
+* Not specifying `HOST` binds the application to `localhost` ([#321](https://github.com/nikku/wuffle/pull/321))
+
 ## 0.76.0
 
 * `FEAT`: support GitHub sub-issues ([#313](https://github.com/nikku/wuffle/pull/313))
