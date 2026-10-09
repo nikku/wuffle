@@ -560,6 +560,96 @@ describe('apps/search - Search', function() {
   });
 
 
+  describe('status', function() {
+
+    const pending = { context: 'license/cla', state: 'pending' };
+    const success = { context: 'license/cla', state: 'success' };
+    const build = { context: 'ci/build', state: 'success' };
+
+
+    it('should match by context', function() {
+
+      // given
+      const search = createSearch();
+      const filter = search.getSearchFilter('status:license/cla');
+
+      const pendingIssue = createIssue({ statuses: [ pending ] });
+      const successIssue = createIssue({ statuses: [ success ] });
+      const buildIssue = createIssue({ statuses: [ build ] });
+
+      // when + then
+      expect(filter(pendingIssue)).to.be.true;
+      expect(filter(successIssue)).to.be.true;
+      expect(filter(buildIssue)).to.be.false;
+    });
+
+
+    it('should match by context and state', function() {
+
+      // given
+      const search = createSearch();
+      const filter = search.getSearchFilter('status:license/cla=pending');
+
+      const pendingIssue = createIssue({ statuses: [ pending ] });
+      const successIssue = createIssue({ statuses: [ success ] });
+
+      // when + then
+      expect(filter(pendingIssue)).to.be.true;
+      expect(filter(successIssue)).to.be.false;
+    });
+
+
+    it('should only consider state of the given context', function() {
+
+      // given
+      const search = createSearch();
+      const filter = search.getSearchFilter('status:license/cla=success');
+
+      const pendingAndBuildIssue = createIssue({ statuses: [ pending, build ] });
+      const buildAndSuccessIssue = createIssue({ statuses: [ build, success ] });
+
+      // when + then
+      expect(filter(pendingAndBuildIssue)).to.be.false;
+      expect(filter(buildAndSuccessIssue)).to.be.true;
+    });
+
+
+    it('should match context exactly if quoted', function() {
+
+      // given
+      const search = createSearch();
+      const partialFilter = search.getSearchFilter('status:"license"');
+      const exactFilter = search.getSearchFilter('status:"license/cla"');
+      const exactWithStateFilter = search.getSearchFilter('status:"license/cla=pending"');
+
+      const pendingIssue = createIssue({ statuses: [ pending ] });
+      const successIssue = createIssue({ statuses: [ success ] });
+
+      // when + then
+      expect(partialFilter(pendingIssue)).to.be.false;
+      expect(exactFilter(pendingIssue)).to.be.true;
+      expect(exactWithStateFilter(pendingIssue)).to.be.true;
+      expect(exactWithStateFilter(successIssue)).to.be.false;
+    });
+
+
+    it('should NOT match without statuses', function() {
+
+      // given
+      const search = createSearch();
+      const filter = search.getSearchFilter('status:license/cla');
+
+      const issue = createIssue();
+      const noStatusesIssue = createIssue({ statuses: [] });
+
+      // when + then
+      expect(filter(issue)).to.be.false;
+      expect(filter(noStatusesIssue)).to.be.false;
+    });
+
+  });
+
+
   describe('assignee', function() {
 
     const user = { login: 'nikku', last_checked: 0, access_token: 'token', avatar_url: 'url' };
