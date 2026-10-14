@@ -46,7 +46,7 @@
     "@probot/pino": "^5.0.1",
     "async-didi": "^1.0.0",
     "body-parser": "^2.3.0",
-    "compression": "^1.8.1",
+    "compression": "^1.8.2",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
     "express-session": "^1.19.0",
