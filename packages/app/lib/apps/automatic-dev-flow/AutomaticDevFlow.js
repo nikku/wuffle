@@ -48,13 +48,17 @@ export default function(webhookEvents, githubIssues, columns, issueFilter, logge
       pull_request
     } = context.payload;
 
-    const state = isExternal(pull_request) ? EXTERNAL_CONTRIBUTION : IN_PROGRESS;
+    const external = isExternal(pull_request);
+
+    const state = external ? EXTERNAL_CONTRIBUTION : IN_PROGRESS;
 
     const column = columns.getByState(state);
 
     await Promise.all([
       githubIssues.moveIssue(context, pull_request, column),
-      githubIssues.moveReferencedIssues(context, pull_request, column)
+
+      // external contributions do not move linked issues
+      !external && githubIssues.moveReferencedIssues(context, pull_request, column)
     ]);
   }));
 
@@ -74,13 +78,17 @@ export default function(webhookEvents, githubIssues, columns, issueFilter, logge
       return;
     }
 
-    const state = isExternal(pull_request) ? EXTERNAL_CONTRIBUTION : IN_REVIEW;
+    const external = isExternal(pull_request);
+
+    const state = external ? EXTERNAL_CONTRIBUTION : IN_REVIEW;
 
     const column = columns.getByState(state);
 
     await Promise.all([
       githubIssues.moveIssue(context, pull_request, column),
-      githubIssues.moveReferencedIssues(context, pull_request, column)
+
+      // external contributions do not move linked issues
+      !external && githubIssues.moveReferencedIssues(context, pull_request, column)
     ]);
   }));
 
@@ -112,7 +120,9 @@ export default function(webhookEvents, githubIssues, columns, issueFilter, logge
 
     await Promise.all([
       githubIssues.moveIssue(context, pull_request, column, newAssignee),
-      githubIssues.moveReferencedIssues(context, pull_request, column, newAssignee)
+
+      // external contributions do not move linked issues
+      !external && githubIssues.moveReferencedIssues(context, pull_request, column, newAssignee)
     ]);
   }));
 
@@ -121,6 +131,11 @@ export default function(webhookEvents, githubIssues, columns, issueFilter, logge
     const {
       pull_request
     } = context.payload;
+
+    // external contributions do not move linked issues
+    if (isExternal(pull_request)) {
+      return;
+    }
 
     const column = columns.getIssueColumn(pull_request);
 
@@ -221,13 +236,17 @@ export default function(webhookEvents, githubIssues, columns, issueFilter, logge
       return;
     }
 
-    const state = isExternal(pull_request) ? EXTERNAL_CONTRIBUTION : IN_PROGRESS;
+    const external = isExternal(pull_request);
+
+    const state = external ? EXTERNAL_CONTRIBUTION : IN_PROGRESS;
 
     const column = columns.getByState(state);
 
     await Promise.all([
       githubIssues.moveIssue(context, pull_request, column),
-      githubIssues.moveReferencedIssues(context, pull_request, column)
+
+      // external contributions do not move linked issues
+      !external && githubIssues.moveReferencedIssues(context, pull_request, column)
     ]);
   }));
 

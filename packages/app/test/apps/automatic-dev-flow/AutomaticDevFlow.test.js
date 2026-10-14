@@ -166,11 +166,40 @@ describe('apps/automatic-dev-flow', function() {
         match({ name: 'Inbox' })
       );
 
-      expect(githubIssues.moveReferencedIssues).to.have.been.calledOnceWith(
+      // referenced issues NOT moved along
+      expect(githubIssues.moveReferencedIssues).to.not.have.been.called;
+    });
+
+
+    it('pull_request.reopened (external)', async function() {
+
+      // given
+      const testPr = pullRequest({
+        state: 'open',
+        base: { repo: { id: 1 } },
+        head: { repo: { id: 2 } }
+      });
+
+      // when
+      await webhookEvents.emit({
+        name: 'pull_request',
+        payload: {
+          action: 'reopened',
+          pull_request: testPr,
+          repository: repo()
+        }
+      });
+
+      // then
+      // external PR moved to Inbox
+      expect(githubIssues.moveIssue).to.have.been.calledOnceWith(
         match.any,
         match({ number: testPr.number }),
         match({ name: 'Inbox' })
       );
+
+      // referenced issues NOT moved along
+      expect(githubIssues.moveReferencedIssues).to.not.have.been.called;
     });
 
 
@@ -261,6 +290,32 @@ describe('apps/automatic-dev-flow', function() {
     });
 
 
+    it('pull_request.edited (external)', async function() {
+
+      // given
+      const testPr = pullRequest({
+        labels: [ { name: 'needs review' } ],
+        base: { repo: { id: 1 } },
+        head: { repo: { id: 2 } }
+      });
+
+      // when
+      await webhookEvents.emit({
+        name: 'pull_request',
+        payload: {
+          action: 'edited',
+          pull_request: testPr,
+          repository: repo()
+        }
+      });
+
+      // then
+      // referenced issues NOT moved along
+      expect(githubIssues.moveIssue).to.not.have.been.called;
+      expect(githubIssues.moveReferencedIssues).to.not.have.been.called;
+    });
+
+
     it('pull_request.converted_to_draft', async function() {
 
       // given
@@ -289,6 +344,102 @@ describe('apps/automatic-dev-flow', function() {
         match({ number: testPr.number }),
         match({ name: 'In Progress' })
       );
+    });
+
+
+    it('pull_request.converted_to_draft (external)', async function() {
+
+      // given
+      const testPr = pullRequest({
+        draft: true,
+        base: { repo: { id: 1 } },
+        head: { repo: { id: 2 } }
+      });
+
+      // when
+      await webhookEvents.emit({
+        name: 'pull_request',
+        payload: {
+          action: 'converted_to_draft',
+          pull_request: testPr,
+          repository: repo()
+        }
+      });
+
+      // then
+      // external PR moved to Inbox
+      expect(githubIssues.moveIssue).to.have.been.calledOnceWith(
+        match.any,
+        match({ number: testPr.number }),
+        match({ name: 'Inbox' })
+      );
+
+      // referenced issues NOT moved along
+      expect(githubIssues.moveReferencedIssues).to.not.have.been.called;
+    });
+
+
+    it('pull_request.ready_for_review (external)', async function() {
+
+      // given
+      const testPr = pullRequest({
+        draft: false,
+        base: { repo: { id: 1 } },
+        head: { repo: { id: 2 } }
+      });
+
+      // when
+      await webhookEvents.emit({
+        name: 'pull_request',
+        payload: {
+          action: 'ready_for_review',
+          pull_request: testPr,
+          repository: repo()
+        }
+      });
+
+      // then
+      // external PR moved to Inbox
+      expect(githubIssues.moveIssue).to.have.been.calledOnceWith(
+        match.any,
+        match({ number: testPr.number }),
+        match({ name: 'Inbox' })
+      );
+
+      // referenced issues NOT moved along
+      expect(githubIssues.moveReferencedIssues).to.not.have.been.called;
+    });
+
+
+    it('pull_request_review.submitted (changes_requested, external)', async function() {
+
+      // given
+      const testPr = pullRequest({
+        base: { repo: { id: 1 } },
+        head: { repo: { id: 2 } }
+      });
+
+      // when
+      await webhookEvents.emit({
+        name: 'pull_request_review',
+        payload: {
+          action: 'submitted',
+          pull_request: testPr,
+          review: { state: 'changes_requested' },
+          repository: repo()
+        }
+      });
+
+      // then
+      // external PR moved to Inbox
+      expect(githubIssues.moveIssue).to.have.been.calledOnceWith(
+        match.any,
+        match({ number: testPr.number }),
+        match({ name: 'Inbox' })
+      );
+
+      // referenced issues NOT moved along
+      expect(githubIssues.moveReferencedIssues).to.not.have.been.called;
     });
 
 
