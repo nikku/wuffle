@@ -54,7 +54,7 @@
     "memorystore": "^1.6.8",
     "min-dash": "^5.1.0",
     "p-defer": "^4.0.1",
-    "pino": "^10.3.1",
+    "pino": "^10.4.0",
     "prexit": "^2.3.0",
     "probot": "^14.0.0",
     "smee-client": "^5.0.0",
