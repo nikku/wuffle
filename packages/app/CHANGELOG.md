@@ -6,6 +6,16 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 _**Note:** Yet to be released changes appear here._
 
+## 0.80.0
+
+* `DEPS`: update to `@aws-sdk/client-s3@3.1156.0`
+* `DEPS`: update to `body-parser@2.4.0`
+* `DEPS`: update to `compression@1.8.2`
+* `DEPS`: update to `dotenv@18.0.9`
+* `DEPS`: update to `express@5.3.0`
+* `DEPS`: update to `pino@10.4.0`
+* `DEPS`: update to `yaml@2.9.1`
+
 ## 0.79.0
 
 * `FEAT`: keep issues linked by external contributions in place ([#355](https://github.com/nikku/wuffle/pull/355))
