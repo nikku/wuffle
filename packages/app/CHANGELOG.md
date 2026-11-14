@@ -6,6 +6,12 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 _**Note:** Yet to be released changes appear here._
 
+## 0.81.0
+
+* `FEAT`: pick up cards on mobile via long press
+* `FIX`: be able to scroll columns on mobile
+* `DEPS`: update to `@bpmn-io/draggle@4.2.0`
+
 ## 0.80.0
 
 * `DEPS`: update to `@aws-sdk/client-s3@3.1156.0`
