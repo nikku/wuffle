@@ -1,7 +1,8 @@
-@import "./variables";
-@import "./bootstrap";
+@use "./variables" as *;
+@use "./bootstrap";
+@use "./theme";
 
-@import "@bpmn-io/draggle/dist/draggle";
+@use "@bpmn-io/draggle/dist/draggle";
 
 html,
 body {
@@ -19,7 +20,6 @@ body {
 
 .navbar-brand {
   padding: 0;
-  margin: 0;
 }
 
 html {

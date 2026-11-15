@@ -1,21 +1,68 @@
-// Wuffle theme
+@use "sass:color";
+@use "variables" as *;
 
-$link-decoration: none;
-$link-hover-decoration: underline;
+:root {
+  color-scheme: light;
+  scrollbar-gutter: auto;
+}
 
-$font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+.navbar {
+  background-color: transparent;
+  color: #212529;
+}
 
-// keep white text on primary buttons
-$min-contrast-ratio: 2.5;
+h4 {
+  font-size: calc(1.275rem + .3vw);
+}
 
-$navbar-padding-x: 1rem;
+@media (min-width: 1200px) {
+  h4 {
+    font-size: 1.5rem;
+  }
+}
 
-$border-radius: .25rem;
-$border-radius-sm: .2rem;
-$border-radius-lg: .3rem;
+.form-control:focus {
+  border-color: #9bd6e4;
+  outline: 0;
+  box-shadow: 0 0 0 .2rem rgba($primary, .25);
+}
 
-$focus-ring-width: .2rem;
+.btn {
+  display: inline-block;
+}
 
-$input-color: #495057;
-$input-border-color: #ced4da;
-$input-placeholder-color: #6c757d;
+.btn-link:hover,
+.btn-link:focus-visible {
+  text-decoration: underline;
+}
+
+.btn-outline.theme-primary {
+  --btn-hover-color: #fff;
+  --btn-hover-bg: #{$primary};
+  --btn-hover-border-color: #{$primary};
+  --btn-active-color: #fff;
+  --btn-active-bg: #{$primary};
+  --btn-active-border-color: #{$primary};
+}
+
+.btn-solid.theme-primary {
+  --btn-hover-color: #fff;
+  --btn-hover-bg: #{color.mix(#000, $primary, 15%)};
+  --btn-hover-border-color: #{color.mix(#000, $primary, 20%)};
+  --btn-active-color: #fff;
+  --btn-active-bg: #{color.mix(#000, $primary, 20%)};
+  --btn-active-border-color: #{color.mix(#000, $primary, 25%)};
+}
+
+.btn-outline.theme-primary:focus-visible,
+.btn-solid.theme-primary:focus-visible {
+  color: var(--btn-hover-color);
+  background-color: var(--btn-hover-bg);
+  border-color: var(--btn-hover-border-color);
+  outline: 0;
+  box-shadow: 0 0 0 .2rem rgba($primary, .5);
+}
+
+.btn-solid.theme-primary:focus-visible {
+  box-shadow: 0 0 0 .2rem rgba(color.mix(#fff, $primary, 15%), .5);
+}

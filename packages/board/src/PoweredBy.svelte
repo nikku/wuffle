@@ -28,7 +28,8 @@
 </div>
 
 <style lang="scss">
-  @import "variables";
+  @use "sass:color";
+  @use "variables" as *;
 
   .powered-by {
     position: absolute;
@@ -104,7 +105,7 @@
       color: $light;
 
       &:not(:hover, :focus-within) .logo {
-        color: lighten($dark, 30%);
+        color: color.adjust($dark, $lightness: 30%);
       }
 
       &:hover,

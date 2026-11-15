@@ -222,9 +222,9 @@
 </div>
 
 <style lang="scss">
-  @import "variables";
+  @use "variables" as *;
 
-  @import "./Card";
+  @use "./Card";
 
   :global {
     .tag {

@@ -210,7 +210,8 @@
 
 <style lang="scss">
 
-  @import './HelpDropdown';
+  @use "variables" as *;
+  @use './HelpDropdown';
 
   .repository-select {
     position: fixed;
