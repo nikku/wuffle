@@ -1,77 +1,118 @@
-@import "variables";
+@use "sass:map";
+@use "sass:color";
+@use "variables" as *;
 
-$enable-grid-classes: false;
+@use "bootstrap/scss/config" as bootstrap-config with (
+  $enable-grid-classes: false,
+  $enable-shadows: false,
+  $enable-gradients: false,
+  $breakpoints: (
+    xs: 0,
+    sm: 576px,
+    md: 768px,
+    lg: 992px,
+    xl: 1200px,
+    2xl: 1400px
+  ),
+  $spacers: (
+    0: 0,
+    1: .25rem,
+    2: .5rem,
+    3: 1rem,
+    4: 1.5rem,
+    5: 3rem
+  ),
+  $radii: (
+    5: .25rem,
+    7: .3rem
+  )
+);
 
-// Our theme handles dark mode via prefers-color-scheme.
-$enable-dark-mode: false;
+@use "bootstrap/scss/theme" with (
+  $theme-fgs: ("body": #212529),
+  $theme-colors: (
+    "primary": (
+      "base": $primary,
+      "fg": $primary,
+      "fg-emphasis": color.mix(#000, $primary, 20%),
+      "bg": $primary,
+      "bg-subtle": #d7eef4,
+      "bg-muted": #afdde9,
+      "border": $primary,
+      "focus-ring": rgba($primary, .25),
+      "contrast": $white
+    )
+  )
+);
 
-@import "theme";
-@import "bootstrap/scss/functions";
-@import "bootstrap/scss/variables";
-@import "bootstrap/scss/variables-dark";
+@use "bootstrap/scss/root" with (
+  $root-tokens: (
+    --body-font-family: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', 'Liberation Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'",
+    --link-color: #{$primary},
+    --link-hover-color: color.mix(#000, $primary, 20%),
+    --link-decoration: none,
+    --link-hover-decoration: underline,
+    --btn-input-min-height: 0,
+    --btn-input-lg-min-height: 0,
+    --btn-input-lg-font-size: 1.25rem,
+    --btn-input-lg-line-height: 1.5
+  )
+);
+@use "bootstrap/scss/content/reboot";
+@use "bootstrap/scss/forms/form-control" with (
+  $form-control-tokens: (
+    --control-fg: #495057,
+    --control-bg: #fff,
+    --control-border-color: #ced4da,
+    --control-placeholder-color: #6c757d
+  )
+);
+@use "bootstrap/scss/buttons/button";
+@use "bootstrap/scss/navbar" with (
+  $navbar-tokens: (
+    --navbar-padding-x: 1rem,
+    --navbar-min-height: 0,
+    --navbar-brand-font-size: 1.25rem,
+    --navbar-brand-font-weight: 400
+  )
+);
+@use "bootstrap/scss/helpers/theme-colors";
 
-@import "bootstrap/scss/maps";
-@import "bootstrap/scss/mixins";
-@import "bootstrap/scss/utilities";
+@use "bootstrap/scss/functions" as bootstrap-functions;
+@use "bootstrap/scss/utilities" as bootstrap-utilities;
 
-// restrict generated utilities to spacing and header layout
-$utilities: map-get-multiple($utilities, (
-  "display",
-  "flex-wrap",
-  "align-items",
-  "margin",
-  "margin-x",
-  "margin-y",
-  "margin-top",
-  "margin-end",
-  "margin-bottom",
-  "margin-start",
-  "padding",
-  "padding-x",
-  "padding-y",
-  "padding-top",
-  "padding-end",
-  "padding-bottom",
-  "padding-start"
-));
+bootstrap-config.$utilities: bootstrap-functions.map-get-multiple(
+  bootstrap-config.$utilities,
+  (
+    "display",
+    "flex-grow",
+    "flex-wrap",
+    "align-items",
+    "margin",
+    "margin-x",
+    "margin-y",
+    "margin-top",
+    "margin-end",
+    "margin-bottom",
+    "margin-start",
+    "padding",
+    "padding-x",
+    "padding-y",
+    "padding-top",
+    "padding-end",
+    "padding-bottom",
+    "padding-start"
+  )
+);
 
-// layout utilities are only used non-responsively
-@each $name in ("display", "flex-wrap", "align-items") {
-  $utilities: map-merge($utilities, (
-    $name: map-merge(map-get($utilities, $name), ("responsive": false, "print": false))
-  ));
-}
+bootstrap-config.$utilities: map.merge(
+  bootstrap-config.$utilities,
+  (
+    "display": map.merge(map.get(bootstrap-config.$utilities, "display"), ("responsive": false)),
+    "flex-grow": map.merge(map.get(bootstrap-config.$utilities, "flex-grow"), ("responsive": false)),
+    "flex-wrap": map.merge(map.get(bootstrap-config.$utilities, "flex-wrap"), ("responsive": false)),
+    "align-items": map.merge(map.get(bootstrap-config.$utilities, "align-items"), ("responsive": false))
+  )
+);
 
-@import "bootstrap/scss/root";
-@import "bootstrap/scss/reboot";
-@import "bootstrap/scss/type";
-// @import "bootstrap/scss/images";
-// @import "bootstrap/scss/containers";
-// @import "bootstrap/scss/grid";
-// @import "bootstrap/scss/tables";
-@import "bootstrap/scss/forms";
-@import "bootstrap/scss/buttons";
-// @import "bootstrap/scss/transitions";
-// @import "bootstrap/scss/dropdown";
-// @import "bootstrap/scss/button-group";
-// @import "bootstrap/scss/nav";
-@import "bootstrap/scss/navbar";
-// @import "bootstrap/scss/card";
-// @import "bootstrap/scss/accordion";
-// @import "bootstrap/scss/breadcrumb";
-// @import "bootstrap/scss/pagination";
-// @import "bootstrap/scss/badge";
-// @import "bootstrap/scss/alert";
-// @import "bootstrap/scss/progress";
-// @import "bootstrap/scss/list-group";
-// @import "bootstrap/scss/close";
-// @import "bootstrap/scss/toasts";
-// @import "bootstrap/scss/modal";
-// @import "bootstrap/scss/tooltip";
-// @import "bootstrap/scss/popover";
-// @import "bootstrap/scss/carousel";
-// @import "bootstrap/scss/spinners";
-// @import "bootstrap/scss/offcanvas";
-// @import "bootstrap/scss/placeholders";
-// @import "bootstrap/scss/helpers";
-@import "bootstrap/scss/utilities/api";
+@use "bootstrap/scss/utilities/api";
