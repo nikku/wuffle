@@ -1,6 +1,30 @@
 const sveltePreprocess = require('svelte-preprocess');
+const sass = require('sass');
 
 const path = require('path');
+const { fileURLToPath, pathToFileURL } = require('url');
+
+function scssProcessor({ content, filename }) {
+  const url = pathToFileURL(path.resolve(filename));
+  const result = sass.compileString(content, {
+    fatalDeprecations: [ sass.Version.parse('1.108.1') ],
+    url,
+    loadPaths: [
+      path.join(__dirname, 'src/style'),
+      path.join(__dirname, '../../node_modules')
+    ],
+    sourceMap: true,
+    sourceMapIncludeSources: true
+  });
+
+  return {
+    code: result.css,
+    map: result.sourceMap,
+    dependencies: result.loadedUrls
+      .filter(loadedUrl => loadedUrl.protocol === 'file:' && loadedUrl.href !== url.href)
+      .map(fileURLToPath)
+  };
+}
 
 function scriptProcessor(processors) {
 
@@ -87,12 +111,7 @@ ${content}`;
 module.exports = {
   preprocess: [
     sveltePreprocess({
-      scss: {
-        includePaths: [
-          path.join(__dirname, 'src/style'),
-          path.join(__dirname, '../../node_modules')
-        ]
-      }
+      scss: scssProcessor
     }),
     {
       script: scriptProcessor([
