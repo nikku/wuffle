@@ -27,8 +27,6 @@ WORKDIR /app
 EXPOSE 3000
 ENV NODE_ENV=production
 
-CMD (cd packages/app && node ./bin/wuffle)
-
 COPY --from=prod-builder /prod-build .
 
 RUN addgroup -S app && \
@@ -36,3 +34,7 @@ RUN addgroup -S app && \
     chown -R app:app .
 
 USER app
+
+WORKDIR /app/packages/app
+
+CMD ["node", "./bin/wuffle"]
