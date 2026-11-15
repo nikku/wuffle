@@ -2,7 +2,7 @@ FROM node:24-alpine as builder
 WORKDIR /build
 
 # install dependencies + cache them
-COPY packages/*/package*.json package*.json lerna.json ./
+COPY packages/*/package*.json package*.json ./
 COPY packages/app/package*.json ./packages/app/
 COPY packages/board/package*.json ./packages/board/
 RUN npm ci --unsafe-perm
