@@ -1,0 +1,21 @@
+// Wuffle theme
+
+$link-decoration: none;
+$link-hover-decoration: underline;
+
+$font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+
+// keep white text on primary buttons
+$min-contrast-ratio: 2.5;
+
+$navbar-padding-x: 1rem;
+
+$border-radius: .25rem;
+$border-radius-sm: .2rem;
+$border-radius-lg: .3rem;
+
+$focus-ring-width: .2rem;
+
+$input-color: #495057;
+$input-border-color: #ced4da;
+$input-placeholder-color: #6c757d;

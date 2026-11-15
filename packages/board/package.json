@@ -8,7 +8,7 @@
     "@rollup/plugin-node-resolve": "^16.0.3",
     "@rollup/plugin-terser": "^1.0.2",
     "@rollup/plugin-url": "^8.0.2",
-    "bootstrap": "^4.6.1",
+    "bootstrap": "^5.3.8",
     "eslint-plugin-svelte": "^3.24.1",
     "min-dash": "^5.1.0",
     "npm-run-all2": "^9.0.4",
