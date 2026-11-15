@@ -878,16 +878,16 @@
 
   <nav class="navbar navbar-expand navbar-light taskboard-header">
 
-    <a class="navbar-brand m-0 mr-3 my-2" href="/" title="{ name } - Wuffle board">
+    <a class="navbar-brand m-0 me-3 my-2" href="/" title="{ name } - Wuffle board">
       <img src="./logo.svg" height="30px" alt="" class="logo" />
     </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#{navId}" aria-controls={navId} aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#{navId}" aria-controls={navId} aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
     <div class="collapse navbar-collapse" id={navId}>
 
-      <form class="form-inline board-filter-parent my-2 my-lg-0" onsubmit={ (e) => e.preventDefault() }>
+      <form class="d-flex flex-wrap align-items-center board-filter-parent my-2 my-lg-0" onsubmit={ (e) => e.preventDefault() }>
         <BoardFilter
           value={ filter }
           completionOptions={ filterOptions }
@@ -896,14 +896,14 @@
         />
       </form>
 
-      <form class="form-inline mx-3 my-2 my-sm-0" onsubmit={ (e) => e.preventDefault() || openCreateIssue() }>
+      <form class="d-flex flex-wrap align-items-center mx-3 my-2 my-sm-0" onsubmit={ (e) => e.preventDefault() || openCreateIssue() }>
         <button class="btn btn-outline-primary" type="submit" title="Create new issue (n)" aria-label="Create new issue (n)">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" height="16" fill="currentColor"><path fill-rule="evenodd" d="M7.75 2a.75.75 0 01.75.75V7h4.25a.75.75 0 110 1.5H8.5v4.25a.75.75 0 11-1.5 0V8.5H2.75a.75.75 0 010-1.5H7V2.75A.75.75 0 017.75 2z"></path></svg>
         </button>
       </form>
     </div>
 
-    <div class="taskboard-header-login ml-2">
+    <div class="taskboard-header-login ms-2">
       {#if user}
         <a href="/wuffle/logout" title={ `Logged in as ${user.login}. Logout (l)` }>
           <Avatar rounded>

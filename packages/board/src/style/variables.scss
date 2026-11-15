@@ -1,5 +1,8 @@
 $enable-grid-classes: false;
 
+// Our theme handles dark mode via prefers-color-scheme.
+$enable-dark-mode: false;
+
 $primary: #37ACC8;
 $secondary: #6c757d;
 $success: #198754;
@@ -13,5 +16,8 @@ $darker: #0e1117;
 $background-green: $success;
 $background-red: $danger;
 
+@import "theme";
+
 @import "bootstrap/scss/functions";
 @import "bootstrap/scss/variables";
+@import "bootstrap/scss/variables-dark";

@@ -8,6 +8,7 @@ _**Note:** Yet to be released changes appear here._
 
 * `DEPS`: update to `probot@14.3.7` ([#361](https://github.com/nikku/wuffle/pull/361))
 * `DEPS`: update to `@aws-sdk/client-s3@3.1164.0` ([#361](https://github.com/nikku/wuffle/pull/361))
+* `DEPS`: update to `bootstrap@5.3.8` ([#362](https://github.com/nikku/wuffle/pull/362))
 
 ## 0.81.0
 

@@ -177,7 +177,7 @@
 
     {@render header()}
 
-    <div class="form-group dropdown-parent">
+    <div class="mb-3 dropdown-parent">
 
       <input
         id={ inputId }

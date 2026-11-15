@@ -3,15 +3,47 @@
 // included via variables.scss
 // @import "bootstrap/scss/functions";
 // @import "bootstrap/scss/variables";
+// @import "bootstrap/scss/variables-dark";
 
 @import "variables";
 
+@import "bootstrap/scss/maps";
 @import "bootstrap/scss/mixins";
+@import "bootstrap/scss/utilities";
+
+// restrict generated utilities to spacing and header layout
+$utilities: map-get-multiple($utilities, (
+  "display",
+  "flex-wrap",
+  "align-items",
+  "margin",
+  "margin-x",
+  "margin-y",
+  "margin-top",
+  "margin-end",
+  "margin-bottom",
+  "margin-start",
+  "padding",
+  "padding-x",
+  "padding-y",
+  "padding-top",
+  "padding-end",
+  "padding-bottom",
+  "padding-start"
+));
+
+// layout utilities are only used non-responsively
+@each $name in ("display", "flex-wrap", "align-items") {
+  $utilities: map-merge($utilities, (
+    $name: map-merge(map-get($utilities, $name), ("responsive": false, "print": false))
+  ));
+}
+
 @import "bootstrap/scss/root";
 @import "bootstrap/scss/reboot";
 @import "bootstrap/scss/type";
 // @import "bootstrap/scss/images";
-// @import "bootstrap/scss/code";
+// @import "bootstrap/scss/containers";
 // @import "bootstrap/scss/grid";
 // @import "bootstrap/scss/tables";
 @import "bootstrap/scss/forms";
@@ -19,28 +51,24 @@
 // @import "bootstrap/scss/transitions";
 // @import "bootstrap/scss/dropdown";
 // @import "bootstrap/scss/button-group";
-// @import "bootstrap/scss/input-group";
-// @import "bootstrap/scss/custom-forms";
 // @import "bootstrap/scss/nav";
 @import "bootstrap/scss/navbar";
 // @import "bootstrap/scss/card";
+// @import "bootstrap/scss/accordion";
 // @import "bootstrap/scss/breadcrumb";
 // @import "bootstrap/scss/pagination";
 // @import "bootstrap/scss/badge";
-// @import "bootstrap/scss/jumbotron";
 // @import "bootstrap/scss/alert";
 // @import "bootstrap/scss/progress";
-// @import "bootstrap/scss/media";
 // @import "bootstrap/scss/list-group";
-@import "bootstrap/scss/close";
+// @import "bootstrap/scss/close";
 // @import "bootstrap/scss/toasts";
 // @import "bootstrap/scss/modal";
 // @import "bootstrap/scss/tooltip";
 // @import "bootstrap/scss/popover";
 // @import "bootstrap/scss/carousel";
 // @import "bootstrap/scss/spinners";
-// @import "bootstrap/scss/utilities";
-// @import "bootstrap/scss/utilities/_screenreaders";
-// @import "bootstrap/scss/utilities/_sizing";
-@import "bootstrap/scss/utilities/_spacing";
-// @import "bootstrap/scss/print";
+// @import "bootstrap/scss/offcanvas";
+// @import "bootstrap/scss/placeholders";
+// @import "bootstrap/scss/helpers";
+@import "bootstrap/scss/utilities/api";
