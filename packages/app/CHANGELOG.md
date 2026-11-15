@@ -6,6 +6,10 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 _**Note:** Yet to be released changes appear here._
 
+## 0.82.1
+
+* `FIX`: correct docker distribution not receiving stop signals ([`624f2e8`](https://github.com/nikku/wuffle/commit/624f2e8bac7d85bc1cb2b901b1a79464d3e1d301))
+
 ## 0.82.0
 
 * `DEPS`: update to `probot@14.3.7` ([#361](https://github.com/nikku/wuffle/pull/361))
