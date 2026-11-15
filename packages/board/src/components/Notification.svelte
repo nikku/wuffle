@@ -22,7 +22,7 @@
 
 <style lang="scss">
 
-  @import "variables";
+  @use "variables" as *;
 
   .notification {
     box-sizing: border-box;

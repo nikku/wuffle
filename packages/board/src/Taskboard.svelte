@@ -972,9 +972,9 @@
 </div>
 
 <style lang="scss">
-  @import "variables";
+  @use "variables" as *;
 
-  @import "./Taskboard";
+  @use "./Taskboard";
 
   .taskboard {
     position: relative;

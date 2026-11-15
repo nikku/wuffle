@@ -1,11 +1,14 @@
-// theme components
-
-// included via variables.scss
-// @import "bootstrap/scss/functions";
-// @import "bootstrap/scss/variables";
-// @import "bootstrap/scss/variables-dark";
-
 @import "variables";
+
+$enable-grid-classes: false;
+
+// Our theme handles dark mode via prefers-color-scheme.
+$enable-dark-mode: false;
+
+@import "theme";
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/variables-dark";
 
 @import "bootstrap/scss/maps";
 @import "bootstrap/scss/mixins";

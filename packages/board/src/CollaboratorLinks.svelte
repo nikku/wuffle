@@ -126,7 +126,7 @@
 {/each}
 
 <style lang="scss">
-  @import "variables";
+  @use "variables" as *;
 
   $separatorColor: white;
 

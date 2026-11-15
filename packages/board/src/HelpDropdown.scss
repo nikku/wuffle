@@ -1,4 +1,5 @@
-@import "variables";
+@use "sass:color";
+@use "variables" as *;
 
 .dropdown-parent {
   position: relative;
@@ -58,7 +59,7 @@
     border-color: $dark;
 
     .note {
-      color: darken($light, 30%);
+      color: color.adjust($light, $lightness: -30%);
 
       code {
         background-color: $dark;
