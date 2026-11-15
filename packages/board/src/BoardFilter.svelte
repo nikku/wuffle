@@ -408,9 +408,9 @@
 
 <style lang="scss">
 
-  @import "variables";
+  @use "variables" as *;
 
-  @import "./HelpDropdown";
+  @use "./HelpDropdown";
 
   .board-filter {
     &.expanded {

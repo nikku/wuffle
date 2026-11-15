@@ -8,7 +8,7 @@
     "@rollup/plugin-node-resolve": "^16.0.3",
     "@rollup/plugin-terser": "^1.0.2",
     "@rollup/plugin-url": "^8.0.2",
-    "bootstrap": "^5.3.8",
+    "bootstrap": "6.0.0-alpha.1",
     "eslint-plugin-svelte": "^3.24.1",
     "min-dash": "^5.1.0",
     "npm-run-all2": "^9.0.4",
@@ -35,7 +35,7 @@
     "build:js": "rollup -c",
     "build:js:prod": "npm run build:js",
     "build:js:watch": "npm run build:js -- -w",
-    "build:css": "sass --load-path=../../node_modules src/style/global.scss:../app/public/global.css",
+    "build:css": "sass --fatal-deprecation=1.108.1 --load-path=../../node_modules src/style/global.scss:../app/public/global.css",
     "build:css:prod": "npm run build:css -- --style compressed",
     "build:css:watch": "npm run build:css -- -w",
     "dev": "run-s build:watch"

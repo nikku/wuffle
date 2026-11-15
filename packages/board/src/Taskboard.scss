@@ -1,4 +1,4 @@
-@import "variables";
+@use "variables" as *;
 
 .taskboard {
   height: 100vh;

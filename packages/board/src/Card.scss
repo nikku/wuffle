@@ -1,4 +1,5 @@
-@import "variables";
+@use "sass:color";
+@use "variables" as *;
 
 .board-card-container {
   width: 100%;
@@ -147,7 +148,7 @@
   }
 
   .board-card-links.attached {
-    background: darken($darker, 5%);
+    background: color.adjust($darker, $lightness: -5%);
     border: solid 1px $dark;
     box-shadow: none;
   }
@@ -158,6 +159,6 @@
 
   .repository,
   .short-title {
-    color: darken($light, 30%);
+    color: color.adjust($light, $lightness: -30%);
   }
 }

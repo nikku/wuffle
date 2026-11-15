@@ -56,7 +56,8 @@
 
 <style lang="scss">
 
-  @import "variables";
+  @use "sass:color";
+  @use "variables" as *;
 
   .hint-list {
     list-style: none;
@@ -94,7 +95,7 @@
 
     &:hover,
     &.active {
-      background: scale-color($primary, $alpha: -90%);
+      background: color.scale($primary, $alpha: -90%);
     }
 
     &.text {
@@ -103,8 +104,8 @@
   }
 
   .matched {
-    background: scale-color($primary, $alpha: -80%);
-    color: darken($primary, 10%);
+    background: color.scale($primary, $alpha: -80%);
+    color: color.adjust($primary, $lightness: -10%);
   }
 
   @media (prefers-color-scheme: dark) {

@@ -51,7 +51,8 @@
 
 <style lang="scss">
 
-  @import "variables";
+  @use "sass:color";
+  @use "variables" as *;
 
   $color-success: $success;
   $color-action-required: $warning;
@@ -64,8 +65,8 @@
   */
 
   @mixin colored-scale($color) {
-    background-color: scale-color($color, $lightness: +40%);
-    box-shadow: 0 1px 2px 0px scale-color($color, $saturation: -20%, $alpha: -70%);
+    background-color: color.scale($color, $lightness: +40%);
+    box-shadow: 0 1px 2px 0px color.scale($color, $saturation: -20%, $alpha: -70%);
   }
 
   .card-status {
@@ -122,7 +123,7 @@
   }
 
   @keyframes progress-bar-stripes {
-    from { background-position: $progress-height 0; }
+    from { background-position: 1rem 0; }
     to { background-position: 0 0; }
   }
 </style>

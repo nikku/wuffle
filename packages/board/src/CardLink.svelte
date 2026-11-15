@@ -105,7 +105,7 @@
 </div>
 
 <style lang="scss">
-  @import "./Card";
+  @use "./Card";
 
   .card-link {
     border-top: solid 1px #F0F0F0;
