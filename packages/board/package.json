@@ -14,7 +14,7 @@
     "npm-run-all2": "^9.0.4",
     "octicons": "^8.5.0",
     "postcss": "^8.5.32",
-    "rollup": "^4.65.0",
+    "rollup": "^4.68.0",
     "rollup-plugin-copy": "^3.5.0",
     "rollup-plugin-css-only": "^4.5.5",
     "rollup-plugin-string": "^3.0.0",
