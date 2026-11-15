@@ -1,4 +1,4 @@
-FROM node:24-alpine as builder
+FROM node:24-alpine AS builder
 WORKDIR /build
 
 # install dependencies + cache them
@@ -12,7 +12,7 @@ COPY . /build
 RUN npm run build
 
 
-FROM node:24-alpine as prod-builder
+FROM node:24-alpine AS prod-builder
 WORKDIR /prod-build
 
 # copy production assets
