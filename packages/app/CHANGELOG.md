@@ -6,6 +6,8 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 _**Note:** Yet to be released changes appear here._
 
+* `DEPS`: update to `@bpmn-io/draggle@4.2.1`
+
 ## 0.82.1
 
 * `FIX`: correct docker distribution not receiving stop signals ([`624f2e8`](https://github.com/nikku/wuffle/commit/624f2e8bac7d85bc1cb2b901b1a79464d3e1d301))
