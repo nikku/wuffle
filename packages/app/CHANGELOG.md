@@ -6,6 +6,8 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 _**Note:** Yet to be released changes appear here._
 
+## 0.82.2
+
 * `DEPS`: update to `@bpmn-io/draggle@4.2.1`
 
 ## 0.82.1
