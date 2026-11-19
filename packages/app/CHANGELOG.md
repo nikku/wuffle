@@ -6,8 +6,10 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 _**Note:** Yet to be released changes appear here._
 
-* `FEAT`: add `column` filter
-* `FEAT`: add `is:draft` filter for draft pull requests
+## 0.83.0
+
+* `FEAT`: add `column` filter ([#367](https://github.com/nikku/wuffle/pull/367))
+* `FEAT`: add `is:draft` filter for draft pull requests ([#366](https://github.com/nikku/wuffle/pull/366))
 * `FEAT`: serve agent guide at `/llms.txt` ([#369](https://github.com/nikku/wuffle/pull/369))
 * `FIX`: ignore issue references in code ([#368](https://github.com/nikku/wuffle/pull/368))
 * `FIX`: list empty columns in board cards API ([#369](https://github.com/nikku/wuffle/pull/369))
