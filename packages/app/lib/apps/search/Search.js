@@ -195,6 +195,10 @@ export default function Search(config, logger, store) {
         return function filterPull(issue) {
           return isPull(issue);
         };
+      case 'draft':
+        return function filterDraft(issue) {
+          return !!(isPull(issue) && issue.draft);
+        };
       case 'milestoned':
         return function filterMilestoned(issue) {
           return !!issue.milestone;

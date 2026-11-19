@@ -192,6 +192,67 @@ describe('apps/search - Search', function() {
   });
 
 
+  describe('is:draft', function() {
+
+    let search;
+
+    beforeEach(function() {
+      search = createSearch();
+    });
+
+
+    it('should match draft PR', function() {
+
+      // given
+      const filter = search.getSearchFilter('is:draft');
+
+      const pull = createIssue({ pull_request: true, draft: true });
+
+      // when + then
+      expect(filter(pull)).to.be.true;
+    });
+
+
+    it('should NOT match ready PR', function() {
+
+      // given
+      const filter = search.getSearchFilter('is:draft');
+
+      const pull = createIssue({ pull_request: true, draft: false });
+
+      // when + then
+      expect(filter(pull)).to.be.false;
+    });
+
+
+    it('should NOT match issue', function() {
+
+      // given
+      const filter = search.getSearchFilter('is:draft');
+
+      const issue = createIssue();
+
+      // when + then
+      expect(filter(issue)).to.be.false;
+    });
+
+
+    it('should support negation', function() {
+
+      // given
+      const filter = search.getSearchFilter('-is:draft');
+
+      const draft = createIssue({ pull_request: true, draft: true });
+      const ready = createIssue({ pull_request: true, draft: false });
+
+      // when + then
+      expect(filter(draft)).to.be.false;
+      expect(filter(ready)).to.be.true;
+    });
+
+  });
+
+
   describe('is:approved', function() {
 
     const botReview = { user: { login: 'copilot[bot]', type: 'Bot' }, author_association: 'COLLABORATOR', state: 'approved' };
