@@ -9,6 +9,7 @@ _**Note:** Yet to be released changes appear here._
 * `FEAT`: add `column` filter
 * `FEAT`: add `is:draft` filter for draft pull requests
 * `FIX`: ignore issue references in code ([#368](https://github.com/nikku/wuffle/pull/368))
+* `FIX`: list empty columns in board cards API ([#369](https://github.com/nikku/wuffle/pull/369))
 
 ## 0.82.2
 

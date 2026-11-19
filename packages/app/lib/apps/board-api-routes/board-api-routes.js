@@ -71,6 +71,8 @@ export default async function BoardApiRoutes(
 
     return getIssueReadFilter(req).then(canAccess => {
 
+      const emptyColumns = Object.fromEntries(config.columns.map(c => [ c.name, [] ]));
+
       return Object.entries(items).reduce((filteredItems, [ columnKey, columnIssues ]) => {
 
         const accessFiltered = columnIssues.filter(canAccess).map(issue => {
@@ -90,7 +92,7 @@ export default async function BoardApiRoutes(
         filteredItems[columnKey] = searchFiltered.map(filterIssueOrPull);
 
         return filteredItems;
-      }, {});
+      }, emptyColumns);
 
     });
 
