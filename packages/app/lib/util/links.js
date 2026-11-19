@@ -45,7 +45,11 @@ export function findLinks(issue, types) {
     body
   } = issue;
 
-  const text = [ title, body ].join('\n --- \n').toLowerCase();
+  // like GitHub, do not consider references in code
+  const text = [ title, body ].join('\n --- \n')
+    .replace(/```[\s\S]*?```/g, '')
+    .replace(/`[^`\n]*`/g, '')
+    .toLowerCase();
 
   const namePart = '[a-z0-9-]+';
 
