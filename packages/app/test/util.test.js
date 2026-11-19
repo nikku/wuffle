@@ -687,6 +687,38 @@ describe('util', function() {
       ]);
     });
 
+
+    it('should ignore references in code', function() {
+
+      // given
+      const issue = createIssue(
+        'FOO',
+        `
+        Closes #1
+
+        * [x] Link to related issue(s), i.e. \`Closes #2\`
+
+        Use \`fixes #3\` to close an issue.
+
+        \`\`\`
+        Closes #4
+        * [ ] #5
+        \`\`\`
+
+        Related to #6
+        `
+      );
+
+      // when
+      const links = findLinks(issue);
+
+      // then
+      expect(links).to.eql([
+        { type: 'CLOSES', number: 1 },
+        { type: 'LINKED_TO', number: 6 }
+      ]);
+    });
+
   });
 
 
