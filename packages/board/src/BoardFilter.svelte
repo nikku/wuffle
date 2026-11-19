@@ -47,6 +47,7 @@
       'closed',
       'issue',
       'pull',
+      'draft',
       'referenced'
     ].map(name => {
       return { name, value: `${name} ` };
