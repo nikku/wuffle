@@ -1,0 +1,40 @@
+# Wuffle Board
+
+> A task board for GitHub issues and pull requests across multiple repositories. The board page (`/board`) renders client-side; query it through the JSON API below. Use the board to find a filtered selection of cards, their columns, and how they relate. GitHub is the source of truth for details.
+
+## API
+
+A board URL `/board?s=<search>` maps to `GET /wuffle/board/cards?s=<search>` (URL-encode `s`; ignore other parameters).
+
+- `GET /wuffle/board/cards?s=<search>`: `{ "items": { "<column>": [ card, ... ] }, "cursor" }`. Every column is present in board order, even if empty. Results are complete, not paged; ignore `cursor`.
+- `GET /wuffle/board`: board name and columns.
+
+Cards are GitHub issues or pull requests, plus:
+
+- `key`: `owner/repo#number`.
+- `pull_request`: `true` for pull requests. Pull requests also carry `draft`.
+- `links`: `[ { "type", "target": { "key", "title", "state", "pull_request", ... } } ]`.
+
+Cards are about 3 KB each. Narrow the search and pick fields, e.g. `jq '.items | map_values(map({ key, title, html_url }))'`.
+
+Most cards are closed; add `is:open` to skip them.
+
+Anonymous requests see public repositories only. If a search returns nothing, the repository may be untracked or private; say so rather than concluding nothing exists.
+
+## Search syntax
+
+Terms combine with AND. Use `OR`, `NOT` (or `-`) and parentheses, e.g. `(is:closed OR label:bug) repo:foo/bar`.
+
+Values match case-insensitively by substring; quote for an exact match, e.g. `label:"bug"`. `@me` is the logged-in user.
+
+- text (no qualifier): number, title and body, e.g. `crash`, `"exact phrase"`.
+- `is:` `open`, `closed`, `issue`, `pull`, `draft`, `assigned`, `unassigned`, `milestoned`, `reviewed`, `approved`, `referenced` (has links), `epic` (neither child of nor closing another item).
+- `column:` a name from `GET /wuffle/board`, e.g. `column:Inbox`, `column:"Needs Review"`.
+- `label:`, `repo:` (`owner/name`), `milestone:`.
+- `author:`, `assignee:`, `reviewer:`, `commented:`, `involves:` (any of these four).
+- `created:`, `updated:` with `>`, `>=`, `<`, `<=` and `YYYY-MM-DD`, or `@today`, `@last_week`, `@last_month`.
+- `ref:owner/repo#number`: that item plus all items linked to it.
+
+## Link types
+
+`CLOSES` / `CLOSED_BY`, `CHILD_OF` / `PARENT_OF`, `DEPENDS_ON` / `REQUIRED_BY`, `LINKED_TO` / `LINKED_BY`, from keywords in descriptions such as `closes #1`, `child of #2`, `depends on #3` and `related to #4`.
