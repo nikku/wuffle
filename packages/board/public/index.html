@@ -15,14 +15,18 @@
   <link rel="apple-touch-icon" href="apple-touch-icon.png" />
 
   <link rel="manifest" href="manifest.json" />
+  <link rel="alternate" type="text/markdown" href="/llms.txt" title="Agent guide: querying this board" />
 
   <link rel="stylesheet" href="global.css" />
   <link rel="stylesheet" href="bundle.css" />
+
+  <style>.agent-hint { display: none; }</style>
 
   <script>console.time('Wuffle#load');</script>
 </head>
 
 <body>
+  <p class="agent-hint">Agents and scripts: read <a href="/llms.txt">/llms.txt</a> to learn how to query this board.</p>
   <script type="application/json+config"></script>
   <script async src="bundle.js"></script>
   <script async src="register-service-worker.js"></script>

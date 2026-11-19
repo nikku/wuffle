@@ -86,6 +86,14 @@ export default async function BoardRoutes(config, router) {
     res.sendFile(robotsPath);
   });
 
+  const llmsPath = fileURLToPath(
+    relativePath('llms.txt', staticDirectory)
+  );
+
+  router.get('/llms.txt', (req, res, next) => {
+    res.type('text/markdown').sendFile(llmsPath);
+  });
+
   const serviceWorkerPath = fileURLToPath(
     relativePath('service-worker.js', staticDirectory)
   );
