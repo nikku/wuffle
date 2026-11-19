@@ -85,6 +85,7 @@
         'assignee',
         'author',
         'repo',
+        'column',
         'reviewer',
         'commented',
         'milestone',

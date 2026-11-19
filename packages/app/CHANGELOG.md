@@ -6,6 +6,7 @@ All notable changes to [wuffle](https://github.com/nikku/wuffle) are documented 
 
 _**Note:** Yet to be released changes appear here._
 
+* `FEAT`: add `column` filter
 * `FEAT`: add `is:draft` filter for draft pull requests
 
 ## 0.82.2

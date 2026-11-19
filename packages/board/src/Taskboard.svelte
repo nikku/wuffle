@@ -70,6 +70,13 @@
 
   let filterOptions = $state({});
 
+  const columnOptions = $derived(columns.map(column => column.name));
+
+  const completionOptions = $derived({
+    ...filterOptions,
+    column: columnOptions
+  });
+
   const defaultCollapsed = $derived(
     columns.reduce((defaultCollapsed, column) => {
       defaultCollapsed[column.name] = column.collapsed;
@@ -890,7 +897,7 @@
       <form class="d-flex flex-wrap align-items-center board-filter-parent my-2 my-lg-0" onsubmit={ (e) => e.preventDefault() }>
         <BoardFilter
           value={ filter }
-          completionOptions={ filterOptions }
+          completionOptions={ completionOptions }
           onChange={ filterChanged }
           placeholder="Filter board..."
         />

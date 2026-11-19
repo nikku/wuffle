@@ -237,6 +237,16 @@ export default function Search(config, logger, store) {
       };
     },
 
+    column: function columnFilter(name, exact) {
+
+      return function filterColumn(issue) {
+
+        const { column } = issue;
+
+        return !!column && includes(column, name, exact);
+      };
+    },
+
     milestone: function milestoneFilter(name, exact) {
 
       return function filterMilestone(issue) {

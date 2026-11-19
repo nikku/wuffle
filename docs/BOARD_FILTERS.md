@@ -16,6 +16,7 @@ The board supports the following filters:
 | `milestone` | Filter by [milestone](https://docs.github.com/en/github/managing-your-work-on-github/about-milestones) | `milestone:M1` |
 | `label` | Filter by [label](https://docs.github.com/en/github/managing-your-work-on-github/managing-labels) | `label:critical` |
 | `repo` | Filter by repository | `repo:"nikku/wuffle"` |
+| `column` | Filter by board column | `column:Inbox`, `column:"Needs Review"` |
 | `ref` | Filter for a card and the cards [linked](./ISSUE_LINKS.md) to it | `ref:nikku/wuffle#1` |
 
 ### Using Boolean Operations
