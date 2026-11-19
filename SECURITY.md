@@ -11,8 +11,8 @@ __Please do not report security vulnerabilities through public GitHub issues.__
 
 We appreciate your efforts to responsibly disclose your findings, and will make every effort to acknowledge your contributions.
 
-To report a security issue, email [wuffle-dev@nixis.de](mailto:wuffle-dev@nixis.de) and include the word "SECURITY" in the subject line.
+Report a vulnerability [privately, through GitHub](https://docs.github.com/en/code-security/how-tos/report-and-fix-vulnerabilities/report-privately). If that is not possible for you, contact us via email at <wuffle-dev@nixis.de> and include the word "SECURITY" in the subject line.
 
-We will send a response indicating the next steps in handling your report. After the initial reply to your report, we will keep you informed of the progress towards a fix and full announcement, and may ask for additional information or guidance.
+The team will handle your report, indicating the next steps. After the initial reply to your report, we will keep you informed of the progress towards a fix and full announcement, and may ask for additional information or guidance.
 
 Report security bugs in third-party modules to the person or team maintaining the module. You can also report a vulnerability through the [npm contact form](https://www.npmjs.com/support) by selecting "I'm reporting a security vulnerability".
