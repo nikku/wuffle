@@ -192,6 +192,50 @@ describe('apps/search - Search', function() {
   });
 
 
+  describe('column', function() {
+
+    let search;
+
+    beforeEach(function() {
+      search = createSearch();
+    });
+
+
+    it('should match column', function() {
+
+      // given
+      const filter = search.getSearchFilter('column:inbox');
+
+      // when + then
+      expect(filter(createIssue({ column: 'Inbox' }))).to.be.true;
+      expect(filter(createIssue({ column: 'Backlog' }))).to.be.false;
+    });
+
+
+    it('should match column with spaces', function() {
+
+      // given
+      const filter = search.getSearchFilter('column:"Needs Review"');
+
+      // when + then
+      expect(filter(createIssue({ column: 'Needs Review' }))).to.be.true;
+      expect(filter(createIssue({ column: 'In Review' }))).to.be.false;
+    });
+
+
+    it('should support negation', function() {
+
+      // given
+      const filter = search.getSearchFilter('-column:Done');
+
+      // when + then
+      expect(filter(createIssue({ column: 'Done' }))).to.be.false;
+      expect(filter(createIssue({ column: 'Inbox' }))).to.be.true;
+    });
+
+  });
+
+
   describe('is:draft', function() {
 
     let search;
